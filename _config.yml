@@ -17,3 +17,10 @@ github_username:  rubensworks
 
 # Build settings
 markdown: kramdown
+
+# Publication settings
+scholar:
+  bibliography_template: bib
+  details_dir: publications
+  details_layout: bibtex.html
+  details_link: More
