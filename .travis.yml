@@ -1,6 +1,8 @@
 language: ruby
 rvm:
 - 2.1
+notifications:
+  email: false
 
 script: ./script/cibuild
 
