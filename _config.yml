@@ -25,3 +25,8 @@ scholar:
   details_dir: publications
   details_layout: bibtex.html
   details_link: More
+
+exclude:
+  - script
+  - Gemfile
+  - README.md
