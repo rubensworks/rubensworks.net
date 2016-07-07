@@ -83,6 +83,7 @@ li {
  */
 h1, h2, h3, h4, h5, h6 {
     font-weight: $base-font-weight;
+    font-family: 'Droid Sans', sans-serif;
 }
 
 
@@ -200,7 +201,18 @@ pre {
         vertical-align: middle;
 
         path {
-            fill: $grey-color;
+            -o-transition:.2s;
+            -ms-transition:.2s;
+            -moz-transition:.2s;
+            -webkit-transition:.2s;
+            transition:.2s;
+            fill: $grey-color-light;
+        }
+    }
+
+    > svg:hover {
+        path {
+            fill: $grey-color-dark;
         }
     }
 }

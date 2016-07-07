@@ -12,8 +12,11 @@ description: > # this means to ignore newlines until "baseurl:"
   Computer scientist, researcher, programmer.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://www.rubensworks.net" # the base hostname & protocol for your site
-twitter_username: rubensworks
-github_username:  rubensworks
+twitter_username:       rubensworks
+github_username:        rubensworks
+linkedin_username:      taelmanruben
+googleplus_username:    111756755066956993602
+googlescholar_username: 2avKLOkAAAAJ
 google_analytics_tracking_id : 'UA-4197493-1'
 
 # Build settings

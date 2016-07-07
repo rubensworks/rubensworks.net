@@ -2,7 +2,43 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
+    <div class="site-title-wrapper">
+      <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
+    </div>
+
+    <div class="social-media-list-wrapper">
+      <ul class="social-media-list">
+        {% if site.github_username %}
+        <li>
+          {% include icon-github.html username=site.github_username %}
+        </li>
+        {% endif %}
+
+        {% if site.twitter_username %}
+        <li>
+          {% include icon-twitter.html username=site.twitter_username %}
+        </li>
+        {% endif %}
+
+        {% if site.linkedin_username %}
+        <li>
+          {% include icon-linkedin.html username=site.linkedin_username %}
+        </li>
+        {% endif %}
+
+        {% if site.googleplus_username %}
+        <li>
+          {% include icon-googleplus.html username=site.googleplus_username %}
+        </li>
+        {% endif %}
+
+        {% if site.googlescholar_username %}
+        <li>
+          {% include icon-googlescholar.html username=site.googlescholar_username %}
+        </li>
+        {% endif %}
+      </ul>
+    </div>
 
     <nav class="site-nav">
       <a href="#" class="menu-icon">

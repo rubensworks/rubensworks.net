@@ -2,25 +2,48 @@
  * Site header
  */
 .site-header {
-    border-top: 5px solid $grey-color-dark;
-    border-bottom: 1px solid $grey-color-light;
+    border-top: 10px solid $grey-color-dark;
+    border-bottom: 1px solid $grey-color-dark;
     min-height: 56px;
+    background-color: $blue-color-light;
 
     // Positioning context for the mobile navigation icon
     position: relative;
 }
 
 .site-title {
-    font-size: 26px;
-    font-weight: 300;
+    font-size: 30px;
+    font-weight: 450;
     line-height: 56px;
     letter-spacing: -1px;
     margin-bottom: 0;
-    float: left;
 
     &,
     &:visited {
         color: $grey-color-dark;
+    }
+}
+
+.site-title-wrapper {
+    float: right;
+    width: 100%;
+    text-align: center;
+}
+
+.social-media-list-wrapper {
+    float: right;
+    width: 100%;
+    text-align: center;
+}
+
+.social-media-list li {
+    display: inline;
+    padding-right: 10px;
+    a {
+        color: $grey-color-light;
+    }
+    a:hover {
+        text-decoration: none;
     }
 }
 
@@ -98,8 +121,10 @@
  * Site footer
  */
 .site-footer {
-    border-top: 1px solid $grey-color-light;
+    border-top: 2px solid $blue-color-dark;
     padding: $spacing-unit 0;
+    background-color: $grey-color-dark;
+    color: $grey-color-light;
 }
 
 .footer-heading {
@@ -115,7 +140,7 @@
 
 .footer-col-wrapper {
     font-size: 15px;
-    color: $grey-color;
+    color: darken($grey-color-light, 15%);
     margin-left: -$spacing-unit / 2;
     @extend %clearfix;
 }
