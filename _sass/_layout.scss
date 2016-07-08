@@ -3,7 +3,7 @@
  */
 .site-header {
     border-top: 10px solid $grey-color-dark;
-    border-bottom: 1px solid $grey-color-dark;
+    border-bottom: 1px solid $blue-color;
     min-height: 56px;
     background-color: $blue-color-light;
 
@@ -47,16 +47,22 @@
     }
 }
 
+.site-nav-header {
+    background-color: $grey-color-dark;
+    border-bottom: 1px solid $blue-color;
+}
+
 .site-nav {
-    float: right;
+    float: left;
     line-height: 56px;
+    color: white;
 
     .menu-icon {
         display: none;
     }
 
     .page-link {
-        color: $text-color;
+        color: $grey-color-light;
         line-height: $base-line-height;
 
         // Gaps between nav items, but not on the last one
