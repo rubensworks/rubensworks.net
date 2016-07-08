@@ -33,3 +33,7 @@ exclude:
   - script
   - Gemfile
   - README.md
+
+collections:
+  projects:
+    output: true
