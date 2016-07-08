@@ -6,4 +6,5 @@ bundle exec htmlproofer ./_site \
     --url-swap "^.*/www.rubensworks.net/:/" \
     --allow-hash-href true \
     --check-favicon true \
-    --check-html true
+    --check-html true \
+    --only-4xx
