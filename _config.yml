@@ -18,6 +18,7 @@ linkedin_username:      taelmanruben
 googleplus_username:    111756755066956993602
 googlescholar_username: 2avKLOkAAAAJ
 google_analytics_tracking_id : 'UA-4197493-1'
+permalink: pretty
 
 # Build settings
 markdown: kramdown
