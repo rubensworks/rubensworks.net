@@ -52,6 +52,36 @@
     border-bottom: 1px solid $blue-color;
 }
 
+.rw-icon {
+    display: inline-block;
+    margin: 10px;
+    border: solid 2px black;
+    -o-transition:.2s;
+    -ms-transition:.2s;
+    -moz-transition:.2s;
+    -webkit-transition:.2s;
+    transition:.2s;
+
+    width: $rw-icon-size;
+    height: $rw-icon-size;
+    border-radius: ($rw-icon-size / 2 + 4);
+    -webkit-border-radius: ($rw-icon-size / 2 + 4);
+    -moz-border-radius: ($rw-icon-size / 2 + 4);
+    background: url(/img/rw_logo.png) no-repeat;
+    background-size: $rw-icon-size $rw-icon-size;
+    background-color: black;
+    background-position: center;
+    img {
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+}
+
+.rw-icon:hover {
+    border: solid 2px $blue-color-dark;
+    background-size: ($rw-icon-size - 5) ($rw-icon-size - 5);
+}
+
 .site-nav {
     float: left;
     line-height: 56px;
