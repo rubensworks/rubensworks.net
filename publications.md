@@ -4,10 +4,10 @@ title: Publications
 permalink: /publications/
 ---
 
-These are my publications, please rewrite me...
-
-------------------------
-
-## 2016
-
-{% bibliography --query @*[year=2016] %}
+{% assign currentyear = site.time | date: '%Y' | plus: 0 %}
+{% assign years = (2015..currentyear) | reverse %}
+{% for year in years %}
+## {{ year }}
+  
+{% bibliography --query @*[year={{ year }}] %}
+{% endfor %}

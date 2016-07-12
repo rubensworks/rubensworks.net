@@ -334,3 +334,37 @@
         text-decoration: none;
     }
 }
+
+/**
+ * Publications
+ */
+
+.bibliography {
+    list-style: none;
+    .details {
+        display: none;
+    }
+    .publication {
+        margin-bottom: 10px;
+        .title {
+            font-weight: bold;
+        }
+        .authors {
+            font-style: italic;
+        }
+        .in {
+            font-size: 12px;
+        }
+        .type {
+            display: block;
+            font-size: 10px;
+            font-weight: bold;
+            float: right;
+            padding: 2px;
+            width: 80px;
+            text-align: center;
+            background-color: $grey-color-dark;
+            color: white;
+        }
+    }
+}

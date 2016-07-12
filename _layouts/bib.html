@@ -1,9 +1,14 @@
 ---
 ---
-{{ reference }}
 
-{% if entry.link %}
-<a href="{{ entry.link }}">pdf</a>
+<div class="publication">
+  <span class="type">{{ entry._type }}</span>
+<a href="/publications/{{ entry.key }}" class="title" id="{{ entry.key }}">{{ entry.title }}</a><br />
+{% assign first = true %}
+{% for author in entry.author_array %}{% if first == false %},{% endif %}
+  {% assign first = false %}
+  <span class="authors">{{ author.first }} {{ author.prefix }} {{ author.last }}</span>{% endfor %}<br />
+{% if entry.booktitle %}
+<span class="in">In {{ entry.booktitle }}</span>
 {% endif %}
-
-<pre>{{ entry.bibtex }}</pre>
+</div>

@@ -6,6 +6,8 @@ show_in_nav: false
 <h2>{{ page.entry.author }}</h2>
 <p>{{ page.entry.abstract }}</p>
 
-{% if {{link}} %}
-<a href="{{link}}" class="btn btn-default"> pdf</a>
+<pre>{{ page.entry.bibtex }}</pre>
+
+{% if {{page.entry.url}} %}
+<a href="{{url}}" class="btn btn-default"> pdf</a>
 {% endif %}
