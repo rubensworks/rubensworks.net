@@ -25,6 +25,8 @@ markdown: kramdown
 
 # Publication settings
 scholar:
+  sort_by: year,month
+  order: descending
   bibliography_template: bib
   details_dir: publications
   details_layout: bibtex.html

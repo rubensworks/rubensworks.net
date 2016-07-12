@@ -4,6 +4,16 @@
   booktitle = {Proceedings of the 13th Extended Semantic Web Conference: Posters and Demos},
   year      = 2016,
   month     = jun,
+  abstract  = {
+Traditional RDF stream processing engines work completely server-side, which contributes to a high server cost.
+For allowing a large number of concurrent clients to do continuous querying,
+we extend the low-cost Triple Pattern Fragments (TPF) interface with support for time-sensitive queries.
+In this poster, we give the overview of a client-side RDF stream processing engine on top of TPF.
+Our experiments show that our solution significantly lowers the server load while increasing the load on the clients.
+Preliminary results indicate that our solution moves the complexity of continuously evaluating real-time queries
+from the server to the client, which makes real-time querying much more scalable for a large amount of concurrent
+clients when compared to the alternatives.
+  },
   _type     = {Poster}
 }
 
@@ -15,17 +25,42 @@
   year         = {2016},
   month        = jun,
   organization = {Springer International Publishing},
+  abstract     = {
+Our society is evolving towards massive data consumption from heterogeneous sources, which includes rapidly changing data
+like public transit delay information.
+Many applications that depend on dynamic data consumption require highly available server interfaces.
+Existing interfaces involve substantial costs to publish rapidly changing data with high availability,
+and are therefore only possible for
+organisations that can afford such an expensive infrastructure.
+In my doctoral research, I investigate how to publish and consume real-time and historical Linked Data on a large scale.
+To reduce server-side costs for making dynamic data publication affordable,
+I will examine different possibilities to divide query evaluation between servers and clients.
+This paper discusses the methods I aim to follow together with preliminary results and the steps required to use this solution.
+An initial prototype achieves significantly lower server processing cost per query, while maintaining reasonable
+query execution times and client costs.
+Given these promising results, I feel confident this research direction is a viable solution for offering low-cost
+dynamic Linked Data interfaces as opposed to the existing high-cost solutions.
+  },
   _type        = {PhD Symposium}
 }
 
 @MastersThesis{taelman_mastersthesis,
-  author  = {Taelman, Ruben},
-  title   = {Continuously Updating Queries over Real-Time {Linked} {Data}},
-  school  = {Ghent University},
-  address = {Belgium},
-  year    = {2015},
-  url     = {http://rubensworks.net/raw/publications/2015/continuously_updating_queries_over_real-time_linked_data.pdf},
-  _type   = {Master's Thesis}
+  author   = {Taelman, Ruben},
+  title    = {Continuously Updating Queries over Real-Time {Linked} {Data}},
+  school   = {Ghent University},
+  address  = {Belgium},
+  year     = {2015},
+  month    = may,
+  url      = {http://rubensworks.net/raw/publications/2015/continuously_updating_queries_over_real-time_linked_data.pdf},
+  abstract = {
+This dissertation investigates the possibilities of having continuously updating
+queries over Linked Data with a focus on server availability. This work builds upon the ideas
+of Linked Data Fragments to let the clients do most of the work when executing a query. The
+server adds metadata to make the clients aware of the data volatility for making sure the
+query results are always up-to-date. The implementation of the framework that is proposed,
+is eventually tested and compared to other alternative approaches.
+  },
+  _type    = {Master's Thesis}
 }
 
 @inproceedings{taelman_mepdaw_2016,
@@ -34,5 +69,21 @@
   booktitle = {Proceedings of the 2nd Workshop on Managing the Evolution and Preservation of the Data Web},
   year      = 2016,
   month     = may,
+  abstract  = {
+Existing solutions to query dynamic Linked Data sources extend the SPARQL language,
+and require continuous server processing for each query.
+Traditional SPARQL endpoints accept highly expressive queries, contributing to high server cost.
+Extending these endpoints for time-sensitive queries increases the server cost even further.
+To make continuous querying over real-time Linked Data more affordable,
+we extend the low-cost Triple Pattern Fragments (TPF) interface with support for time-sensitive queries.
+In this paper, we discuss a framework on top of TPF that allows clients to execute
+SPARQL queries with continuously updating results.
+Our experiments indicate that this extension significantly lowers the server complexity.
+The trade-off is an increase in the execution time per query.
+We prove that by moving the complexity of continuously evaluating real-time queries over Linked Data to the clients
+and thus increasing the bandwidth usage, the cost of server-side interfaces is significantly reduced.
+Our results show that this solution makes real-time querying more scalable in terms of cpu usage for a large amount
+of concurrent clients when compared to the alternatives.
+  },
   _type     = {Workshop}
 }

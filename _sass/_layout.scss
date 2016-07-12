@@ -368,3 +368,65 @@
         }
     }
 }
+
+/**
+ * Publication
+ */
+
+.publication {
+    .type {
+        display: block;
+        font-size: 10px;
+        font-weight: bold;
+        float: right;
+        padding: 2px;
+        width: 80px;
+        text-align: center;
+        background-color: $grey-color-dark;
+        color: white;
+    }
+    .details {
+        margin-left: 15px;
+        .authors {
+            font-style: italic;
+        }
+        .in {
+            font-size: 12px;
+        }
+    }
+    .abstract {
+        margin-top: 20px;
+        text-align: justify;
+    }
+}
+
+.toggle {
+    display: inline;
+    cursor:pointer;
+
+    [type=checkbox] {
+        display:none;
+    }
+
+    .content {
+        display: none;
+    }
+
+    [type=checkbox]:checked ~ label {
+        text-decoration: underline;
+    }
+
+    label {
+        color: $brand-color;
+    }
+
+    label:hover {
+        color: $text-color;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    [type=checkbox]:checked ~ label ~ .content {
+        display: block;
+    }
+}

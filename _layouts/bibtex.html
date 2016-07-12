@@ -2,12 +2,31 @@
 layout: default
 show_in_nav: false
 ---
-<h1>{{ page.entry.title }}</h1>
-<h2>{{ page.entry.author }}</h2>
-<p>{{ page.entry.abstract }}</p>
+<div class="publication">
+  <span class="type">{{ page.entry._type }}</span>
+  <h1>{{ page.entry.title }}</h1>
+  <p class="details">
+    {% assign first = true %}
+    {% for author in page.entry.author_array %}{% if first == false %},{% endif %}
+    {% assign first = false %}
+    <span class="authors">{{ author.first }} {{ author.prefix }} {{ author.last }}</span>{% endfor %}<br />
+    {% if page.entry.booktitle %}
+    <span class="in">In {{ page.entry.booktitle }} ({{ page.entry.year }})</span>
+    {% endif %}
+  </p>
 
-<pre>{{ page.entry.bibtex }}</pre>
+  <p class="abstract">{{ page.entry.abstract }}</p>
+  <hr />
 
-{% if {{page.entry.url}} %}
-<a href="{{url}}" class="btn btn-default"> pdf</a>
-{% endif %}
+
+  {% if {{page.entry.url}} %}
+  <a href="{{page.entry.url}}" target="_blank">PDF</a>
+  {% endif %}
+  <a href="http://www.mendeley.com/import/?url={{ page.url | prepend: site.baseurl | prepend: site.url | url_encode }}" target="_blank">Mendeley</a>
+  <div class="toggle">
+    <input type="checkbox" id="checkbox-bibtex" name="checkbox-bibtex" />
+    <label for="checkbox-bibtex">BibTeX</label><br />
+    <pre class="content">{{ page.entry.bibtex }}</pre>
+  </div>
+
+</div>
