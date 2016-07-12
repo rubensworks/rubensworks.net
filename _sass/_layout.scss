@@ -54,7 +54,9 @@
 
 .rw-icon {
     display: inline-block;
-    margin: 10px;
+    margin: -5px 10px;
+    vertical-align: middle;
+    margin-bottom: 0px;
     border: solid 2px black;
     -o-transition:.2s;
     -ms-transition:.2s;
