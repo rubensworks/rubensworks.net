@@ -320,12 +320,16 @@
         height: 40px;
     }
 
-    a {
+    h3 a {
+        color: $grey-color-dark;
+    }
+
+    a.download {
         padding: 5px;
         background-color: $grey-color-dark;
         color: white;
     }
-    a:hover {
+    a.download:hover {
         background-color: $grey-color;
         text-decoration: none;
     }
