@@ -36,6 +36,7 @@ exclude:
   - script
   - Gemfile
   - README.md
+  - Rakefile
 
 collections:
   projects:
