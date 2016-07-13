@@ -308,6 +308,15 @@
  * Projects
  */
 
+.projects {
+    list-style: none;
+}
+
+.duration {
+    font-style: italic;
+    font-size: 12px;
+}
+
 .mcmod-widget {
     background-color: $grey-color-light;
     width: 46%;
@@ -333,6 +342,11 @@
         background-color: $grey-color;
         text-decoration: none;
     }
+}
+
+.screenshot {
+    margin: 5px;
+    width: 500px;
 }
 
 /**

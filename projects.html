@@ -4,8 +4,24 @@ title: Projects
 permalink: /projects/
 ---
 
+During my spare time, I like to make stuff.
+This page contains a list of the most notable things I am currently working on, and have worked on in the past.
+
+<h2>Ongoing</h2>
+<ul class="projects">
 {% for project in site.projects %}
-  {% if project.title %}
-    <a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a>
+  {% unless project.end %}
+    <li><a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a></li>
+  {% endunless %}
+{% endfor %}
+</ul>
+
+<h2>Past</h2>
+<ul class="projects">
+{% assign projects = site.projects %}
+{% for project in projects | sort:"start" %}
+  {% if project.end %}
+    <li><a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a></li>
   {% endif %}
 {% endfor %}
+</ul>
