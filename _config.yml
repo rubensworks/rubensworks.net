@@ -35,6 +35,7 @@ scholar:
     - abstract
     - month_numeric
     - _type
+    - _slides
 
 exclude:
   - script
