@@ -31,6 +31,10 @@ scholar:
   details_dir: publications
   details_layout: bibtex.html
   details_link: More
+  bibtex_skip_fields:
+    - abstract
+    - month_numeric
+    - _type
 
 exclude:
   - script
