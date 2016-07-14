@@ -19,17 +19,19 @@ show_in_nav: false
   <hr />
 
 
-  {% if {{page.entry.url}} %}
-  <a href="{{page.entry.url}}" target="_blank">PDF</a>
-  {% endif %}
-  {% if {{page.entry._slides}} %}
-  <a href="{{page.entry._slides}}" target="_blank">Slides</a>
-  {% endif %}
-  <a href="http://www.mendeley.com/import/?url={{ page.url | prepend: site.baseurl | prepend: site.url | url_encode }}" target="_blank">Mendeley</a>
-  <div class="toggle">
-    <input type="checkbox" id="checkbox-bibtex" name="checkbox-bibtex" />
-    <label for="checkbox-bibtex">BibTeX</label><br />
-    <pre class="content">{{ page.entry.bibtex }}</pre>
+  <div class="links">
+    {% if {{page.entry.url}} %}
+    <a href="{{page.entry.url}}" target="_blank">PDF</a>
+    {% endif %}
+    {% if {{page.entry._slides}} %}
+    <a href="{{page.entry._slides}}" target="_blank">Slides</a>
+    {% endif %}
+    <a href="http://www.mendeley.com/import/?url={{ page.url | prepend: site.baseurl | prepend: site.url | url_encode }}" target="_blank">Mendeley</a>
+    <div class="toggle">
+      <input type="checkbox" id="checkbox-bibtex" name="checkbox-bibtex" />
+      <label for="checkbox-bibtex">BibTeX</label><br />
+      <pre class="content">{{ page.entry.bibtex }}</pre>
+    </div>
   </div>
 
 </div>
