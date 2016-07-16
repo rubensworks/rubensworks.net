@@ -1,1 +1,6 @@
-<a href="https://plus.google.com/{{ include.username }}/?rel=author" alt="Google Plus" title="Google Plus" target="_blank"><span class="icon icon--googleplus">{% include icon-googleplus.svg %}</span></a>
+<span rel="foaf:holdsAccount">
+  <a typeof="foaf:OnlineAccount" href="https://plus.google.com/{{ include.username }}/?rel=author" alt="Google Plus" title="Google Plus" target="_blank">
+    <span class="icon icon--googleplus" rel="foaf:accountServiceHomepage" href="https://plus.google.com/">{% include icon-googleplus.svg %}</span>
+    <span class="rdfonly" property="foaf:accountName">{{ include.username }}</span>
+  </a>
+</span>

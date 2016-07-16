@@ -1,9 +1,13 @@
 <header class="site-header">
 
-  <div class="wrapper">
+  <div class="wrapper" typeof="foaf:Person" resource="{{ "/#me" | prepend: site.baseurl | prepend: site.url }}">
 
     <div class="site-title-wrapper">
       <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
+      <meta property="foaf:name" content="{{ site.title }}"/>
+      <meta property="foaf:logo" resource="{{ "/img/favicon.png" | prepend: site.baseurl | prepend: site.url }}"/>
+      <meta property="foaf:homepage" resource="{{ site.baseurl | prepend: site.url }}"/>
+      <meta property="foaf:workplaceHomepage" resource="http://datasciencelab.ugent.be/"/>
     </div>
 
     <div class="social-media-list-wrapper">
