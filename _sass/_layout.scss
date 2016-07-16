@@ -344,6 +344,9 @@
             font-weight: bold;
         }
         .authors {
+            .author {
+                color: $grey-color-dark;
+            }
             font-style: italic;
         }
         .in {
@@ -383,6 +386,9 @@
     .details {
         margin-left: 15px;
         .authors {
+            .author {
+                color: $grey-color-dark;
+            }
             font-style: italic;
         }
         .in {

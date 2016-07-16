@@ -13,7 +13,7 @@ show_in_nav: false
     {% assign knows = site.data.knows[name] %}
       {% if knows %}
       <span about="/#me" typeof="foaf:Person">
-        <a itemprop="author" rel="foaf:knows" href="{{ knows.url }}" target="_blank">{{ name }}</a></span>{% else %}<span itemprop="author">{{ name }}</span>{% endif %}{% endfor %}</span><br />
+        <a class="author" itemprop="author" rel="foaf:knows" href="{{ knows.url }}" target="_blank">{{ name }}</a></span>{% else %}<span itemprop="author">{{ name }}</span>{% endif %}{% endfor %}</span><br />
     {% if page.entry.booktitle %}
     <span class="in">In {{ page.entry.booktitle }} ({{ page.entry.year }})</span>
     {% endif %}
