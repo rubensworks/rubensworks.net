@@ -2,14 +2,15 @@
 layout: default
 show_in_nav: false
 ---
-<div class="publication">
+<div class="publication" itemscope itemtype="http://schema.org/ScholarlyArticle">
   <span class="type">{{ page.entry._type }}</span>
-  <h1>{{ page.entry.title }}</h1>
+  <h1 itemprop="name">{{ page.entry.title }}</h1>
   <p class="details">
+    <span class="authors">
     {% assign first = true %}
     {% for author in page.entry.author_array %}{% if first == false %},{% endif %}
     {% assign first = false %}
-    <span class="authors">{{ author.first }} {{ author.prefix }} {{ author.last }}</span>{% endfor %}<br />
+    <span itemprop="author">{{ author.first }} {{ author.prefix }} {{ author.last }}</span>{% endfor %}</span><br />
     {% if page.entry.booktitle %}
     <span class="in">In {{ page.entry.booktitle }} ({{ page.entry.year }})</span>
     {% endif %}

@@ -1,13 +1,13 @@
 ---
 ---
 
-<div class="publication">
+<div class="publication" itemscope itemtype="http://schema.org/ScholarlyArticle">
   <span class="type">{{ entry._type }}</span>
-  <a href="/publications/{{ entry.key }}" class="title" id="{{ entry.key }}">{{ entry.title }}</a><br />
+  <a href="/publications/{{ entry.key }}" class="title" id="{{ entry.key }}" itemprop="name">{{ entry.title }}</a><br />
   {% assign first = true %}
   <span class="authors">{% for author in entry.author_array %}{% if first == false %},{% endif %}
   {% assign first = false %}
-  {{ author.first }} {{ author.prefix }} {{ author.last }}{% endfor %}</span><br />
+  <span itemprop="author">{{ author.first }} {{ author.prefix }} {{ author.last }}</span>{% endfor %}</span><br />
   {% if entry.booktitle %}
   <span class="in">In {{ entry.booktitle }}</span>
   {% endif %}
