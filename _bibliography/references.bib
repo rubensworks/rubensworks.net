@@ -1,3 +1,59 @@
+@inproceedings{taelman_iswc_poster_2016,
+  author    = {Taelman, Ruben and Heyvaert, Pieter and Verborgh, Ruben and Colpaert, Pieter and Mannens, Erik},
+  title     = {Querying Dynamic Datasources with Continuously Mapped Sensor Data},
+  booktitle = {Proceedings of the 15th International Semantic Web Conference: Posters and Demos},
+  year      = {2016},
+  month     = {october},
+  url       = {http://rubensworks.net/raw/publications/2016/QueryingDynamicDatasourcesWithContinuouslyMappedData.pdf},
+  note      = {Accepted for publication at ISWC},
+  abstract  = {
+The world contains a large amount of sensors that produce new data at
+a high frequency. It is currently very hard to find public services that expose these
+measurements as dynamic Linked Data. We investigate how sensor data can be
+published continuously on the Web at a low cost. This paper describes how the
+publication of various sensor data sources can be done by continuously mapping
+raw sensor data to RDF and inserting it into a live, low-cost server. This makes it
+possible for clients to continuously evaluate dynamic queries using public sensor
+data. For our demonstration, we will illustrate how this pipeline works for the
+publication of temperature and humidity data originating from a microcontroller,
+and how it can be queried.
+  },
+  _type     = {Demo}
+}
+
+@inproceedings{taelman_iswc_poster_2016,
+  author    = {Taelman, Ruben and Colpaert, Pieter and Verborgh, Ruben and Colpaert, Pieter and Mannens, Erik},
+  title     = {Querying Dynamic Datasources with Continuously Mapped Sensor Data},
+  booktitle = {Proceedings of the 7th International Workshop on Consuming Linked Data},
+  year      = {2016},
+  month     = {october},
+  url       = {http://rubensworks.net/raw/publications/2016/MultidimensionalInterfaces.pdf},
+  note      = {Accepted for publication at ISWC},
+  abstract  = {
+Linked Data interfaces exist in many flavours, as evidenced by subject
+pages, sparql endpoints, triple pattern interfaces, and data dumps. These interfaces
+are mostly used to retrieve parts of a complete dataset, such parts can for example be
+defined by ranges in one or more dimensions. Filtering Linked Data by dimensions
+such as time range, geospatial area, or genomic location, requires the lookup of data
+within ordinal ranges. To make retrieval by such ranges generic and cost-efficient,
+we propose a REST solution in-between looking up data within ordinal ranges
+entirely on the server, or entirely on the client. To this end, we introduce a method
+for extending any Linked Data interface with an n-dimensional interface-level index
+such that n-dimensional ordinal data can be selected using n-dimensional ranges.
+We formally define Range Gates and Range Fragments and theoretically evaluate
+the cost-efficiency of hosting such an interface. By adding a multidimensional
+index to a Linked Data interface for multidimensional ordinal data, we found that
+we can get benefits from both worlds: the expressivity of the server raises, yet
+remains more cost-efficient than an interface providing the full functionality on
+the server-side. Furthermore, the client now shares in the effort to filter the data.
+This makes query processing becomes more flexible to the end-user, because the
+query plan can be altered by the engine. In future work we hope to apply Range
+Gates and Range Fragments to real-world interfaces to give quicker access to data
+within ordinal ranges
+  },
+  _type     = {Workshop}
+}
+
 @inproceedings{taelman_eswc_poster_2016,
   author    = {Taelman, Ruben and Verborgh, Ruben and Colpaert, Pieter and Mannens, Erik and Van de Walle, Rik},
   title     = {Moving Real-Time {Linked Data} Query Evaluation to the Client},
