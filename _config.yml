@@ -42,6 +42,7 @@ exclude:
   - Gemfile
   - README.md
   - Rakefile
+  - vendor
 
 collections:
   projects:
