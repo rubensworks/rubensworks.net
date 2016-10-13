@@ -27,6 +27,9 @@ show_in_nav: false
     {% if {{page.entry.url}} %}
     <a href="{{page.entry.url}}" target="_blank">PDF</a>
     {% endif %}
+    {% if {{page.entry._poster}} %}
+    <a href="{{page.entry._poster}}" target="_blank">Poster</a>
+    {% endif %}
     {% if {{page.entry._slides}} %}
     <a href="{{page.entry._slides}}" target="_blank">Slides</a>
     {% endif %}
