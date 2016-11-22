@@ -103,6 +103,28 @@ within ordinal ranges
   _slides   = {http://www.slideshare.net/RubenTaelman/multidimensional-interfaces-for-selecting-data-with-order}
 }
 
+@inproceedings{taelman_mepdaw_bp_2016,
+  title        = {Continuous Client-Side Query Evaluation over Dynamic Linked Data},
+  author       = {Taelman, Ruben and Verborgh, Ruben and Colpaert, Pieter and Mannens, Erik},
+  booktitle    = {The Semantic Web: ESWC 2016 Satellite Events, Heraklion, Crete, Greece, May 29 -- June 2,  2016, Revised Selected Papers},
+  pages        = {273--289},
+  year         = {2016},
+  month        = {may},
+  organization = {Springer International Publishing},
+  url          = {http://link.springer.com/chapter/10.1007/978-3-319-47602-5_44},
+  abstract     = {
+Existing solutions to query dynamic Linked Data sources extend the sparql language, and require continuous server processing for each query.
+Traditional sparql endpoints already accept highly expressive queries, so extending these endpoints for time-sensitive queries increases the server cost even further.
+To make continuous querying over dynamic Linked Data more affordable, we extend the low-cost Triple Pattern Fragments (TPF) interface with support for time-sensitive queries.
+In this paper, we introduce the TPF Query Streamer that allows clients to evaluate sparql queries with continuously updating results.
+Our experiments indicate that this extension significantly lowers the server complexity, at the expense of an increase in the execution time per query.
+We prove that by moving the complexity of continuously evaluating queries over dynamic Linked Data to the clients and thus increasing bandwidth usage, 
+the cost at the server side is significantly reduced.
+Our results show that this solution makes real-time querying more scalable for a large amount of concurrent clients when compared to the alternatives.
+  },
+  _type        = {Conference}
+}
+
 @inproceedings{taelman_eswc_poster_2016,
   author    = {Taelman, Ruben and Verborgh, Ruben and Colpaert, Pieter and Mannens, Erik and Van de Walle, Rik},
   title     = {Moving Real-Time {Linked Data} Query Evaluation to the Client},
