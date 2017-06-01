@@ -36,6 +36,7 @@ scholar:
     - month_numeric
     - _type
     - _slides
+    - _poster
 
 exclude:
   - script
