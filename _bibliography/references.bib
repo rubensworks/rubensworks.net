@@ -1,24 +1,3 @@
-@inproceedings{taelman_semantics_tpfqs_2018,
-  author    = {Taelman, Ruben and Tommasini, Riccardo and Van Herwegen, Joachim and Vander Sande, Miel and Della Valle, Emanuele and Verborgh, Ruben},
-  title     = {On the Semantics of TPF-QS towards Publishing and Querying RDF Streams at Web-scale},
-  booktitle = {Proceedings of the 14th International Conference on Semantic Systems},
-  year      = {2018},
-  month     = {september},
-  url       = {http://rubensworks.net/raw/publications/2018/on_the_semantics_of_tpf-qs_towards_publishing_and_querying_rdf_streams_at_web-scale.pdf},
-  abstract  = {
-RDF Stream Processing (RSP) is a rapidly evolving area of research that focuses on extensions of the Semantic Web in order to model and process Web data streams.
-While state-of-the-art approaches concentrate on server-side processing of RDF streams,
-we investigate the Triple Pattern Fragments Query Streamer (TPF-QS) method for server-side publishing of RDF streams,
-which moves the workload of continuous querying to clients.
-We formalize TPF-QS in terms of the RSP-QL reference model in order to formally compare it with existing RSP query languages.
-We experimentally validate that, compared to the state of the art,
-the server load of TPF-QS scales better with increasing numbers of concurrent clients in case of simple queries,
-at the cost of increased bandwidth consumption.
-This shows that TPF-QS is an important first step towards a viable solution for Web-scale publication and continuous processing of RDF streams.
-},
-  _type     = {Conference}
-}
-
 @inproceedings{taelman_iswc_resources_comunica_2018,
   author    = {Taelman, Ruben and Van Herwegen, Joachim and Vander Sande, Miel and Verborgh, Ruben},
   title     = {Comunica: a Modular SPARQL Query Engine for the Web},
@@ -39,6 +18,27 @@ In this article, we introduce this query engine and explain the architectural ch
 We show how its modular nature makes it an ideal research platform for investigating new kinds of Linked Data interfaces and querying algorithms.
 Comunica facilitates the development, testing, and evaluation of new query processing capabilities, both in isolation and in combination with others.
   },
+  _type     = {Conference}
+}
+
+@inproceedings{taelman_semantics_tpfqs_2018,
+  author    = {Taelman, Ruben and Tommasini, Riccardo and Van Herwegen, Joachim and Vander Sande, Miel and Della Valle, Emanuele and Verborgh, Ruben},
+  title     = {On the Semantics of TPF-QS towards Publishing and Querying RDF Streams at Web-scale},
+  booktitle = {Proceedings of the 14th International Conference on Semantic Systems},
+  year      = {2018},
+  month     = {september},
+  url       = {http://rubensworks.net/raw/publications/2018/on_the_semantics_of_tpf-qs_towards_publishing_and_querying_rdf_streams_at_web-scale.pdf},
+  abstract  = {
+RDF Stream Processing (RSP) is a rapidly evolving area of research that focuses on extensions of the Semantic Web in order to model and process Web data streams.
+While state-of-the-art approaches concentrate on server-side processing of RDF streams,
+we investigate the Triple Pattern Fragments Query Streamer (TPF-QS) method for server-side publishing of RDF streams,
+which moves the workload of continuous querying to clients.
+We formalize TPF-QS in terms of the RSP-QL reference model in order to formally compare it with existing RSP query languages.
+We experimentally validate that, compared to the state of the art,
+the server load of TPF-QS scales better with increasing numbers of concurrent clients in case of simple queries,
+at the cost of increased bandwidth consumption.
+This shows that TPF-QS is an important first step towards a viable solution for Web-scale publication and continuous processing of RDF streams.
+},
   _type     = {Conference}
 }
 
