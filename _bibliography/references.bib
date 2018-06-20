@@ -42,20 +42,25 @@ This shows that TPF-QS is an important first step towards a viable solution for 
   _type     = {Conference}
 }
 
-@inproceedings{taelman_www_demo_2018,
+@inproceedings{taelman_eswc_challenge_2018,
   author    = {Taelman, Ruben and Vander Sande, Miel and Verborgh, Ruben},
-  title     = {Components.js: A Semantic Dependency Injection Framework},
-  booktitle = {Proceedings of the The Web Conference: Developers Track},
+  title     = {Versioned Querying with OSTRICH and Comunica in MOCHA 2018},
+  booktitle = {Proceedings of the 5th SemWebEval Challenge at ESWC 2018},
   year      = {2018},
-  month     = {april},
-  url       = {http://componentsjs.readthedocs.io/},
+  month     = {may},
+  url       = {https://rdfostrich.github.io/article-mocha-2018/},
   abstract  = {
-Components.js is a dependency injection framework for JavaScript applications that allows components to be instantiated and wired together declaratively using semantic configuration files. 
-The advantage of these semantic configuration files is that software components can be uniquely and globally identified using URIs. 
-As an example, this documentation has been made self-instantiatable using Components.js. This makes it possible to view the HTML-version of any page to the console, or serve it via HTTP on a local webserver.
+In order to exploit the value of historical information in Linked Datasets,
+we need to be able to store and query different versions of such datasets efficiently.
+The 2018 edition of the Mighty Storage Challenge (MOCHA) is organized to discover the efficiency of such Linked Data stores and to detect their bottlenecks.
+One task in this challenge focuses on the storage and querying of versioned datasets,
+in which we participated by combining the OSTRICH triple store and the Comunica SPARQL engine.
+In this article, we briefly introduce our system for the versioning task of this challenge.
+We present the evaluation results that show that our system achieves fast query times for the supported queries,
+but not all queries are supported by Comunica at the time of writing.
+These results of this challenge will serve as a guideline for further improvements to our system.
   },
-  _type     = {Conference},
-  _slides   = {https://www.slideshare.net/RubenTaelman/componentsjs}
+  _type     = {Challenge}
 }
 
 @inproceedings{taelman_www_demo_2018,
