@@ -21,6 +21,46 @@ Comunica facilitates the development, testing, and evaluation of new query proce
   _type     = {Conference}
 }
 
+@inproceedings{taelman_iswc_demo_graphqlld_2018,
+  author    = {Taelman, Ruben and Vander Sande, Miel and Verborgh, Ruben},
+  title     = {GraphQL-LD: Linked Data Querying with GraphQL},
+  booktitle = {Proceedings of the 17th International Semantic Web Conference: Posters and Demos},
+  year      = {2018},
+  month     = {october},
+  url       = {https://comunica.github.io/Article-ISWC2018-Demo-GraphQlLD/},
+  abstract  = {
+The Linked Open Data cloud has the potential of significantly enhancing and transforming end-user applications.
+For example, the use of URIs to identify things allows data joining between separate data sources.
+Most popular (Web) application frameworks, such as React and Angular have limited support for querying the Web of Linked Data,
+which leads to a high-entry barrier for Web application developers.
+Instead, these developers increasingly use the highly popular GraphQL query language for retrieving data from GraphQL APIs,
+because GraphQL is tightly integrated into these frameworks.
+In order to lower the barrier for developers towards Linked Data consumption, the Linked Open Data cloud needs to be queryable with GraphQL as well.
+In this article, we introduce a method for transforming GraphQL queries coupled with a JSON-LD context to SPARQL,
+and a method for converting SPARQL results to the GraphQL query-compatible response.
+We demonstrate this method by implementing it into the Comunica framework.
+This approach brings us one step closer towards widespread Linked Data consumption for application development.
+  },
+  _type     = {Demo}
+}
+
+@inproceedings{vanherwegen_iswc_demo_comunica_2018,
+  author    = {Van Herwegen, Joachim and Taelman, Ruben and Vander Sande, Miel and Verborgh, Ruben},
+  title     = {Demonstration of Comunica, a Web framework for querying heterogeneous Linked Data interfaces},
+  booktitle = {Proceedings of the 17th International Semantic Web Conference: Posters and Demos},
+  year      = {2018},
+  month     = {october},
+  url       = {https://comunica.github.io/Article-ISWC2018-Demo/},
+  abstract  = {
+Linked Data sources can appear in a variety of forms, going from SPARQL endpoints to Triple Pattern Fragments and data dumps.
+This heterogeneity among Linked Data sources creates an added layer of complexity when querying or combining results from those sources.
+To ease this problem, we created a modular engine, Comunica, that has modules for evaluating SPARQL queries and supports heterogeneous interfaces.
+Other modules for other query or source types can easily be added.
+In this paper we showcase a Web client that uses Comunica to evaluate federated SPARQL queries through automatic source type identification and interaction.
+  },
+  _type     = {Demo}
+}
+
 @inproceedings{taelman_semantics_tpfqs_2018,
   author    = {Taelman, Ruben and Tommasini, Riccardo and Van Herwegen, Joachim and Vander Sande, Miel and Della Valle, Emanuele and Verborgh, Ruben},
   title     = {On the Semantics of TPF-QS towards Publishing and Querying RDF Streams at Web-scale},
