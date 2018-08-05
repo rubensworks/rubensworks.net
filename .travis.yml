@@ -17,6 +17,6 @@ before_install:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --quiet -e "ssh -p $SCP_PORT -o 'StrictHostKeyChecking=no'" $TRAVIS_BUILD_DIR/_site $SCP_USER@rubensworks.net:$SCP_LOCATION
+  script: rsync -r --quiet -e "ssh -p $SCP_PORT -o 'StrictHostKeyChecking=no'" $TRAVIS_BUILD_DIR/_site/* $SCP_USER@rubensworks.net:$SCP_LOCATION
   on:
     branch: master
