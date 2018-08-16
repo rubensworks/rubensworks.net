@@ -1,3 +1,32 @@
+@article{taelman_jws_ostrich_2018,
+  author    = {Taelman, Ruben and Vander Sande, Miel and Van Herwegen, Joachim and Mannens, Erik and Verborgh, Ruben},
+  title     = {Triple Storage for Random-Access Versioned Querying of RDF Archives},
+  journal   = {Journal of Web Semantics},
+  year      = {2018},
+  month     = {august},
+  url       = {https://rdfostrich.github.io/article-jws2018-ostrich/},
+  abstract  = {
+When publishing Linked Open Datasets on the Web, most attention is typically directed to their latest version.
+Nevertheless, useful information is present in or between previous versions.
+In order to exploit this historical information in dataset analysis, we can maintain history in RDF archives.
+Existing approaches either require much storage space, or they expose an insufficiently expressive or efficient interface with respect to querying demands.
+In this article, we introduce an RDF archive indexing technique that is able to store datasets with a low storage overhead,
+by compressing consecutive versions and adding metadata for reducing lookup times.
+We introduce algorithms based on this technique for efficiently evaluating queries at a certain version, between any two versions, and for versions.
+Using the BEAR RDF archiving benchmark, we evaluate our implementation, called OSTRICH.
+Results show that OSTRICH introduces a new trade-off regarding storage space, ingestion time, and querying efficiency.
+By processing and storing more metadata during ingestion time, it significantly lowers the average lookup time for versioning queries.
+OSTRICH performs better for many smaller dataset versions than for few larger dataset versions.
+Furthermore, it enables efficient offsets in query result streams, which facilitates random access in results.
+Our storage technique reduces query evaluation time for versioned queries through a preprocessing step during ingestion,
+which only in some cases increases storage space when compared to other approaches.
+This allows data owners to store and query multiple versions of their dataset efficiently,
+lowering the barrier to historical dataset publication and analysis.
+  },
+  note      = {Accepted for publication},
+  _type     = {Journal}
+}
+
 @article{taelman_swj_podigg_2018,
   author    = {Taelman, Ruben and Colpaert, Pieter and Mannens, Erik and Verborgh, Ruben},
   title     = {Generating Public Transport Data based on Population Distributions for RDF Benchmarking},
