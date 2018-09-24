@@ -36,7 +36,6 @@ show_in_nav: false
     {% if {{page.entry._slides}} %}
     <a href="{{page.entry._slides}}" target="_blank">Slides</a>
     {% endif %}
-    <a href="http://www.mendeley.com/import/?url={{ page.url | prepend: site.baseurl | prepend: site.url | url_encode }}" target="_blank">Mendeley</a>
     <div class="toggle">
       <input type="checkbox" id="checkbox-bibtex" name="checkbox-bibtex" />
       <label for="checkbox-bibtex">BibTeX</label><br />
