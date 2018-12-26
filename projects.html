@@ -12,7 +12,10 @@ This page contains a list of the most notable things I am currently working on, 
 <ul class="projects">
 {% for project in site.projects %}
   {% unless project.end %}
-    <li><a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a></li>
+    <li>
+		<a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a>
+		<p class="indent"><em>{{ project.description }}</em></p>
+	</li>
   {% endunless %}
 {% endfor %}
 </ul>
