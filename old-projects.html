@@ -1,0 +1,20 @@
+---
+layout: page
+title: Old Projects
+permalink: /old-projects/
+show_in_nav: false
+---
+
+<p>
+This page lists some of the projects I used to work on in the past.
+Their main purpose was learning experience.
+</p>
+
+<ul class="projects">
+{% assign projects = site.projects %}
+{% for project in projects | sort:"start" %}
+  {% if project.end %}
+    <li><a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a></li>
+  {% endif %}
+{% endfor %}
+</ul>
