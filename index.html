@@ -14,6 +14,9 @@ layout: default
     Have a look at my <a href="/publications/">publications</a> or <a href="/projects/">projects</a><br />
     and <a href="mailto:rubensworks@gmail.com">contact me</a> if any of those topics interest you.
   </p>
+  
+  <h2>Highlighted publications</h2>
+  {% bibliography --query @*[_highlighted=true] %}
 
   <h2>Latest publications</h2>
   {% bibliography --max 5 %}
