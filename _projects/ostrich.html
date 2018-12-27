@@ -1,0 +1,26 @@
+---
+layout: project
+title:  "OSTRICH"
+start:  "January 2016"
+description: "A versioned RDF triple store"
+weight: 2
+---
+
+<img src="/img/logo_ostrich.png" alt="OSTRICH" width="25%" style="float: left; margin: 15px" />
+
+<p>
+  <a href="https://rdfostrich.github.io/article-jws2018-ostrich/">OSTRICH</a> is an <em>RDF triple store</em> that allows <em>multiple versions</em> of a dataset to be stored at the same time.
+</p>
+
+<p>
+  It uses an efficient datastructure to only store <em>differences</em> with respect to the initial dataset versions,
+  which achieves an efficient dataset compression rate.
+  Next to that, it provides several built-in algorithms to enable efficient iterator-based queries
+  <em>at</em> a certain version, <em>between</em> any two versions, and <em>for</em> versions.
+</p>
+
+<p>
+	OSTRICH has been implemented in C++, and is <a href="https://github.com/rdfostrich/ostrich">open-source</a>.
+	Next to that, <a href="https://github.com/rdfostrich/ostrich-node">JavaScript bindings for Node.js</a> have also been implemented.
+	Finally, we also provide a <a href="https://github.com/rdfostrich/comunica-actor-init-sparql-ostrich">Comunica query engine</a> that allows versioned SPARQL querying over OSTRICH stores.
+</p>

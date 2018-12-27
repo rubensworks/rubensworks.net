@@ -10,7 +10,8 @@ This page contains a list of the most notable things I am currently working on, 
 </p>
 
 <ul class="projects">
-{% for project in site.projects %}
+{% assign projects = site.projects | sort: 'weight' %}
+{% for project in projects %}
   {% unless project.end %}
     <li>
 		<a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a>
