@@ -8,7 +8,7 @@ script: "./script/cibuild"
 env:
   global:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-before_install:
+before_deploy:
 - openssl aes-256-cbc -K $encrypted_cd964dde258e_key -iv $encrypted_cd964dde258e_iv
   -in deploy_rsa.enc -out /tmp/deploy_rsa -d
 - eval "$(ssh-agent -s)"
