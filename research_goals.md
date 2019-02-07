@@ -41,7 +41,7 @@ so that _truly decentralized applications_ can be built.
 
 * How can we query over a **large number of sources** in a scalable way?
 * How can users query over data that requires **authentication**? 
-* How can a query engine be used to **update** data that distributed over multiple sources?
+* How can a query engine be used to **update** data that is distributed over multiple sources?
 
 ### Collaborative Querying of the Web
 
