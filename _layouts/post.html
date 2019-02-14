@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+<script src="https://embed.runkit.com"></script>
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -16,3 +17,20 @@ layout: default
   </div>
 
 </article>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let preamble = document.getElementById('demo-nodejs-preamble');
+    for (let snippet of document.getElementsByClassName('demo-nodejs')) {
+      //snippet.style.display = 'none';
+      let newNode = document.createElement('div');
+      let notebook = RunKit.createNotebook({
+        element: newNode,
+        source: snippet.textContent,
+        preamble: preamble && preamble.textContent,
+      });
+      snippet.innerHTML = '';
+      snippet.appendChild(newNode);
+      //snippet.parentNode.replaceChild(newNode, snippet);
+    }
+  }, false);
+</script>
