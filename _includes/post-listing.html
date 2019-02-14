@@ -1,0 +1,17 @@
+<div class="post-listing" itemscope itemtype="http://schema.org/BlogPosting">
+    {% if post.feature-img %}
+    <div class="feature-img-placeholder">
+        <a href="{{ post.url }}" class="title"><img src="{{ post.feature-img }}" alt="{{ post.title }}" class="feature-img" /></a>
+    </div>
+    {% endif %}
+    <div class="post-content">
+        <a href="{{ post.url }}" class="title"><span itemprop="name headline">{{ post.title }}</span></a><br />
+        {% if post.subtitle %}
+        <span class="sub-title" itemprop="alternativeHeadline">{{ post.subtitle }}</span><br />
+        {% endif %}
+        <span class="post-meta"><time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%-d %B %Y" }}</time></span><br />
+        <span class="post-excerpt">
+        {{ post.excerpt | strip_html }}
+        </span>
+    </div>
+</div>
