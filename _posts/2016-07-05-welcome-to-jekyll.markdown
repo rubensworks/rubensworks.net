@@ -1,10 +1,18 @@
 ---
-layout: post
-title:  "Welcome to Jekyll!"
-date:   2016-07-05 19:30:29 +0200
-categories: jekyll update
+layout:      post
+categories:  blog
+comments:    true
+title:       "Welcome to Jekyll!"
+subtitle:    "Jekyll is pretty awesome"
+feature-img: "/img/logo_comunica.svg"
+date:        2016-07-05 19:30:29 +0200
 ---
+<p class="post-abstract" markdown="1">
 You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+</p>
+<!--more-->
+
+![Comunica is a modular query engine](/img/logo_comunica.svg){:height="100px"}
 
 To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
 

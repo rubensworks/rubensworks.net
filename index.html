@@ -15,6 +15,17 @@ layout: default
     and <a href="mailto:rubensworks@gmail.com">contact me</a> if any of those topics interest you.
   </p>
   
+  <h2>Latest blog posts</h2>
+  <ul class="posts">
+    {% for post in site.posts | limit: 5 %}
+      <li>
+        {% include post-listing.html
+           post=post
+        %}
+      </li>
+    {% endfor %}
+  </ul>
+  
   <h2>Highlighted publications</h2>
   {% bibliography --query @*[_highlighted=true] %}
 
