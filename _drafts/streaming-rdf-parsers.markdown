@@ -18,4 +18,71 @@ their architecture, and the difficulties I experienced.
 </p>
 <!--more-->
 
-TODO
+## Why Streaming?
+
+TODO: intro, advantages/disadvantages and motivation(comunica)
+
+## Stack-based Architecture
+
+TODO: explain common architecture, dependencies and special stuff
+
+## Parsers in action
+
+TODO: spec-compliance, live demo, usages
+
+```
+require("relative-to-absolute-iri");
+const { JsonLdParser } = require("jsonld-streaming-parser");
+const { RdfXmlParser } = require("rdfxml-streaming-parser");
+```
+{:#demo-nodejs-preamble .hide}
+
+```
+// Construct a JSON-LD parser
+const myParser = new JsonLdParser();
+
+// Attach event listeners
+myParser
+  .on('data', console.log)
+  .on('error', console.error)
+  .on('end', () => console.log('All triples were parsed!'));
+
+// Write JSON-LD in chunks
+myParser.write('{');
+myParser.write(`"@context": "https://schema.org/",`);
+myParser.write(`"@type": "Recipe",`);
+myParser.write(`"name": "Grandma's Holiday Apple Pie",`);
+myParser.write(`"aggregateRating": {`);
+myParser.write(`"@type": "AggregateRating",`);
+myParser.write(`"ratingValue": "4"`);
+myParser.write(`}}`);
+myParser.end();
+
+'Parsing...';
+```
+{:.demo-nodejs}
+
+```
+// Construct a RDF/XML parser
+const myParser = new RdfXmlParser();
+
+// Attach event listeners
+myParser
+  .on('data', console.log)
+  .on('error', console.error)
+  .on('end', () => console.log('All triples were parsed!'));
+
+// Write RDF/XML in chunks
+myParser.write('<?xml version="1.0"?>');
+myParser.write(`<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:ex="http://example.org/stuff/1.0/"
+         xml:base="http://example.org/triples/">`);
+myParser.write(`<rdf:Description rdf:about="http://www.w3.org/TR/rdf-syntax-grammar">`);
+myParser.write(`<ex:prop />`);
+myParser.write(`</rdf:Description>`);
+myParser.write(`</rdf:RDF>`);
+myParser.end();
+
+'Parsing...';
+```
+{:.demo-nodejs}
