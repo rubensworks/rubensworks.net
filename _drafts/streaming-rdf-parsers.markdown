@@ -18,7 +18,7 @@ their architecture, and the difficulties I experienced.
 </p>
 <!--more-->
 
-## Why Streaming?
+## Why streaming?
 
 The [Semantic Web](https://en.wikipedia.org/wiki/Semantic_Web) community has given us
 various serializations to represent [RDF](https://en.wikipedia.org/wiki/Resource_Description_Framework) triples and quads,
@@ -38,17 +38,38 @@ and it also allows **very large documents** to be parsed, event when they don't 
 RDF parsers for most popular RDF serializations already exist for JavaScript.
 However, not all of them parse in a *streaming* way.
 At the time of writing, [N3.js](https://ruben.verborgh.org/blog/2013/04/30/lightning-fast-rdf-in-javascript/)
-is the only spec-compliant streaming parser that can handle N3-like RDF serializations such as [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax)) and [Turtle](https://en.wikipedia.org/wiki/TriG_(syntax)).
+is the only spec-compliant streaming parser in JavaScript. It can handle N3-like RDF serializations such as [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax)) and [Turtle](https://en.wikipedia.org/wiki/TriG_(syntax)).
 As such, there is still a need for streaming parsing of documents in other widely used serializations such as RDF/XML and JSON-LD.
-This need for example exists for [Comunica](http://comunica.linkeddatafragments.org/),
+This need for example exists in [Comunica](http://comunica.linkeddatafragments.org/),
 a framework for querying Linked Data on the Web, which processes queries as streams.
 
-For these reasons, I set out to implement streaming parsers for both RDF/XML and JSON-LD,
+For these reasons, I set out to implement streaming parsers for both
+[RDF/XML](https://www.npmjs.com/package/rdfxml-streaming-parser)
+and [JSON-LD](https://www.npmjs.com/package/jsonld-streaming-parser),
 which are respectively based on the popular XML and JSON formats.
 In the remainder of this post, I discuss the main architecture and design decisions behind these parsers,
 and I end with some live-action examples.
 
-## Stack-based Architecture
+## Building on top of existing libraries
+
+Due to the popularity of JSON and XML, a wide range of parsers already exist for JavaScript, including streaming parsers.
+This allowed me to get a good head start for my implementations,
+as I could simply depend on existing libraries to parse the raw JSON and XML streams,
+and handle incoming JSON and XML nodes as respectively JSON-LD and RDF/XML nodes.
+
+Several streaming JSON and XML parsers are available,
+so I had to decide which ones I would depend on.
+In the end, I chose for [*jsonparse*](https://www.npmjs.com/package/jsonparse)
+and [*sax*](https://www.npmjs.com/package/sax) for the following reasons:
+
+* Handles Node.JS streams.
+* Pure JavaScript implementation that works both in Node.JS and browsers.
+* Stability proven through number of dependents, age, and unit tests.
+
+Both of these libraries have a similar event-based API,
+through which you can listen to new incoming JSON nodes or XML tags.
+
+## Stack-based architecture
 
 TODO: explain common architecture, dependencies and special stuff
 
