@@ -44,17 +44,26 @@ This need for example exists in [Comunica](http://comunica.linkeddatafragments.o
 a framework for querying Linked Data on the Web, which processes queries as streams.
 
 For these reasons, I set out to implement streaming parsers for both
-[RDF/XML](https://www.npmjs.com/package/rdfxml-streaming-parser)
-and [JSON-LD](https://www.npmjs.com/package/jsonld-streaming-parser),
+[RDF/XML](https://github.com/rdfjs/rdfxml-streaming-parser.js)
+and [JSON-LD](https://github.com/rubensworks/jsonld-streaming-parser.js),
 which are respectively based on the popular XML and JSON formats.
 In the remainder of this post, I discuss the main architecture and design decisions behind these parsers,
 and I end with some live-action examples.
 
 ## Building on top of existing libraries
 
+Reusability is an important element of good software development.
+For this reason, I tried to use existing software whenever possible,
+and decompose my own software into separate components where it makes sense.
+Concretely, I made use of existing and well-established low-level JSON and XML parsers.
+Furthermore, I split off the logic of handling relative IRIs and the JSON-LD context components into separate libraries.
+The following sections discuss these further.
+
+### Low-level parsers
+
 Due to the popularity of JSON and XML, a wide range of parsers already exist for JavaScript, including streaming parsers.
 This allowed me to get a good head start for my implementations,
-as I could simply depend on existing libraries to parse the raw JSON and XML streams,
+as I could simply **depend on existing libraries to parse the raw JSON and XML** streams,
 and handle incoming JSON and XML nodes as respectively JSON-LD and RDF/XML nodes.
 
 Several streaming JSON and XML parsers are available,
@@ -69,9 +78,54 @@ and [*sax*](https://www.npmjs.com/package/sax) for the following reasons:
 Both of these libraries have a similar event-based API,
 through which you can listen to new incoming JSON nodes or XML tags.
 
+### Resolving relative IRIs
+
+Following the [DRY principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) *(Don't Repeat Yourself)*,
+I decided to *abstract away* one common component between JSON-LD and RDF/XML parsing,
+namely, handling relative IRIs.
+
+Both JSON-LD and RDF/XML allow IRIs to be relative to a given base IRI,
+with this base IRI typically being the current document's IRI.
+The rules for resolving relative IRIs to absolute IRIs between these two specifications are identical,
+and are actually part of [RFC3986](https://www.ietf.org/rfc/rfc3986.txt).
+As I could not find a good, spec-compliant, standalone implementation of this functionality,
+I created a new library for this, namely *[relative-to-absolute-iri.js](https://github.com/rubensworks/relative-to-absolute-iri.js)*.
+
+This library exposes just a single function: `resolve(relativeIri: string, baseIri: string): string`.
+It has been tested extensively, with unit tests including all known IRI resolutions
+that are defined in the JSON-LD and RDF/XML test suites.
+
+### Handling JSON-LD contexts
+
+JSON-LD introduces the so-called [*context*](https://www.w3.org/TR/json-ld/#the-context),
+which is an object that defines a mapping between JSON terms and IRIs.
+
+Since JSON-LD contexts even have uses outside of JSON-LD documents (Such as [GraphQL-LD](https://comunica.github.io/Article-ISWC2018-Demo-GraphQlLD/) and [CSVW](https://www.w3.org/TR/tabular-data-primer/)),
+it makes sense to separate the handling of them in a separate library.
+For this, I created a library called *[jsonld-context-parser.js](https://github.com/rubensworks/jsonld-context-parser.js)*
+that *parses* JSON-LD contexts into a normalized datastructure,
+and offers utility functions to perform common tasks, such as [expanding terms](https://github.com/rubensworks/jsonld-context-parser.js#expand-a-term).
+
 ## Stack-based architecture
 
-TODO: explain common architecture, dependencies and special stuff
+
+
+## Emitting triples as soon as possible
+
+Using our continuously updating stack,
+we maintain all required information
+to convert the hierarchical node structures into RDF triples.
+For this, we use the [**RDFJS data model**](https://rdf.js.org/),
+which is a way of representing RDF terms and triples as JavaScript objects.
+
+Every time our stack is updated,
+we check its state to see if any new triples can be derived.
+If this is the case, then all relevant triples are created,
+and pushed into the output stream.
+After that, the checked information is removed from the stack,
+so that it won't be re-emitted again later.
+
+For example...
 
 ## Parsers in action
 
@@ -105,7 +159,7 @@ myParser.write(`"ratingValue": "4"`);
 myParser.write(`}}`);
 myParser.end();
 
-'Parsing...';
+'Parsing...'; // Line only needed for demo-purposes
 ```
 {:.demo-nodejs}
 
@@ -130,6 +184,6 @@ myParser.write(`</rdf:Description>`);
 myParser.write(`</rdf:RDF>`);
 myParser.end();
 
-'Parsing...';
+'Parsing...'; // Line only needed for demo-purposes
 ```
 {:.demo-nodejs}
