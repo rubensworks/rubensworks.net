@@ -349,8 +349,7 @@
 
 // Figures
 figure {
-    padding: 1em 2em;
-    margin: 1em 0;
+    margin: 1em 1em;
 
     figcaption {
       margin: 1em 0 .5em;
@@ -364,6 +363,15 @@ figure {
           margin: 0;
       }
     }
+}
+
+.figure-side {
+    float: right;
+    width: 300px;
+}
+
+.clear {
+    clear: both;
 }
 
 /**

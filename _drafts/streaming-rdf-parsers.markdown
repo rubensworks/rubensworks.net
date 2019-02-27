@@ -206,12 +206,7 @@ Adapted from [JSON-LD playground](https://json-ld.org/playground/).
 </figcaption>
 </figure>
 
-[Listing 2](#jsonld-recipe-mojito-stack-0) shows an example of the state of the stack right after
-parsing the first `@id` from [Listing 1](#jsonld-recipe-mojito).
-At this point, we only have enough information to describe the subject of a triple,
-so no fully materialized triples can be emitted at this point.
-
-<figure id="jsonld-recipe-mojito-stack-0" class="listing" markdown="block">
+<figure id="jsonld-recipe-mojito-stack-0" class="listing figure-side" markdown="block">
 ```javascript
 [
   {
@@ -222,20 +217,18 @@ so no fully materialized triples can be emitted at this point.
 ```
 <figcaption markdown="block">
 <span class="label">Listing 2</span>
-The parser stack after parsing the `@id` line from [Listing 1](#jsonld-recipe-mojito).
+The stack after parsing the `@id`.
 </figcaption>
 </figure>
 
-When parsing the next line (`"name": "Mojito"`), we temporarily get into a deeper level,
-with a defined predicate and object.
-[Listing 3](#jsonld-recipe-mojito-stack-1) shows the stack state at this point.
-This shows that we have sufficient information to emit a triple,
-since we have a defined predicate and object value on our current depth,
-and a subject value in the parent.
-Concretely, we emit `<http://example.org/mojito> <http://rdf.data-vocabulary.org/#name> "Mojito"`.
-Once this triple has been emitted, the node closes, and our stack entry at depth 0 is popped.
+[Listing 2](#jsonld-recipe-mojito-stack-0) shows an example of the state of the stack right after
+parsing the first `@id` from [Listing 1](#jsonld-recipe-mojito).
+At this point, we only have enough information to describe the subject of a triple,
+so no fully materialized triples can be emitted at this point.
 
-<figure id="jsonld-recipe-mojito-stack-1" class="listing" markdown="block">
+<br class="clear" />
+
+<figure id="jsonld-recipe-mojito-stack-1" class="listing figure-side" markdown="block">
 ```javascript
 [
   {
@@ -251,16 +244,25 @@ Once this triple has been emitted, the node closes, and our stack entry at depth
 ```
 <figcaption markdown="block">
 <span class="label">Listing 3</span>
-The parser stack during the parsing of the `"name": "Mojito"` line from [Listing 1](#jsonld-recipe-mojito).
+The parser stack during the parsing of the `"name": "Mojito"`.
 </figcaption>
 </figure>
 
-Next, the parser will handle the line `"instructions": [`.
-For this, a new stack entry is pushed with a defined predicate value, as can be seen in [Listing 4](#jsonld-recipe-mojito-stack-2).
-At this point, we don't have enough information to create a new triple,
-so we don't emit anything here.
+When parsing the next line (`"name": "Mojito"`), we temporarily get into a deeper level,
+with a defined predicate and object.
+[Listing 3](#jsonld-recipe-mojito-stack-1) shows the stack state at this point.
+This shows that we have sufficient information to emit a triple,
+since we have a defined predicate and object value on our current depth,
+and a subject value in the parent.
+Concretely, we emit the following triple:
+```
+<http://example.org/mojito> <http://rdf.data-vocabulary.org/#name> "Mojito".
+```
+Once this triple has been emitted, the node closes, and our stack entry at depth 0 is popped.
 
-<figure id="jsonld-recipe-mojito-stack-2" class="listing" markdown="block">
+<br class="clear" />
+
+<figure id="jsonld-recipe-mojito-stack-2" class="listing figure-side" markdown="block">
 ```javascript
 [
   {
@@ -275,19 +277,18 @@ so we don't emit anything here.
 ```
 <figcaption markdown="block">
 <span class="label">Listing 4</span>
-The parser stack after parsing `"instructions": [` from [Listing 1](#jsonld-recipe-mojito).
+The parser stack after parsing `"instructions": [`.
 </figcaption>
 </figure>
 
-When entering the instructions array, we parse the first instruction starting with the line `"step": 1`.
-After this, we reach the stack state as can be seen in [Listing 5](#jsonld-recipe-mojito-stack-3).
-While we have a defined predicate _and_ object now at this level, we do not have a defined subject at this level or the parent level.
-As it is possible that a subject may be defined for this level later on,
-we temporarily move this stack entry into a temporary buffer until the parent node closes,
-or a subject is defined.
-After buffering this stack entry, our stack contents are those from [Listing 6](#jsonld-recipe-mojito-stack-4).
+Next, the parser will handle the line `"instructions": [`.
+For this, a new stack entry is pushed with a defined predicate value, as can be seen in [Listing 4](#jsonld-recipe-mojito-stack-2).
+At this point, we don't have enough information to create a new triple,
+so we don't emit anything here.
 
-<figure id="jsonld-recipe-mojito-stack-3" class="listing" markdown="block">
+<br class="clear" />
+
+<figure id="jsonld-recipe-mojito-stack-3" class="listing figure-side" markdown="block">
 ```javascript
 [
   {
@@ -296,82 +297,33 @@ After buffering this stack entry, our stack contents are those from [Listing 6](
   },
   {
     depth: 1,
-    predicate: "http://rdf.data-vocabulary.org/#instructions"
-  },
-  {
-    depth: 2,
-    predicate: "http://rdf.data-vocabulary.org/#step",
-    object: "\"1\"^^xsd:integer"
+    predicate: "http://rdf.data-vocabulary.org/#instructions",
+    buffer: [
+      {
+        predicate: "http://rdf.data-vocabulary.org/#step",
+        object: "\"1\"^^xsd:integer"
+      }
+    ]
   }
 ]
 ```
 <figcaption markdown="block">
 <span class="label">Listing 5</span>
-The parser stack after parsing `"step": 1` of the first instruction in [Listing 2](#jsonld-recipe-mojito).
+The parser stack after parsing and buffering `"step": 1` of the first recipe instruction.
 </figcaption>
 </figure>
 
-<figure id="jsonld-recipe-mojito-stack-4" class="listing" markdown="block">
-```javascript
-[
-  {
-    depth: 0,
-    subject: "http://example.org/mojito"
-  },
-  {
-    depth: 1,
-    predicate: "http://rdf.data-vocabulary.org/#instructions",
-    buffer: [
-      {
-        predicate: "http://rdf.data-vocabulary.org/#step",
-        object: "\"1\"^^xsd:integer"
-      }
-    ]
-  }
-]
-```
-<figcaption markdown="block">
-<span class="label">Listing 6</span>
-The parser stack after buffering the stack entry that has an unknown subject in [Listing 5](#jsonld-recipe-mojito-stack-3).
-</figcaption>
-</figure>
+When entering the instructions array, we parse the first instruction starting with the line `"step": 1`.
+After this, we gain a new stack entry with a defined predicate _and_ object.
+However, we do not have a defined subject at this level or the parent level.
+As it is possible that a subject may be defined for this level later on,
+we temporarily move this stack entry into a temporary buffer until the parent node closes,
+or a subject is defined.
+After buffering this stack entry, our stack contents are those from [Listing 5](#jsonld-recipe-mojito-stack-3).
 
-Next, we parse the description of the first instruction at the same depth,
-which gives us the stack in [Listing 7](#jsonld-recipe-mojito-stack-5).
-However, we still have no defined subject, so we have to buffer this stack entry again,
-as can be seen in [Listing 8](#jsonld-recipe-mojito-stack-6).
+<br class="clear" />
 
-<figure id="jsonld-recipe-mojito-stack-5" class="listing" markdown="block">
-```javascript
-[
-  {
-    depth: 0,
-    subject: "http://example.org/mojito"
-  },
-  {
-    depth: 1,
-    predicate: "http://rdf.data-vocabulary.org/#instructions",
-    buffer: [
-      {
-        predicate: "http://rdf.data-vocabulary.org/#step",
-        object: "\"1\"^^xsd:integer"
-      }
-    ]
-  },
-  {
-    depth: 2,
-    predicate: "http://rdf.data-vocabulary.org/#description",
-    object: "Crush lime juice, mint and sugar together in glass."
-  }
-]
-```
-<figcaption markdown="block">
-<span class="label">Listing 7</span>
-The parser stack after parsing the description of the first instruction in [Listing 2](#jsonld-recipe-mojito).
-</figcaption>
-</figure>
-
-<figure id="jsonld-recipe-mojito-stack-4" class="listing" markdown="block">
+<figure id="jsonld-recipe-mojito-stack-4" class="listing figure-side" markdown="block">
 ```javascript
 [
   {
@@ -395,10 +347,17 @@ The parser stack after parsing the description of the first instruction in [List
 ]
 ```
 <figcaption markdown="block">
-<span class="label">Listing 8</span>
-The parser stack after buffering the stack entry that has an unknown subject in [Listing 7](#jsonld-recipe-mojito-stack-5).
+<span class="label">Listing 6</span>
+The parser stack after parsing and buffering the description of the first recipe instruction.
 </figcaption>
 </figure>
+
+Next, we parse the description of the first instruction at the same depth,
+which again gives us a new stack entry.
+However, we still have no defined subject, so we have to buffer this stack entry again,
+as can be seen in [Listing 6](#jsonld-recipe-mojito-stack-4).
+
+<br class="clear" />
 
 After that, the node of the first instruction closes.
 Since we have a non-empty buffer in our stack entry on depth 1,
