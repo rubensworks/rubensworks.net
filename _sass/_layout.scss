@@ -347,6 +347,25 @@
     }
 }
 
+// Figures
+figure {
+    padding: 1em 2em;
+    margin: 1em 0;
+
+    figcaption {
+      margin: 1em 0 .5em;
+      
+      .label {
+          float: left;
+          font-weight: bold;
+          margin-right: .5em;
+      }
+      p {
+          margin: 0;
+      }
+    }
+}
+
 /**
  * Projects
  */

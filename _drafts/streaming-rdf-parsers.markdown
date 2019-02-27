@@ -108,9 +108,31 @@ and offers utility functions to perform common tasks, such as [expanding terms](
 
 ## Stack-based architecture
 
+The architecture of the streaming RDF/XML and JSON-LD parsers are based on a **stack-based architecture**.
+During parsing, these stacks are continuously updated,
+such that triples can be emitted from the stack as soon as sufficient information is present.
+After explaining the motivation behind this choice, I illustrate how this works with a short JSON-LD example.
 
+### A continuously updating stack
 
-## Emitting triples as soon as possible
+One main property that is shared between the JSON(-LD) and (RDF/)XML formats
+is that they are both **hierarchical**.
+This means that nodes can be nested in order to reuse common information.
+This hierarchical nature of these formats requires streaming parsers
+to maintain a state with respect to the nesting of these nodes.
+
+To cope with this hierarchical property of JSON-LD and RDF/XML,
+I chose for a **stack-based architecture** for maintaining state inside these parsers.
+Each stack entry contains information about the node at the current depth that is relevant for converting it into RDF.
+This includes information such as the current subject, predicate, object, graph, base IRI, ...
+
+Concretely, for each node that is being parsed for depth `i`,
+the node's information is being **pushed** onto the stack at depth `i`.
+This allows the parser to retrieve information from parent nodes when needed.
+When the scope of the node is closed *(i.e., the JSON object is closed, or the XML tag is ended)*,
+then the node's information is **popped** from the stack.
+
+### Emitting triples from on the stack
 
 Using our continuously updating stack,
 we maintain all required information
@@ -125,7 +147,272 @@ and pushed into the output stream.
 After that, the checked information is removed from the stack,
 so that it won't be re-emitted again later.
 
-For example...
+### Example of JSON-LD parsing using a stack
+
+[Listing 1](#jsonld-recipe-mojito) shows an example of hierarchical nodes in JSON-LD,
+where several steps are listed to create a mojito.
+JSON-LD links each of these steps to the main mojito recipe
+identified by `http://example.org/mojito` using the `http://rdf.data-vocabulary.org/#instructions` predicate.
+Hereafter, I illustrate how triples can be generated from this document using a continuously updating stack.
+For simplicity, the following examples will only include subject, predicate and object in the stack,
+the actual implementations also include other information such as the current graph, context, base IRI, ...
+
+Parsing the `@context` node of this document is being delegated to [jsonld-context-parser.js](https://github.com/rubensworks/jsonld-context-parser.js),
+which is used internally to translate terms to IRIs.
+
+<figure id="jsonld-recipe-mojito" class="listing" markdown="block">
+```json
+{
+  "@context": {
+    "name": "http://rdf.data-vocabulary.org/#name",
+    "instructions": "http://rdf.data-vocabulary.org/#instructions",
+    "step": {
+      "@id": "http://rdf.data-vocabulary.org/#step",
+      "@type": "xsd:integer"
+    },
+    "description": "http://rdf.data-vocabulary.org/#description",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "http://example.org/mojito",
+  "name": "Mojito",
+  "instructions": [
+    {
+      "step": 1,
+      "description": "Crush lime juice, mint and sugar together in glass."
+    },
+    {
+      "step": 2,
+      "description": "Fill glass to top with ice cubes."
+    },
+    {
+      "step": 3,
+      "description": "Pour white rum over ice."
+    },
+    {
+      "step": 4,
+      "description": "Fill the rest of glass with club soda, stir."
+    },
+    {
+      "step": 5,
+      "description": "Garnish with a lime wedge."
+    }
+  ]
+}
+```
+<figcaption markdown="block">
+<span class="label">Listing 1</span>
+JSON-LD document that describes the recipe of a Mojito.
+Adapted from [JSON-LD playground](https://json-ld.org/playground/).
+</figcaption>
+</figure>
+
+[Listing 2](#jsonld-recipe-mojito-stack-0) shows an example of the state of the stack right after
+parsing the first `@id` from [Listing 1](#jsonld-recipe-mojito).
+At this point, we only have enough information to describe the subject of a triple,
+so no fully materialized triples can be emitted at this point.
+
+<figure id="jsonld-recipe-mojito-stack-0" class="listing" markdown="block">
+```javascript
+[
+  {
+    depth: 0,
+    subject: "http://example.org/mojito"
+  }
+]
+```
+<figcaption markdown="block">
+<span class="label">Listing 2</span>
+The parser stack after parsing the `@id` line from [Listing 1](#jsonld-recipe-mojito).
+</figcaption>
+</figure>
+
+When parsing the next line (`"name": "Mojito"`), we temporarily get into a deeper level,
+with a defined predicate and object.
+[Listing 3](#jsonld-recipe-mojito-stack-1) shows the stack state at this point.
+This shows that we have sufficient information to emit a triple,
+since we have a defined predicate and object value on our current depth,
+and a subject value in the parent.
+Concretely, we emit `<http://example.org/mojito> <http://rdf.data-vocabulary.org/#name> "Mojito"`.
+Once this triple has been emitted, the node closes, and our stack entry at depth 0 is popped.
+
+<figure id="jsonld-recipe-mojito-stack-1" class="listing" markdown="block">
+```javascript
+[
+  {
+    depth: 0,
+    subject: "http://example.org/mojito"
+  },
+  {
+    depth: 1,
+    predicate: "http://rdf.data-vocabulary.org/#name",
+    object: "Mojito"
+  }
+]
+```
+<figcaption markdown="block">
+<span class="label">Listing 3</span>
+The parser stack during the parsing of the `"name": "Mojito"` line from [Listing 1](#jsonld-recipe-mojito).
+</figcaption>
+</figure>
+
+Next, the parser will handle the line `"instructions": [`.
+For this, a new stack entry is pushed with a defined predicate value, as can be seen in [Listing 4](#jsonld-recipe-mojito-stack-2).
+At this point, we don't have enough information to create a new triple,
+so we don't emit anything here.
+
+<figure id="jsonld-recipe-mojito-stack-2" class="listing" markdown="block">
+```javascript
+[
+  {
+    depth: 0,
+    subject: "http://example.org/mojito"
+  },
+  {
+    depth: 1,
+    predicate: "http://rdf.data-vocabulary.org/#instructions"
+  }
+]
+```
+<figcaption markdown="block">
+<span class="label">Listing 4</span>
+The parser stack after parsing `"instructions": [` from [Listing 1](#jsonld-recipe-mojito).
+</figcaption>
+</figure>
+
+When entering the instructions array, we parse the first instruction starting with the line `"step": 1`.
+After this, we reach the stack state as can be seen in [Listing 5](#jsonld-recipe-mojito-stack-3).
+While we have a defined predicate _and_ object now at this level, we do not have a defined subject at this level or the parent level.
+As it is possible that a subject may be defined for this level later on,
+we temporarily move this stack entry into a temporary buffer until the parent node closes,
+or a subject is defined.
+After buffering this stack entry, our stack contents are those from [Listing 6](#jsonld-recipe-mojito-stack-4).
+
+<figure id="jsonld-recipe-mojito-stack-3" class="listing" markdown="block">
+```javascript
+[
+  {
+    depth: 0,
+    subject: "http://example.org/mojito"
+  },
+  {
+    depth: 1,
+    predicate: "http://rdf.data-vocabulary.org/#instructions"
+  },
+  {
+    depth: 2,
+    predicate: "http://rdf.data-vocabulary.org/#step",
+    object: "\"1\"^^xsd:integer"
+  }
+]
+```
+<figcaption markdown="block">
+<span class="label">Listing 5</span>
+The parser stack after parsing `"step": 1` of the first instruction in [Listing 2](#jsonld-recipe-mojito).
+</figcaption>
+</figure>
+
+<figure id="jsonld-recipe-mojito-stack-4" class="listing" markdown="block">
+```javascript
+[
+  {
+    depth: 0,
+    subject: "http://example.org/mojito"
+  },
+  {
+    depth: 1,
+    predicate: "http://rdf.data-vocabulary.org/#instructions",
+    buffer: [
+      {
+        predicate: "http://rdf.data-vocabulary.org/#step",
+        object: "\"1\"^^xsd:integer"
+      }
+    ]
+  }
+]
+```
+<figcaption markdown="block">
+<span class="label">Listing 6</span>
+The parser stack after buffering the stack entry that has an unknown subject in [Listing 5](#jsonld-recipe-mojito-stack-3).
+</figcaption>
+</figure>
+
+Next, we parse the description of the first instruction at the same depth,
+which gives us the stack in [Listing 7](#jsonld-recipe-mojito-stack-5).
+However, we still have no defined subject, so we have to buffer this stack entry again,
+as can be seen in [Listing 8](#jsonld-recipe-mojito-stack-6).
+
+<figure id="jsonld-recipe-mojito-stack-5" class="listing" markdown="block">
+```javascript
+[
+  {
+    depth: 0,
+    subject: "http://example.org/mojito"
+  },
+  {
+    depth: 1,
+    predicate: "http://rdf.data-vocabulary.org/#instructions",
+    buffer: [
+      {
+        predicate: "http://rdf.data-vocabulary.org/#step",
+        object: "\"1\"^^xsd:integer"
+      }
+    ]
+  },
+  {
+    depth: 2,
+    predicate: "http://rdf.data-vocabulary.org/#description",
+    object: "Crush lime juice, mint and sugar together in glass."
+  }
+]
+```
+<figcaption markdown="block">
+<span class="label">Listing 7</span>
+The parser stack after parsing the description of the first instruction in [Listing 2](#jsonld-recipe-mojito).
+</figcaption>
+</figure>
+
+<figure id="jsonld-recipe-mojito-stack-4" class="listing" markdown="block">
+```javascript
+[
+  {
+    depth: 0,
+    subject: "http://example.org/mojito"
+  },
+  {
+    depth: 1,
+    predicate: "http://rdf.data-vocabulary.org/#instructions",
+    buffer: [
+      {
+        predicate: "http://rdf.data-vocabulary.org/#step",
+        object: "\"1\"^^xsd:integer"
+      },
+      {
+        predicate: "http://rdf.data-vocabulary.org/#description",
+        object: "Crush lime juice, mint and sugar together in glass."
+      }
+    ]
+  }
+]
+```
+<figcaption markdown="block">
+<span class="label">Listing 8</span>
+The parser stack after buffering the stack entry that has an unknown subject in [Listing 7](#jsonld-recipe-mojito-stack-5).
+</figcaption>
+</figure>
+
+After that, the node of the first instruction closes.
+Since we have a non-empty buffer in our stack entry on depth 1,
+this means that we still have to emit triples that have no known subject.
+For this, we will create a new [_blank node_](https://en.wikipedia.org/wiki/Blank_node) subject,
+assign it to the buffer entries, and emit triples for each of them.
+Concretely, we emit the following triples:
+```
+_:b1 <http://rdf.data-vocabulary.org/#step> "1"^^xsd:integer.
+_:b1 <http://rdf.data-vocabulary.org/#description> "Crush lime juice, mint and sugar together in glass.".
+<http://example.org/mojito> <http://rdf.data-vocabulary.org/#instructions> _:b1.
+```
+
+The remainder of this document is parsed similarly.
 
 ## Parsers in action
 
