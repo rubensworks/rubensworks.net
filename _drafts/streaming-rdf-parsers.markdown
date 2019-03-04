@@ -49,6 +49,9 @@ and [JSON-LD](https://github.com/rubensworks/jsonld-streaming-parser.js),
 which are respectively based on the popular XML and JSON formats.
 In the remainder of this post, I discuss the main architecture and design decisions behind these parsers,
 and I end with some live-action examples.
+These parsers are related to the SPARQL [XML](https://github.com/rubensworks/sparqlxml-parse.js/)
+and [JSON](https://github.com/rubensworks/sparqljson-parse.js/) results parsers I implemented before.
+Their architecture is quite simple, so I won't mention these further below.
 
 ## Building on top of existing libraries
 
@@ -373,9 +376,25 @@ _:b1 <http://rdf.data-vocabulary.org/#description> "Crush lime juice, mint and s
 
 The remainder of this document is parsed similarly.
 
-## Parsers in action
+## Try parsing yourself
 
-TODO: spec-compliance, live demo, usages
+Both [jsonld-streaming-parser.js](https://github.com/rubensworks/jsonld-streaming-parser.js) and [rdfxml-streaming-parser.js](https://github.com/rdfjs/rdfxml-streaming-parser.js)
+are **open-source** and available on npm to include in any JavaScript application.
+They also work great in the **browser**,
+you can try it out yourself below in [Listing 7](#jsonld-parser-example) and [Listing 8](#rdfxml-parser-example).
+
+Both libraries are **fully compliant** with the [JSON-LD](https://json-ld.org/spec/latest/json-ld/)
+and [RDF/XML](https://www.w3.org/TR/rdf-syntax-grammar/) **specifications**, respectively.
+Using [_rdf-test-suite.js_](https://github.com/rubensworks/rdf-test-suite.js),
+the latest specification test suite manifests are executed each time a new commit is pushed to the parser's git repositories.
+This guarantees full compliance upon each new change, as any breakages can be detected immediately.
+
+Finally, I invested a lot of time in optimizing both parsers as much as possible.
+Even though streaming parsers are typically slower than bulk parsers due to their streaming overhead,
+my implementations manage to outperform other bulk parsers in many cases.
+Try it out yourself by running the performance tests for the
+[JSON-LD](https://github.com/rubensworks/jsonld-streaming-parser.js/tree/master/perf) and
+[RDF/XML](https://github.com/rdfjs/rdfxml-streaming-parser.js/tree/master/perf) parsers.
 
 ```
 require("relative-to-absolute-iri");
@@ -384,6 +403,7 @@ const { RdfXmlParser } = require("rdfxml-streaming-parser");
 ```
 {:#demo-nodejs-preamble .hide}
 
+<figure id="jsonld-parser-example" class="listing" markdown="block">
 ```
 // Construct a JSON-LD parser
 const myParser = new JsonLdParser();
@@ -408,7 +428,13 @@ myParser.end();
 'Parsing...'; // Line only needed for demo-purposes
 ```
 {:.demo-nodejs}
+<figcaption markdown="block">
+<span class="label">Listing 7</span>
+Example of parsing a JSON-LD document in chunks with _jsonld-streaming-parser.js_.
+</figcaption>
+</figure>
 
+<figure id="rdfxml-parser-example" class="listing" markdown="block">
 ```
 // Construct a RDF/XML parser
 const myParser = new RdfXmlParser();
@@ -433,3 +459,8 @@ myParser.end();
 'Parsing...'; // Line only needed for demo-purposes
 ```
 {:.demo-nodejs}
+<figcaption markdown="block">
+<span class="label">Listing 8</span>
+Example of parsing an RDF/XML document in chunks with _rdfxml-streaming-parser.js_.
+</figcaption>
+</figure>
