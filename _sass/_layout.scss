@@ -322,7 +322,10 @@
             color: $grey-color;
         }
         .post-excerpt {
-            font-size: 12px;
+            font-size: 14px;
+            .post-abstract {
+              font-weight: normal;
+            }
         }
         .feature-img {
             width: 150px;

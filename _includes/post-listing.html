@@ -11,7 +11,7 @@
         {% endif %}
         <span class="post-meta"><time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%-d %B %Y" }}</time></span><br />
         <span class="post-excerpt">
-        {{ post.excerpt | strip_html }}
+        {{ post.excerpt }}
         </span>
     </div>
 </div>
