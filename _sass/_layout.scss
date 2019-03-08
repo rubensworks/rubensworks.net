@@ -153,6 +153,11 @@
     @extend %clearfix;
 }
 
+a.source {
+    font-size: 13px;
+    color: darken($grey-color-light, 15%);
+}
+
 .footer-col {
     float: left;
     margin-bottom: $spacing-unit / 2;
