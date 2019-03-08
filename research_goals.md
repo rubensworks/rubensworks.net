@@ -7,7 +7,7 @@ show_in_nav: false
 
 In general, my research concerns <strong>decentralization</strong>, <strong>publication</strong> and <strong>querying</strong> on the <strong>Web</strong>.
 <br />
-Below, you can find my active [research goals](#research-goals), and related [development goals](#development-goals).
+Below, you can find my active [research goals](#research), and related [development goals](#development).
 <br />
 This page will be updated regularly based on shifts in these goals.
 
@@ -32,7 +32,7 @@ However, there are still plenty of things that need further investigation:
 
 ### Querying over Decentralized Data on the Web
 
-[Solid](https://solid.mit.edu/) is pioneering a new way of data storage on the Web.
+[Solid](https://solid.inrupt.com/) is pioneering a new way of data storage on the Web.
 Instead of having _centralized_ services like Facebook and Instagram to store user data,
 Solid allows users to store data themselves in _decentralized_, and _personal_ data _pods_,
 while _maintaining full data ownership_.
@@ -105,7 +105,7 @@ Such a framework requires a significant effort for maintenance and the implement
 Some short-term things that are essential for Comunica are the following:
 
 * **Authentication**: To support personalized query results when [querying over decentralized data pods](#querying-over-decentralized-data-on-the-web), Comunica needs to be able to send authenticated requests.
-* **Link Traversal**: For [investigating new types of link-traversal-based query execution](enhancing-link-traversal-based-query-execution), we need to support this new paradigm in Comunica.
+* **Link Traversal**: For [investigating new types of link-traversal-based query execution](#enhancing-link-traversal-based-query-execution), we need to support this new paradigm in Comunica.
 * **Additional Parsers**: While a lot of (RDF) serializations are already supported by Comunica, there are still several formats out there that you can not query over with Comunica, such as [RDFa](https://rdfa.info/) and [inline JSON-LD](https://json-ld.org/). Adding parsers for these is essential for enabling queries over such sources.
 
 ### Academic Articles on the Web
