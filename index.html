@@ -25,11 +25,14 @@ layout: default
       </li>
     {% endfor %}
   </ul>
+  <span class="more"><a href="/blog/">More blog posts</a></span>
   
   <h2>Highlighted publications</h2>
   {% bibliography --query @*[_highlighted=true] %}
+  <span class="more"><a href="/publications/">More publications</a></span>
 
   <h2>Latest publications</h2>
   {% bibliography --max 5 %}
+  <span class="more"><a href="/publications/">More publications</a></span>
 
 </div>
