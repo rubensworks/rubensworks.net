@@ -14,7 +14,7 @@ The ability to parse RDF serializations in a *streaming* way offers many advanta
 such as handling huge documents with only a limited amount of memory,
 and processing elements as soon as they are parsed.
 In this post, I discuss the motivation behind my streaming parser implementations for JSON-LD and RDF/XML,
-their architecture, and the difficulties I experienced.
+their architecture, and I show some live examples.
 </p>
 <!--more-->
 
@@ -38,26 +38,24 @@ and it also allows **very large documents** to be parsed, event when they don't 
 RDF parsers for most popular RDF serializations already exist for JavaScript.
 However, not all of them parse in a *streaming* way.
 At the time of writing, [N3.js](https://ruben.verborgh.org/blog/2013/04/30/lightning-fast-rdf-in-javascript/)
-is the only spec-compliant streaming parser in JavaScript. It can handle N3-like RDF serializations such as [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax)) and [Turtle](https://en.wikipedia.org/wiki/TriG_(syntax)).
+is the only spec-compliant streaming parser in JavaScript I am aware of. It can handle N3-like RDF serializations such as [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax)) and [Turtle](https://en.wikipedia.org/wiki/TriG_(syntax)).
 As such, there is still a need for streaming parsing of documents in other widely used serializations such as RDF/XML and JSON-LD.
 This need for example exists in [Comunica](http://comunica.linkeddatafragments.org/),
-a framework for querying Linked Data on the Web, which processes queries as streams.
+a framework for querying Linked Data on the Web, which processes queries in a streaming way.
 
 For these reasons, I set out to implement streaming parsers for both
 [RDF/XML](https://github.com/rdfjs/rdfxml-streaming-parser.js)
 and [JSON-LD](https://github.com/rubensworks/jsonld-streaming-parser.js),
 which are respectively based on the popular XML and JSON formats.
-In the remainder of this post, I discuss the main architecture and design decisions behind these parsers,
+In the remainder of this post, I go over the existing libraries that I built on top of,
+I discuss the main architecture and design decisions behind these parsers,
 and I end with some live-action examples.
-These parsers are related to the SPARQL [XML](https://github.com/rubensworks/sparqlxml-parse.js/)
-and [JSON](https://github.com/rubensworks/sparqljson-parse.js/) results parsers I implemented before.
-Their architecture is quite simple, so I won't mention these further below.
 
 ## Building on top of existing libraries
 
-Reusability is an important element of good software development.
-For this reason, I tried to use existing software whenever possible,
-and decompose my own software into separate components where it makes sense.
+**Reusability** is a key element of good software development.
+For this reason, I tried to use **existing software whenever possible**,
+and **decompose my own software** into separate components where it makes sense.
 Concretely, I made use of existing and well-established low-level JSON and XML parsers.
 Furthermore, I split off the logic of handling relative IRIs and the JSON-LD context components into separate libraries.
 The following sections discuss these further.
@@ -66,17 +64,17 @@ The following sections discuss these further.
 
 Due to the popularity of JSON and XML, a wide range of parsers already exist for JavaScript, including streaming parsers.
 This allowed me to get a good head start for my implementations,
-as I could simply **depend on existing libraries to parse the raw JSON and XML** streams,
-and handle incoming JSON and XML nodes as respectively JSON-LD and RDF/XML nodes.
+as I could simply **depend on existing libraries to parse the raw JSON and XML streams**,
+and handle incoming JSON and XML nodes as JSON-LD and RDF/XML nodes, respectively.
 
 Several streaming JSON and XML parsers are available,
 so I had to decide which ones I would depend on.
-In the end, I chose for [*jsonparse*](https://www.npmjs.com/package/jsonparse)
-and [*sax*](https://www.npmjs.com/package/sax) for the following reasons:
+In the end, I chose for [**jsonparse**](https://www.npmjs.com/package/jsonparse)
+and [**sax**](https://www.npmjs.com/package/sax) for the following reasons:
 
-* Handles Node.JS streams.
-* Pure JavaScript implementation that works both in Node.JS and browsers.
-* Stability proven through number of dependents, age, and unit tests.
+* They handles Node.JS streams,
+* they have a pure JavaScript implementation that works both in Node.JS and browsers,
+* their stability is proven through a high number of dependents, age, and unit tests.
 
 Both of these libraries have a similar event-based API,
 through which you can listen to new incoming JSON nodes or XML tags.
@@ -84,45 +82,46 @@ through which you can listen to new incoming JSON nodes or XML tags.
 ### Resolving relative IRIs
 
 Following the [DRY principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) *(Don't Repeat Yourself)*,
-I decided to *abstract away* one common component between JSON-LD and RDF/XML parsing,
+I decided to **abstract** one common component between JSON-LD and RDF/XML parsing,
 namely, handling relative IRIs.
 
 Both JSON-LD and RDF/XML allow IRIs to be relative to a given base IRI,
 with this base IRI typically being the current document's IRI.
 The rules for resolving relative IRIs to absolute IRIs between these two specifications are identical,
-and are actually part of [RFC3986](https://www.ietf.org/rfc/rfc3986.txt).
+and are part of [RFC3986](https://www.ietf.org/rfc/rfc3986.txt).
 As I could not find a good, spec-compliant, standalone implementation of this functionality,
-I created a new library for this, namely *[relative-to-absolute-iri.js](https://github.com/rubensworks/relative-to-absolute-iri.js)*.
+I created a new library for this, namely **[relative-to-absolute-iri.js](https://github.com/rubensworks/relative-to-absolute-iri.js)**.
 
-This library exposes just a single function: `resolve(relativeIri: string, baseIri: string): string`.
+This library exposes just a single function: `resolve(relativeIri, baseIri)`.
 It has been tested extensively, with unit tests including all known IRI resolutions
 that are defined in the JSON-LD and RDF/XML test suites.
 
 ### Handling JSON-LD contexts
 
-JSON-LD introduces the so-called [*context*](https://www.w3.org/TR/json-ld/#the-context),
+JSON-LD introduces the so-called [**context**](https://www.w3.org/TR/json-ld/#the-context),
 which is an object that defines a mapping between JSON terms and IRIs.
 
 Since JSON-LD contexts even have uses outside of JSON-LD documents (Such as [GraphQL-LD](https://comunica.github.io/Article-ISWC2018-Demo-GraphQlLD/) and [CSVW](https://www.w3.org/TR/tabular-data-primer/)),
 it makes sense to separate the handling of them in a separate library.
-For this, I created a library called *[jsonld-context-parser.js](https://github.com/rubensworks/jsonld-context-parser.js)*
-that *parses* JSON-LD contexts into a normalized datastructure,
+For this, I created a library called **[jsonld-context-parser.js](https://github.com/rubensworks/jsonld-context-parser.js)**
+that **parses** JSON-LD contexts into a normalized datastructure,
 and offers utility functions to perform common tasks, such as [expanding terms](https://github.com/rubensworks/jsonld-context-parser.js#expand-a-term).
 
 ## Stack-based architecture
 
-The architecture of the streaming RDF/XML and JSON-LD parsers are based on a **stack-based architecture**.
-During parsing, these stacks are continuously updated,
+The designs of the streaming RDF/XML and JSON-LD parsers are based on a [**stack-based architecture**](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)).
+During parsing, internal stacks are continuously updated
 such that triples can be emitted from the stack as soon as sufficient information is present.
-After explaining the motivation behind this choice, I illustrate how this works with a short JSON-LD example.
+After explaining the motivation behind this architectural choice,
+I illustrate how this works with a short JSON-LD example.
 
 ### A continuously updating stack
 
 One main property that is shared between the JSON(-LD) and (RDF/)XML formats
 is that they are both **hierarchical**.
 This means that nodes can be nested in order to reuse common information.
-This hierarchical nature of these formats requires streaming parsers
-to maintain a state with respect to the nesting of these nodes.
+The hierarchical nature of these formats requires streaming parsers
+to maintain **state** with respect to the nesting of these nodes.
 
 To cope with this hierarchical property of JSON-LD and RDF/XML,
 I chose for a **stack-based architecture** for maintaining state inside these parsers.
@@ -137,14 +136,14 @@ then the node's information is **popped** from the stack.
 
 ### Emitting triples from on the stack
 
-Using our continuously updating stack,
-we maintain all required information
+Using the continuously updating stack,
+all required information is maintained
 to convert the hierarchical node structures into RDF triples.
-For this, we use the [**RDFJS data model**](https://rdf.js.org/),
+For this, I use the [**RDFJS data model**](https://rdf.js.org/),
 which is a way of representing RDF terms and triples as JavaScript objects.
 
-Every time our stack is updated,
-we check its state to see if any new triples can be derived.
+Every time the stack is updated,
+its state is checked to see if any new triples can be derived.
 If this is the case, then all relevant triples are created,
 and pushed into the output stream.
 After that, the checked information is removed from the stack,
@@ -152,16 +151,16 @@ so that it won't be re-emitted again later.
 
 ### Example of JSON-LD parsing using a stack
 
-[Listing 1](#jsonld-recipe-mojito) shows an example of hierarchical nodes in JSON-LD,
+[Listing 1](#jsonld-recipe-mojito) shows an example of hierarchical nodes in a JSON-LD document,
 where several steps are listed to create a mojito.
 JSON-LD links each of these steps to the main mojito recipe
-identified by `http://example.org/mojito` using the `http://rdf.data-vocabulary.org/#instructions` predicate.
+(identified by `http://example.org/mojito`) using the `http://rdf.data-vocabulary.org/#instructions` predicate.
 Hereafter, I illustrate how triples can be generated from this document using a continuously updating stack.
-For simplicity, the following examples will only include subject, predicate and object in the stack,
+For simplicity, the following examples only include subject, predicate and object in the stack,
 the actual implementations also include other information such as the current graph, context, base IRI, ...
 
-Parsing the `@context` node of this document is being delegated to [jsonld-context-parser.js](https://github.com/rubensworks/jsonld-context-parser.js),
-which is used internally to translate terms to IRIs.
+Parsing the `@context` node of this document is delegated to [jsonld-context-parser.js](https://github.com/rubensworks/jsonld-context-parser.js),
+which is used to translate terms to IRIs.
 
 <figure id="jsonld-recipe-mojito" class="listing" markdown="block">
 ```json
@@ -226,7 +225,7 @@ The stack after parsing the `@id`.
 
 [Listing 2](#jsonld-recipe-mojito-stack-0) shows an example of the state of the stack right after
 parsing the first `@id` from [Listing 1](#jsonld-recipe-mojito).
-At this point, we only have enough information to describe the subject of a triple,
+At this point, there is only enough information available to describe the **subject of a triple**,
 so no fully materialized triples can be emitted at this point.
 
 <br class="clear" />
@@ -251,17 +250,17 @@ The parser stack during the parsing of the `"name": "Mojito"`.
 </figcaption>
 </figure>
 
-When parsing the next line (`"name": "Mojito"`), we temporarily get into a deeper level,
-with a defined predicate and object.
+When parsing the next line (`"name": "Mojito"`), we get into a deeper stack level,
+with a defined **predicate** and **object**.
 [Listing 3](#jsonld-recipe-mojito-stack-1) shows the stack state at this point.
-This shows that we have sufficient information to emit a triple,
-since we have a defined predicate and object value on our current depth,
-and a subject value in the parent.
-Concretely, we emit the following triple:
+This shows that sufficient information is present to emit a triple,
+since a predicate and object value are defined on the current depth,
+and a subject value is present in the parent.
+Concretely, the following triple is emitted:
 ```
 <http://example.org/mojito> <http://rdf.data-vocabulary.org/#name> "Mojito".
 ```
-Once this triple has been emitted, the node closes, and our stack entry at depth 0 is popped.
+Once this triple has been emitted, the node closes, and the stack entry at depth 1 is popped.
 
 <br class="clear" />
 
@@ -285,9 +284,9 @@ The parser stack after parsing `"instructions": [`.
 </figure>
 
 Next, the parser will handle the line `"instructions": [`.
-For this, a new stack entry is pushed with a defined predicate value, as can be seen in [Listing 4](#jsonld-recipe-mojito-stack-2).
-At this point, we don't have enough information to create a new triple,
-so we don't emit anything here.
+For this, a new stack entry is pushed with a defined **predicate** value, as can be seen in [Listing 4](#jsonld-recipe-mojito-stack-2).
+At this point, not enough information is available to create a new triple,
+so nothing is emitted here.
 
 <br class="clear" />
 
@@ -316,13 +315,13 @@ The parser stack after parsing and buffering `"step": 1` of the first recipe ins
 </figcaption>
 </figure>
 
-When entering the instructions array, we parse the first instruction starting with the line `"step": 1`.
-After this, we gain a new stack entry with a defined predicate _and_ object.
-However, we do not have a defined subject at this level or the parent level.
+When entering the instructions array, the first instruction is parsed starting with the line `"step": 1`.
+After this, a new stack entry is pushed with a defined **predicate** and **object**.
+However, **no defined subject** is available at this level or the parent level.
 As it is possible that a subject may be defined for this level later on,
-we temporarily move this stack entry into a temporary buffer until the parent node closes,
+this stack entry is temporarily moved into a **temporary buffer** until the parent node closes,
 or a subject is defined.
-After buffering this stack entry, our stack contents are those from [Listing 5](#jsonld-recipe-mojito-stack-3).
+After buffering this stack entry, the stack contents are those from [Listing 5](#jsonld-recipe-mojito-stack-3).
 
 <br class="clear" />
 
@@ -355,17 +354,17 @@ The parser stack after parsing and buffering the description of the first recipe
 </figcaption>
 </figure>
 
-Next, we parse the description of the first instruction at the same depth,
+Next, the description of the first instruction is parsed at the same depth,
 which again gives us a new stack entry.
-However, we still have no defined subject, so we have to buffer this stack entry again,
+However, there still is no defined subject, so this stack entry has to be added to the buffer as well,
 as can be seen in [Listing 6](#jsonld-recipe-mojito-stack-4).
 
 <br class="clear" />
 
 After that, the node of the first instruction closes.
-Since we have a non-empty buffer in our stack entry on depth 1,
-this means that we still have to emit triples that have no known subject.
-For this, we will create a new [_blank node_](https://en.wikipedia.org/wiki/Blank_node) subject,
+Since there is a non-empty buffer in our stack entry on depth 1,
+this means that **triples with unknown subjects** have to be emitted.
+For this, we will create a new **[blank node](https://en.wikipedia.org/wiki/Blank_node) subject**,
 assign it to the buffer entries, and emit triples for each of them.
 Concretely, we emit the following triples:
 ```
@@ -379,17 +378,17 @@ The remainder of this document is parsed similarly.
 ## Try parsing yourself
 
 Both [jsonld-streaming-parser.js](https://github.com/rubensworks/jsonld-streaming-parser.js) and [rdfxml-streaming-parser.js](https://github.com/rdfjs/rdfxml-streaming-parser.js)
-are **open-source** and available on npm to include in any JavaScript application.
+are **open-source** and available on npm to include in any JavaScript (or TypeScript) application.
 They also work great in the **browser**,
 you can try it out yourself below in [Listing 7](#jsonld-parser-example) and [Listing 8](#rdfxml-parser-example).
 
 Both libraries are **fully compliant** with the [JSON-LD](https://json-ld.org/spec/latest/json-ld/)
 and [RDF/XML](https://www.w3.org/TR/rdf-syntax-grammar/) **specifications**, respectively.
-Using [_rdf-test-suite.js_](https://github.com/rubensworks/rdf-test-suite.js),
+Using [**rdf-test-suite.js**](https://github.com/rubensworks/rdf-test-suite.js),
 the latest specification test suite manifests are executed each time a new commit is pushed to the parser's git repositories.
-This guarantees full compliance upon each new change, as any breakages can be detected immediately.
+This guarantees full compliance upon each new change, as any breakages are detected immediately.
 
-Finally, I invested a lot of time in optimizing both parsers as much as possible.
+Finally, I invested a lot of time in **optimizing** both parsers as much as possible.
 Even though streaming parsers are typically slower than bulk parsers due to their streaming overhead,
 my implementations manage to outperform other bulk parsers in many cases.
 Try it out yourself by running the performance tests for the
@@ -430,7 +429,7 @@ myParser.end();
 {:.demo-nodejs}
 <figcaption markdown="block">
 <span class="label">Listing 7</span>
-Example of parsing a JSON-LD document in chunks with _jsonld-streaming-parser.js_.
+Example of parsing a JSON-LD document in chunks with **jsonld-streaming-parser.js**.
 </figcaption>
 </figure>
 
@@ -461,6 +460,6 @@ myParser.end();
 {:.demo-nodejs}
 <figcaption markdown="block">
 <span class="label">Listing 8</span>
-Example of parsing an RDF/XML document in chunks with _rdfxml-streaming-parser.js_.
+Example of parsing an RDF/XML document in chunks with **rdfxml-streaming-parser.js**.
 </figcaption>
 </figure>
