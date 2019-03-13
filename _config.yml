@@ -37,6 +37,8 @@ scholar:
     - _type
     - _slides
     - _poster
+    - _video
+    - _highlighted
 
 exclude:
   - script
