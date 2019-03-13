@@ -5,7 +5,7 @@ tags:        [ rdf, javascript, node, architecture, linked data ]
 comments:    true
 title:       "A story of streaming RDF parsers"
 subtitle:    "How I implemented streaming JSON-LD and RDF/XML parsers in JavaScript."
-date:        2019-02-14 13:15:29 +0200
+date:        2019-03-13 14:00:00 +0200
 ---
 <p class="post-abstract" markdown="1">
 Multiple serialization formats are currently being recommended by the W3C to represent RDF.
