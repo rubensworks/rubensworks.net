@@ -38,7 +38,7 @@ and it also allows **very large documents** to be parsed, event when they don't 
 RDF parsers for most popular RDF serializations already exist for JavaScript.
 However, not all of them parse in a *streaming* way.
 At the time of writing, [N3.js](https://ruben.verborgh.org/blog/2013/04/30/lightning-fast-rdf-in-javascript/)
-is the only spec-compliant streaming parser in JavaScript I am aware of. It can handle N3-like RDF serializations such as [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax)) and [Turtle](https://en.wikipedia.org/wiki/TriG_(syntax)).
+is the only spec-compliant streaming parser in JavaScript I am aware of. It can handle N3-like RDF serializations such as [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax)) and [TriG](https://en.wikipedia.org/wiki/TriG_(syntax)).
 As such, there is still a need for streaming parsing of documents in other widely used serializations such as RDF/XML and JSON-LD.
 This need for example exists in [Comunica](http://comunica.linkeddatafragments.org/),
 a framework for querying Linked Data on the Web, which processes queries in a streaming way.
