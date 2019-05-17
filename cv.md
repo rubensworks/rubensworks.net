@@ -7,7 +7,7 @@ show_in_nav: false
 
 ## Short Biography
 
-<strong>
+{:.cv-biography}
 Ruben Taelman is a finishing PhD student at [IDLab](http://www.ugent.be/ea/idlab/en), Ghent University – imec, Belgium.
 His research concerns the decentralized publication and querying of Linked Data on the Web,
 and investigating the trade-offs that exist between server and client.
@@ -21,55 +21,126 @@ the [Web Conference](https://www.iw3c2.org/),
 the [International Semantic Web Conference (ISWC)](http://swsa.semanticweb.org/content/international-semantic-web-conference-iswc),
 and the [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/).
 Additionally, he has served as a reviewer and program committee member for these journals and conferences.
-</strong>
 
 ## Academic Work Experience
 
-* **Visiting Researcher**, [National Institute of Informatics](https://www.nii.ac.jp/en/) *(2017-2018)*
-    <br />
-    <span style="font-style:italic">I visited [Hideaki Takeda](http://www-kasm.nii.ac.jp/~takeda/) in Japan
-    to study [the fundamentals of semantic versioned querying](http://localhost:4000/publications/taelman_iswc_workshop_semanticversionedquerying_2018/).</span>
-* **Doctoral Researcher**, [IDLab](http://www.ugent.be/ea/idlab/en), Ghent University — imec, *(2015-now)*
-    <br />
-    <span style="font-style:italic">Under the supervision of <a href="https://ruben.verborgh.org/">Ruben Verborgh</a>,
-    I am researching decentralized publication and querying of Linked Data on the Web.
-    </span>
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Visiting Researcher"
+    startdate="2017"
+    enddate="2018"
+    location="[National Institute of Informatics](https://www.nii.ac.jp/en/)"
+    description="I visited [Hideaki Takeda](http://www-kasm.nii.ac.jp/~takeda/) in Japan
+    to study [the fundamentals of semantic versioned querying](http://localhost:4000/publications/taelman_iswc_workshop_semanticversionedquerying_2018/)."
+%}
+{% include cv-listing.html
+    subject="Doctoral Researcher"
+    startdate="2015"
+    enddate="now"
+    location="[IDLab, Ghent University — imec](http://www.ugent.be/ea/idlab/en)"
+    description="Under the supervision of [Ruben Verborgh](https://ruben.verborgh.org/),
+    I am researching decentralized publication and querying of Linked Data on the Web."
+%}
+</ul>
 
 ## Education
 
-* Doctor of Computer Science Engineering (Ghent University, Belgium) *(2015 - now)*
-* Master of Science (MS) in Computer Science Engineering: Software Engineering (Ghent University, Belgium) *(2013 - 2015)*
-    <br />*With great honor*
-    <br /> Thesis: [Continuously Updating Queries over Real-Time Linked Data](http://localhost:4000/publications/taelman_mastersthesis/)
-* Bachelor of Science (BS) in Informatics (Ghent University, Belgium) *(2010 - 2013)*
-    <br />*With honor*
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Doctor of Computer Science Engineering"
+    startdate="2015"
+    enddate="now"
+    location="Ghent University, Belgium"
+    description=""
+%}
+{% include cv-listing.html
+    subject="Master in Computer Science Engineering"
+    startdate="2013"
+    enddate="2015"
+    location="Ghent University, Belgium"
+    description="With great honor
+    <br />Thesis: [Continuously Updating Queries over Real-Time Linked Data](http://localhost:4000/publications/taelman_mastersthesis/)"
+%}
+{% include cv-listing.html
+    subject="Bachelor in Informatics"
+    startdate="2010"
+    enddate="2013"
+    location="Ghent University, Belgium"
+    description="With honor"
+%}
+</ul>
 
 ## Teaching
 
 ### Courses
 
-* **Web Development**, Ghent University, *(2017-2019)*
-    <br />Coaching of Computer Science students on designing and implementing Web applications.
-* **Design of Cloud and Mobile Applications**, Ghent University, *(2015-2017)*
-    <br />Coaching of Informatics students on designing and implementing cloud applications.
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Web Development"
+    startdate="2017"
+    enddate="now"
+    location="Ghent University, Belgium"
+    description="Coaching of Computer Science students on designing and implementing Web applications."
+%}
+{% include cv-listing.html
+    subject="Design of Cloud and Mobile Applications"
+    startdate="2015"
+    enddate="2017"
+    location="Ghent University, Belgium"
+    description="Coaching of Informatics students on designing and implementing cloud applications."
+%}
+</ul>
 
 ### Supervision of Master Students
 
-* Serge Morel *(2018-now)*
-    <br />Computational integrity for outsourced execution of SPARQL queries
-* Isa Sebrechts *(2018-now)*
-    <br />Usability of distributed data sources for modern Web applications
-* Wouter Vandenberghe *(2017-now)*
-    <br />An analysis of the effects of HTTP2 on a low-cost query interface
-* Thibault Mahieu *(2017-2018)*
-    <br />[Reducing storage requirements of multi-version graph databases using forward and reverse deltas](https://lib.ugent.be/fulltxt/RUG01/002/495/106/RUG01-002495106_2018_0001_AC.pdf)
-* Brecht Hendrickx *(2017-2018)*
-    <br />[Client-side querying of media fragments using a low-cost server interface](https://lib.ugent.be/fulltxt/RUG01/002/494/561/RUG01-002494561_2018_0001_AC.pdf)
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Serge Morel"
+    startdate="2018"
+    enddate="now"
+    location="Ghent University, Belgium"
+    description="Computational integrity for outsourced execution of SPARQL queries"
+%}
+{% include cv-listing.html
+    subject="Isa Sebrechts"
+    startdate="2018"
+    enddate="now"
+    location="Ghent University, Belgium"
+    description="Usability of distributed data sources for modern Web applications"
+%}
+{% include cv-listing.html
+    subject="Wouter Vandenberghe"
+    startdate="2018"
+    enddate="now"
+    location="Ghent University, Belgium"
+    description="An analysis of the effects of HTTP2 on a low-cost query interface"
+%}
+{% include cv-listing.html
+    subject="Thibault Mahieu"
+    startdate="2017"
+    enddate="2018"
+    location="Ghent University, Belgium"
+    description="[Reducing storage requirements of multi-version graph databases using forward and reverse deltas](https://lib.ugent.be/fulltxt/RUG01/002/495/106/RUG01-002495106_2018_0001_AC.pdf)"
+%}
+{% include cv-listing.html
+    subject="Brecht Hendrickx"
+    startdate="2017"
+    enddate="2018"
+    location="Ghent University, Belgium"
+    description="[Client-side querying of media fragments using a low-cost server interface](https://lib.ugent.be/fulltxt/RUG01/002/494/561/RUG01-002494561_2018_0001_AC.pdf)"
+%}
+</ul>
 
 ## Awards
 
-* **Best Paper Award** for ["Continuously Updating Query Results over Real-Time Linked Data"](/publications/taelman_mepdaw_2016/)
-    <br />*2nd Workshop on Managing the Evolution and Preservation of the Data Web (2016)*
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Best Paper Award"
+    date="2016"
+    subtitle="[Continuously Updating Query Results over Real-Time Linked Data](/publications/taelman_mepdaw_2016/)"
+    description="2nd Workshop on Managing the Evolution and Preservation of the Data Web (2016)"
+%}
+</ul>
 
 ## Publications
 
@@ -96,9 +167,26 @@ Additionally, he has served as a reviewer and program committee member for these
 
 ### Tutorials
 
-* Olaf Hartig and Ruben Taelman. ["An Introduction to GraphQL"](https://www.ida.liu.se/research/semanticweb/events/GraphQLTutorialAtISWC2019.shtml). *Half-day tutorial at the [18th International Semantic Web Conference (ISWC 2019)](https://iswc2019.semanticweb.org/), Auckland, New Zealand, 2019.*
-* Ruben Taelman, Joachim Van Herwegen and Ruben Verborgh. ["Building Decentralized Applications with Solid and Comunica"](https://comunica.github.io/Tutorial-ISWC2019-Solid-Comunica/). *Full-day tutorial at the [18th International Semantic Web Conference (ISWC 2019)](https://iswc2019.semanticweb.org/), Auckland, New Zealand, 2019*.
-* Ruben Taelman and Joachim Van Herwegen. ["Querying Linked Data with Comunica"](https://comunica.github.io/Tutorial-ESWC2019-Comunica/). *Half-day tutorial at the [16th Extended Semantic Web Conference (ESWC2019)](https://2019.eswc-conferences.org/), Portoroz, Slovenia, 2019.*
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="[An Introduction to GraphQL](https://www.ida.liu.se/research/semanticweb/events/GraphQLTutorialAtISWC2019.shtml)"
+    date="2019"
+    authors="Olaf Hartig, Ruben Taelman"
+    description="Half-day tutorial at the [18th International Semantic Web Conference (ISWC 2019)](https://iswc2019.semanticweb.org/), Auckland, New Zealand, 2019."
+%}
+{% include cv-listing.html
+    subject="[Building Decentralized Applications with Solid and Comunica](https://comunica.github.io/Tutorial-ISWC2019-Solid-Comunica/)"
+    date="2019"
+    authors="Ruben Taelman, Joachim Van Herwegen, Ruben Verborgh"
+    description="Full-day tutorial at the [18th International Semantic Web Conference (ISWC 2019)](https://iswc2019.semanticweb.org/), Auckland, New Zealand, 2019."
+%}
+{% include cv-listing.html
+    subject="[Querying Linked Data with Comunica](https://comunica.github.io/Tutorial-ESWC2019-Comunica/)"
+    date="2019"
+    authors="Ruben Taelman, Joachim Van Herwegen"
+    description="Half-day tutorial at the [16th Extended Semantic Web Conference (ESWC2019)](https://2019.eswc-conferences.org/), Portoroz, Slovenia, 2019."
+%}
+</ul>
 
 ### Journal Reviewer
 
@@ -108,6 +196,7 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2017 (2 times)
 * [Data Science](https://www.iospress.nl/journal/data-science/)
     * 2019
+{:.cv-listing}
 
 ### Program Committee Member
 
@@ -116,7 +205,7 @@ Additionally, he has served as a reviewer and program committee member for these
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2018
     * 2019
-* The [Web Conference](https://www.iw3c2.org/)
+* [The Web Conference](https://www.iw3c2.org/)
     * 2018 ([Developers' Track](https://www2018.thewebconf.org/program/developers-track/))
 * [SEMANTiCS Conference](https://semantics.cc/)
     * 2017 (Poster & Demo Track)
@@ -133,3 +222,4 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2019
 * [Open Mighty Storage Challenge (MOCHA)](https://project-hobbit.eu/open-challenges/mocha-open-challenge/)
     * 2017
+{:.cv-listing}

@@ -546,3 +546,56 @@ figure {
         display: block;
     }
 }
+
+/**
+ * CV
+ */
+
+.cv-biography {
+    font-weight: bold;
+}
+
+.cv-listing {
+    list-style: none;
+    li {
+      margin-bottom: 6px;
+    }
+    .cv-listing-subject {
+        font-weight: bold;
+        p { display: inline }
+    }
+    .cv-listing-subtitle {
+        display: block;
+        font-weight: bold;
+        color: $brand-color;
+        margin-left: 10px;
+        p { display: inline }
+    }
+    .cv-listing-location {
+        font-weight: bold;
+        float: right;
+        color: $brand-color;
+        p { display: inline }
+    }
+    .cv-listing-authors {
+        display: block;
+        font-style: italic;
+        color: $grey-color-dark;
+        p { display: inline }
+    }
+    .cv-listing-period {
+        color: $grey-color;
+        font-style: italic;
+        display: inline-block;
+        float: right;
+        width: 120px;
+        text-align: center;
+    }
+    .cv-listing-description {
+        display: block;
+        margin: 2px 0 0 10px;
+        font-size: 0.9em;
+        font-style: italic;
+        p { display: inline }
+    }
+}

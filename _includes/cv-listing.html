@@ -1,0 +1,19 @@
+<li>
+    <span class="cv-listing-subject">{{ include.subject | markdownify }}</span>
+    {% if include.date %}
+    <span class="cv-listing-period">{{ include.date }}</span>
+    {% endif %}
+    {% if include.startdate %}
+    <span class="cv-listing-period">{{ include.startdate }} - {{ include.enddate }}</span>
+    {% endif %}
+    {% if include.subtitle %}
+    <span class="cv-listing-subtitle">{{ include.subtitle | markdownify }}</span>
+    {% endif %}
+    {% if include.location %}
+    <span class="cv-listing-location">{{ include.location | markdownify }}</span>
+    {% endif %}
+    {% if include.authors %}
+    <span class="cv-listing-authors">{{ include.authors | markdownify }}</span>
+    {% endif %}
+    <span class="cv-listing-description">{{ include.description | markdownify }}</span>
+</li>
