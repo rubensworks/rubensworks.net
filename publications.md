@@ -2,6 +2,7 @@
 layout: page
 title: Publications
 permalink: /publications/
+order: 3
 ---
 
 As a [researcher](/about/), I write publications about my work, which are listed on this page.
