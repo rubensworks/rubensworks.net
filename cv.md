@@ -186,6 +186,12 @@ Additionally, he has served as a reviewer and program committee member for these
     authors="Ruben Taelman, Joachim Van Herwegen"
     description="Half-day tutorial at the [16th Extended Semantic Web Conference (ESWC2019)](https://2019.eswc-conferences.org/), Portoroz, Slovenia, 2019."
 %}
+{% include cv-listing.html
+    subject="[Modeling, Generating and Publishing knowledge as Linked Data](http://rml.io/EKAW2016tutorial.html)"
+    date="2016"
+    authors="Anastasia Dimou, Ruben Taelman, Pieter Heyvaert, Ruben Verborgh"
+    description="Full-day tutorial at the [20th International Conference on Knowledge Engineering and Knowledge Management (EKAW2016)](http://ekaw2016.cs.unibo.it/), Bologna, Italy, 2016."
+%}
 </ul>
 
 ### Journal Reviewer
