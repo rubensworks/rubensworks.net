@@ -5,8 +5,8 @@
     <div class="site-title-wrapper">
       <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
       <meta property="foaf:name" content="{{ site.title }}"/>
-      <meta property="foaf:logo" resource="{{ "/img/favicon.png" | prepend: site.baseurl | prepend: site.url }}"/>
-      <meta property="foaf:img" resource="{{ "/img/favicon.png" | prepend: site.baseurl | prepend: site.url }}"/>
+      <meta property="foaf:logo" resource="{{ "/img/ruben.jpg" | prepend: site.baseurl | prepend: site.url }}"/>
+      <meta property="foaf:img" resource="{{ "/img/ruben.jpg" | prepend: site.baseurl | prepend: site.url }}"/>
       <meta property="foaf:homepage" resource="{{ site.baseurl | prepend: site.url }}"/>
       <meta property="foaf:workplaceHomepage" resource="http://idlab.ugent.be/"/>
       <meta property="foaf:workplaceHomepage" resource="http://www.ugent.be/"/>
@@ -45,12 +45,6 @@
         </li>
         {% endif %}
 
-        {% if site.googleplus_username %}
-        <li>
-          {% include icon-googleplus.html username=site.googleplus_username %}
-        </li>
-        {% endif %}
-
         {% if site.googlescholar_username %}
         <li>
           {% include icon-googlescholar.html username=site.googlescholar_username %}
@@ -67,8 +61,8 @@
   <div class="wrapper">
     <nav class="site-nav">
       <div class="trigger">
-        <a href="{{ site.baseurl }}/" class="rw-icon">
-          <img src="{{ site.baseurl }}/img/rw_logo.png" alt="Rubens Works" />
+        <a href="{{ site.baseurl }}/" class="rt-icon">
+          <img src="{{ site.baseurl }}/img/ruben.jpg" alt="Ruben Taelman" />
         </a>
         {% assign sorted_pages = site.pages | sort:"order" %}
         {% for my_page in sorted_pages %}

@@ -52,12 +52,12 @@
     border-bottom: 1px solid $blue-color;
 }
 
-.rw-icon {
+.rt-icon {
     display: inline-block;
     margin: -5px 10px;
     vertical-align: middle;
     margin-bottom: 0px;
-    border: solid 2px black;
+    border: solid 2px $blue-color-dark;
     -o-transition:.2s;
     -ms-transition:.2s;
     -moz-transition:.2s;
@@ -69,9 +69,9 @@
     border-radius: ($rw-icon-size / 2 + 4);
     -webkit-border-radius: ($rw-icon-size / 2 + 4);
     -moz-border-radius: ($rw-icon-size / 2 + 4);
-    background: url(/img/rw_logo.png) no-repeat;
-    background-size: $rw-icon-size $rw-icon-size;
-    background-color: black;
+    background: url(/img/ruben.jpg) no-repeat;
+    background-size: ($rw-icon-size + 4) ($rw-icon-size + 4);
+    background-color: $blue-color-dark;
     background-position: center;
     img {
         opacity: 0;
@@ -79,9 +79,9 @@
     }
 }
 
-.rw-icon:hover {
-    border: solid 2px $blue-color-dark;
-    background-size: ($rw-icon-size - 5) ($rw-icon-size - 5);
+.rt-icon:hover {
+    border: solid 2px $blue-color-light;
+    background-size: ($rw-icon-size) ($rw-icon-size);
 }
 
 .site-nav {
@@ -598,4 +598,16 @@ figure {
         font-style: italic;
         p { display: inline }
     }
+}
+
+/**
+ * About
+ */
+.about-side {
+	float: left;
+	height: 300px;
+	margin-right: 10px;
+	img {
+		border: solid 4px $blue-color-dark;
+	}
 }
