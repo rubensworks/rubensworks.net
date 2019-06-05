@@ -1,0 +1,29 @@
+@media print {
+    .site-header {
+        border: none;
+        font-size: 18px;
+        .social-media-list-wrapper {
+            display: none;
+        }
+    }
+    .site-nav-header {
+        display: none;
+    }
+    .site-footer {
+        display: none;
+    }
+    
+    body {
+        font-size: 12px;
+    }
+    
+    h1 {
+        font-size: 22px !important;
+    }
+    h2 {
+        font-size: 18px !important;
+    }
+    h3, h4 {
+        font-size: 15px !important;
+    }
+}
