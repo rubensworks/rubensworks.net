@@ -1,3 +1,30 @@
+@article{taelman_iswc_ostrich_2019,
+  author    = {Taelman, Ruben and Vander Sande, Miel and Van Herwegen, Joachim and Mannens, Erik and Verborgh, Ruben},
+  title     = {Triple Storage for Random-Access Versioned Querying of RDF Archives (Short version)},
+  booktitle = {Proceedings of the 18th International Semantic Web Conference},
+  year      = {2019},
+  month     = {october},
+  url       = {https://rdfostrich.github.io/article-iswc2019-journal-ostrich/},
+  abstract  = {
+In addition to their latest version, Linked Open Datasets on the Web can also contain useful information in or between previous versions. In order to exploit this information, we can maintain history in RDF archives. Existing approaches either require much storage space, or they do not meet sufficiently expressive querying demands. In this extended abstract, we discuss an RDF archive indexing technique that has a low storage overhead, and adds metadata for reducing lookup times. We introduce algorithms based on this technique for efficiently evaluating versioned queries. Using the BEAR RDF archiving benchmark, we evaluate our implementation, called OSTRICH. Results show that OSTRICH introduces a new trade-off regarding storage space, ingestion time, and querying efficiency. By processing and storing more metadata during ingestion time, it significantly lowers the average lookup time for versioning queries. Our storage technique reduces query evaluation time through a preprocessing step during ingestion, which only in some cases increases storage space when compared to other approaches. This allows data owners to store and query multiple versions of their dataset efficiently, lowering the barrier to historical dataset publication and analysis.
+  },
+  _type     = {Conference},
+  note      = {Accepted for publication}
+}
+
+@inproceedings{vandevyvere_eswc_website_2019,
+  author    = {Van de Vyvere, Brecht and Taelman, Ruben and Colpaert, Pieter and Verborgh, Ruben},
+  title     = {Using an existing website as a queryable low-cost LOD publishing interface},
+  booktitle = {Proceedings of the 16th Extended Semantic Web Conference: Posters and Demos},
+  year      = {2019},
+  month     = {june},
+  url       = {https://brechtvdv.github.io/Article-Using-an-existing-website-as-a-queryable-low-cost-LOD-publishing-interface/},
+  abstract  = {
+Maintaining an Open Dataset comes at an extra recurring cost when it is published in a dedicated Web interface. As there is not often a direct financial return from publishing a dataset publicly, these extra costs need to be minimized. Therefore we want to explore reusing existing infrastructure by enriching existing websites with Linked Data. In this demonstrator, we advised the data owner to annotate a digital heritage website with JSON-LD snippets, resulting in a dataset of more than three million triples that is now available and officially maintained. The website itself is paged, and thus hydra partial collection view controls were added in the snippets. We then extended the modular query engine Comunica to support following page controls and extracting data from HTML documents while querying. This way, a SPARQL or GraphQL query over multiple heterogeneous data sources can power automated data reuse. While the query performance on such an interface is visibly poor, it becomes easy to create composite data dumps. As a result of implementing these building blocks in Comunica, any paged collection and enriched HTML page now becomes queryable by the query engine. This enables heterogenous data interfaces to share functionality and become technically interoperable.
+  },
+  _type     = {Demo}
+}
+
 @inproceedings{taelman_w3cdataws_graphql_2019,
   author    = {Taelman, Ruben and Vander Sande, Miel and Verborgh, Ruben},
   title     = {Bridges between GraphQL and RDF},
@@ -37,7 +64,6 @@ which only in some cases increases storage space when compared to other approach
 This allows data owners to store and query multiple versions of their dataset efficiently,
 lowering the barrier to historical dataset publication and analysis.
   },
-  note      = {Accepted for publication},
   _type     = {Journal},
   _highlighted = {true}
 }
@@ -66,7 +92,6 @@ Our findings show that the generator achieves a sufficient level of realism,
 based on the existing coherence metric and new metrics we introduce specifically for the public transport domain.
 Thereby, podigg provides a flexible foundation for benchmarking RDF data management systems with geospatial and temporal data.
   },
-  note      = {Accepted for publication},
   _type     = {Journal},
   _highlighted = {true}
 }
