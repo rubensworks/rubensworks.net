@@ -228,4 +228,6 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2019
 * [Open Mighty Storage Challenge (MOCHA)](https://project-hobbit.eu/open-challenges/mocha-open-challenge/)
     * 2017
+* [International Workshop on Semantics for Transport](https://sem4tra.linkeddata.es/)
+    * 2019
 {:.cv-listing}
