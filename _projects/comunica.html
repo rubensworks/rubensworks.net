@@ -6,7 +6,7 @@ description: "A modular framework for querying Linked Data on the Web"
 weight: 1
 ---
 
-<img src="/img/logo_comunica.svg" alt="Comunica" width="30%" style="float: left; margin: 5px 25px 5px" />
+<img src="/img/logo_comunica.svg" alt="Comunica" width="30%" style="float: left; margin: 5px 25px 55px" />
 
 <p>
   <a href="http://comunica.linkeddatafragments.org/">Comunica</a> is a modular, Web-friendly framework for creating Linked Data query engines.
@@ -16,6 +16,7 @@ weight: 1
 <ul>
   <li>It supports queries in the <a href="http://query.linkeddatafragments.org/#transientDatasources=http%3A%2F%2Ffragments.dbpedia.org%2F2016-04%2Fen">SPARQL</a>
       and <a href="http://query.linkeddatafragments.org/#transientDatasources=http%3A%2F%2Ffragments.dbpedia.org%2F2016-04%2Fen&query=%7B%0A%20%20label%0A%20%20director%20%7B%0A%20%20%20%20label%0A%20%20%7D%0A%20%20starring(label_en%3A%20%22Brad%20Pitt%22)%0A%7D&queryContext=%7B%0A%20%20%22%40context%22%3A%20%7B%0A%20%20%20%20%22label%22%3A%20%7B%20%22%40id%22%3A%20%22http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23label%22%2C%20%22%40singular%22%3A%20true%20%7D%2C%0A%20%20%20%20%22label_en%22%3A%20%7B%20%22%40id%22%3A%20%22http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23label%22%2C%20%22%40language%22%3A%20%22en%22%20%7D%2C%0A%20%20%20%20%22director%22%3A%20%7B%20%22%40id%22%3A%20%22http%3A%2F%2Fdbpedia.org%2Fontology%2Fdirector%22%2C%20%22%40singular%22%3A%20true%20%7D%2C%0A%20%20%20%20%22director_label%22%3A%20%7B%20%22%40singular%22%3A%20true%20%7D%2C%0A%20%20%20%20%22starring%22%3A%20%7B%20%22%40id%22%3A%20%22http%3A%2F%2Fdbpedia.org%2Fontology%2Fstarring%22%2C%20%22%40singular%22%3A%20true%20%7D%0A%20%20%7D%0A%7D&resultsToTree=false&queryFormat=graphql">GraphQL</a> syntax,</li>
+  <li>supports a wide range of RDF formats (you can even <a href="http://query.linkeddatafragments.org/#datasources=http%3A%2F%2Ffragments.dbpedia.org%2F2016-04%2Fen&transientDatasources=https%3A%2F%2Fwww.rubensworks.net%2F&query=SELECT%20*%0AWHERE%20%7B%0A%20%20rubent%3Ame%20foaf%3Atopic_interest%20%3Finterest.%0A%20%20%3Finterest%20rdfs%3Alabel%20%3FinterestName.%0A%20%20FILTER%20LANGMATCHES(LANG(%3FinterestName)%2C%20%20%22EN%22)%0A%7D">query this website</a>),</li>
   <li>enables <a href="http://query.linkeddatafragments.org/#transientDatasources=http%3A%2F%2Ffragments.dbpedia.org%2F2016-04%2Fen;http%3A%2F%2Fdata.linkeddatafragments.org%2Fviaf;http%3A%2F%2Fdata.linkeddatafragments.org%2Fharvard&query=SELECT%20%3Fperson%20%3Fname%20%3Fbook%20%3Ftitle%20%7B%0A%20%20%3Fperson%20dbpedia-owl%3AbirthPlace%20%5B%20rdfs%3Alabel%20%22San%20Francisco%22%40en%20%5D.%0A%20%20%3FviafID%20schema%3AsameAs%20%3Fperson%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20schema%3Aname%20%3Fname.%0A%20%20%3Fbook%20dc%3Acontributor%20%5B%20foaf%3Aname%20%3Fname%20%5D%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20dc%3Atitle%20%3Ftitle.%0A%7D">federation</a> over heterogeneous sources such as SPARQL endpoints, Linked Data documents and versioned OSTRICH datasets,</li>
   <li>and is highly flexible and configurable to allow fine-tuning for any purpose or task.</li>
 </ul>
