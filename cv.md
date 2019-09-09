@@ -27,6 +27,14 @@ Additionally, he has served as a reviewer and program committee member for these
 <ul class="cv-listing">
 {% include cv-listing.html
     subject="Visiting Researcher"
+    startdate="2019"
+    enddate="2020"
+    location="[Vienna University of Economics and Business](https://www.wu.ac.at/en/infobiz/)"
+    description="I visited [Sabrina Kirrane](http://sabrinakirrane.com/) in Austria
+    to collaborate on privacy-preserving querying within decentralized environments."
+%}
+{% include cv-listing.html
+    subject="Visiting Researcher"
     startdate="2017"
     enddate="2018"
     location="[National Institute of Informatics](https://www.nii.ac.jp/en/)"
