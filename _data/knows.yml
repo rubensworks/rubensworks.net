@@ -1,9 +1,27 @@
 "Anastasia Dimou":
   url: "https://be.linkedin.com/in/anastasia-dimou-a501511b"
   foaf: "https://data.verborgh.org/people/anastasia_dimou"
+"Arne Gevaert":
+  url: "https://be.linkedin.com/in/arne-gevaert-5a0a49176"
+  foaf: "https://data.verborgh.org/people/arne_gevaert"
+"Ben De Meester":
+  url: "http://ben.de-meester.org/"
+  foaf: "http://ben.de-meester.org/#me"
+"Brecht Van de Vyvere":
+  url: "https://www.linkedin.com/in/brecht-van-de-vyvere-b9232b9b"
+  foaf: "https://data.verborgh.org/people/brecht_van_de_vyvere"
+"Emanuele Della Valle":
+  url: "http://emanueledellavalle.org/"
+  foaf: "https://data.verborgh.org/people/emanuele_della_valle"
 "Erik Mannens":
   url: "https://be.linkedin.com/in/erikmannens"
   foaf: "https://data.verborgh.org/people/erik_mannens"
+"Geroen Joris":
+  url: "https://www.linkedin.com/in/geroenjoris"
+  foaf: "https://data.verborgh.org/people/geroen_joris"
+"Hideaki Takeda":
+  url: "http://www-kasm.nii.ac.jp/~takeda/"
+  foaf: "https://data.verborgh.org/people/hideaki_takeda"
 "Miel Vander Sande":
   url: "https://be.linkedin.com/in/mielvds"
   foaf: "https://data.verborgh.org/people/miel_vander_sande"
@@ -13,9 +31,24 @@
 "Pieter Heyvaert":
   url: "https://pieterheyvaert.com/"
   foaf: "https://pieterheyvaert.com/#me"
+"Riccardo Tommasini":
+  url: "https://riccardotommasini.com/"
+  foaf: "https://riccardotommasini.com/"
+"Joachim Van Herwegen":
+  url: "https://be.linkedin.com/in/johan-van-herwegen-11a67443"
+  foaf: "https://data.verborgh.org/people/joachim_van_herwegen"
+"Julián Andrés Rojas Meléndez":
+  url: "https://www.linkedin.com/in/julianrojas87"
+  foaf: "https://www.linkedin.com/in/julianrojas87"
+"Katrien Mostaert":
+  url: "https://be.linkedin.com/in/katrien-mostaert-8722236"
+  foaf: "https://data.verborgh.org/people/katrien_mostaert"
 "Rik Van de Walle":
   url: "https://be.linkedin.com/in/rvdwalle"
   foaf: "https://data.verborgh.org/people/rik_van_de_walle"
+"Raf Buyle":
+  url: "https://be.linkedin.com/in/rafbuyle"
+  foaf: "https://data.verborgh.org/people/raf_buyle"
 "Ruben Taelman":
   url: "https://www.rubensworks.net/"
   foaf: "https://www.rubensworks.net/#me"
@@ -25,3 +58,6 @@
 "Sarven Capadisli":
   url: "http://csarven.ca/"
   foaf: "http://csarven.ca/#i"
+"Tim Berners-Lee":
+  url: "https://www.w3.org/People/Berners-Lee/"
+  foaf: "https://www.w3.org/People/Berners-Lee/card#i"
