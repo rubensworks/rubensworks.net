@@ -17,11 +17,21 @@
     line-height: 56px;
     letter-spacing: -1px;
     margin-bottom: 0;
+	
+    -o-transition:0s;
+    -ms-transition:0s;
+    -moz-transition:0s;
+    -webkit-transition:0s;
+    transition:0s;
 
     &,
     &:visited {
         color: $grey-color-dark;
     }
+	
+	&:hover {
+		border: none;
+	}
 }
 
 .site-title-wrapper {
@@ -121,6 +131,22 @@
         }
     }
 }
+
+// .listed {
+//   border-left: 2px solid $blue-color-darker;
+//   padding-left: 4px;
+//   margin-left: -8px;
+//
+//   -o-transition:.2s;
+//   -ms-transition:.2s;
+//   -moz-transition:.2s;
+//   -webkit-transition:.2s;
+//   transition:.2s;
+//
+//   &:hover {
+//     border-left: solid 2px $blue-color;
+//   }
+// }
 
 
 
@@ -442,7 +468,7 @@ figure {
         display: none;
     }
     .publication {
-        margin-bottom: 10px;
+        padding-bottom: 10px;
         .title {
             font-weight: bold;
         }

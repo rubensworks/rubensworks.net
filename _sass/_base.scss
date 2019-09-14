@@ -96,13 +96,19 @@ a {
     color: $brand-color;
     text-decoration: none;
 
+    -o-transition:.2s;
+    -ms-transition:.2s;
+    -moz-transition:.2s;
+    -webkit-transition:.2s;
+    transition:.2s;
+
     &:visited {
         color: darken($brand-color, 15%);
     }
 
     &:hover {
-        color: $text-color;
-        text-decoration: underline;
+	    color: lighten($brand-color, 5%);
+		border-bottom: 2px solid lighten($brand-color, 5%);
     }
 }
 
