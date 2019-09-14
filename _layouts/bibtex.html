@@ -2,7 +2,7 @@
 layout: default
 show_in_nav: false
 ---
-<div class="publication" itemscope itemtype="http://schema.org/ScholarlyArticle">
+<div class="publication" itemscope itemtype="http://schema.org/ScholarlyArticle" typeof="schema:ScholarlyArticle schema:CreativeWork" about="/publications/{{ page.url }}">
   <span class="type">{{ page.entry._type }}</span>
   <h1 itemprop="name">{{ page.entry.title }}</h1>
   <p class="details">
@@ -12,32 +12,35 @@ show_in_nav: false
     {% assign name = name | replace: "  ", " " %}
     {% assign knows = site.data.knows[name] %}
       {% if knows %}
-      <span about="/#me" typeof="foaf:Person">
-        <a class="author" itemprop="author" rel="foaf:knows" href="{{ knows.url }}" target="_blank">{{ name }}</a></span>{% else %}<span itemprop="author">{{ name }}</span>{% endif %}{% endfor %}</span><br />
+      <a class="author" itemprop="author" rel="foaf:maker schema:creator schema:author" href="{{ knows.url }}" resource="{{ knows.foaf }}" target="_blank">{{ name }}</a>
+      {% else %}
+  	<span itemprop="author">{{ name }}</span>
+  	{% endif %}
+    {% endfor %}</span><br />
     {% if page.entry.booktitle %}
-    <span class="in">In {{ page.entry.booktitle }} ({{ page.entry.year }})</span>
+    <span class="in" rel="schema:isPartOf">In {{ page.entry.booktitle }} ({{ page.entry.year }})</span>
     {% endif %}
     {% if page.entry.journal %}
-    <span class="in">In {{ page.entry.journal }} ({{ page.entry.year }})</span>
+    <span class="in" rel="schema:isPartOf">In {{ page.entry.journal }} ({{ page.entry.year }})</span>
     {% endif %}
   </p>
 
-  <p class="abstract">{{ page.entry.abstract }}</p>
+  <p class="abstract" rel="schema:description">{{ page.entry.abstract }}</p>
   <hr />
 
 
   <div class="links">
     {% if {{page.entry.url}} %}
-    <a href="{{page.entry.url}}" target="_blank">Article</a>
+    <a rel="schema:associatedMedia" href="{{page.entry.url}}" target="_blank">Article</a>
     {% endif %}
     {% if {{page.entry._poster}} %}
-    <a href="{{page.entry._poster}}" target="_blank">Poster</a>
+    <a rel="schema:associatedMedia" href="{{page.entry._poster}}" target="_blank">Poster</a>
     {% endif %}
     {% if {{page.entry._slides}} %}
-    <a href="{{page.entry._slides}}" target="_blank">Slides</a>
+    <a rel="schema:associatedMedia" href="{{page.entry._slides}}" target="_blank">Slides</a>
     {% endif %}
     {% if {{page.entry._video}} %}
-    <a href="{{page.entry._video}}" target="_blank">Video</a>
+    <a rel="schema:associatedMedia" href="{{page.entry._video}}" target="_blank">Video</a>
     {% endif %}
     <div class="toggle">
       <input type="checkbox" id="checkbox-bibtex" name="checkbox-bibtex" />

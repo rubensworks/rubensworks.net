@@ -40,3 +40,20 @@ layout: default
   <span class="more"><a href="/publications/">More publications</a></span>
 
 </div>
+
+<script type="application/ld+json">
+  {
+	"@context": { "@vocab": "http://xmlns.com/foaf/0.1/" },
+	"@id": "#me",
+	"knows": [
+	  {% for entry in site.data.knows %}
+	  {
+		"@id": "{{ entry[1].foaf }}",
+		"@type": "Person",
+		"name": "{{ entry[0] }}"
+	  },
+	  {% endfor %}
+	  {}
+	]
+  }
+</script>

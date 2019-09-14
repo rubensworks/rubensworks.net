@@ -1,15 +1,15 @@
-<div class="post-listing listed" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-listing listed" itemscope itemtype="http://schema.org/BlogPosting" typeof="schema:BlogPosting schema:CreativeWork" about="{{ post.url }}">
     {% if post.feature-img %}
     <div class="feature-img-placeholder">
         <a href="{{ post.url }}" class="title"><img src="{{ post.feature-img }}" alt="{{ post.title }}" class="feature-img" /></a>
     </div>
     {% endif %}
     <div class="post-content">
-        <a href="{{ post.url }}" class="title"><span itemprop="name headline">{{ post.title }}</span></a><br />
+        <a href="{{ post.url }}" class="title"><span about="{{ post.url }}" itemprop="name headline" property="schema:name schema:headline">{{ post.title }}</span></a><br />
         {% if post.subtitle %}
-        <span class="sub-title" itemprop="alternativeHeadline">{{ post.subtitle }}</span><br />
+        <span about="{{ post.url }}" class="sub-title" itemprop="alternativeHeadline" rel="schema:alternativeHeadline">{{ post.subtitle }}</span><br />
         {% endif %}
-        <span class="post-meta"><time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%-d %B %Y" }}</time></span><br />
+        <span class="post-meta"><time about="{{ post.url }}" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished" property="schema:datePublished">{{ post.date | date: "%-d %B %Y" }}</time></span><br />
         <span class="post-excerpt">
         {{ post.excerpt }}
         </span>
