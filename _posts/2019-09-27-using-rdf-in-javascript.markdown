@@ -29,11 +29,11 @@ and that good tooling gets us where we want.
 Concretely, this post covers the fundamentals of RDF in JavaScript,
 how to create RDF graphs yourself,
 how to retrieve them from the Web,
-and how to execute complex queries over them.
+and how to execute queries over them.
 I offer some concrete examples for each aspect using existing tools.
 It is not my aim to discuss all the available tooling,
 but instead to present the general idea,
-and give pointers to tools that could be used for this.
+and to give pointers to tools that could be used for this.
 
 ## Why JavaScript?
 
@@ -46,7 +46,7 @@ with the highly-performant [V8 engine](https://v8.dev/) that can run JavaScript 
 the [npm package manager](https://www.npmjs.com/),
 front-end frameworks such as [React](https://reactjs.org/) and [Angular](https://angular.io/),
 [TypeScript](https://www.typescriptlang.org/) as a typed superset of JavaScript,
-and a continuously improving language powered by the help of [Babel](https://babeljs.io/).
+and the continuously improving JavaScript language powered by the help of [Babel](https://babeljs.io/).
 For these reasons and more, JavaScript is an ideal platform for RDF application development that offers a lot of flexibility.
 
 ### RDFJS
@@ -56,7 +56,7 @@ For these reasons and more, JavaScript is an ideal platform for RDF application 
 Since 2018, the community has converged to a couple of specifications for enabling interoperability between different JavaScript applications,
 under the name of [RDFJS](http://rdf.js.org/).
 Today, most of the popular JavaScript libraries adhere to these specifications,
-which makes it possible to use them interchangeable, and in any combination.
+which makes it possible to use them interchangeably, and in any combination.
 This allows you to for example use an RDF parser from one developer,
 and pipe its output into an RDF store from another developer.
 
@@ -67,11 +67,11 @@ Five types of terms exist:
 * [Named Node](http://rdf.js.org/data-model-spec/#namednode-interface): Represents a thing by IRI, such as `https://www.rubensworks.net/#me`.
 * [Blank Node](http://rdf.js.org/data-model-spec/#blanknode-interface): Represents a thing without an explicit name.
 * [Literal](http://rdf.js.org/data-model-spec/#literal-interface): Represents a raw value of a certain datatype, such as `"Ruben"` or `1992`.
-* [Variable](http://rdf.js.org/data-model-spec/#variable-interface): Represents a variable, which can be used for matching values with in queries.
+* [Variable](http://rdf.js.org/data-model-spec/#variable-interface): Represents a variable, which can be used for matching values within queries.
 * [Default Graph](http://rdf.js.org/data-model-spec/#defaultgraph-interface): Represents the default graph in RDF. Other graphs can be represented with named or blank nodes.
 
 [RDF quads](http://rdf.js.org/data-model-spec/#quad-interface) are defined as an object with RDF terms for **subject**, **predicate**, **object** and **graph**.
-An RDF triple is a simpler form of a quad,
+An RDF triple is an alias of a quad,
 where the graph is set to the default graph.
 For the remainder of this document, I will just refer to RDF quads.
 
@@ -79,7 +79,7 @@ Finally, a [Data Factory](http://rdf.js.org/data-model-spec/#datafactory-interfa
 which allows you to easily create terms and quads that conform to this interface.
 Different Data Factory implementations exist, such as [`@rdfjs/data-model`](https://github.com/rdfjs-base/data-model)
 and the factory from [`N3.js`](https://github.com/rdfjs/N3.js#interface-specifications).
-For example, creating a quad representing someone's name with a data factory can be done like this:
+For example, creating a quad for representing someone's name with a data factory can be done like this:
 
 ```javascript
 const factory = require('@rdfjs/data-model');
@@ -91,7 +91,7 @@ const quad = factory.quad(
 );
 ```
 
-Reading raw values out of the quad can be done as follows:
+Reading raw values from the quad can be done as follows:
 
 ```javascript
 quad.subject.value === 'https://www.rubensworks.net/#me';
@@ -99,7 +99,7 @@ quad.predicate.value === 'http://schema.org/name';
 quad.object.value === 'Ruben';
 ```
 
-Checking whether or not quads and terms are equal to each other, the `equals` method can be used:
+For checking whether or not quads and terms are equal to each other, the `equals` method can be used:
 
 ```javascript
 factory.literal('Ruben').equals(factory.literal('Ruben'));  // true
@@ -115,9 +115,10 @@ For most of these specifications, corresponding [TypeScript typings exist](https
 and many libraries ship with their own typings as well,
 which makes RDFJS especially useful if you want to develop more strongly-typed JavaScript applications.
 
-While there are general-purpose RDF libraries available
-such as [`rdflib`](https://www.npmjs.com/package/rdflib) and [`rdf`](https://www.npmjs.com/package/rdf),
-I will focus in this post on smaller tools that have dedicated functionality.
+While there are general-purpose RDF(JS) libraries available
+such as [`rdflib`](https://github.com/linkeddata/rdflib.js) and [`rdf`](https://github.com/awwright/node-rdf),
+I will focus on dedicated tools with scoped functionality for the remainder of this post.
+Since they all conform to the RDFJS interfaces, they can however be used interchangably.
 
 ## Creating RDF graphs
 
@@ -158,7 +159,7 @@ store.addQuads([
 ```
 
 If your quads originate are produced as a stream (like from a [parser](https://www.rubensworks.net/blog/2019/03/13/streaming-rdf-parsers/)),
-then the stream-based `import` methods may be used instead:
+then the stream-based `import` method may be used instead:
 ```javascript
 const rdfParser = require("rdf-parse").default;
 const quadStream = rdfParser.parse(fs.createReadStream('cartoons.ttl'),
@@ -169,7 +170,7 @@ store.import(quadStream)
 ```
 
 In cases you quickly need to create a new store for a quad stream,
-then [`rdf-store-stream.js`] can be used as a convenience tool:
+then [`rdf-store-stream.js`](https://github.com/rubensworks/rdf-store-stream.js) can be used as a convenience tool:
 ```javascript
 const storeStream = require("rdf-store-stream").storeStream;
 
@@ -181,9 +182,8 @@ const store = await storeStream(quadStream);
 Looking up quads can be done through quad pattern-matching using the `match` method from the [RDFJS Source interface](https://rdf.js.org/stream-spec/#source-interface),
 where any of the quad components can be left `undefined` (or `null`) to allow anything to match with it.
 Since real-world RDF graphs are typically very large,
-lookups typically happen **asynchronously** so that found quads can be processed in a memory-efficient manner as soon as they are discovered.
-For this, the `match` method returns a stream of quads,
-which is just a [stream that emits RDFJS quads](https://rdf.js.org/stream-spec/#stream-interface).
+lookups typically happen **asynchronously** so that matched quads can be processed in a memory-efficient manner as soon as they are discovered.
+For this, the `match` method returns a [stream of RDF quads](https://rdf.js.org/stream-spec/#stream-interface).
 This stream is compatible with the [Readable stream interface](https://nodejs.org/api/stream.html#stream_readable_streams) of Node.js.
 
 For example, looking up everything with `https://www.rubensworks.net/#me` as subject can be done like this:
@@ -220,7 +220,7 @@ quadStream
 ```
 
 If your application does not require stream-based processing,
-and you just want to lookup an array of quads,
+and you just want to retrieve an array of quads,
 then the `getQuads` method may be used instead:
 ```javascript
 const quadsArray = store.getQuads(
@@ -236,12 +236,11 @@ _Alternatively, quad streams can be converted to arrays using tools such as [`ar
 
 Even though `N3.Store` uses a highly-efficient four-level index to store and lookup RDF quads,
 its main restriction is that it stores everything in-memory.
-On average, one million triples requires around 100MB,
-which means that storing ten million triples should still be achievable on average hardware (~1GB),
-but one hundred million triples may already be too much (~10GB).
+On average, storing ten million triples requires around 1GB of memory, which should still be achievable on average hardware.
+However, one hundred million triples may already be too much for average harware (~10GB).
 For these cases, dedicated on-disk tools may be preferable,
 such as the LevelDB-based [`node-quadstore`](https://github.com/beautifulinteractions/node-quadstore),
-or via highly compressed read-only [HDT files](https://github.com/RubenVerborgh/HDT-Node).
+or via highly compressed read-only [HDT files](http://www.rdfhdt.org/) ([Node.JS bindings](https://github.com/RubenVerborgh/HDT-Node)).
 
 Next to these low-level quad stores,
 more high-level datastructures exist, such as the [`Dataset` interface](https://rdf.js.org/dataset-spec/).
@@ -255,14 +254,14 @@ and [`rdf-dataset-indexed`](https://github.com/rdfjs-base/dataset-indexed).
 
 Thanks to the [Linked Data](https://www.w3.org/DesignIssues/LinkedData.html) rules,
 RDF is available on the Web behind HTTP URIs, such as `http://dbpedia.org/page/12_Monkeys` or `https://www.rubensworks.net/`.
-These URIs can then be **dereferenced** to look up its contents.
+These URIs can be **dereferenced** to look up its contents.
 Since RDF on the Web exists in various RDF serializations
 such as [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax)), [RDFa](https://rdfa.info/), and [JSON-LD](https://json-ld.org/),
 the dereferencing of RDF involves picking the correct parser for the returned RDF serialization.
 
-Concretely RDF dereferencing at a client for a URI typically involves the following steps:
+Concretely client-side RDF dereferencing for a given URI typically involves the following steps:
 
-1. Determine the **media types** from the available RDF parsers, such as `text/n3` and `text/html`.
+1. Determine the **media types** from the available RDF parsers, such as `text/n3` or `text/html`.
 2. Order the media types by **priority**, as different parsers may have different performance requirements.
 3. Perform [**content-negotation**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation) for the given URI to [retrieve an appropriate RDF serialization from the server](https://pieterheyvaert.com/blog/2019/02/25/nginx-conneg/).
 4. Pick the appropriate RDF **parser** based on the server's returned content type.
@@ -293,7 +292,7 @@ then the [`rdf-parse.js`](https://github.com/rubensworks/rdf-parse.js) can be us
 ## Querying RDF graphs
 
 While the previous two sections discussed the low-level handling of RDF on quad-level,
-this last section focuses more on the **linked** aspect of RDF data.
+this section focuses more on the **linked** aspect of RDF data.
 Concretely, I discuss some techniques for querying through RDF graphs
 by looking up information across multiple quads.
 
@@ -304,10 +303,10 @@ While there are several techniques out there to query RDF,
 I will focus on three query languages that have different goals:
 
 * [LDflex](https://github.com/RubenVerborgh/LDflex): A JavaScript-based domain-specific language for simple writing path-based expressions.
-* [GraphQL-LD](https://github.com/rubensworks/GraphQL-LD.js): An extension of the [GraphQL](https://graphql.org/) query language for enabling Linked Data to be queried.
+* [GraphQL-LD](https://github.com/rubensworks/GraphQL-LD.js): An extension of the [GraphQL](https://graphql.org/) query language for querying Linked Data.
 * [SPARQL](https://www.w3.org/TR/sparql11-query/): The standard for querying RDF as recommended by the World Wide Web Consortium.
 
-These three differ range in terms of their **query expressivity** (the variety of possible queries) and **developer complexity** (how easy queries can be written).
+These three languages differ in terms of their **query expressivity** (the variety of possible queries) and **developer complexity** (how easy queries can be written).
 While LDflex is the easiest to use, it offers the least expressive power.
 SPARQL on the other hand offers the most expressivity, but is typically harder to use.
 GraphQL-LD can be seen a trade-off between both.
@@ -318,7 +317,7 @@ Hereafter, I give some examples for each of them.
 
 ### LDflex
 
-When you need to look up data that can be represented by a single chain of properties,
+When you need to look up data that can be represented by a single **chain of properties**,
 then [LDflex](https://github.com/RubenVerborgh/LDflex) is probably the easiest way to do this.
 LDflex has been designed to look like the traversal of a JavaScript object,
 while instead this traversal is internally translated to a SPARQL query using a [JSON-LD context](https://json-ld.org/).
@@ -352,16 +351,16 @@ const person = paths.create({ subject: 'https://www.rubensworks.net/#me' });
 })();
 ```
 
-Similar tools exists like LDflex, which allow the traversal of local RDF graphs,
+Similar tools like this exists for traversing local RDF graphs instead of remote graphs,
 such as [`rdf-object.js`](https://github.com/rubensworks/rdf-object.js),
 [`simplerdf`](https://github.com/simplerdf/simplerdf) and [`clownface`](https://github.com/rdf-ext/clownface).
 
 ### GraphQL-LD
 
 If single chained properties are not sufficient and you need to retrieve multiple values of things,
-then a tree-based query language as provided by [GraphQL](https://graphql.org/) may be more appropriate.
-Because multiple values can then be retrieved via a single query,
-instead of having to write several separate ones that may be similar.
+then a **tree-based** query language as provided by [GraphQL](https://graphql.org/) may be more appropriate.
+It allows multiple values to be retrieved via a single query,
+instead of having to write several separate ones.
 
 [GraphQL-LD](https://github.com/rubensworks/GraphQL-LD.js) is a technique that allows Linked Data to be queried using GraphQL queries,
 by enhancing it with a [JSON-LD context](https://json-ld.org/), similar to LDflex.
@@ -418,7 +417,7 @@ The returned data will resemble the query structure as follows:
 ### SPARQL
 
 When neither single path expressions or tree-based queries are sufficient for you use case,
-then the highly-expressive SPARQL query language probably will meet your needs.
+then the **highly-expressive** SPARQL query language probably will meet your needs.
 At the cost of a more complex language, it offers many features
 such as [graph-based pattern matching](https://www.w3.org/TR/sparql11-query/#GraphPattern),
 [filtering](https://www.w3.org/TR/sparql11-query/#expressions),
@@ -429,15 +428,14 @@ such as [graph-based pattern matching](https://www.w3.org/TR/sparql11-query/#Gra
 [constructing RDF triples](https://www.w3.org/TR/sparql11-query/#construct),
 and [more](https://www.w3.org/TR/sparql11-query/).
 
-[Comunica](https://comunica.linkeddatafragments.org/) is a query engine platform for JavaScript for Web querying.
-It is not a query engine by itself, but a framework using which query engines can be built,
-such as engines that supports SPARQL queries.
+[**Comunica**](https://comunica.linkeddatafragments.org/) is a query engine platform for Web querying in JavaScript.
+It is not a query engine by itself, but a **framework to build query engines**.
 Due to its flexibility and configurability, it can be used for a variety of use cases.
-This is also why it is used internally for the underlying query engine in LDflex and GraphQL-LD.
+This is also why it is used internally for the underlying query engines in LDflex and GraphQL-LD.
 
 [`@comunica/actor-init-sparql`](https://github.com/comunica/comunica/tree/master/packages/actor-init-sparql)
 is one example of a Comunica engine that has been built to support SPARQL queries.
-It can be used as follows to lookup my name and ten of my friends at `https://www.rubensworks.net/`:
+It can be used as follows to lookup my name and ten of my friends:
 
 ```javascript
 const newEngine = require('@comunica/actor-init-sparql').newEngine;
@@ -463,7 +461,7 @@ bindingsStream.on('end', () => console.log('Done!'));
 ```
 
 Note that the configuration object supports multiple sources,
-which allows you to query across multiple datasets.
+which enables queries across multiple datasets.
 This allows you to for example find the common interests of [Ruben Verborgh](https://ruben.verborgh.org/) and myself,
 and fetch the interest labels from [DBpedia](https://wiki.dbpedia.org/):
 
@@ -485,6 +483,8 @@ WHERE {
 }`;
 ```
 
+_Next to querying over URI-based sources, it is also possible to query over [local sources](https://github.com/comunica/comunica/tree/master/packages/actor-init-sparql-file) or in-memory [RDFJS sources](https://github.com/comunica/comunica/tree/master/packages/actor-init-sparql-rdfjs)._
+
 ## Next Steps
 
 While we have come a long way for handling RDF in JavaScript,
@@ -492,9 +492,9 @@ technology always keeps evolving.
 In the future, we will most likely see a shift
 towards more [**query-driven applications**](https://ruben.verborgh.org/blog/2017/12/20/paradigm-shifts-for-the-decentralized-web/#interfaces-become-queries),
 where query engines gain more responsibility for handling complex tasks.
-This will allow applications to just define their queries and sources,
+This will allow applications to define their queries and sources,
 and **query engines will take care of all the complexities** for resolving the query,
-such as query optimization, source selection, resulting joining, authentication against sources, traversal of links, and more.
+such as query optimization, source selection, resulting joining, authentication against sources, traversal of links, reasoning, and more.
 Current query engines can already perform some of these tasks,
 but **more research and development effort is needed** for things such as source selection and link traversal,
 which are part of my [personal research and development goals](/research_goals/#querying-linked-data) for the upcoming years.
