@@ -30,16 +30,16 @@ show_in_nav: false
 
 
   <div class="links">
-    {% if {{page.entry.url}} %}
+    {% if page.entry.url %}
     <a rel="schema:associatedMedia" href="{{page.entry.url}}" target="_blank">Article</a>
     {% endif %}
-    {% if {{page.entry._poster}} %}
+    {% if page.entry._poster %}
     <a rel="schema:associatedMedia" href="{{page.entry._poster}}" target="_blank">Poster</a>
     {% endif %}
-    {% if {{page.entry._slides}} %}
+    {% if page.entry._slides %}
     <a rel="schema:associatedMedia" href="{{page.entry._slides}}" target="_blank">Slides</a>
     {% endif %}
-    {% if {{page.entry._video}} %}
+    {% if page.entry._video %}
     <a rel="schema:associatedMedia" href="{{page.entry._video}}" target="_blank">Video</a>
     {% endif %}
     <div class="toggle">

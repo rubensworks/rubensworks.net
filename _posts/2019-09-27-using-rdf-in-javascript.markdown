@@ -195,7 +195,7 @@ const quadStream = store.match(
 quadStream
   .on('error', console.error)
   .on('data', (quad) => {
-	// Handle our quad...
+    // Handle our quad...
     console.log(quad);
   })
   .on('end', () => console.log('Done!'));
@@ -485,7 +485,7 @@ WHERE {
 
 _Next to querying over URI-based sources, it is also possible to query over [local sources](https://github.com/comunica/comunica/tree/master/packages/actor-init-sparql-file) or in-memory [RDFJS sources](https://github.com/comunica/comunica/tree/master/packages/actor-init-sparql-rdfjs)._
 
-## Next Steps
+## Future RDF Tooling
 
 While we have come a long way for handling RDF in JavaScript,
 technology always keeps evolving.

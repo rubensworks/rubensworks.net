@@ -11,8 +11,8 @@ Their main purpose was learning experience.
 </p>
 
 <ul class="projects">
-{% assign projects = site.projects %}
-{% for project in projects | sort:"start" %}
+{% assign projects = site.projects | sort:"start" | reverse %}
+{% for project in projects %}
   {% if project.end %}
     <li><a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a></li>
   {% endif %}
