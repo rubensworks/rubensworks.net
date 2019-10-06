@@ -51,6 +51,8 @@ For these reasons and more, JavaScript is an ideal platform for RDF application 
 
 ### RDFJS
 
+<img src="/img/blog/rdfjs.png" alt="RDFJS" style="width: 23%; float: left; margin-right: 15px" />
+
 Since 2018, the community has converged to a couple of specifications for enabling interoperability between different JavaScript applications,
 under the name of [RDFJS](http://rdf.js.org/).
 Today, most of the popular JavaScript libraries adhere to these specifications,
@@ -112,6 +114,10 @@ An overview of all JavaScript libraries that support any of the RDFJS specificat
 For most of these specifications, corresponding [TypeScript typings exist](https://www.npmjs.com/package/@types/rdf-js),
 and many libraries ship with their own typings as well,
 which makes RDFJS especially useful if you want to develop more strongly-typed JavaScript applications.
+
+While there are general-purpose RDF libraries available
+such as [`rdflib`](https://www.npmjs.com/package/rdflib) and [`rdf`](https://www.npmjs.com/package/rdf),
+I will focus in this post on smaller tools that have dedicated functionality.
 
 ## Creating RDF graphs
 
@@ -203,6 +209,16 @@ const quadStream2 = store.match(
 );
 ```
 
+Resulting quads streams can be used for various things,
+such as creating a new `N3.Store`,
+or [serializing it to a Turtle file](https://github.com/rdfjs/N3.js#writing):
+
+```javascript
+quadStream
+  .pipe(new N3.StreamWriter())
+  .pipe(fs.createWriteStream('data.ttl'));
+```
+
 If your application does not require stream-based processing,
 and you just want to lookup an array of quads,
 then the `getQuads` method may be used instead:
@@ -276,4 +292,209 @@ then the [`rdf-parse.js`](https://github.com/rubensworks/rdf-parse.js) can be us
 
 ## Querying RDF graphs
 
-TODO: these were low-level, high-level requires ...
+While the previous two sections discussed the low-level handling of RDF on quad-level,
+this last section focuses more on the **linked** aspect of RDF data.
+Concretely, I discuss some techniques for querying through RDF graphs
+by looking up information across multiple quads.
+
+The process of querying is typically handled by a **query engine**
+that accepts a query in some kind of declarative language,
+and returns the results in a certain format.
+While there are several techniques out there to query RDF,
+I will focus on three query languages that have different goals:
+
+* [LDflex](https://github.com/RubenVerborgh/LDflex): A JavaScript-based domain-specific language for simple writing path-based expressions.
+* [GraphQL-LD](https://github.com/rubensworks/GraphQL-LD.js): An extension of the [GraphQL](https://graphql.org/) query language for enabling Linked Data to be queried.
+* [SPARQL](https://www.w3.org/TR/sparql11-query/): The standard for querying RDF as recommended by the World Wide Web Consortium.
+
+These three differ range in terms of their **query expressivity** (the variety of possible queries) and **developer complexity** (how easy queries can be written).
+While LDflex is the easiest to use, it offers the least expressive power.
+SPARQL on the other hand offers the most expressivity, but is typically harder to use.
+GraphQL-LD can be seen a trade-off between both.
+Depending on the application, any of these can be used, even in combination.
+Hereafter, I give some examples for each of them.
+
+<img src="/img/blog/queryexpressivitycomplexity.svg" alt="Query expressivity and developer complexity" style="width: 100%" />
+
+### LDflex
+
+When you need to look up data that can be represented by a single chain of properties,
+then [LDflex](https://github.com/RubenVerborgh/LDflex) is probably the easiest way to do this.
+LDflex has been designed to look like the traversal of a JavaScript object,
+while instead this traversal is internally translated to a SPARQL query using a [JSON-LD context](https://json-ld.org/).
+This SPARQL query is then delegated to a third-party query engine such as [Comunica](https://comunica.linkeddatafragments.org/) for execution.
+
+For example, finding the names of all the friends of `https://www.rubensworks.net/#me`
+that are listed in `https://www.rubensworks.net/` can be done as follows:
+
+```javascript
+const { PathFactory } = require('ldflex');
+const { default: ComunicaEngine } = require('ldflex-comunica');
+
+// Setup path expression
+const context = {
+  "@context": {
+    "@vocab": "http://xmlns.com/foaf/0.1/",
+    "friends": "knows",
+  }
+};
+const paths = new PathFactory({
+	context,
+	queryEngine: new ComunicaEngine('https://www.rubensworks.net/'),
+});
+const person = paths.create({ subject: 'https://www.rubensworks.net/#me' });
+
+// Execute expressions
+(async function() {
+  console.log(await person.name + ' is friends with:');
+  for await (const name of person.friends.givenName)
+    console.log('- ' + name);
+})();
+```
+
+Similar tools exists like LDflex, which allow the traversal of local RDF graphs,
+such as [`rdf-object.js`](https://github.com/rubensworks/rdf-object.js),
+[`simplerdf`](https://github.com/simplerdf/simplerdf) and [`clownface`](https://github.com/rdf-ext/clownface).
+
+### GraphQL-LD
+
+If single chained properties are not sufficient and you need to retrieve multiple values of things,
+then a tree-based query language as provided by [GraphQL](https://graphql.org/) may be more appropriate.
+Because multiple values can then be retrieved via a single query,
+instead of having to write several separate ones that may be similar.
+
+[GraphQL-LD](https://github.com/rubensworks/GraphQL-LD.js) is a technique that allows Linked Data to be queried using GraphQL queries,
+by enhancing it with a [JSON-LD context](https://json-ld.org/), similar to LDflex.
+Internally, queries are also translated to SPARQL and delegated to a third-party query engine.
+
+Below, you can see an example on how you can retrieve my name, image and friends using a single query:
+```javascript
+import {Client} from "graphql-ld";
+import {QueryEngineComunica} from "graphql-ld-comunica";
+
+// Setup the client
+const context = {
+  "@context": {
+    "Ruben": "https://www.rubensworks.net/#me",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "name": "foaf:name" ,
+    "image": "foaf:img",
+    "friends": "foaf:knows" 
+  }
+};
+const client = new Client({
+  context,
+  queryEngine: new QueryEngineComunica({
+    sources: ['https://www.rubensworks.net/'],
+  }),
+});
+
+// Define and execute a query
+const query = `{
+  id(_:Ruben)
+  name @single
+  image @single
+  friends {
+    name @single
+  }
+}`;
+const { data } = await client.query({ query });
+```
+
+The returned data will resemble the query structure as follows:
+
+```json
+{
+  "name": "Ruben Taelman",
+  "image": "https://www.rubensworks.net/img/ruben.jpg",
+  "friends": [
+    { "name": "Anastasia Dimou" },
+    { "name": "Ben De Meester" },
+    { "name": "Brecht Van de Vyvere" },
+  ]
+}
+```
+
+### SPARQL
+
+When neither single path expressions or tree-based queries are sufficient for you use case,
+then the highly-expressive SPARQL query language probably will meet your needs.
+At the cost of a more complex language, it offers many features
+such as [graph-based pattern matching](https://www.w3.org/TR/sparql11-query/#GraphPattern),
+[filtering](https://www.w3.org/TR/sparql11-query/#expressions),
+[aggregation](https://www.w3.org/TR/sparql11-query/#aggregates),
+[negation](https://www.w3.org/TR/sparql11-query/#negation),
+[optionals](https://www.w3.org/TR/sparql11-query/#optionals),
+[subqueries](https://www.w3.org/TR/sparql11-query/#subqueries),
+[constructing RDF triples](https://www.w3.org/TR/sparql11-query/#construct),
+and [more](https://www.w3.org/TR/sparql11-query/).
+
+[Comunica](https://comunica.linkeddatafragments.org/) is a query engine platform for JavaScript for Web querying.
+It is not a query engine by itself, but a framework using which query engines can be built,
+such as engines that supports SPARQL queries.
+Due to its flexibility and configurability, it can be used for a variety of use cases.
+This is also why it is used internally for the underlying query engine in LDflex and GraphQL-LD.
+
+[`@comunica/actor-init-sparql`](https://github.com/comunica/comunica/tree/master/packages/actor-init-sparql)
+is one example of a Comunica engine that has been built to support SPARQL queries.
+It can be used as follows to lookup my name and ten of my friends at `https://www.rubensworks.net/`:
+
+```javascript
+const newEngine = require('@comunica/actor-init-sparql').newEngine;
+const myEngine = newEngine();
+
+const config = { sources: ['https://www.rubensworks.net/'] };
+const query = `
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT * WHERE {
+  <https://www.rubensworks.net/#me> foaf:name ?name.
+  {
+    SELECT ?friendName WHERE {
+      <https://www.rubensworks.net/#me> foaf:knows [
+          foaf:name ?friendName
+      ].
+    } LIMIT 10
+  }
+}`;
+
+const { bindingsStream } = await myEngine.query(query, config);
+bindingsStream.on('data', (data) => console.log(data.toObject()));
+bindingsStream.on('end', () => console.log('Done!'));
+```
+
+Note that the configuration object supports multiple sources,
+which allows you to query across multiple datasets.
+This allows you to for example find the common interests of [Ruben Verborgh](https://ruben.verborgh.org/) and myself,
+and fetch the interest labels from [DBpedia](https://wiki.dbpedia.org/):
+
+```javascript
+const config = { sources: [
+  'http://fragments.dbpedia.org/2016-04/en',
+  'https://ruben.verborgh.org/profile/',
+  'https://www.rubensworks.net/',
+] };
+const query = `
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT ?interestName
+WHERE {
+  ruben:me foaf:topic_interest ?interest.
+  rubent:me foaf:topic_interest ?interest.
+  ?interest rdfs:label ?interestName.
+  FILTER LANGMATCHES(LANG(?interestName),  "EN")
+}`;
+```
+
+## Next Steps
+
+While we have come a long way for handling RDF in JavaScript,
+technology always keeps evolving.
+In the future, we will most likely see a shift
+towards more [**query-driven applications**](https://ruben.verborgh.org/blog/2017/12/20/paradigm-shifts-for-the-decentralized-web/#interfaces-become-queries),
+where query engines gain more responsibility for handling complex tasks.
+This will allow applications to just define their queries and sources,
+and **query engines will take care of all the complexities** for resolving the query,
+such as query optimization, source selection, resulting joining, authentication against sources, traversal of links, and more.
+Current query engines can already perform some of these tasks,
+but **more research and development effort is needed** for things such as source selection and link traversal,
+which are part of my [personal research and development goals](/research_goals/#querying-linked-data) for the upcoming years.
