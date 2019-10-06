@@ -100,7 +100,7 @@ quad.object.value === 'Ruben';
 Checking whether or not quads and terms are equal to each other, the `equals` method can be used:
 
 ```javascript
-factory.literal('Ruben').equals(factory.literal('Ruben')); // true
+factory.literal('Ruben').equals(factory.literal('Ruben'));  // true
 factory.literal('Ruben').equals(factory.literal('Ruben2')); // false
 quad.equals(quad); // true
 ```
@@ -213,6 +213,8 @@ for (const quad of quadsArray) {
 }
 ```
 
+_Alternatively, quad streams can be converted to arrays using tools such as [`arrayify-stream`](https://www.npmjs.com/package/arrayify-stream)._
+
 Even though `N3.Store` uses a highly-efficient four-level index to store and lookup RDF quads,
 its main restriction is that it stores everything in-memory.
 On average, one million triples requires around 100MB,
@@ -232,7 +234,42 @@ and [`rdf-dataset-indexed`](https://github.com/rdfjs-base/dataset-indexed).
 
 ## Dereferencing RDF graphs
 
-TODO
+Thanks to the [Linked Data](https://www.w3.org/DesignIssues/LinkedData.html) rules,
+RDF is available on the Web behind HTTP URIs, such as `http://dbpedia.org/page/12_Monkeys` or `https://www.rubensworks.net/`.
+These URIs can then be **dereferenced** to look up its contents.
+Since RDF on the Web exists in various RDF serializations
+such as [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax)), [RDFa](https://rdfa.info/), and [JSON-LD](https://json-ld.org/),
+the dereferencing of RDF involves picking the correct parser for the returned RDF serialization.
+
+Concretely RDF dereferencing at a client for a URI typically involves the following steps:
+
+1. Determine the **media types** from the available RDF parsers, such as `text/n3` and `text/html`.
+2. Order the media types by **priority**, as different parsers may have different performance requirements.
+3. Perform [**content-negotation**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation) for the given URI to [retrieve an appropriate RDF serialization from the server](https://pieterheyvaert.com/blog/2019/02/25/nginx-conneg/).
+4. Pick the appropriate RDF **parser** based on the server's returned content type.
+
+If you want to retrieve RDF from the Web,
+then these same steps have to be followed every time again.
+As such, different tools are available to hide this process so that RDF dereferencing becomes significantly easier.
+[`rdf-dereference.js`](https://github.com/rubensworks/rdf-dereference.js/) is a tool that does exactly that.
+It accepts a URI, and it outputs an stream of RDF quads:
+
+```javascript
+const rdfDereferencer = require("rdf-dereference").default;
+
+const { quads: quadSream } = await rdfDereferencer
+  .dereference('http://dbpedia.org/page/12_Monkeys');
+quadSream.on('data', (quad) => console.log(quad))
+     .on('error', (error) => console.error(error))
+     .on('end', () => console.log('Done!'));
+```
+
+`rdf-dereference.js` has support for all major RDF serializations using fully spec-compliant streaming parsers, and prioritizes them by parsing efficiency.
+Alternatively, if you need more configuration flexibility regarding for instance the serializations you want to support,
+then [`@rdfjs/fetch-lite`](https://github.com/rdfjs-base/fetch-lite) can be used.
+If you want to take care of HTTP fetching yourself,
+and use something more low-level for just parsing in any serialization,
+then the [`rdf-parse.js`](https://github.com/rubensworks/rdf-parse.js) can be used.
 
 ## Querying RDF graphs
 
