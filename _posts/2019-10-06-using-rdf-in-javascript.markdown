@@ -5,7 +5,7 @@ tags:        [ rdf, javascript, node, linked data ]
 comments:    true
 title:       "Who says using RDF is hard?"
 subtitle:    "A brief overview on RDF and Linked Data development in JavaScript."
-date:        2019-09-28 10:00:00 +0200
+date:        2019-10-06 15:00:00 +0200
 ---
 <p class="post-abstract" markdown="1">
 The [Linked Data](https://www.w3.org/DesignIssues/LinkedData.html) ecosystem
