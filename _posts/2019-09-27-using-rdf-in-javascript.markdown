@@ -71,12 +71,13 @@ Five types of terms exist:
 [RDF quads](http://rdf.js.org/data-model-spec/#quad-interface) are defined as an object with RDF terms for **subject**, **predicate**, **object** and **graph**.
 An RDF triple is a simpler form of a quad,
 where the graph is set to the default graph.
+For the remainder of this document, I will just refer to RDF quads.
 
 Finally, a [Data Factory](http://rdf.js.org/data-model-spec/#datafactory-interface) interface is defined,
 which allows you to easily create terms and quads that conform to this interface.
 Different Data Factory implementations exist, such as [`@rdfjs/data-model`](https://github.com/rdfjs-base/data-model)
 and the factory from [`N3.js`](https://github.com/rdfjs/N3.js#interface-specifications).
-For example, creating a triple (or quad) representing someone's name with a data factory can be done like this:
+For example, creating a quad representing someone's name with a data factory can be done like this:
 
 ```javascript
 const factory = require('@rdfjs/data-model');
@@ -111,7 +112,123 @@ An overview of all JavaScript libraries that support any of the RDFJS specificat
 
 ## Creating RDF graphs
 
-TODO
+Now that we can create RDF quads,
+we can start combining them into **RDF graphs**
+to represent information and knowledge.
+The easiest way to create an RDF graph is using an in-memory datastructure.
+[`N3.Store`](https://github.com/rdfjs/N3.js#storing) is an efficient in-memory index for storing RDF,
+and doing quad pattern-based lookups.
+
+### Adding Quads
+
+RDFJS quads can be added to the store by calling the `addQuad` method:
+```javascript
+const N3 = require('n3');
+const store = new N3.Store();
+
+store.addQuad(factory.quad(
+  factory.namedNode('https://www.rubensworks.net/#me'),
+  factory.namedNode('http://schema.org/name'),
+  factory.literal('Ruben')
+));
+store.addQuad(factory.quad(
+  factory.namedNode('https://www.rubensworks.net/#me'),
+  factory.namedNode('http://schema.org/knows'),
+  factory.namedNode('https://ruben.verborgh.org/profile/#me')
+));
+```
+
+If you have multiple quads to insert, then the array-based `addQuads` may be used instead:
+```javascript
+// Array-based
+store.addQuads([
+  quad1,
+  quad2,
+  quad3,
+]);
+```
+
+If your quads originate are produced as a stream (like from a [parser](https://www.rubensworks.net/blog/2019/03/13/streaming-rdf-parsers/)),
+then the stream-based `import` methods may be used instead:
+```javascript
+const rdfParser = require("rdf-parse").default;
+const quadStream = rdfParser.parse(fs.createReadStream('cartoons.ttl'),
+  { contentType: 'text/turtle' });
+
+store.import(quadStream)
+  .on('end', () => console.log('Stream has been imported'));
+```
+
+In cases you quickly need to create a new store for a quad stream,
+then [`rdf-store-stream.js`] can be used as a convenience tool:
+```javascript
+const storeStream = require("rdf-store-stream").storeStream;
+
+const store = await storeStream(quadStream);
+```
+
+### Looking Up Quads
+
+Looking up quads can be done through quad pattern-matching using the `match` method from the [RDFJS Source interface](https://rdf.js.org/stream-spec/#source-interface),
+where any of the quad components can be left `undefined` (or `null`) to allow anything to match with it.
+Since real-world RDF graphs are typically very large,
+lookups typically happen **asynchronously** so that found quads can be processed in a memory-efficient manner as soon as they are discovered.
+For this, the `match` method returns a stream of quads,
+which is just a [stream that emits RDFJS quads](https://rdf.js.org/stream-spec/#stream-interface).
+This stream is compatible with the [Readable stream interface](https://nodejs.org/api/stream.html#stream_readable_streams) of Node.js.
+
+For example, looking up everything with `https://www.rubensworks.net/#me` as subject can be done like this:
+```javascript
+const quadStream = store.match(
+  factory.namedNode('https://www.rubensworks.net/#me')
+  // predicate, object, graph arguments are left undefined
+);
+quadStream
+  .on('error', console.error)
+  .on('data', (quad) => {
+	// Handle our quad...
+    console.log(quad);
+  })
+  .on('end', () => console.log('Done!'));
+```
+
+Looking up all the names of `https://www.rubensworks.net/#me` can similarly be done like this:
+```javascript
+const quadStream2 = store.match(
+  factory.namedNode('https://www.rubensworks.net/#me'),
+  factory.namedNode('http://schema.org/name')
+);
+```
+
+If your application does not require stream-based processing,
+and you just want to lookup an array of quads,
+then the `getQuads` method may be used instead:
+```javascript
+const quadsArray = store.getQuads(
+  factory.namedNode('https://www.rubensworks.net/#me')
+);
+for (const quad of quadsArray) {
+    // Handle our quad...
+    console.log(quad);
+}
+```
+
+Even though `N3.Store` uses a highly-efficient four-level index to store and lookup RDF quads,
+its main restriction is that it stores everything in-memory.
+On average, one million triples requires around 100MB,
+which means that storing ten million triples should still be achievable on average hardware (~1GB),
+but one hundred million triples may already be too much (~10GB).
+For these cases, dedicated on-disk tools may be preferable,
+such as the LevelDB-based [`node-quadstore`](https://github.com/beautifulinteractions/node-quadstore),
+or via highly compressed read-only [HDT files](https://github.com/RubenVerborgh/HDT-Node).
+
+Next to these low-level quad stores,
+more high-level datastructures exist, such as the [`Dataset` interface](https://rdf.js.org/dataset-spec/).
+This interface offers more convenience features
+such as array-like operations, calculating set algebra operations and canonicalization,
+at the cost of loosing asynchronicity.
+Implementations of this `Dataset` interface exist in [`graphy.js`](https://github.com/blake-regalia/graphy.js)
+and [`rdf-dataset-indexed`](https://github.com/rdfjs-base/dataset-indexed).
 
 ## Dereferencing RDF graphs
 
