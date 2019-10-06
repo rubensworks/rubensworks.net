@@ -18,7 +18,7 @@ to illustrate that RDF is actually pretty easy to work with if you use the right
 <!--more-->
 
 To paraphrase [Dan Brickley and Libby Miller](https://book.validatingrdf.com/bookHtml005.html),
-people think using RDF is **hard** because of its **complexity**.
+people think using RDF is hard because of its complexity.
 However, RDF is actually pretty **simple**, it merely allows you to handle very **complex problems**.
 To handle these problems, flexible and expressive tools are needed.
 These tools should be easy to use, so that we don't get lost in the complexity of these problems during development.
@@ -109,6 +109,9 @@ Next to the RDFJS data model,
 separate specifications exist for handling [RDF streams](http://rdf.js.org/stream-spec/)
 and [high-level datasets](https://rdf.js.org/dataset-spec/).
 An overview of all JavaScript libraries that support any of the RDFJS specifications can be found on [https://rdf.js.org/](https://rdf.js.org/).
+For most of these specifications, corresponding [TypeScript typings exist](https://www.npmjs.com/package/@types/rdf-js),
+and many libraries ship with their own typings as well,
+which makes RDFJS especially useful if you want to develop more strongly-typed JavaScript applications.
 
 ## Creating RDF graphs
 
@@ -273,4 +276,4 @@ then the [`rdf-parse.js`](https://github.com/rubensworks/rdf-parse.js) can be us
 
 ## Querying RDF graphs
 
-TODO
+TODO: these were low-level, high-level requires ...
