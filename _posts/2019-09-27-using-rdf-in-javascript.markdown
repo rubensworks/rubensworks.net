@@ -14,12 +14,26 @@ Even though there is an increasing interest in knowledge graphs,
 many developers are scared off by RDF due to its reputation of being *complicated*.
 In this post, I will show some concrete examples on how RDF can be used in JavaScript applications,
 to illustrate that RDF is actually pretty easy to work with if you use the right tools.
+</p>
+<!--more-->
+
+To paraphrase [Dan Brickley and Libby Miller](https://book.validatingrdf.com/bookHtml005.html),
+people think using RDF is **hard** because of its **complexity**.
+However, RDF is actually pretty **simple**, it merely allows you to handle very **complex problems**.
+To handle these problems, flexible and expressive tools are needed.
+These tools should be easy to use, so that we don't get lost in the complexity of these problems during development.
+While there have been calls to [make RDF easier](https://github.com/w3c/EasierRDF),
+this post aims to show that RDF is not the problem,
+and that good tooling gets us where we want.
+
 Concretely, this post covers the fundamentals of RDF in JavaScript,
 how to create RDF graphs yourself,
 how to retrieve them from the Web,
 and how to execute complex queries over them.
-</p>
-<!--more-->
+I offer some concrete examples for each aspect using existing tools.
+It is not my aim to discuss all the available tooling,
+but instead to present the general idea,
+and give pointers to tools that could be used for this.
 
 ## Why JavaScript?
 
@@ -62,14 +76,32 @@ Finally, a [Data Factory](http://rdf.js.org/data-model-spec/#datafactory-interfa
 which allows you to easily create terms and quads that conform to this interface.
 Different Data Factory implementations exist, such as [`@rdfjs/data-model`](https://github.com/rdfjs-base/data-model)
 and the factory from [`N3.js`](https://github.com/rdfjs/N3.js#interface-specifications).
-For example, creating a triple representing someone's name with a data factory can be done as follows:
+For example, creating a triple (or quad) representing someone's name with a data factory can be done like this:
 
 ```javascript
-factory.quad(
-  factory.namedNode('https://www.rubensworks.net/#me'),
-  factory.namedNode('http://schema.org/name'),
-  factory.literal('Ruben')
+const factory = require('@rdfjs/data-model');
+
+const quad = factory.quad(
+  factory.namedNode('https://www.rubensworks.net/#me'), // subject
+  factory.namedNode('http://schema.org/name'),          // predicate
+  factory.literal('Ruben')                              // object
 );
+```
+
+Reading raw values out of the quad can be done as follows:
+
+```javascript
+quad.subject.value === 'https://www.rubensworks.net/#me';
+quad.predicate.value === 'http://schema.org/name';
+quad.object.value === 'Ruben';
+```
+
+Checking whether or not quads and terms are equal to each other, the `equals` method can be used:
+
+```javascript
+factory.literal('Ruben').equals(factory.literal('Ruben')); // true
+factory.literal('Ruben').equals(factory.literal('Ruben2')); // false
+quad.equals(quad); // true
 ```
 
 Next to the RDFJS data model,

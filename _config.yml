@@ -41,7 +41,7 @@ scholar:
     - _highlighted
 
 exclude:
-  - script
+  - script/
   - Gemfile
   - README.md
   - Rakefile
