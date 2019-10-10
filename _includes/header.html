@@ -3,7 +3,7 @@
   <div id="me" class="wrapper" typeof="foaf:Person" resource="{{ "/#me" | prepend: site.baseurl | prepend: site.url }}">
 
     <div class="site-title-wrapper">
-      <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
+      <a class="site-title a-bland" href="{{ site.baseurl }}/">{{ site.title }}</a>
 	  {% if page.url == "/" %}
       <meta property="foaf:name" content="{{ site.title }}"/>
       <meta property="foaf:logo" resource="{{ "/img/ruben.jpg" | prepend: site.baseurl | prepend: site.url }}"/>
@@ -75,7 +75,7 @@
         {% assign sorted_pages = site.pages | sort:"order" %}
         {% for my_page in sorted_pages %}
         {% if my_page.title and my_page.show_in_nav != false %}
-        <a class="page-link{% if p.url == page.url %} active{% endif %}" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
+        <a class="a-white page-link{% if p.url == page.url %} active{% endif %}" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
         {% endif %}
         {% endfor %}
       </div>
