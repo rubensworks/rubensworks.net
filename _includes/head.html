@@ -1,17 +1,34 @@
-<head prefix="foaf: http://xmlns.com/foaf/0.1/">
+<head prefix="foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns#">
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
-  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}" />
+  {% if page.title %}{% assign title = page.title | escape %}{% else %}{% assign title = site.title | escape %}{% endif %}
+  <title>{{ title }}</title>
+  {% if page.excerpt %}{% assign description = page.excerpt | newline_to_br | strip_newlines | replace: '<br />', ' ' | strip_html | strip | truncatewords: 30 %}{% else %}{% assign description = site.description %}{% endif %}
+  <meta name="description" content="{{ description }}" />
 
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}" />
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}" />
+  {% assign canonical = page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url %}
+  <link rel="canonical" href="{{ canonical }}" />
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" />
-  <link rel="shortcut icon" type="image/png" href="{{ "/img/favicon.jpg" | prepend: site.baseurl | prepend: site.url }}" />
+  {% assign image_small = "/img/favicon.jpg" | prepend: site.baseurl | prepend: site.url %}
+  {% assign image_large = "/img/ruben.jpg" | prepend: site.baseurl | prepend: site.url %}
+  <link rel="shortcut icon" type="image/png" href="{{ image_small }}" />
   <link rel="foaf:primaryTopic" href="{{ "/#me" | prepend: site.baseurl | prepend: site.url }}" />
   <link rel="foaf:primaryTopic foaf:maker" href="{{ "/#me" | prepend: site.baseurl | prepend: site.url }}" />
+  <meta property="og:image" content="{{ image_large }}" />
+  <meta property="og:title" content="{{ title }}" />
+  <meta property="og:description" content="{{ description }}" />
+  <meta property="og:url" content="{{ canonical }}" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="{{ site.title }}" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:site" content="@rubensworks" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{ title }}" />
+  <meta name="twitter:description" content="{{ description }}" />
+  <meta name="twitter:image" content="{{ image_large }}" />
 
   <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
   <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css' />
