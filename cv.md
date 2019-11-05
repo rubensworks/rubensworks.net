@@ -103,25 +103,32 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="Karel Haerens"
+    startdate="2019"
+    enddate="2020"
+    location="Ghent University, Belgium"
+    description="Query execution over decentralized social media networks"
+%}
+{% include cv-listing.html
     subject="Serge Morel"
     startdate="2018"
-    enddate="now"
+    enddate="2019"
     location="Ghent University, Belgium"
-    description="Computational integrity for outsourced execution of SPARQL queries"
+    description="[Computational integrity for outsourced execution of SPARQL queries](https://www.scriptiebank.be/sites/default/files/thesis/2019-10/main_0.pdf)"
 %}
 {% include cv-listing.html
     subject="Isa Sebrechts"
     startdate="2018"
-    enddate="now"
+    enddate="2019"
     location="Ghent University, Belgium"
-    description="Usability of distributed data sources for modern Web applications"
+    description="[Usability of distributed data sources for modern Web applications](https://lib.ugent.be/fulltxt/RUG01/002/785/839/RUG01-002785839_2019_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Wouter Vandenberghe"
-    startdate="2018"
-    enddate="now"
+    startdate="2017"
+    enddate="2019"
     location="Ghent University, Belgium"
-    description="An analysis of the effects of HTTP2 on a low-cost query interface"
+    description="[An analysis of the effects of HTTP2 on a low-cost query interface]()"
 %}
 {% include cv-listing.html
     subject="Thibault Mahieu"
