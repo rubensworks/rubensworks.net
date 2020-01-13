@@ -233,6 +233,7 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2017 (Poster & Demo Track)
     * 2018 (Research Track, Poster & Demo Track)
     * 2019 (Research Track)
+    * 2020 (Research Track)
 * [Workshop on Decentralizing the Semantic Web](https://iswc2019.desemweb.org/)
     * 2018
     * 2019
