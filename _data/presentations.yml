@@ -1,0 +1,167 @@
+"2020-sympdecentweb-mellon":
+    title: "Scholarly Communications Using the Decentralized Web"
+    venue: "Decentralised Web Symposium, Vienna"
+    date: "17 January 2020"
+    url: "https://www.rubensworks.net/raw/slides/2020/sympdecentweb-mellon/"
+"2020-phd-internal":
+    title: "Storing and Querying Evolving Knowledge Graphs on the Web"
+    venue: "Internal PhD Defense, IDLab — Ghent University — imec"
+    date: "9 January 2020"
+    url: "https://www.rubensworks.net/raw/slides/2020/phd-internal/"
+
+
+
+"2019-wu-comunica":
+    title: "Comunica: a Modular SPARQL Query Engine for the Web"
+    venue: "Institute for Information Business, WU Vienna University of Economics and Business"
+    date: "5 December 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/wu-comunica/"
+"2019-iswc-ostrich":
+    title: "Triple Storage for Random-Access Versioned Querying of RDF Archives"
+    venue: "ISWC 2019, Auckland"
+    date: "30 October 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/iswc-ostrich/"
+"2019-iswc-graphql-rdf":
+    title: "GraphQL Tutorial: GraphQL and RDF"
+    venue: "ISWC 2019, Auckland"
+    date: "27 October 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/iswc-graphql-rdf/"
+"2019-iswc-graphql-interface":
+    title: "GraphQL Tutorial: Setting up a GraphQL Interface"
+    venue: "ISWC 2019, Auckland"
+    date: "27 October 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/iswc-graphql-interface/"
+"2019-iswc-graphql-client":
+    title: "GraphQL Tutorial: Client-side GraphQL"
+    venue: "ISWC 2019, Auckland"
+    date: "27 October 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/iswc-graphql-client/"
+"2019-iswc-socom-hackathon":
+    title: "SOCOM Tutorial Slides - Hackathon"
+    venue: "ISWC 2019, Auckland"
+    date: "26 October 2019"
+    url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-Hackathon/"
+"2019-iswc-socom-graphqlld":
+    title: "SOCOM Tutorial Slides - GraphQL-LD"
+    venue: "ISWC 2019, Auckland"
+    date: "26 October 2019"
+    url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-GraphQL-LD/"
+"2019-iswc-socom-ldflex":
+    title: "SOCOM Tutorial Slides - LDflex"
+    venue: "ISWC 2019, Auckland"
+    date: "26 October 2019"
+    url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-LDflex/"
+"2019-iswc-socom-comunica":
+    title: "SOCOM Tutorial Slides - Comunica"
+    venue: "ISWC 2019, Auckland"
+    date: "26 October 2019"
+    url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-Comunica/"
+"2019-iswc-socom-solid":
+    title: "SOCOM Tutorial Slides - Solid"
+    venue: "ISWC 2019, Auckland"
+    date: "26 October 2019"
+    url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-Solid/"
+"2019-iswc-socom-intro":
+    title: "SOCOM Tutorial Slides - Introduction"
+    venue: "ISWC 2019, Auckland"
+    date: "26 October 2019"
+    url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-Introduction/"
+"2019-semmering-queryinglinkeddata":
+    title: "Querying Linked Data on the Web, for real this time"
+    venue: "Sporthotel, Semmering"
+    date: "23 September 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/semmering-queryinglinkeddata/"
+"2019-w3c-data-ws-graphql-rdf":
+    title: "Bridges between GraphQL and RDF"
+    venue: "W3C Workshop on Web Standardization for Graph Data 2019, Berlin"
+    date: "March 5 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/w3c-data-ws-graphql-rdf/"
+"2019-eswc-comunica-advanced":
+    title: "Comunica Tutorial - Advanced"
+    venue: "ESWC 2017, Portorož"
+    date: "3 June 2019"
+    url: "https://comunica.github.io/Tutorial-ESWC2019-Comunica-Advanced-Slides/"
+"2019-eswc-comunica-basic":
+    title: "Comunica Tutorial - Basic"
+    venue: "ESWC 2017, Portorož"
+    date: "3 June 2019"
+    url: "https://comunica.github.io/Tutorial-ESWC2019-Comunica-Basic-Slides/"
+"2019-oslo-solid":
+    title: "OSLO Inspiratienamiddag - Solid"
+    venue: "OSLO Inspiratienamiddag, Brussel"
+    date: "19 Februari 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/oslo-solid/"
+"2019-knows-journal-cake":
+    title: "The struggles of OSTRICH and PoDiGG"
+    venue: "IDLab, Ghent"
+    date: "10 January 2019"
+    url: "https://www.rubensworks.net/raw/slides/2019/knows-journal-cake/"
+
+
+
+"2018-iswc-comunica":
+    title: "Comunica: a Modular SPARQL Query Engine for the Web"
+    venue: "ISWC 2018, Monterey"
+    date: "11 October 2018"
+    url: "https://www.rubensworks.net/raw/slides/2018/iswc-comunica/"
+"2018-iswc-semverquerying":
+    title: "The Fundamentals of Semantic Versioned Querying"
+    venue: "SSWS, ISWC, Monterey"
+    date: "9 October 2018"
+    url: "https://www.rubensworks.net/raw/slides/2018/iswc-semverquerying/"
+"2018-semantics-tpfqs":
+    title: "On the Semantics of TPF-QS"
+    venue: "SEMANTiCS 2018, Vienna"
+    date: "12 September 2018"
+    url: "https://www.rubensworks.net/raw/slides/2018/semantics-tpfqs/"
+"2018-webconf-componentsks":
+    title: "Components.js"
+    venue: "WebConf 2018, Lyon"
+    date: "26 April 2018"
+    url: "https://www.slideshare.net/RubenTaelman/componentsjs"
+
+
+
+"2017-vtpf":
+    title: "Versioned Triple Pattern Fragments"
+    venue: "MEPDaW, ESWC 2017, Portorož"
+    date: "28 May 2017"
+    url: "https://www.slideshare.net/RubenTaelman/versioned-triple-pattern-fragments"
+
+
+
+"2016-ekaw-tpfpublishing":
+    title: "Publishing with Triple Pattern Fragments"
+    venue: "EKAW 2016"
+    date: "20 November 2016"
+    url: "https://www.slideshare.net/RubenTaelman/ekaw-publishing-with-triple-pattern-fragments"
+"2016-ekaw-tpf":
+    title: "Triple Pattern Fragments"
+    venue: "EKAW 2016"
+    date: "20 November 2016"
+    url: "https://www.slideshare.net/RubenTaelman/ekaw-triple-pattern-fragments"
+"2016-ekaw-ldpublishing":
+    title: "Linked Data Publishing"
+    venue: "EKAW 2016"
+    date: "20 November 2016"
+    url: "https://www.slideshare.net/RubenTaelman/ekaw-linked-data-publishing"
+"2016-docker-intro":
+    title: "An Introduction to Docker"
+    venue: "IDLab — Ghent University — imec"
+    date: "8 November 2016"
+    url: "https://www.slideshare.net/RubenTaelman/docker-intro-68380579"
+"2016-cold-mdi":
+    title: "Multidimensional Interfaces for Selecting Data with Order"
+    venue: "COLD, ISWC 2016, Kobe"
+    date: "18 October 2016"
+    url: "https://www.slideshare.net/RubenTaelman/multidimensional-interfaces-for-selecting-data-with-order"
+"2016-phd-continuous-selfupdating-query-results-over-dynamic-linked-data":
+    title: "Continuous Self-Updating Query Results over Dynamic Linked Data"
+    venue: "PhD Symposium, ESWC 2016, Crete"
+    date: "30 May 2016"
+    url: "https://www.slideshare.net/RubenTaelman/continuous-selfupdating-query-results-over-dynamic-linked-data"
+"2016-mepdaw-continuously-updating-query-results-over-realtime-linked-data":
+    title: "Continuously Updating Query Results over Real-Time Linked Data"
+    venue: "MEPDaW, ESWC 2016, Crete"
+    date: "30 May 2016"
+    url: "https://www.slideshare.net/RubenTaelman/continuously-updating-query-results-over-realtime-linked-data"
