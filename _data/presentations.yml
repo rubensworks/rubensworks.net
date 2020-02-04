@@ -3,6 +3,11 @@
     venue: "Public PhD Defense, IDLab — Ghent University — imec"
     date: "17 February 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/phd-public/"
+"2020-ai-comunica":
+    title: "Comunica: a Modular SPARQL Query Engine for the Web"
+    venue: "D²AI, Square Sainctelette 17, Brussels"
+    date: "6 January 2020"
+    url: "https://www.rubensworks.net/raw/slides/2020/ai-comunica/"
 "2020-sympdecentweb-mellon":
     title: "Scholarly Communications Using the Decentralized Web"
     venue: "Decentralised Web Symposium, Vienna"
