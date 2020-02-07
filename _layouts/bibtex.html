@@ -2,9 +2,9 @@
 layout: default
 show_in_nav: false
 ---
-<div class="publication" itemscope itemtype="http://schema.org/ScholarlyArticle" typeof="schema:ScholarlyArticle schema:CreativeWork" about="/publications/{{ page.url }}">
+<div class="publication" itemscope itemtype="http://schema.org/ScholarlyArticle" typeof="schema:ScholarlyArticle schema:CreativeWork" about="{{ page.url }}">
   <span class="type">{{ page.entry._type }}</span>
-  <h1 itemprop="name">{{ page.entry.title }}</h1>
+  <h1 itemprop="name" property="schema:name">{{ page.entry.title }}</h1>
   <p class="details">
     <span class="authors">{% for author in page.entry.author_array %}{% if first == false %},{% endif %}
     {% assign first = false %}
