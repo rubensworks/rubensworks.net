@@ -22,7 +22,7 @@ Technologiepark-Zwijnaarde 122<br />
 9052 Ghent, Belgium
 </span>
 
-Our office is located at the **south-east corner on the 7th floor**.
+Our office is located at the **north-east corner on the 7th floor**.
 
 <h2 id="contact-other">Other</h2>
 
