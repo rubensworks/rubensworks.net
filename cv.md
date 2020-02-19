@@ -8,7 +8,7 @@ show_in_nav: false
 ## Short Biography
 
 {:.cv-biography}
-Ruben Taelman is a finishing PhD student at [IDLab](http://www.ugent.be/ea/idlab/en), Ghent University – imec, Belgium.
+Ruben Taelman is a Postdoctoral Researcher at [IDLab](http://www.ugent.be/ea/idlab/en), Ghent University – imec, Belgium.
 His research concerns the decentralized publication and querying of Linked Data on the Web,
 and investigating the trade-offs that exist between server and client.
 He has contributed to this domain through publications in journals such as
@@ -25,6 +25,13 @@ Additionally, he has served as a reviewer and program committee member for these
 ## Academic Work Experience
 
 <ul class="cv-listing">
+{% include cv-listing.html
+    subject="Postdoctoral Researcher"
+    startdate="2020"
+    enddate="now"
+    location="[IDLab, Ghent University — imec](http://www.ugent.be/ea/idlab/en)"
+    description="Together with a team of PhD students and postdocs, I am researching decentralized publication and querying of Linked Data on the Web."
+%}
 {% include cv-listing.html
     subject="Visiting Researcher"
     startdate="2019"
@@ -44,7 +51,7 @@ Additionally, he has served as a reviewer and program committee member for these
 {% include cv-listing.html
     subject="Doctoral Researcher"
     startdate="2015"
-    enddate="now"
+    enddate="2020"
     location="[IDLab, Ghent University — imec](http://www.ugent.be/ea/idlab/en)"
     description="Under the supervision of [Ruben Verborgh](https://ruben.verborgh.org/),
     I am researching decentralized publication and querying of Linked Data on the Web."
@@ -57,9 +64,9 @@ Additionally, he has served as a reviewer and program committee member for these
 {% include cv-listing.html
     subject="Doctor of Computer Science Engineering"
     startdate="2015"
-    enddate="now"
+    enddate="2020"
     location="Ghent University, Belgium"
-    description=""
+    description="Thesis: [Storing and Querying Evolving Knowledge Graphs on the Web](https://phd.rubensworks.net/)"
 %}
 {% include cv-listing.html
     subject="Master in Computer Science Engineering"
@@ -67,7 +74,7 @@ Additionally, he has served as a reviewer and program committee member for these
     enddate="2015"
     location="Ghent University, Belgium"
     description="With great honor
-    <br />Thesis: [Continuously Updating Queries over Real-Time Linked Data](http://localhost:4000/publications/taelman_mastersthesis/)"
+    <br />Thesis: [Continuously Updating Queries over Real-Time Linked Data](https://www.rubensworks.net/publications/taelman_mastersthesis/)"
 %}
 {% include cv-listing.html
     subject="Bachelor in Informatics"
