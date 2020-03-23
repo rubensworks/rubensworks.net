@@ -234,7 +234,7 @@ Additionally, he has served as a reviewer and program committee member for these
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2018 (Research Track)
     * 2019 (Research Track)
-    * 2020 (Metadata Chair)
+    * 2020 (Metadata Chair, Research Track, Poster & Demo Track)
 * [The Web Conference](https://www.iw3c2.org/)
     * 2018 ([Developers' Track](https://www2018.thewebconf.org/program/developers-track/))
 * [SEMANTiCS Conference](https://semantics.cc/)
