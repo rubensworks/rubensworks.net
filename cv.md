@@ -218,10 +218,14 @@ Additionally, he has served as a reviewer and program committee member for these
 
 ### Journal Reviewer
 
+* [IEEE Access](https://ieeeaccess.ieee.org/)
+    * 2020
 * [Semantic Web Journal](http://semantic-web-journal.net/)
-    * 2017 (2 times)
+    * 2017
+    * 2018
+    * 2020
 * [Journal of Web Semantics](https://www.journals.elsevier.com/journal-of-web-semantics)
-    * 2017 (2 times)
+    * 2017
 * [Data Science](https://www.iospress.nl/journal/data-science/)
     * 2019
 {:.cv-listing}
