@@ -11,7 +11,7 @@ This is my application for the [2020 SWSA Distinguished Dissertation Award](http
 
 * Dissertation ([HTML](https://phd.rubensworks.net/) / [PDF](https://phd.rubensworks.net/phd-rubentaelman-print.pdf))
 * Short paper (TODO)
-* Supervisor letter (TODO)
+* Supervisor letter ([PDF](https://www.rubensworks.net/raw/other/swsa2020-letter-supervisor.pdf))
 
 # Abstract
 
@@ -22,17 +22,9 @@ The Web has become our most valuable tool for sharing information. Currently, th
 Below, the main publications related to my dissertation are listed:
 
 * **Ruben Taelman**, Pieter Colpaert, Erik Mannens, Ruben Verborgh. [Generating Public Transport Data based on Population Distributions for RDF Benchmarking](http://rubensworks.net/raw/publications/2018/podigg.pdf). Published in Semantic Web Journal.
-    <br />
-    *Journal publication on PoDiGG. Included in this dissertation as **Chapter 2***.
 * **Ruben Taelman**, Miel Vander Sande, Joachim Van Herwegen, Erik Mannens, Ruben Verborgh. [Triple Storage for Random-Access Versioned Querying of RDF Archives](https://rdfostrich.github.io/article-jws2018-ostrich/). Published in Journal of Web Semantics.
-    <br />
-    *Journal publication on OSTRICH. Included in this dissertation as **Chapter 3***.
 * **Ruben Taelman**, Joachim Van Herwegen, Miel Vander Sande, Ruben Verborgh. [Comunica: a Modular SPARQL Query Engine for the Web](https://comunica.github.io/Article-ISWC2018-Resource/). Published in proceedings of the 17th International Semantic Web Conference.
-    <br />
-    *Journal publication on Comunica. Included in this dissertation as **Chapter 4***.
 * **Ruben Taelman**, Ruben Verborgh, Pieter Colpaert, Erik Mannens. [Continuous Client-Side Query Evaluation over Dynamic Linked Data](http://rubensworks.net/raw/publications/2016/Continuous_Client-Side_Query_Evaluation_over_Dynamic_Linked_Data.pdf). Published in The Semantic Web: ESWC 2016 Satellite Events, Heraklion, Crete, Greece, May 29 – June 2, 2016, Revised Selected Papers.
-    <br />
-    *Extended version of "Continuously Updating Query Results over Real-Time Linked Data". Included in this dissertation as **Chapter 5***
 
 # All associated publications
 
