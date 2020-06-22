@@ -10,7 +10,7 @@ This is my application for the [2020 SWSA Distinguished Dissertation Award](http
 # General details
 
 * Dissertation ([HTML](https://phd.rubensworks.net/) / [PDF](https://phd.rubensworks.net/phd-rubentaelman-print.pdf))
-* Short paper (TODO)
+* Short paper ([PDF](https://www.rubensworks.net/raw/other/swsa2020-dissertation-summary.pdf))
 * Supervisor letter ([PDF](https://www.rubensworks.net/raw/other/swsa2020-letter-supervisor.pdf))
 
 # Abstract
