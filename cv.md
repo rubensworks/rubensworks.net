@@ -158,9 +158,15 @@ Additionally, he has served as a reviewer and program committee member for these
 <ul class="cv-listing">
 {% include cv-listing.html
     subject="Best Paper Award"
+    date="2020"
+    subtitle="[Pattern-based Access Control in a Decentralised Collaboration Environment](/publications/werbrouck_ldac_2020/)"
+    description="LDAC2020 - 8th Linked Data in Architecture and Construction Workshop"
+%}
+{% include cv-listing.html
+    subject="Best Paper Award"
     date="2016"
     subtitle="[Continuously Updating Query Results over Real-Time Linked Data](/publications/taelman_mepdaw_2016/)"
-    description="2nd Workshop on Managing the Evolution and Preservation of the Data Web (2016)"
+    description="2nd Workshop on Managing the Evolution and Preservation of the Data Web)"
 %}
 </ul>
 
