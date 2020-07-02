@@ -153,6 +153,17 @@ Additionally, he has served as a reviewer and program committee member for these
 %}
 </ul>
 
+## Fellowships
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Postdoctoral Fellowship"
+    date="2020 - 2023"
+    subtitle="[Research Foundation Flanders](https://www.fwo.be/en/)"
+    description="Full research grant for a 3-year junior postdoctoral fellowship"
+%}
+</ul>
+
 ## Awards
 
 <ul class="cv-listing">
