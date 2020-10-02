@@ -51,7 +51,7 @@ In the remainder of this post, I go over the existing libraries that I built on 
 I discuss the main architecture and design decisions behind these parsers,
 and I end with some live-action examples.
 
-*Update: as of recently, I've implemented an [RDFa parser](https://github.com/rubensworks/rdfa-streaming-parser.js) based on these same concepts.*
+*Update: as of recently, I've implemented an [RDFa parser](https://github.com/rubensworks/rdfa-streaming-parser.js) and [Microdata to RDF parser](https://github.com/rubensworks/microdata-rdf-streaming-parser.js/) based on these same concepts.*
 
 ## Building on top of existing libraries
 
