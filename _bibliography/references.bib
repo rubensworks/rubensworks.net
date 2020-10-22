@@ -9,6 +9,22 @@
 Depending on the HTTP interface used for publishing Linked Data, the effort of evaluating a SPARQL query can be redistributed differently between clients and servers. For instance, lower server-side CPU usage can be realized at the expense of higher bandwidth consumption. Previous work has shown that complementing lightweight interfaces such as Triple Pattern Fragments (TPF) with additional metadata can positively impact the performance of clients and servers. Specifically, Approximate Membership Filters (AMFs)—data structures that are small and probabilistic—in the context of TPF were shown to reduce the number of HTTP requests, at the expense of increasing query execution times. In order to mitigate this significant drawback, we have investigated unexplored aspects of AMFs as metadata on TPF interfaces. In this article, we introduce and evaluate alternative approaches for server-side publication and client-side consumption of AMFs within TPF to achieve faster query execution, while maintaining low server-side effort. Our alternative client-side algorithm and the proposed server configurations significantly reduce both the number of HTTP requests and query execution time, with only a small increase in server load, thereby mitigating the major bottleneck of AMFs within TPF. Compared to regular TPF, average query execution is more than 2 times faster and requires only 10\% of the number of HTTP requests, at the cost of at most a 10\% increase in server load. These findings translate into a set of concrete guidelines for data publishers on how to configure AMF metadata on their servers. 
 },
   _type     = {Workshop},
+  slides    = {https://rubensworks.github.io/slides-2020-iswc-ssws-amf/},
+  note      = {Accepted for publication}
+}
+
+@inproceedings{taelman_praxis_rts_2020,
+  author    = {Taelman, Ruben},
+  title     = {RDF Test Suite: Improving Developer Experience for Building Specification-Compliant Libraries},
+  month     = {nov},
+  booktitle = {Proceedings of the 1st Workshop on The Semantic Web in Practice: Tools and Pedagogy},
+  year      = {2020},
+  url       = {https://rubensworks.github.io/article-rdf-test-suite/},
+  abstract  = {
+Guaranteeing compliance of software libraries to certain specifications is crucial for ensuring interoperability within the Semantic Web. While many specifications publish their own declarative test suite for testing compliance, the actual execution of these test suites can add a huge overhead for library developers. In order to remove this burden from these developers, we introduce a JavaScript tool called RDF Test Suite that takes care of all the required bookkeeping behind test suite execution. In this report, we discuss the design goals of RDF Test Suite, how it has been implemented, and how it can be used. In practice, this tool is being used in a variety of libraries, and it ensures their specification compliance with minimal overhead. 
+},
+  _type     = {Workshop},
+  slides    = {https://rubensworks.github.io/slides-2020-iswc-praxis-rts/},
   note      = {Accepted for publication}
 }
 
@@ -23,7 +39,8 @@ Depending on the HTTP interface used for publishing Linked Data, the effort of e
 Many Web developers nowadays are trained to build applications with a user-facing browser front-end that obtains predictable data structures from a single, well-known back-end. Linked Data invalidates such assumptions, since data can combine several ontologies and span multiple servers with different APIs. Front-end developers, who specialize in creating end-user experiences rather than back-ends, need an abstraction layer to the Web of Data that matches their existing mindset and workflow. We have developed LDflex, a domain-specific language that exposes common Linked Data access patterns as concise JavaScript expressions. In this article, we describe the design and embedding of the language, and discuss its daily usage within two companies. LDflex succeeds in eliminating a dedicated data layer for common and straightforward data access patterns, without striving to be a replacement for more complex cases. Our experiences reveal that designing a Linked Data developer experience—analogous to a user experience—is crucial for adoption by the target group, who can create Linked Data applications for end users. Crucially, simple abstractions require research to hide the underlying complexity.
 },
   _type     = {Conference},
-  note      = {Accepted for publication}
+  note      = {Accepted for publication},
+  video     = {https://www.youtube.com/watch?v=2BHV1p2QzNw}
 }
 
 @inproceedings{taelman_towards_privacy_aggregation_2020,
