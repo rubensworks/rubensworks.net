@@ -1,3 +1,17 @@
+@article{kuhn_peerj_decentralizednanopubs_2021,
+  author    = {Kuhn, Tobias and Taelman, Ruben and Emonet, Vincent, and Antonatos, Haris and Soiland-Reyes, Stian and Dumontier, Michel},
+  title     = {Semantic micro-contributions with decentralized nanopublication services},
+  month     = {mar},
+  journal   = {PeerJ Computer Science},
+  year      = {2021},
+  url       = {https://peerj.com/articles/cs-387/},
+  abstract  = {
+While the publication of Linked Data has become increasingly common, the process tends to be a relatively complicated and heavy-weight one. Linked Data is typically published by centralized entities in the form of larger dataset releases, which has the downside that there is a central bottleneck in the form of the organization or individual responsible for the releases. Moreover, certain kinds of data entries, in particular those with subjective or original content, currently do not fit into any existing dataset and are therefore more difficult to publish. To address these problems, we present here an approach to use nanopublications and a decentralized network of services to allow users to directly publish small Linked Data statements through a simple and user-friendly interface, called Nanobench, powered by semantic templates that are themselves published as nanopublications. The published nanopublications are cryptographically verifiable and can be queried through a redundant and decentralized network of services, based on the grlc API generator and a new quad extension of Triple Pattern Fragments. We show here that these two kinds of services are complementary and together allow us to query nanopublications in a reliable and efficient manner. We also show that Nanobench makes it indeed very easy for users to publish Linked Data statements, even for those who have no prior experience in Linked Data publishing.
+},
+  doi      = {10.7717/peerj-cs.387},
+  _type     = {Journal}
+}
+
 @inproceedings{taelman_ssws_amf_2020,
   author    = {Taelman, Ruben and Van Herwegen, Joachim and Vander Sande, Miel and Verborgh, Ruben},
   title     = {Optimizing Approximate Membership Metadata in Triple Pattern Fragments for Clients and Servers},
@@ -9,8 +23,7 @@
 Depending on the HTTP interface used for publishing Linked Data, the effort of evaluating a SPARQL query can be redistributed differently between clients and servers. For instance, lower server-side CPU usage can be realized at the expense of higher bandwidth consumption. Previous work has shown that complementing lightweight interfaces such as Triple Pattern Fragments (TPF) with additional metadata can positively impact the performance of clients and servers. Specifically, Approximate Membership Filters (AMFs)—data structures that are small and probabilistic—in the context of TPF were shown to reduce the number of HTTP requests, at the expense of increasing query execution times. In order to mitigate this significant drawback, we have investigated unexplored aspects of AMFs as metadata on TPF interfaces. In this article, we introduce and evaluate alternative approaches for server-side publication and client-side consumption of AMFs within TPF to achieve faster query execution, while maintaining low server-side effort. Our alternative client-side algorithm and the proposed server configurations significantly reduce both the number of HTTP requests and query execution time, with only a small increase in server load, thereby mitigating the major bottleneck of AMFs within TPF. Compared to regular TPF, average query execution is more than 2 times faster and requires only 10\% of the number of HTTP requests, at the cost of at most a 10\% increase in server load. These findings translate into a set of concrete guidelines for data publishers on how to configure AMF metadata on their servers. 
 },
   _type     = {Workshop},
-  slides    = {https://rubensworks.github.io/slides-2020-iswc-ssws-amf/},
-  note      = {Accepted for publication}
+  slides    = {https://rubensworks.github.io/slides-2020-iswc-ssws-amf/}
 }
 
 @inproceedings{taelman_praxis_rts_2020,
@@ -24,8 +37,7 @@ Depending on the HTTP interface used for publishing Linked Data, the effort of e
 Guaranteeing compliance of software libraries to certain specifications is crucial for ensuring interoperability within the Semantic Web. While many specifications publish their own declarative test suite for testing compliance, the actual execution of these test suites can add a huge overhead for library developers. In order to remove this burden from these developers, we introduce a JavaScript tool called RDF Test Suite that takes care of all the required bookkeeping behind test suite execution. In this report, we discuss the design goals of RDF Test Suite, how it has been implemented, and how it can be used. In practice, this tool is being used in a variety of libraries, and it ensures their specification compliance with minimal overhead. 
 },
   _type     = {Workshop},
-  slides    = {https://rubensworks.github.io/slides-2020-iswc-praxis-rts/},
-  note      = {Accepted for publication}
+  slides    = {https://rubensworks.github.io/slides-2020-iswc-praxis-rts/}
 }
 
 @inproceedings{verborgh_iswc_2020,
@@ -39,7 +51,6 @@ Guaranteeing compliance of software libraries to certain specifications is cruci
 Many Web developers nowadays are trained to build applications with a user-facing browser front-end that obtains predictable data structures from a single, well-known back-end. Linked Data invalidates such assumptions, since data can combine several ontologies and span multiple servers with different APIs. Front-end developers, who specialize in creating end-user experiences rather than back-ends, need an abstraction layer to the Web of Data that matches their existing mindset and workflow. We have developed LDflex, a domain-specific language that exposes common Linked Data access patterns as concise JavaScript expressions. In this article, we describe the design and embedding of the language, and discuss its daily usage within two companies. LDflex succeeds in eliminating a dedicated data layer for common and straightforward data access patterns, without striving to be a replacement for more complex cases. Our experiences reveal that designing a Linked Data developer experience—analogous to a user experience—is crucial for adoption by the target group, who can create Linked Data applications for end users. Crucially, simple abstractions require research to hide the underlying complexity.
 },
   _type     = {Conference},
-  note      = {Accepted for publication},
   _video    = {https://www.youtube.com/watch?v=2BHV1p2QzNw}
 }
 
@@ -53,8 +64,7 @@ Many Web developers nowadays are trained to build applications with a user-facin
   abstract  = {
 At the end of 2019, Chinese authorities alerted the World Health Organization (WHO) of the outbreak of a new strain of the coronavirus, called SARS-CoV-2, which struck humanity by an unprecedented disaster a few months later. In response to this pandemic, a publicly available dataset was released on Kaggle which contained information of over 63,000 papers. In order to facilitate the analysis of this large mass of literature, we have created a knowledge graph based on this dataset. Within this knowledge graph, all information of the original dataset is linked together, which makes it easier to search for relevant information. The knowledge graph is also enriched with additional links to appropriate, already existing external resources. In this paper, we elaborate on the different steps performed to construct such a knowledge graph from structured documents. Moreover, we discuss, on a conceptual level, several possible applications and analyses that can be built on top of this knowledge graph. As such, we aim to provide a resource that allows people to more easily build applications that give more insights into the COVID-19 pandemic.
 },
-  _type     = {Conference},
-  note      = {Accepted for publication}
+  _type     = {Conference}
 }
 
 @inproceedings{taelman_towards_privacy_aggregation_2020,
@@ -67,8 +77,7 @@ At the end of 2019, Chinese authorities alerted the World Health Organization (W
   abstract  = {
 The Web is a ubiquitous economic, educational, and collaborative space. However, it also serves as a haven for personal information harvesting. Existing decentralised Web-based ecosystems, such as Solid, aim to combat personal data exploitation on the Web by enabling individuals to manage their data in the personal data store of their choice. Since personal data in these decentralised ecosystems are distributed across many sources, there is a need for techniques to support efficient privacy-preserving query execution over personal data stores. Towards this end, in this position paper we present a framework for efficient privacy preserving federated querying, and highlight open research challenges and opportunities. The overarching goal being to provide a means to position future research into privacy-preserving querying within decentralised environments. 
 },
-  _type     = {Workshop},
-  note      = {Accepted for publication}
+  _type     = {Workshop}
 }
 
 @inproceedings{werbrouck_ldac_2020,
