@@ -110,6 +110,20 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="Thomas Devriese"
+    startdate="2020"
+    enddate="2021"
+    location="Ghent University, Belgium"
+    description="Scaling networks of personal data stores through Approximate Membership Functions"
+%}
+{% include cv-listing.html
+    subject="Marie Denoo"
+    startdate="2020"
+    enddate="2021"
+    location="Ghent University, Belgium"
+    description="Enabling fine-grained access control in decentralized environments"
+%}
+{% include cv-listing.html
     subject="Karel Haerens"
     startdate="2019"
     enddate="2020"
