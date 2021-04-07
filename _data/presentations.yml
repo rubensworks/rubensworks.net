@@ -1,3 +1,13 @@
+"2021-ugent-webfundamentals-linktraversal":
+    title: "Link Traversal-based Query Processing"
+    venue: "Web Fundamentals, UGent"
+    date: "29 April 2021"
+    url: "https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-linktraversal/"
+"2021-ugent-webfundamentals-sparqlengines":
+    title: "SPARQL Query Evaluation"
+    venue: "Web Fundamentals, UGent"
+    date: "29 April 2021"
+    url: "https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-sparqlengines/"
 "2021-knows-linktraversal":
     title: "Introduction to Link Traversal Query Processing"
     venue: "KNoWS"
