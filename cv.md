@@ -204,6 +204,13 @@ Additionally, he has served as a reviewer and program committee member for these
     location="Ghent University, Belgium"
     description="Guest lecture at the [Web Fundamentals](https://rubenverborgh.github.io/WebFundamentals/) course at Ghent University"
 %}
+{% include cv-listing.html
+    subject="[A Technical View on the Solid Ecosystem](https://www.rubensworks.net/raw/slides/2020/oslc-solid-tech/)"
+    date="2020"
+    location="OSLC Fest 2020"
+    description="Invited talk on the fundamentals of the Solid ecosystem at [OSLC Fest](http://oslcfest.org/) ([video](https://www.youtube.com/watch?v=t1AJg8HAEn4&t=6705s))"
+%}
+</ul>
 
 ## Publications
 
