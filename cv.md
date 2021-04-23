@@ -195,6 +195,16 @@ Additionally, he has served as a reviewer and program committee member for these
 %}
 </ul>
 
+## Invited talks
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-sparqlengines/) and [Link Traversal-based Query Processing](https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-linktraversal/)"
+    date="2021"
+    location="Ghent University, Belgium"
+    description="Guest lecture at the [Web Fundamentals](https://rubenverborgh.github.io/WebFundamentals/) course at Ghent University"
+%}
+
 ## Publications
 
 ### Journal articles
