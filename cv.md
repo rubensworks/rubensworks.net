@@ -210,6 +210,12 @@ Additionally, he has served as a reviewer and program committee member for these
     location="OSLC Fest 2020"
     description="Invited talk on the fundamentals of the Solid ecosystem at [OSLC Fest](http://oslcfest.org/) ([video](https://www.youtube.com/watch?v=t1AJg8HAEn4&t=6705s))"
 %}
+{% include cv-listing.html
+    subject="[Comunica: a Modular SPARQL Query Engine for the Web](https://www.rubensworks.net/raw/slides/2019/wu-comunica/)"
+    date="2019"
+    location="Institute for Information Business, WU Vienna University of Economics and Business"
+    description="Invited talk on the Comunica query engine"
+%}
 </ul>
 
 ## Publications
