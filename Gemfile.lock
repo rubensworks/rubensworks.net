@@ -7,7 +7,7 @@ GEM
       latex-decode (~> 0.0)
     citeproc (1.0.9)
       namae (~> 1.0)
-    citeproc-ruby (1.1.10)
+    citeproc-ruby (1.1.11)
       citeproc (~> 1.0, >= 1.0.9)
       csl (~> 1.5)
     colorator (1.1.0)
@@ -35,7 +35,7 @@ GEM
     http_parser.rb (0.6.0)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    jekyll (3.8.6)
+    jekyll (3.8.7)
       addressable (~> 2.4)
       colorator (~> 1.0)
       em-websocket (~> 0.5)
@@ -96,4 +96,4 @@ DEPENDENCIES
   jekyll-scholar (= 5.16.0)
 
 BUNDLED WITH
-   1.16.1
+   2.2.15
