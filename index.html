@@ -21,7 +21,7 @@ layout: default
   
   <h2>Latest blog posts</h2>
   <ul class="posts">
-	{% assign posts_sorted = site.posts | limit: 5 %}
+	{% assign posts_sorted = site.posts | limit: 2 %}
     {% for post in posts_sorted %}
       <li>
         {% include post-listing.html

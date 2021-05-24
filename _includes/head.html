@@ -13,7 +13,11 @@
   <link rel="canonical" href="{{ canonical }}" />
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" />
   {% assign image_small = "/img/favicon.jpg" | prepend: site.baseurl | prepend: site.url %}
-  {% assign image_large = "/img/ruben.jpg" | prepend: site.baseurl | prepend: site.url %}
+  {% if page.feature_img %}
+    {% assign image_large = page.feature_img | prepend: site.baseurl | prepend: site.url %}
+  {% else %}
+    {% assign image_large = "/img/ruben.jpg" | prepend: site.baseurl | prepend: site.url %}
+  {% endif %}
   <link rel="shortcut icon" type="image/png" href="{{ image_small }}" />
   <link rel="foaf:primaryTopic" href="{{ "/#me" | prepend: site.baseurl | prepend: site.url }}" />
   <link rel="foaf:primaryTopic foaf:maker" href="{{ "/#me" | prepend: site.baseurl | prepend: site.url }}" />
