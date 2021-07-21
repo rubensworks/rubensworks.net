@@ -26,5 +26,5 @@ Our office is located at the **north-east corner on the 7th floor**.
 
 <h2 id="contact-other">Other</h2>
 
-If you want to contact me for anything else that is not related to my research,
+If you want to contact me for anything else that is not related to my research, such as this website or freelancing offers,
 you can e-mail me via <a href="mailto:rubensworks@gmail.com">rubensworks@gmail.com</a>.
