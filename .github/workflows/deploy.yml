@@ -1,0 +1,39 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - "**"
+    pull_request:
+      branches:
+        - "**"
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+    steps:
+      - name: Install build dependencies 🔧
+        run: sudo apt-get install -y libxml2-dev libxslt-dev
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - name: Install and Build 🔧
+        run: bundle install && ./script/cibuild
+      - name: Install SSH key 🔧
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SCP_DEPLOY_RSA }}
+          known_hosts: ${{ secrets.SCP_DEPLOY_HOST }}
+      - name: Deploy 🚀
+        if: startsWith(github.ref, 'refs/heads/master')
+        run: rsync -r --quiet -e "ssh -p $SCP_PORT -o 'StrictHostKeyChecking=no'" _site/* $SCP_USER@rubensworks.net:$SCP_LOCATION
+        env:
+          SCP_PORT: ${{ secrets.SCP_PORT }}
+          SCP_USER: ${{ secrets.SCP_USER }}
+          SCP_LOCATION: ${{ secrets.SCP_LOCATION }}
