@@ -297,6 +297,7 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2020 (Metadata Chair, Research Track, Poster & Demo Track)
     * 2021 (Research Track, Resources Track, In-Use Track)
 * [The Web Conference](https://www.iw3c2.org/)
+    * 2022 (Semantics and Knowledge Track)
     * 2018 ([Developers' Track](https://www2018.thewebconf.org/program/developers-track/))
 * [International Conference on Ontologies, DataBases, and Applications of Semantics (ODBASE)](http://www.otmconferences.org/index.php/conferences/odbase-2020)
     * 2020
