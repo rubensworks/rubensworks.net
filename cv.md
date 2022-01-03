@@ -98,6 +98,13 @@ Additionally, he has served as a reviewer and program committee member for these
     description="Coaching of Computer Science students on designing and implementing Web applications."
 %}
 {% include cv-listing.html
+    subject="Research Project"
+    startdate="2021"
+    enddate="now"
+    location="Ghent University, Belgium"
+    description="Coaching a group of students to write an academic survey paper."
+%}
+{% include cv-listing.html
     subject="Design of Cloud and Mobile Applications"
     startdate="2015"
     enddate="2017"
@@ -109,6 +116,41 @@ Additionally, he has served as a reviewer and program committee member for these
 ### Supervision of Master Students
 
 <ul class="cv-listing">
+{% include cv-listing.html
+    subject="Laurens Debackere"
+    startdate="2021"
+    enddate="2022"
+    location="Ghent University, Belgium"
+    description="Efficient and secure querying of Linked Data federations"
+%}
+{% include cv-listing.html
+    subject="Robin De Baets"
+    startdate="2021"
+    enddate="2022"
+    location="Ghent University, Belgium"
+    description="Caching and replication in decentralized Linked Data environments"
+%}
+{% include cv-listing.html
+    subject="Jasper Vrints"
+    startdate="2021"
+    enddate="2022"
+    location="Ghent University, Belgium"
+    description="Query Optimization using WebAssembly"
+%}
+{% include cv-listing.html
+    subject="Jonas Bovyn"
+    startdate="2021"
+    enddate="2022"
+    location="Ghent University, Belgium"
+    description="Query Optimization using WebAssembly"
+%}
+{% include cv-listing.html
+    subject="Sammy Delanghe"
+    startdate="2021"
+    enddate="2022"
+    location="Ghent University, Belgium"
+    description="Analysis of Property Graphs in SPARQL engines"
+%}
 {% include cv-listing.html
     subject="Thomas Devriese"
     startdate="2020"
@@ -128,7 +170,7 @@ Additionally, he has served as a reviewer and program committee member for these
     startdate="2019"
     enddate="2020"
     location="Ghent University, Belgium"
-    description="Query execution over decentralized social media networks"
+    description="[Query execution over decentralized social media networks](https://libstore.ugent.be/fulltxt/RUG01/002/945/736/RUG01-002945736_2021_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Serge Morel"
@@ -149,7 +191,7 @@ Additionally, he has served as a reviewer and program committee member for these
     startdate="2017"
     enddate="2019"
     location="Ghent University, Belgium"
-    description="[An analysis of the effects of HTTP2 on a low-cost query interface]()"
+    description="[An analysis of the effects of HTTP2 on a low-cost query interface](https://libstore.ugent.be/fulltxt/RUG01/002/785/822/RUG01-002785822_2019_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Thibault Mahieu"
