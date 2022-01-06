@@ -1,3 +1,33 @@
+@article{taelman_swj_componentsjs_2022,
+  author    = {Taelman, Ruben and Van Herwegen, Joachim and Vander Sande, Miel and Verborgh, Ruben},
+  title     = {Components.js: Semantic Dependency Injection},
+  journal   = {Semantic Web Journal},
+  year      = {2022},
+  month     = {january},
+  url       = {https://linkedsoftwaredependencies.github.io/Article-System-Components/},
+  abstract  = {
+A common practice within object-oriented software is using composition to realize complex object behavior in a reusable way.
+Such compositions can be managed by Dependency Injection (DI),
+a popular technique in which components only depend on minimal interfaces and have their concrete dependencies passed into them.
+Instead of requiring program code, this separation enables describing the desired instantiations in declarative configuration files,
+such that objects can be wired together automatically at runtime. Configurations for existing DI frameworks typically only have local semantics,
+which limits their usage in other contexts.
+Yet some cases require configurations outside of their local scope, such as for the reproducibility of experiments, static program analysis, and semantic workflows.
+As such, there is a need for globally interoperable, addressable, and discoverable configurations, which can be achieved by leveraging Linked Data.
+We created Components.js as an open-source semantic DI framework for TypeScript and JavaScript applications,
+providing global semantics via Linked Data-based configuration files.
+In this article, we report on the Components.js framework by explaining its architecture and configuration,
+and discuss its impact by mentioning where and how applications use it.
+We show that Components.js is a stable framework that has seen significant uptake during the last couple of years.
+We recommend it for software projects that require high flexibility, configuration without code changes, sharing configurations with others,
+or applying these configurations in other contexts such as experimentation or static program analysis.
+We anticipate that Components.js will continue driving concrete research and development projects that require high degrees of customization
+to facilitate experimentation and testing, including the Comunica query engine and the Community Solid Server for decentralized data publication.
+  },
+  _type     = {Journal},
+  _highlighted = {true}
+}
+
 @inproceedings{verbrugge_fitce_2021,
   author    = {Verbrugge, Sofie and Vannieuwenborg, Frederic and Van der Wee, Marlies and Colle, Didier and Taelman, Ruben and Verborgh, Ruben},
   title     = {Towards a personal data vault society: an interplay between technological and business perspectives},
@@ -349,8 +379,7 @@ Our findings show that the generator achieves a sufficient level of realism,
 based on the existing coherence metric and new metrics we introduce specifically for the public transport domain.
 Thereby, podigg provides a flexible foundation for benchmarking RDF data management systems with geospatial and temporal data.
   },
-  _type     = {Journal},
-  _highlighted = {true}
+  _type     = {Journal}
 }
 
 @inproceedings{taelman_iswc_resources_comunica_2018,
