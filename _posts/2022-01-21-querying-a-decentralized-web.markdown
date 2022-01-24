@@ -222,17 +222,105 @@ until they can be confirmed by the query engine.
 
 ## Beyond Link Traversal
 
-TODO:
-- Pure data documents will be too slow in some cases => stepping away from pure link traversal towards hybrid and exploit indexes
-- Auxiliary indexes: summaries and aggregators
-- => issue of privacy preservation
-- TREE, ShapeTrees => pruning and prioritization
-- SPARQL endpoints, TPF, ...
-- Collaborative querying
+Even though there are many opportunities for improving the performance of link traversal,
+there will most likely be cases where the overhead of traversal during query execution will be too high.
+For these cases, the root cause of the problem is not necessarily the link traversal process,
+but the minimal data API that causes the data to be spread over too many documents,
+which requires the query engine to perform too many HTTP requests.
+As such, for these cases, we will have to go _beyond_ this minimal data API,
+and expose auxiliary indexes so that the query engine does not have to perform as many requests.
 
-## Conclusions
+This idea is similar to the concepts of [indexes](https://www.postgresql.org/docs/9.1/indexes.html) and [materialized views](https://www.postgresql.org/docs/12/rules-materializedviews.html) in databases,
+which are added to a database to enable the query engine to find certain types of data much faster.
+Such indexes and materialized views are usually created if execution times for certain queries become too slow.
+Concretely, there will be a need to expose indexes and materialized views over knowledge graphs on the Web,
+so that link traversal algorithms can use them to optimize query execution.
+This technique is sometimes also referred to as _hybrid link traversal_,
+for which several concrete opportunities are already available.
 
-TODO:
-- Comunica; personal query engine
-- Open research questions
-- Join us: SolidLab
+For example, **query APIs** such as [SPARQL endpoints](https://www.w3.org/TR/sparql11-protocol/)
+and [Triple Pattern Fragments](https://linkeddatafragments.org/specification/triple-pattern-fragments/) interfaces
+could be exposed on a Solid data vault (or parts thereof) in case the knowledge graph size within that vault becomes too large.
+If a query engine is traversing over that vault, and it discovers the presence of such a query interface,
+it could abort traversal over that range, and directly query that API instead.
+
+TODO: figure pointer from pod to API
+
+Another opportunity is the usage of **Web-based indexing techniques**, such as [ShapeTrees](https://shapetrees.org/).
+These techniques allow properties of information contained within certain knowledge graphs to be described.
+For example, a user storing photos within a vault, can decide to structure photos by the country in which the photo was taken.
+Based on this structure, if the user wants to query all photos taken in the city Paris,
+an intelligent query engine can exploit this structural information to determine that Paris is a city in France,
+after which the query engine should only look at the photos in the container of France.
+In general, structural information from Web-based indexes can be used to _prune_ links and documents that are guaranteed to not be relevant for the query results.
+Furthermore, this information can also be used to _prioritize_ certain links.
+
+TODO: figure photos by location
+
+A third opportunity is that of **Web-based materialized views**,
+which involves precomputing a derived view on (a subset of) a knowledge graph,
+such as is enabled by [TREE](https://treecg.github.io/specification/).
+In other words, the data can be replicated in a different way.
+For example, while a user's vault may contain photos structured by city,
+a derived view may be created that structures these same photos by quality.
+Depending on the type of query, the query engine may decide to pick either the original view or the derived view to achieve the best query performance.
+
+TODO: figure photos in different views
+
+A final opportunity involves **summarization via aggregation services**.
+This concept is similar to that of materialized views,
+with the difference that not the full data is replicated,
+but only a high-level summary, and that pointers to the original data are in place.
+For example, a summary can be created over all locations at which a user has taken photos.
+If a query is issued to look for all photos at a given location, the summary can be checked first,
+before a more in-depth (and more expensive) look should be done into the rest of the vault.
+Since a summary still requires a lookup for the original data,
+it may even be possible to use probabilistic datastructures for more efficiently storing these summaries,
+such as [Bloom filters](https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/).
+
+Efficiently using these query APIs, indexes, materialized views, and summaries during query execution is of course just one side of the story.
+Further research is also needed to determine techniques to efficiently construct and manage them.
+Another aspect to consider is the issue of privacy,
+since decentralized knowledge graphs may contain private data that exists behind access control.
+It is therefore important that these hybrid techniques don't leak private information
+by acting in a [privacy-preserving manner](https://www.rubensworks.net/publications/taelman_towards_privacy_aggregation_2020/).
+
+A main benefit of exposing these hybrid approaches at Web-level,
+is the fact that they can be hosted anywhere on the Web.
+For example, users that notice that queries over their own pictures is very slow
+could decide to add an index over their data, and expose it on their own Web server.
+In a second example, a user may be querying over data that is owned by someone else,
+in which case it is not possible for this user to expose an index on that server directly.
+But what the user can do, is setup an external index on a personal server,
+which can still be exploited by the query engine.
+As long as these indexes are reused often enough, then setting them up may be worth it,
+compared to the higher query execution times without them.
+There may even be some commercial opportunities here,
+where indexing services over knowledge graphs may be used by users requiring faster query execution,
+while less critical queries may be done over a free tier of the knowledge graph that is exposed using simple data documents.
+
+## Making it work
+
+One of my personal goals is to make my research as practical as possible,
+which I for example do through the [Comunica query engine](https://comunica.dev/).
+The Comunica query engine was designed for investigating the kinds of query techniques that are discussed in this blog post,
+in such a way that the barrier towards actually using them in real-world production environments is as low as possible.
+Since Comunica already has the necessary building blocks to perform [basic query execution over Solid data vaults](https://comunica.dev/docs/query/advanced/solid/)
+and even has [experimental support for link traversal](https://github.com/comunica/comunica-feature-link-traversal),
+it is perfectly positioned to act as a common experimenting ground for researching query execution over decentralized knowledge graphs.
+Furthermore, since Comunica is a query engine that runs on both client- and server-side,
+it opens up some interesting practical opportunities,
+such as personalized query execution where the query process can very based on one's preferences and environment,
+and even collaborative query execution.
+
+## Interested in collaborating on these topics?
+
+As explained in this post, there are some interesting hurdles that have to be overcome before we can effectively query over decentralized knowledge graphs.
+If you are interested in any of these topics, and you want to collaborate, be sure to [contact me](mailto:rubensworks@gmail.com).
+Our [research group at Ghent University](https://www.ugent.be/ea/idlab/en) has recently [acquired funding](https://idlab.technology/news/2022/01/05/Flemish-government-7M-eur-funding-SolidLab-vlaanderen.en.html) to solve exactly these kinds of problems,
+and we are currently hiring enthusiastic people to work on this.
+Alternatively, it is also possible to do a Master's thesis or internship around this topic.
+Since one of the goals of this project funding is to *actually make things work in practise*,
+we will also be implementing these techniques in open-source tools such as the [Comunica query engine](https://comunica.dev/),
+so there are also plenty of practical and development-oriented opportunities available.
+
