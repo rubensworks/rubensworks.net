@@ -61,7 +61,7 @@ As such, instead of placing this burden on the application developer, perhaps th
 
 ## Queries abstract data access
 
-A common way of accessing data within an application from a remote Web server is via an **API**.
+A common way of reading and writing data from within an application from a remote Web server is via an **API**.
 For example, an application can use the API of a library to visualize and browse through all available books.
 While this direct access to APIs works well in many cases, it has some limitations.
 One main limitation is that it becomes more difficult for application developers to manage data when the data is spread over *multiple APIs*.
@@ -79,9 +79,13 @@ Instead, this task of **data access should be taken up by query engines**, with 
 A *query language* such as [SPARQL](https://www.w3.org/TR/sparql11-query/), [SQL](https://www.iso.org/standard/63555.html) and [GraphQL](https://graphql.org/)
 is a traditional way of accessing data.
 A primary strength of such query languages is the fact that they are *declarative*,
-which means that they allow you to define *what* data needs to be obtained, without having to define *how* this must be obtained.
+which means that they allow you to define *what* data needs to be obtained or written, without having to define *how* this must be obtained or written.
 Therefore, a query language acts as an abstraction layer between application developers and data sources,
 which is also perfectly suitable for the specific case of abstracting access to decentralized knowledge graphs.
+
+The remainder of this post will focus on purely *read* queries, while omitting *write* queries.
+This is not to say that write queries will not be important for decentralized knowledge graphs.
+I just consider read queries more urgent, and many its techniques can be extended towards write queries in the future.
 
 ## Executing queries with reusable query engines
 
