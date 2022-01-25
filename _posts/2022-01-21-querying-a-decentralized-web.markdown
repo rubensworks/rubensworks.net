@@ -76,6 +76,11 @@ Similar to how application developers do not traverse through internal indexes o
 developers of applications over decentralized knowledge graphs should not manually request a series of APIs and combine their results to look up data.
 Instead, this task of **data access should be taken up by query engines**, with *queries as abstraction interface*.
 
+<p style="text-align: center; font-style: italic;">
+    <img src="/img/blog/querying-a-decentralized-web/query-abstracts-central-to-decentral.svg" alt="Queries act as abstraction layer for data access" class="feature-img" />
+    <br />Queries act as abstraction layer for data access
+</p>
+
 A *query language* such as [SPARQL](https://www.w3.org/TR/sparql11-query/), [SQL](https://www.iso.org/standard/63555.html) and [GraphQL](https://graphql.org/)
 is a traditional way of accessing data.
 A primary strength of such query languages is the fact that they are *declarative*,
@@ -98,8 +103,6 @@ Th task of coming up with an efficient query execution plan is a tricky thing,
 because the numbers of ways in which one can execute a query can become very large,
 and some of them are much faster or slower than others,
 so picking the right one is key to fast query execution.
-
-TODO: figure query plans
 
 Many years of research have resulted in algorithms and systems that can produce efficient query planners over centralized relation databases.
 However, if we are moving towards a future where data is decentralized –such as enabled by Solid where everyone has a personal data vault–,
