@@ -9,16 +9,27 @@ date:        2022-01-21 10:00:00 +0100
 feature_img: /img/blog/apartments.jpg
 ---
 <p class="post-abstract" markdown="1">
-TODO
+Most of today's applications are built based around the assumption that data is centralized.
+However, with recent decentralization efforts such as Solid quickly gaining popularity,
+we may be evolving towards a future where data is massively decentralized.
+In order to enable applications over decentralized data,
+there is a need for new querying techniques that can effectively execute over it.
+This post discusses the impact of decentralization on query execution,
+and the problems that need to be solved before we can use it effectively in a decentralized Web.
 </p>
 <!--more-->
 
-TODO: briefly introduce KG here
+This blog post summarizes my current views on the next steps for research and development around query execution
+for a future where we may have massively decentralized knowledge graphs.
+This post targets present and new query researchers,
+publishers of knowledge graphs,
+and developers of decentralized applications.
+I do not claim the ideas contained in this post as my own, as they have been formed based on discussions and collaborations with many others involved in this domain.
 
 <img src="/img/blog/apartments.jpg" alt="Doors of apartments" class="feature-img" />
 
 <p>
-<center><em>Data can be accessed in a high variety of manners</em></center>
+<center><em>Decentralized Web applications will need to combine data from many locations</em></center>
 </p>
 
 ## Towards Decentralized Knowledge Graphs
@@ -125,6 +136,8 @@ While it may seem attractive to always expose data over more expressive APIs,
 there are [some trade-offs](https://linkeddatafragments.org/publications/jws2016.pdf) to keep in mind before doing that.
 Often, the more expressive API, the cheaper it is for a query engine to make use of it.
 On the other hand, the more expressive the API, the more costly it is to publish the API on the Web.
+For more background on the role of these APIs in the decentralized Web,
+I can highly recommend [Ruben Verborgh's blog post on this topic](https://ruben.verborgh.org/blog/2021/12/23/reflections-of-knowledge/).
 
 In a decentralized Web, it is important that everyone can easily publish there data, without requiring highly complex or expensive software to run on their servers.
 Therefore, it is reasonable to **consider simple data documents as the minimal data API**,
