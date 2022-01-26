@@ -61,7 +61,7 @@ As such, instead of placing this burden on the application developer, perhaps th
 
 ## Queries abstract data access
 
-A common way of reading and writing data from within an application from a remote Web server is via an **API**.
+A common way of reading and writing data from within an application is via an **API** of a Web server.
 For example, an application can use the API of a library to visualize and browse through all available books.
 While this direct access to APIs works well in many cases, it has some limitations.
 One main limitation is that it becomes more difficult for application developers to manage data when the data is spread over *multiple APIs*.
@@ -76,20 +76,20 @@ Similar to how application developers do not traverse through internal indexes o
 developers of applications over decentralized knowledge graphs should not manually request a series of APIs and combine their results to look up data.
 Instead, this task of **data access should be taken up by query engines**, with *queries as abstraction interface*.
 
-<center>
+<p class="post-figure">
     <img src="/img/blog/querying-a-decentralized-web/query-abstracts-central-to-decentral.svg" alt="Queries act as abstraction layer for data access" />
-</center>
+</p>
 
 A *query language* such as [SPARQL](https://www.w3.org/TR/sparql11-query/), [SQL](https://www.iso.org/standard/63555.html) and [GraphQL](https://graphql.org/)
-is a traditional way of accessing data.
+enables a traditional way of accessing data.
 A primary strength of such query languages is the fact that they are *declarative*,
 which means that they allow you to define *what* data needs to be obtained or written, without having to define *how* this must be obtained or written.
-Therefore, a query language acts as an abstraction layer between application developers and data sources,
+Therefore, a **query language acts as an abstraction layer between application developers and data sources**,
 which is also perfectly suitable for the specific case of abstracting access to decentralized knowledge graphs.
 
 The remainder of this post will focus on purely *read* queries, while omitting *write* queries.
 This is not to say that write queries will not be important for decentralized knowledge graphs.
-I just consider read queries more urgent, and many its techniques can be extended towards write queries in the future.
+I just consider read queries more urgent, and many of its techniques can be extended towards write queries in the future.
 
 ## Executing queries with reusable query engines
 
@@ -99,11 +99,11 @@ A query engine is responsible for *interpreting* the query,
 and *executing this plan* to obtain the results.
 
 Th task of coming up with an efficient query execution plan is a tricky thing,
-because the numbers of ways in which one can execute a query can become very large,
+because the number of ways in which one can execute a query can become very large,
 and some of them are much faster or slower than others,
 so picking the right one is key to fast query execution.
 
-Many years of research have resulted in algorithms and systems that can produce efficient query planners over centralized relation databases.
+Many years of research have resulted in many algorithms and systems that can produce efficient query planners over centralized relation databases.
 However, if we are moving towards a future where data is decentralized –such as enabled by Solid where everyone has a personal data vault–,
 then we need new algorithms and systems that can cope with this massive amount of distribution of data over different APIs.
 While some research has already been done in this direction,
@@ -124,12 +124,12 @@ we need **query execution algorithms that can cope with this large number of dat
 For example, using a given query, an application may want to visualize the books a group of friends has read,
 where the underlying data can be spread over multiple data sources.
 The data about each person's reading status can be available in simple data documents that are present in each person's data vault.
-A knowledge graph containing details about books (such as title, author, cover, ...) is accessible via both simple data documents
+Furthermore, a knowledge graph containing details about books (such as title, author, cover, ...) is accessible via both simple data documents
 *and* a more expressive API available that allows such details to be obtained based on an ISBN.
 
-<center>
+<p class="post-figure">
     <img src="/img/blog/querying-a-decentralized-web/books-app.svg" alt="Decentralized book application" />
-</center>
+</p>
 
 The query engine executing such a query will first have to *discover* the relevant data sources for this query.
 Then, for each source, it has to *interpret* each API's capabilities, i.e., how the query engine can request certain data.
@@ -148,7 +148,7 @@ For more background on the role of these APIs in the decentralized Web,
 I can highly recommend [Ruben Verborgh's blog post on this topic](https://ruben.verborgh.org/blog/2021/12/23/reflections-of-knowledge/).
 
 In a decentralized Web, it is important that everyone can easily publish there data, without requiring highly complex or expensive software to run on their servers.
-Therefore, it is reasonable to **consider simple data documents as the minimal data API**,
+Therefore, it is reasonable to **consider plain data documents as the minimal data API**,
 since these are the simplest and cheapest method of publishing data.
 Therefore, a query engine should always be able to handle query execution over documents.
 But if the query engine detects the presence of a more expressive API,
@@ -163,15 +163,15 @@ If we consider simple data documents as the minimal data API over which query ex
 then **it is important that efficient query execution algorithms are available for this minimal data API**.
 Due to the inherently linked nature of (decentralized) knowledge graphs,
 the so-called [*Link-Traversal-based Query Processing*](https://www.rubensworks.net/publications/bogaerts_ruleml_2021/) paradigm (a.k.a. link traversal)
-becomes possible for this.
+is an ideal technique.
 
 Link traversal starts from the assumption that documents are connected to each other via links,
 and that queries can be executed over one or more starting documents
 by **iteratively following links between documents**.
 
-<center>
+<p class="post-figure">
     <img src="/img/blog/querying-a-decentralized-web/follow-links.svg" alt="Query engine follows links between documents" />
-</center>
+</p>
 
 #### The problems of Link Traversal 
 
@@ -195,6 +195,12 @@ Some ideas for new prioritization strategies that may be promising here are:
 * **Historical relevancy**: for queries that are re-executed, prefer documents that contained the most query-relevant data the last time.
 * **Collaboration**: prefer documents that were relevant for your peers, such as your friends.
 
+Next to prioritization, the intelligent use of **caching** may also be very valuable for a series of query executions.
+For example, if a user repeats similar queries after each other,
+then the query could reuse intermediary results from previous query executions
+based on the [HTTP caching headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching) of the corresponding documents.
+Due to the large number of intermediary results, a live index of intermediate results with smart cache eviction mechanisms will be required.
+
 **Termination**
 
 Since [the number of documents on the Web is massive](https://www.worldwidewebsize.com/),
@@ -212,13 +218,13 @@ into directions such as termination by:
 * **Timeout**: only follow links until a timeout is reached.
 * **Link path dept**: only follow links up until a link path of a certain length.
 * **Link count**: only follow links until a certain number is reached (source-local or global).
-* **Survival** of the fittest: kill off link paths where none of the documents produced any results.
+* **Survival of the fittest**: kill off link paths where none of the documents produced any results.
 * **Popcorn**: stop following links if no more results are obtained after a certain timeout.
 
 #### Coping with these problems
 
 Ideally, the problems of speed and termination should be fully resolved.
-Given the concept of link traversal, it is more reasonable to assume that these issues may be *optimized*,
+Given the live nature of link traversal, it is more reasonable to assume that these issues may be *optimized*,
 but **the problems will never fully resolved**.
 Therefore, it may be beneficial to start thinking about ways to cope with these problems, in addition to trying to solve them.
 
@@ -248,9 +254,9 @@ For example, a social network application may enable the visualization of all fr
 which may during the computation phase still show some people as being a friend of a friend with a certain chance,
 until they can be confirmed by the query engine.
 
-<center>
+<p class="post-figure">
     <img src="/img/blog/querying-a-decentralized-web/social-app-problems.svg" alt="Showing streaming, partial, and probabilistic results" />
-</center>
+</p>
 
 ## Beyond Link Traversal
 
@@ -278,9 +284,9 @@ which could be exposed on a Solid data vault (or parts thereof) in case the know
 If a query engine is traversing over that vault, and it discovers the presence of such a query interface,
 it could abort traversal over that range, and directly query that API instead.
 
-<center>
+<p class="post-figure">
     <img src="/img/blog/querying-a-decentralized-web/vault-query-api.svg" alt="Exposing a query API next to documents to speed up execution" />
-</center>
+</p>
 
 Another opportunity is the usage of **Web-based indexing techniques**, such as [ShapeTrees](https://shapetrees.org/).
 These techniques allow *structural information of the knowledge graphs* to be described.
@@ -291,9 +297,9 @@ after which the query engine should only look at the photos in the container of 
 In general, structural information from Web-based indexes can be used to _prune_ links and documents that are guaranteed to not be relevant for the query results.
 Furthermore, this information can also be used to _prioritize_ certain links that are more closely related to the given query than other links.
 
-<center>
+<p class="post-figure">
     <img src="/img/blog/querying-a-decentralized-web/pod-structure.svg" alt="Expose structural information to inform query engine" />
-</center>
+</p>
 
 A third opportunity is that of **Web-based materialized views**,
 which involves precomputing a derived view on (a subset of) a knowledge graph,
@@ -303,9 +309,9 @@ For example, while a user's vault may contain photos structured by city,
 a derived view may be created that structures these same photos by quality.
 Depending on the type of query, the query engine may decide to pick either the original view or the derived view to achieve the best query performance.
 
-<center>
+<p class="post-figure">
     <img src="/img/blog/querying-a-decentralized-web/pod-views.svg" alt="Different views to help query execution" />
-</center>
+</p>
 
 A final opportunity involves **summarization via aggregation services**.
 This concept is similar to that of materialized views,
@@ -318,9 +324,9 @@ Since a summary still requires a lookup for the original data,
 it may even be possible to use probabilistic datastructures for more efficiently storing these summaries,
 such as [Bloom filters](https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/).
 
-<center>
+<p class="post-figure">
     <img src="/img/blog/querying-a-decentralized-web/pod-summary.svg" alt="Aggregators summarize data in one or more vaults" />
-</center>
+</p>
 
 #### Considering these opportunities
 
@@ -347,7 +353,7 @@ while less critical queries may be done over a free tier of the knowledge graph 
 
 ## Making it work
 
-One of my personal goals is to make my research as practical as possible,
+One of my personal goals is to make research as practical as possible,
 which I for example do through the open-source [Comunica query engine](https://comunica.dev/).
 This query engine was designed for investigating different kinds of query techniques, including those discussed in this blog post.
 Furthermore, Comunica aims to lower the barrier towards actually using these query techniques in real-world production environments is as much as possible.
@@ -363,7 +369,7 @@ As it stands now, there are some interesting hurdles that need to be overcome be
 Our [research group at Ghent University](https://www.ugent.be/ea/idlab/en) has recently [acquired funding](https://idlab.technology/news/2022/01/05/Flemish-government-7M-eur-funding-SolidLab-vlaanderen.en.html) to solve exactly these kinds of problems.
 Since one of the goals of this project funding is to **actually make things work in practise**,
 we will be designing *and* implementing these techniques in open-source tools such as the [Comunica query engine](https://comunica.dev/),
-so that everyone can start querying decentralized knowledge graphs themselves.
+so that everyone can start querying decentralized knowledge graphs effectively themselves.
 
 <hr />
 
