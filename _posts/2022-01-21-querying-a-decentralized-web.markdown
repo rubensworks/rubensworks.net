@@ -76,10 +76,9 @@ Similar to how application developers do not traverse through internal indexes o
 developers of applications over decentralized knowledge graphs should not manually request a series of APIs and combine their results to look up data.
 Instead, this task of **data access should be taken up by query engines**, with *queries as abstraction interface*.
 
-<p style="text-align: center; font-style: italic;">
-    <img src="/img/blog/querying-a-decentralized-web/query-abstracts-central-to-decentral.svg" alt="Queries act as abstraction layer for data access" class="feature-img" />
-    <br />Queries act as abstraction layer for data access
-</p>
+<center>
+    <img src="/img/blog/querying-a-decentralized-web/query-abstracts-central-to-decentral.svg" alt="Queries act as abstraction layer for data access" />
+</center>
 
 A *query language* such as [SPARQL](https://www.w3.org/TR/sparql11-query/), [SQL](https://www.iso.org/standard/63555.html) and [GraphQL](https://graphql.org/)
 is a traditional way of accessing data.
@@ -124,11 +123,13 @@ we need **query execution algorithms that can cope with this large number of dat
 
 For example, using a given query, an application may want to visualize the books a group of friends has read,
 where the underlying data can be spread over multiple data sources.
-The data about each person's reading status can be available in simple data documents that are available in each person's data vault.
-Metadata about books (such as title, author, cover, ...) is accessible via both simple data documents
+The data about each person's reading status can be available in simple data documents that are present in each person's data vault.
+A knowledge graph containing details about books (such as title, author, cover, ...) is accessible via both simple data documents
 *and* a more expressive API available that allows such details to be obtained based on an ISBN.
 
-TODO: figure about the different data sources, and the visualizing app
+<center>
+    <img src="/img/blog/querying-a-decentralized-web/books-app.svg" alt="Decentralized book application" />
+</center>
 
 The query engine executing such a query will first have to *discover* the relevant data sources for this query.
 Then, for each source, it has to *interpret* each API's capabilities, i.e., how the query engine can request certain data.
@@ -168,7 +169,9 @@ Link traversal starts from the assumption that documents are connected to each o
 and that queries can be executed over one or more starting documents
 by **iteratively following links between documents**.
 
-TODO: figure from https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-linktraversal/#
+<center>
+    <img src="/img/blog/querying-a-decentralized-web/follow-links.svg" alt="Query engine follows links between documents" />
+</center>
 
 #### The problems of Link Traversal 
 
@@ -245,6 +248,10 @@ For example, a social network application may enable the visualization of all fr
 which may during the computation phase still show some people as being a friend of a friend with a certain chance,
 until they can be confirmed by the query engine.
 
+<center>
+    <img src="/img/blog/querying-a-decentralized-web/social-app-problems.svg" alt="Showing streaming, partial, and probabilistic results" />
+</center>
+
 ## Beyond Link Traversal
 
 Even though there are many opportunities for improving the performance of link traversal,
@@ -271,7 +278,9 @@ which could be exposed on a Solid data vault (or parts thereof) in case the know
 If a query engine is traversing over that vault, and it discovers the presence of such a query interface,
 it could abort traversal over that range, and directly query that API instead.
 
-TODO: figure pointer from pod to API
+<center>
+    <img src="/img/blog/querying-a-decentralized-web/vault-query-api.svg" alt="Exposing a query API next to documents to speed up execution" />
+</center>
 
 Another opportunity is the usage of **Web-based indexing techniques**, such as [ShapeTrees](https://shapetrees.org/).
 These techniques allow *structural information of the knowledge graphs* to be described.
@@ -282,7 +291,9 @@ after which the query engine should only look at the photos in the container of 
 In general, structural information from Web-based indexes can be used to _prune_ links and documents that are guaranteed to not be relevant for the query results.
 Furthermore, this information can also be used to _prioritize_ certain links that are more closely related to the given query than other links.
 
-TODO: figure photos by location
+<center>
+    <img src="/img/blog/querying-a-decentralized-web/pod-structure.svg" alt="Expose structural information to inform query engine" />
+</center>
 
 A third opportunity is that of **Web-based materialized views**,
 which involves precomputing a derived view on (a subset of) a knowledge graph,
@@ -292,7 +303,9 @@ For example, while a user's vault may contain photos structured by city,
 a derived view may be created that structures these same photos by quality.
 Depending on the type of query, the query engine may decide to pick either the original view or the derived view to achieve the best query performance.
 
-TODO: figure photos in different views
+<center>
+    <img src="/img/blog/querying-a-decentralized-web/pod-views.svg" alt="Different views to help query execution" />
+</center>
 
 A final opportunity involves **summarization via aggregation services**.
 This concept is similar to that of materialized views,
@@ -304,6 +317,10 @@ before a more in-depth (and more expensive) look should be done into the rest of
 Since a summary still requires a lookup for the original data,
 it may even be possible to use probabilistic datastructures for more efficiently storing these summaries,
 such as [Bloom filters](https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/).
+
+<center>
+    <img src="/img/blog/querying-a-decentralized-web/pod-summary.svg" alt="Aggregators summarize data in one or more vaults" />
+</center>
 
 #### Considering these opportunities
 
