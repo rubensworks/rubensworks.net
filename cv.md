@@ -241,6 +241,12 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="[Integrale bevraging van kennisgrafen met intelligente clients](https://www.rubensworks.net/raw/slides/2021/geonovum-inspiratiedag/)"
+    date="2021"
+    location="Geonovum, Netherlands"
+    description="Invited talk at [Geo-inspiratiedag](https://www.geonovum.nl/terugblik-geo-inspiratiedag-5-oktober-2021) by Geonovum"
+%}
+{% include cv-listing.html
     subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-sparqlengines/) and [Link Traversal-based Query Processing](https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-linktraversal/)"
     date="2021"
     location="Ghent University, Belgium"
