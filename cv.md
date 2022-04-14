@@ -241,6 +241,12 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="[Decentralisation with Solid](https://www.rubensworks.net/raw/slides/2022/eiso-solid/)"
+    date="2022"
+    location="University of Lyon, France"
+    description="Invited talk at [Masterclass M2 IMST EISO 2022](https://offre-de-formations.univ-lyon1.fr/mention-72/information-et-mediation-scientifique-et-technique.html)"
+%}
+{% include cv-listing.html
     subject="[Integrale bevraging van kennisgrafen met intelligente clients](https://www.rubensworks.net/raw/slides/2021/geonovum-inspiratiedag/)"
     date="2021"
     location="Geonovum, Netherlands"
