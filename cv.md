@@ -241,6 +241,12 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2022/ugent-webfundamentals-sparqlengines/) and [Link Traversal-based Query Processing](https://www.rubensworks.net/raw/slides/2022/ugent-webfundamentals-linktraversal/)"
+    date="2022"
+    location="Ghent University, Belgium"
+    description="Guest lecture at the [Web Fundamentals](https://rubenverborgh.github.io/WebFundamentals/) course at Ghent University"
+%}
+{% include cv-listing.html
     subject="[Decentralisation with Solid](https://www.rubensworks.net/raw/slides/2022/eiso-solid/)"
     date="2022"
     location="University of Lyon, France"
