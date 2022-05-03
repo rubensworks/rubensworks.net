@@ -375,12 +375,13 @@ Additionally, he has served as a reviewer and program committee member for these
 * [Workshop on Decentralizing the Semantic Web](https://iswc2019.desemweb.org/)
     * 2018
     * 2019
-* [Workshop on Managing the Evolution and Preservation of the Data Web (MEPDaW)](https://mepdaw-ws.github.io/2020/)
+* [Workshop on Managing the Evolution and Preservation of the Data Web (MEPDaW)](https://mepdaw-ws.github.io/2022/)
     * 2017
     * 2018
     * 2019
     * 2020
     * 2021
+    * 2022
 * [Linked Data in Architecture and Construction Workshop](http://www.linkedbuildingdata.net/ldac2019/index.html)
     * 2019
 * [Open Mighty Storage Challenge (MOCHA)](https://project-hobbit.eu/open-challenges/mocha-open-challenge/)
