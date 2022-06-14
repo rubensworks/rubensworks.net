@@ -34,6 +34,14 @@ Additionally, he has served as a reviewer and program committee member for these
 %}
 {% include cv-listing.html
     subject="Visiting Researcher"
+    startdate="2022"
+    enddate="2022"
+    location="[Aalborg University](https://www.cs.aau.dk/research/data-knowledge-and-web-engineering)"
+    description="I visited [Katja Hose](https://homes.cs.aau.dk/~khose/About_me.html) in Denmark
+    to collaborate on query optimization within decentralized environments."
+%}
+{% include cv-listing.html
+    subject="Visiting Researcher"
     startdate="2019"
     enddate="2020"
     location="[Vienna University of Economics and Business](https://www.wu.ac.at/en/infobiz/)"
