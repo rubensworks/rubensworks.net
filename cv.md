@@ -232,6 +232,12 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="Best Demo Paper Award"
+    date="2022"
+    subtitle="[Solid Web Monetization](/publications/sebrechts_icwe_2022/)"
+    description="ICWE2022 - International Conference on Web Engineering"
+%}
+{% include cv-listing.html
     subject="Best Paper Award"
     date="2020"
     subtitle="[Pattern-based Access Control in a Decentralised Collaboration Environment](/publications/werbrouck_ldac_2020/)"
