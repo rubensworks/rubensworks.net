@@ -3,10 +3,7 @@
 
 bundle exec jekyll build
 bundle exec htmlproofer ./_site \
-    --url-swap "^.*/www.rubensworks.net/:/" \
+    --swap_urls "^.*/www.rubensworks.net/:/" \
     --allow-hash-href true \
-    --check-favicon true \
-    --check-html true \
-    --only-4xx \
-    --url-ignore https://scholar.google.be/citations?user=2avKLOkAAAAJ || true
+    --only-4xx || true
 
