@@ -1,3 +1,31 @@
+@inproceedings{pelgrin_icsc_2023,
+  author    = {Pelgrin, Olivier and Taelman, Ruben and Gal{\'a}rraga, Luis and Hose, Katja},
+  title     = {Scaling Large RDF Archives To Very Long Histories},
+  booktitle = {Proceedings of the 17th IEEE International Conference on Semantic Computing},
+  year      = {2023},
+  month     = {feb},
+  url       = {http://luisgalarraga.de/docs/ICSC_2023.pdf},
+  abstract  = {
+In recent years, research in RDF archiving has
+gained traction due to the ever-growing nature of semantic data
+and the emergence of community-maintained knowledge bases.
+Several solutions have been proposed to manage the history of
+large RDF graphs, including approaches based on independent
+copies, time-based indexes, and change-based schemes. In particular, aggregated changesets have been shown to be relatively
+efficient at handling very large datasets. However, ingestion time
+can still become prohibitive as the revision history increases. To
+tackle this challenge, we propose a hybrid storage approach based
+on aggregated changesets, snapshots, and multiple delta chains.
+We evaluate different snapshot creation strategies on the BEAR
+benchmark for RDF archives, and show that our techniques can
+speed up ingestion time up to two orders of magnitude while
+keeping competitive performance for version materialization and
+delta queries. This allows us to support revision histories of
+lengths that are beyond reach with existing approaches.
+  },
+  _type     = {Conference}
+}
+
 @inproceedings{taelman_quweda_ldtraversalsecurity_2022,
   author    = {Taelman, Ruben and Verborgh, Ruben},
   title     = {A Prospective Analysis of Security Vulnerabilities within Link Traversal-Based Query Processing},
