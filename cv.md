@@ -344,6 +344,13 @@ Additionally, he has served as a reviewer and program committee member for these
 %}
 </ul>
 
+### Organizing Committee Member
+
+* [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
+    * 2020 (Metadata Chair)
+* [Trusting Decentralised Knowledge Graphs and Web Data Workshop (TrusDeKW)](https://events.kmi.open.ac.uk/trusting-decentralised-knowledge-graphs-and-web-data/)
+    * 2023 (ESWC)
+
 ### Journal Reviewer
 
 * [IEEE Access](https://ieeeaccess.ieee.org/)
@@ -369,7 +376,7 @@ Additionally, he has served as a reviewer and program committee member for these
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2018 (Research Track)
     * 2019 (Research Track)
-    * 2020 (Metadata Chair, Research Track, Poster & Demo Track)
+    * 2020 (Research Track, Poster & Demo Track)
     * 2021 (Research Track, Resources Track, In-Use Track)
     * 2022 (Research Track, Resources Track, In-Use Track)
     * 2023 (Research Track, Resources Track)
