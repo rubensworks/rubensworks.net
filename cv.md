@@ -360,8 +360,10 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2018
     * 2020 (including member of editorial board for [Special Issue on Semantic Technologies for Data and Algorithmic Governance](http://www.semantic-web-journal.net/blog/call-papers-special-issue-semantic-technologies-data-and-algorithmic-governance)
     * 2021
+    * 2022
 * [Journal of Web Semantics](https://www.journals.elsevier.com/journal-of-web-semantics)
     * 2017
+    * 2023
 * [Data Science](https://www.iospress.nl/journal/data-science/)
     * 2019
 {:.cv-listing}
