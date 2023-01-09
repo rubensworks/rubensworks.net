@@ -363,6 +363,7 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2022
 * [Journal of Web Semantics](https://www.journals.elsevier.com/journal-of-web-semantics)
     * 2017
+    * 2018
     * 2023
 * [Data Science](https://www.iospress.nl/journal/data-science/)
     * 2019
