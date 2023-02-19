@@ -56,8 +56,8 @@
   url: "https://ruben.verborgh.org/"
   foaf: "https://ruben.verborgh.org/profile/#me"
 "Sarven Capadisli":
-  url: "http://csarven.ca/"
-  foaf: "http://csarven.ca/#i"
+  url: "https://csarven.ca/"
+  foaf: "https://csarven.ca/#i"
 "Tim Berners-Lee":
   url: "https://www.w3.org/People/Berners-Lee/"
   foaf: "https://www.w3.org/People/Berners-Lee/card#i"
