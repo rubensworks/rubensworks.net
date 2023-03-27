@@ -376,6 +376,7 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2020 (Resources Track)
     * 2021 (Resources Track)
     * 2022 (Research Track, Resources Track)
+    * 2023 (Research Track)
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2018 (Research Track)
     * 2019 (Research Track)
