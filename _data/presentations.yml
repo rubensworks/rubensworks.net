@@ -1,3 +1,13 @@
+"2023-ugent-webfundamentals-linktraversal":
+    title: "Link Traversal-based Query Processing"
+    venue: "Web Fundamentals, UGent"
+    date: "4 May 2023"
+    url: "https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-linktraversal/"
+"2023-ugent-webfundamentals-sparqlengines":
+    title: "SPARQL Query Evaluation"
+    venue: "Web Fundamentals, UGent"
+    date: "4 May 2023"
+    url: "https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-sparqlengines/"
 "2023-costdkg-fedhackathon":
     title: "Comunica Introduction"
     venue: "Hackathon on Querying Federations of Knowledge Graphs"
