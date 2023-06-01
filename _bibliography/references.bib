@@ -1,3 +1,42 @@
+@inproceedings{hanski_dmkg_socialbenefitsolid_2023,
+  author    = {Hanski, Jonni and Heyvaert, Pieter and De Meester, Ben and Taelman, Ruben and Verborgh, Ruben},
+  title     = {Distributed Social Benefit Allocation using Reasoning over Personal Data in Solid},
+  month     = {may},
+  booktitle = {Proceedings of the 1st International Workshop on Data Management for Knowledge Graphs},
+  year      = {2023},
+  url       = {https://dmkg-workshop.github.io/papers/paper2204.pdf},
+  abstract  = {
+When interacting with government institutions, citizens may often be asked to provide a number of
+documents to various officials, due to the way the data is being processed by the government, and
+regulation or guidelines that restrict sharing of that data between institutions. Occasionally, documents
+from third parties, such as the private sector, are involved, as the data, rules, regulations and individual
+private data may be controlled by different parties. Facilitating efficient flow of information in such cases
+is therefore important, while still respecting the ownership and privacy of that data. Addressing these
+types of use cases in data storage and sharing, the Solid initiative allows individuals, organisations and
+the public sector to store their data in personal online datastores. Solid has been previously applied in
+data storage within government contexts, so we decided to extend that work by adding data processing
+services on top of such data and including multiple parties such as citizen and the private sector.
+However, introducing multiple parties within the data processing flow may impose new challenges,
+and implementing such data processing services in practice on top of Solid might present opportunities
+for improvement from the perspective of the implementer of the services. Within this work, together
+with the City of Antwerp in Belgium, we have produced a proof-of-concept service implementation
+operating at the described intersection of public sector, citizens and private sector, to manage social
+benefit allocation in a distributed environment. The service operates on distributed Linked Data stored
+in multiple Solid pods in RDF, using Notation3 rules to process that data and SPARQL queries to access
+and modify it. This way, our implementation seeks to respect the design principles of Solid, while taking
+advantage of the related technologies for representing, processing and modifying Linked Data. This
+document will describe our chosen use case, service design and implementation, and our observations
+resulting from this experiment. Through the proof-of-concept implementation, we have established a
+preliminary understanding of the current challenges in implementing such a service using the chosen
+technologies. We have identified topics such as verification of data that should be addressed when using
+such an approach in practice, assumptions related to data locations and tight coupling between our logic
+between the rules and program code. Addressing these topics in future work should help further the
+adoption of Linked Data as a means to solve challenges around data sharing, processing and ownership
+such as with government processes involving multiple parties.
+},
+  _type     = {Workshop}
+}
+
 @article{bogaerts_tplp_distributedsubwebs_2023,
   author    = {Bogaerts, Bart and Ketsman, Bas and Zeboudj, Younes and Aamer, Heba and Taelman, Ruben and Verborgh, Ruben},
   title     = {Distributed Subweb Specifications for Traversing the Web},
