@@ -1,3 +1,41 @@
+@inproceedings{eschauzier_eswc_rlsparqljoin_2023,
+  author    = {Eschauzier, Ruben and Taelman, Ruben and Morren, Meike and Verborgh, Ruben},
+  title     = {Reinforcement Learning-based SPARQL Join Ordering Optimizer},
+  month     = {may},
+  booktitle = {Proceedings of the 20th Extended Semantic Web Conference: Posters and Demos},
+  year      = {2023},
+  url       = {https://rubeneschauzier.github.io/poster-paper-eswc-2023-join-rl/},
+  abstract  = {
+In recent years, relational databases successfully leverage reinforcement learning to optimize query plans. For graph databases and RDF quad stores, such research has been limited, so there is a need to understand the impact of reinforcement learning techniques. We explore a reinforcement learning-based join plan optimizer that we design specifically for optimizing join plans during SPARQL query planning. This paper presents key aspects of this method and highlights open research problems. We argue that while we can reuse aspects of relational database optimization, SPARQL query optimization presents unique challenges not encountered in relational databases. Nevertheless, initial benchmarks show promising results that warrant further exploration.
+},
+  _type     = {Poster}
+}
+
+@inproceedings{pelgrin_eswc_glenda_2023,
+  author    = {Pelgrin, Olivier and Taelman, Ruben and Gal{\'a}rraga, Luis and Hose, Katja},
+  title     = {GLENDA: Querying over RDF Archives with SPARQL},
+  month     = {may},
+  booktitle = {Proceedings of the 20th Extended Semantic Web Conference: Posters and Demos},
+  year      = {2023},
+  url       = {https://2023.eswc-conferences.org/wp-content/uploads/2023/05/paper_Pelgrin_2023_GLENDA.pdf},
+  abstract  = {
+The dynamicity of semantic data has propelled the research
+on RDF Archiving, i.e., the task of storing and making the full history of
+large RDF datasets accessible. However, existing archiving techniques fail
+to scale when confronted with very large RDF datasets and support only
+simple SPARQL queries. In this demonstration, we therefore showcase
+GLENDA, a system that can run full SPARQL 1.1 compliant queries over
+large RDF archives. We achieve this through a multi-snapshot change-
+based storage architecture that we interface using the Comunica query
+engine. Thanks to this integration we demonstrate that fast SPARQL
+query processing over multiple versions of a knowledge graph is possible.
+Moreover, our demonstration provides different statistics about the history
+of RDF datasets that can be useful for tasks beyond querying and
+by providing insights about the evolution dynamics of the data.
+},
+  _type     = {Demo}
+}
+
 @inproceedings{hanski_dmkg_socialbenefitsolid_2023,
   author    = {Hanski, Jonni and Heyvaert, Pieter and De Meester, Ben and Taelman, Ruben and Verborgh, Ruben},
   title     = {Distributed Social Benefit Allocation using Reasoning over Personal Data in Solid},
