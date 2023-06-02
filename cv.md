@@ -233,6 +233,12 @@ Additionally, he has served as a reviewer and program committee member for these
 <ul class="cv-listing">
 {% include cv-listing.html
     subject="Best Demo Paper Award"
+    date="2023"
+    subtitle="[GLENDA: Querying over RDF Archives with SPARQL](/publications/pelgrin_eswc_glenda_2023/)"
+    description="ESWC 2023 - Extended Semantic Web Conference"
+%}
+{% include cv-listing.html
+    subject="Best Demo Paper Award"
     date="2022"
     subtitle="[Solid Web Monetization](/publications/sebrechts_icwe_2022/)"
     description="ICWE2022 - International Conference on Web Engineering"
