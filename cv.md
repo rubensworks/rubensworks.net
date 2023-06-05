@@ -125,6 +125,34 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="Jitse De Smet"
+    startdate="2023"
+    enddate="2024"
+    location="Ghent University, Belgium"
+    description="Analyzing Security when Querying over Decentralized Environments"
+%}
+{% include cv-listing.html
+    subject="Victor Ronsyn"
+    startdate="2023"
+    enddate="2024"
+    location="Ghent University, Belgium"
+    description="Performance evaluation of the variety of Linked Data Interfaces"
+%}
+{% include cv-listing.html
+    subject="Elias Vervacke"
+    startdate="2022"
+    enddate="2023"
+    location="Ghent University, Belgium"
+    description="Writing a highly efficient JSON-LD parser for specific frames"
+%}
+{% include cv-listing.html
+    subject="Simon Van Braeckel"
+    startdate="2022"
+    enddate="2023"
+    location="Ghent University, Belgium"
+    description="Adaptive query optimization during Link Traversal Query Processing"
+%}
+{% include cv-listing.html
     subject="Laurens Debackere"
     startdate="2021"
     enddate="2022"
