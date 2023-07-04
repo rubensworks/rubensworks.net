@@ -4,18 +4,16 @@
 <div class="publication listed" itemscope itemtype="http://schema.org/ScholarlyArticle" typeof="schema:ScholarlyArticle schema:CreativeWork" about="/publications/{{ entry.key }}#publication">
   <span class="type">{{ entry._type }}</span>
   <a href="/publications/{{ entry.key }}" class="title" about="/publications/{{ entry.key }}#publication"><span itemprop="name" property="schema:name">{{ entry.title }}</span></a><br />
-  {% assign first = true %}
-  <span class="authors">{% for author in entry.author_array %}{% if first == false %},{% endif %}
-  {% assign first = false %}
-  {% capture name %}{{ author.first }} {{ author.prefix }} {{ author.last }}{% endcapture %}
-  {% assign name = name | replace: "  ", " " %}
-  {% assign knows = site.data.knows[name] %}
-    {% if knows %}
-    <a class="author" itemprop="author" rel="foaf:maker schema:creator schema:author" href="{{ knows.url }}" resource="{{ knows.foaf }}" target="_blank">{{ name }}</a>
-    {% else %}
-	<span itemprop="author">{{ name }}</span>
-	{% endif %}
-  {% endfor %}</span><br />
+  <ol class="authors">{%
+    for author in entry.author_array %}
+      <li>
+      {% capture name %}{{ author.first }} {{ author.prefix }} {{ author.last }}{% endcapture %}
+      {% assign name = name | replace: "  ", " " %}
+      {% assign knows = site.data.knows[name] %}
+      {% if knows %}<a class="author" itemprop="author" rel="foaf:maker schema:creator schema:author" href="{{ knows.url }}" resource="{{ knows.foaf }}" target="_blank">{{ name }}</a>{%
+         else %}<span itemprop="author">{{ name }}</span>{%
+         endif %}</li>{%
+    endfor %}</ol>
   {% if entry.booktitle %}
   <span class="in">In {{ entry.booktitle }}</span>
   {% endif %}

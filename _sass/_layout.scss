@@ -501,8 +501,19 @@ figure {
             font-weight: bold;
         }
         .authors {
+            list-style: none;
+            margin: 0;
             .author {
                 color: $grey-color-dark;
+            }
+            li {
+              display: inline;
+            }
+            li:after {
+              content: ", ";
+            }
+            li:last-child:after {
+              content: "";
             }
             font-style: italic;
         }
@@ -544,8 +555,19 @@ figure {
     .details {
         margin-left: 15px;
         .authors {
+            list-style: none;
+            margin: 0;
             .author {
                 color: $grey-color-dark;
+            }
+            li {
+              display: inline;
+            }
+            li:after {
+              content: ", ";
+            }
+            li:last-child:after {
+              content: "";
             }
             font-style: italic;
         }
