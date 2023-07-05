@@ -677,11 +677,19 @@ figure {
 /**
  * About
  */
-.about-side {
-	float: left;
-	height: 400px;
-	margin-right: 10px;
+.about-container {
+  display: flex;
+  align-items: stretch;
+}
+.about-left {
+    flex-basis: 200px;
+    flex-grow: 1;
+	padding-right: 10px;
 	img {
 		border: solid 4px $blue-color-dark;
 	}
+}
+.about-right {
+    flex-grow: 2;
+    flex-basis: 400px;
 }
