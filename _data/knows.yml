@@ -4,60 +4,174 @@
 "Arne Gevaert":
   url: "https://be.linkedin.com/in/arne-gevaert-5a0a49176"
   foaf: "https://data.verborgh.org/people/arne_gevaert"
+"Bart Bogaerts":
+  url: "https://www.bartbogaerts.eu/index.php"
+  foaf: "https://data.verborgh.org/people/bart_bogaerts"
+"Bas Ketsman":
+  url: "https://www.basketsman.com/"
+  foaf: "https://data.verborgh.org/people/bas_ketsman"
 "Ben De Meester":
   url: "http://ben.de-meester.org/"
   foaf: "http://ben.de-meester.org/#me"
+"Bram Steenwinckel":
+  url: "https://bsteenwi.github.io/"
+  foaf: "https://bsteenwi.github.io/"
 "Brecht Van de Vyvere":
   url: "https://www.linkedin.com/in/brecht-van-de-vyvere-b9232b9b"
-  foaf: "https://data.verborgh.org/people/brecht_van_de_vyvere"
+  foaf: "https://w3id.org/people/brechtvdv/#me"
+"Bruno Volckaert":
+  url: "https://ai.ugent.be/people/BrunoVolckaert.en.html"
+  foaf: "https://data.verborgh.org/people/bruno_volckaert"
+"Didier Colle":
+  url: "https://www.ugent.be/ea/idlab/en/members/didier-colle.htm"
+  foaf: "https://data.verborgh.org/people/didier_colle"
 "Emanuele Della Valle":
   url: "http://emanueledellavalle.org/"
   foaf: "https://data.verborgh.org/people/emanuele_della_valle"
 "Erik Mannens":
   url: "https://be.linkedin.com/in/erikmannens"
   foaf: "https://data.verborgh.org/people/erik_mannens"
+"Femke Ongenae":
+  url: "https://www.linkedin.com/in/fongenae/"
+  foaf: "https://data.knows.idlab.ugent.be/person/femkeongenae/#me"
+"Filip De Turck":
+  url: "https://www.ugent.be/ea/idlab/en/members/filip-de-turck.htm"
+  foaf: "https://www.ugent.be/ea/idlab/en/members/filip-de-turck.htm"
+"Frederic Vannieuwenborg":
+  url: "http://technoeconomics.idlab.ugent.be/team/frederic.html"
+  foaf: "https://data.verborgh.org/people/frederic_vannieuwenborg"
 "Geroen Joris":
   url: "https://www.linkedin.com/in/geroenjoris"
   foaf: "https://data.verborgh.org/people/geroen_joris"
+"Gertjan De Mulder":
+  url: "https://www.linkedin.com/in/gertjan-de-mulder-a4054860/"
+  foaf: "https://data.knows.idlab.ugent.be/person/gertjandm/#me"
+"Gilles Vandewiele":
+  url: "http://www.gillesvandewiele.com/"
+  foaf: "https://data.knows.idlab.ugent.be/person/givdwiel/#me"
+"Haris Antonatos":
+  url: "http://multiling.iit.demokritos.gr/profile/h.antonatos"
+  foaf: "http://multiling.iit.demokritos.gr/profile/h.antonatos"
+"Heba Aamer":
+  url: "https://dblp.org/pid/218/8850.html"
+  foaf: "https://data.verborgh.org/people/heba_aamer"
 "Hideaki Takeda":
   url: "http://www-kasm.nii.ac.jp/~takeda/"
   foaf: "https://data.verborgh.org/people/hideaki_takeda"
+"Laurens Debackere":
+  url: "https://www.linkedin.com/in/laurensdebackere/"
+  foaf: "https://data.verborgh.org/people/laurens_debackere"
+"Luis Galárraga":
+  url: "http://luisgalarraga.de/"
+  foaf: "http://luisgalarraga.de/"
+"Marlies Van der Wee":
+  url: "http://technoeconomics.idlab.ugent.be/team/marlies.html"
+  foaf: "https://data.verborgh.org/people/marlies_van_der_wee"
+"Merlijn Sebrechts":
+  url: "https://merlijn.sebrechts.be/"
+  foaf: "https://data.verborgh.org/people/merlijn_sebrechts"
 "Miel Vander Sande":
   url: "https://be.linkedin.com/in/mielvds"
   foaf: "https://data.verborgh.org/people/miel_vander_sande"
+"Olivier Pelgrin":
+  url: "https://vbn.aau.dk/en/persons/olivier-paul-pelgrin"
+  foaf: "https://vbn.aau.dk/en/persons/olivier-paul-pelgrin"
 "Pieter Colpaert":
   url: "https://pietercolpaert.be/"
   foaf: "https://pietercolpaert.be/#me"
 "Pieter Heyvaert":
   url: "https://pieterheyvaert.com/"
   foaf: "https://pieterheyvaert.com/#me"
+"Pieter Pauwels":
+  url: "https://www.linkedin.com/in/pieterpauwels/"
+  foaf: "https://data.verborgh.org/people/pieter_pauwels"
+"Pieter Simoens":
+  url: "https://www.ugent.be/ea/idlab/en/members/pieter-simoens.htm"
+  foaf: "https://www.ugent.be/ea/idlab/en/members/pieter-simoens.htm"
 "Riccardo Tommasini":
   url: "https://riccardotommasini.com/"
   foaf: "https://riccardotommasini.com/"
+"Thomas Dupont":
+  url: "https://research.ugent.be/web/person/thomas-dupont-0/en"
+  foaf: "https://data.verborgh.org/people/thomas_dupont"
+"Tom Goethals":
+  url: "https://www.linkedin.com/in/tom-goethals-a1731015/"
+  foaf: "https://data.verborgh.org/people/tom_goethals"
+"Ilja Rausch":
+  url: "https://www.linkedin.com/in/ilja-rausch/"
+  foaf: "https://www.linkedin.com/in/ilja-rausch/"
+"Jacob Beetz":
+  url: "https://www.linkedin.com/in/jakobbeetz/"
+  foaf: "https://data.verborgh.org/people/jacob_beetz"
+"Jeroen Werbrouck":
+  url: "https://be.linkedin.com/in/jeroen-werbrouck-616ba4173"
+  foaf: "https://data.verborgh.org/people/jeroen_werbrouck"
 "Joachim Van Herwegen":
   url: "https://be.linkedin.com/in/johan-van-herwegen-11a67443"
   foaf: "https://data.verborgh.org/people/joachim_van_herwegen"
+"Jonni Hanski":
+  url: "https://id.eriador.io/jonni"
+  foaf: "https://id.eriador.io/jonni#me"
 "Julián Andrés Rojas Meléndez":
   url: "https://julianrojas.org/"
   foaf: "https://julianrojas.org/#me"
+"Katja Hose":
+  url: "https://homes.cs.aau.dk/~khose/About_me.html"
+  foaf: "https://homes.cs.aau.dk/~khose/About_me.html"
 "Katrien Mostaert":
   url: "https://be.linkedin.com/in/katrien-mostaert-8722236"
   foaf: "https://data.verborgh.org/people/katrien_mostaert"
+"Martin Vanbrabant":
+  url: "https://research.ugent.be/web/person/martin-vanbrabant-0/nl"
+  foaf: "https://data.knows.idlab.ugent.be/person/martinvanbrabant/#me"
+"Michel Dumontier":
+  url: "https://www.maastrichtuniversity.nl/mj-dumontier"
+  foaf: "https://www.maastrichtuniversity.nl/mj-dumontier"
 "Rik Van de Walle":
   url: "https://be.linkedin.com/in/rvdwalle"
   foaf: "https://data.verborgh.org/people/rik_van_de_walle"
 "Raf Buyle":
   url: "https://be.linkedin.com/in/rafbuyle"
   foaf: "https://data.verborgh.org/people/raf_buyle"
+"Ruben Eschauzier":
+  url: "https://www.linkedin.com/in/ruben-eschauzier-130a0022a/"
+  foaf: "https://reschauz.pod.knows.idlab.ugent.be/profile/profile/card#me"
 "Ruben Taelman":
   url: "https://www.rubensworks.net/"
   foaf: "https://www.rubensworks.net/#me"
 "Ruben Verborgh":
   url: "https://ruben.verborgh.org/"
   foaf: "https://ruben.verborgh.org/profile/#me"
+"Sabrina Kirrane":
+  url: "http://sabrinakirrane.com/"
+  foaf: "http://sabrinakirrane.com/"
 "Sarven Capadisli":
   url: "https://csarven.ca/"
   foaf: "https://csarven.ca/#i"
+"Simon Steyskal":
+  url: "https://aic.ai.wu.ac.at/~simonsteyskal/"
+  foaf: "https://data.verborgh.org/people/simon_steyskal"
+"Sofie Verbrugge":
+  url: "http://technoeconomics.idlab.ugent.be/team/sofie.html"
+  foaf: "https://data.verborgh.org/people/sofie_verbrugge"
+"Stian Soiland-Reyes":
+  url: "https://s11.no/"
+  foaf: "https://s11.no/"
+"Thibault Mahieu":
+  url: "https://www.linkedin.com/in/thibault-mahieu-719291148/"
+  foaf: "https://data.verborgh.org/people/thibault_mahieu"
 "Tim Berners-Lee":
   url: "https://www.w3.org/People/Berners-Lee/"
   foaf: "https://www.w3.org/People/Berners-Lee/card#i"
+"Tobias Kuhn":
+  url: "https://www.tkuhn.org/"
+  foaf: "https://www.tkuhn.org/"
+"Vincent Emonet":
+  url: "https://www.maastrichtuniversity.nl/vr-emonet"
+  foaf: "https://www.maastrichtuniversity.nl/vr-emonet"
+"Wannes Kerckhove":
+  url: "https://www.linkedin.com/in/wkerckhove/"
+  foaf: "https://data.verborgh.org/people/wannes_kerckhove"
+"Younes Zeboudj":
+  url: "https://www.linkedin.com/in/younes-zeboudj/"
+  foaf: "https://data.verborgh.org/people/younes_zeboudj"
