@@ -103,7 +103,14 @@ Additionally, he has served as a reviewer and program committee member for these
     startdate="2017"
     enddate="now"
     location="Ghent University, Belgium"
-    description="Coaching of Computer Science students on designing and implementing Web applications."
+    description="Giving lectures and coaching of Computer Science students on designing and implementing Web applications."
+%}
+{% include cv-listing.html
+    subject="Linked Data & Solid"
+    startdate="2023"
+    enddate="2023"
+    location="VAIA"
+    description="Teaching about Web Querying to professionals wanting to learn about Linked Data and Solid."
 %}
 {% include cv-listing.html
     subject="Research Project"
