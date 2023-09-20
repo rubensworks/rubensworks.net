@@ -1,3 +1,16 @@
+@inproceedings{taelman_quweda_quotedindexing_2023,
+  author    = {Taelman, Ruben and Verborgh, Ruben},
+  title     = {In-Memory Indexing of Quoted RDF Triples},
+  month     = {nov},
+  booktitle = {Proceedings of the 7th International Workshop on Storing, Querying and Benchmarking Knowledge Graphs},
+  year      = {2023},
+  url       = {https://rubensworks.github.io/article-quoted-triples-index/},
+  abstract  = {
+The upcoming RDF 1.2 recommendation is scheduled to introduce the concept of quoted triples, which allows statements to be made about other statements. Since quoted triples enable new forms of data access in SPARQL 1.2, in the form of quoted triple patterns, there is a need for new indexing strategies that can efficiently handle these data access patterns. As such, we explore and evaluate different in-memory indexing approaches for quoted triples. In this paper, we investigate four indexing approaches, and evaluate their performance over an artificial dataset with custom triple pattern queries. Our findings show that the so-called indexed quoted triples dictionary vastly outperforms other approaches in terms of query execution time at the cost of increased storage size and ingestion time. Our work shows that indexing quoted triples in a dictionary separate from non-quoted RDF terms achieves good performance, and can be implemented using well-known indexing techniques into existing systems. Therefore, we illustrate that the addition of quoted triples into the RDF stack can be achieved in a performant manner.
+},
+  _type     = {Workshop}
+}
+
 @inproceedings{klima_iswc_resources_ldkit_2023,
   author    = {Klíma, Karel and Taelman, Ruben and Nečaský, Martin},
   title     = {LDkit: Linked Data Object Graph Mapping toolkit for Web Applications},
