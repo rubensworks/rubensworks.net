@@ -1,3 +1,50 @@
+@inproceedings{pelgrin_mepdaw_betterbenchmarks_2023,
+  author    = {Pelgrin, Olivier and Taelman, Ruben and Gal{\'a}rraga, Luis and Hose, Katja},
+  title     = {The Need for Better RDF Archiving Benchmarks},
+  month     = {nov},
+  booktitle = {Proceedings of the 9th Workshop on Managing the Evolution and Preservation of the Data Web},
+  year      = {2023},
+  url       = {https://www.rubensworks.net/raw/publications/2023/TheNeedForBetterRdfArchivingBenchmarks.pdf},
+  abstract  = {
+The advancements and popularity of Semantic Web technologies in the last decades have led to an
+exponential adoption and availability of Web-accessible datasets. While most solutions consider such
+datasets to be static, they often evolve over time. Hence, efficient archiving solutions are needed to meet
+the users’ and maintainers’ needs. While some solutions to these challenges already exist, standardized
+benchmarks are needed to systematically test the different capabilities of existing solutions and identify
+their limitations. Unfortunately, the development of new benchmarks has not kept pace with the evolution
+of RDF archiving systems. In this paper, we therefore identify the current state of the art in RDF archiving
+benchmarks and discuss to what degree such benchmarks reflect the current needs of real-world use cases
+and their requirements. Through this empirical assessment, we highlight the need for the development of
+more advanced and comprehensive benchmarks that align with the evolving landscape of RDF archiving.
+},
+  _type     = {Workshop}
+}
+
+@inproceedings{eschauzier_quweda_linkqueue_2023,
+  author    = {Eschauzier, Ruben and Taelman, Ruben and Verborgh, Ruben},
+  title     = {How Does the Link Queue Evolve during Traversal-Based Query Processing?},
+  month     = {nov},
+  booktitle = {Proceedings of the 7th International Workshop on Storing, Querying and Benchmarking Knowledge Graphs},
+  year      = {2023},
+  url       = {https://rubeneschauzier.github.io/QuWeDa2023-Link-Queue-Analysis-Camera-Ready/QuWeDa_2023_Link_Queue_Analysis_Final.pdf},
+  abstract  = {
+Link Traversal-based Query Processing (LTQP) is an integrated querying approach that allows the
+query engine to start with zero knowledge of the data to query and discover data sources on the fly.
+The query engine starts with some seed documents and dynamically discovers new data sources by
+dereferencing hyperlinks in previously ingested data. Given the dynamic nature of source discovery,
+query processing tends to be relatively slow. Optimization techniques exist, such as exploiting existing
+structural information, but they depend on a deep understanding of the link queue during LTQP. To this
+end, we investigate the evolution of the types of link sources in the link queue and introduce metrics
+that describe key link queue characteristics. This paper analyses the link queue to guide future work on
+LTQP query optimization approaches that exploit structural information within a Solid environment. We
+find that queries exhibit two different execution patterns, one where the link queue is primarily empty
+and the other where the link queue fills faster than the engine can process. Our results show that the
+link queue is not functioning optimally and that our current approach to link discovery is not sufficiently
+selective.
+},
+  _type     = {Workshop}
+}
+
 @inproceedings{taelman_quweda_quotedindexing_2023,
   author    = {Taelman, Ruben and Verborgh, Ruben},
   title     = {In-Memory Dictionary-Based Indexing of Quoted RDF Triples},
