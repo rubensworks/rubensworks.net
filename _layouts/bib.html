@@ -5,12 +5,13 @@
   <span class="type">{{ entry._type }}</span>
   <a href="/publications/{{ entry.key }}" class="title" about="/publications/{{ entry.key }}#publication"><span itemprop="name" property="schema:name">{{ entry.title }}</span></a><br />
   <ol class="authors">{%
-    for author in entry.author_array %}
+      for author in entry.author_array %}
+      {% capture authorId %}{{ forloop.index0 }}{% endcapture %}
       <li>
       {% capture name %}{{ author.first }} {{ author.prefix }} {{ author.last }}{% endcapture %}
       {% assign name = name | replace: "  ", " " %}
       {% assign knows = site.data.knows[name] %}
-      {% if knows %}<a class="author" itemprop="author" rel="foaf:maker schema:creator schema:author" href="{{ knows.url }}" resource="{{ knows.foaf }}" target="_blank">{{ name }}</a>{%
+      {% if knows %}<a class="author" itemprop="author" rel="foaf:maker schema:creator schema:author" href="{{ knows.url }}" resource="{{ knows.foaf }}" target="_blank">{{ name }}</a><span property="bibframe:contribution" style="display:none" typeof="bibframe:Contribution"><a property="bibframe:agent" style="display:none" href="{{ knows.foaf }}"></a><span property="vivo:rank" style="display:none">{{ authorId }}</span></span>{%
          else %}<span itemprop="author">{{ name }}</span>{%
          endif %}</li>{%
     endfor %}</ol>
