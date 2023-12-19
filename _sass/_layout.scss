@@ -693,3 +693,49 @@ figure {
     flex-grow: 2;
     flex-basis: 400px;
 }
+
+/**
+ * Reading list
+ */
+.books {
+  margin-bottom: 25px;
+}
+
+.book {
+  display: flex;
+  align-items: stretch;
+  margin-top: 5px;
+  
+  .book-left {
+    flex-basis: 120px;
+	
+    img {
+      float: left;
+  	  width: 100px;
+      margin: 5px;
+    }
+  }
+
+  .book-right {
+    flex-grow: 2;
+    flex-basis: 400px;
+	
+    h3 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    
+    .authors {
+      font-style: italic;
+      padding-left: 10px;
+      &:before {
+        content: "By ";
+      }
+    }
+    
+    .description {
+      margin-top: 10px;
+      text-align: justify;
+    }
+  }
+}
