@@ -468,6 +468,7 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2023
 * [Workshop on Data Management for Knowledge Graphs (DMKG)](https://dmkg-workshop.github.io/)
     * 2023
+    * 2024
 * [Linked Data in Architecture and Construction Workshop](http://www.linkedbuildingdata.net/ldac2019/index.html)
     * 2019
 * [Open Mighty Storage Challenge (MOCHA)](https://project-hobbit.eu/open-challenges/mocha-open-challenge/)
