@@ -103,7 +103,7 @@ Additionally, he has served as a reviewer and program committee member for these
     startdate="2017"
     enddate="now"
     location="Ghent University, Belgium"
-    description="Giving lectures and coaching of Computer Science students on designing and implementing Web applications."
+    description="Giving lectures as co-lecturer and coaching of Computer Science students on designing and implementing Web applications."
 %}
 {% include cv-listing.html
     subject="Linked Data & Solid"
@@ -301,6 +301,12 @@ Additionally, he has served as a reviewer and program committee member for these
 ## Invited talks
 
 <ul class="cv-listing">
+{% include cv-listing.html
+    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-sparqlengines/) and [Link Traversal Query Processing](https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-linktraversal/)"
+    date="2024"
+    location="Ghent University, Belgium"
+    description="Guest lecture at the [Knowledge Graphs](https://studiekiezer.ugent.be/studiefiche/en/E018160/2024) course at Ghent University"
+%}
 {% include cv-listing.html
     subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-sparqlengines/) and [Link Traversal-based Query Processing](https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-linktraversal/)"
     date="2023"
