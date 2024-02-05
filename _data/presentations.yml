@@ -8,6 +8,11 @@
     venue: "Knowledge Graphs, UGent"
     date: "14 May 2024"
     url: "https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-sparqlengines/"
+"2024-sib-solidquery":
+    title: "Querying in Solid"
+    venue: "RDF Focus Group, Swiss Institute of Bioinformatics"
+    date: "12 March 2024"
+    url: "https://www.rubensworks.net/raw/slides/2024/sib-solidquery/"
 
 "2023-iswc-solidquery":
     title: "Link Traversal Query Processing over Decentralized Environments with Structural Assumptions"
