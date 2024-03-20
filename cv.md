@@ -302,6 +302,12 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="[Requirements and Challenges for Query Execution across Decentralized Environments](https://www.rubensworks.net/raw/slides/2024/webconf-desere-querydecentralized/)"
+    date="2024"
+    location="DeSeRe 2024, The Web Conference"
+    description="Invited talk at [DeSeRe 2024](https://desere.org/) at the Web Conference"
+%}
+{% include cv-listing.html
     subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-sparqlengines/) and [Link Traversal Query Processing](https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-linktraversal/)"
     date="2024"
     location="Ghent University, Belgium"
