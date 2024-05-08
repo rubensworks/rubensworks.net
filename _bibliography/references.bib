@@ -1,3 +1,33 @@
+@inproceedings{hanski_bloom_solid_2024,
+  author    = {Hanski, Jonni and Taelman, Ruben and Verborgh, Ruben},
+  title     = {Observations on Bloom Filters for Traversal-Based Query Execution over Solid Pods},
+  month     = {may},
+  booktitle = {Proceedings of the 21st Extended Semantic Web Conference: Posters and Demos},
+  year      = {2024},
+  url       = {https://www.rubensworks.net/raw/publications/2024/hanski_bloom_solid_2024.pdf},
+  abstract  = {
+Traversal-based query execution enables the resolving of
+queries over Linked Data documents, using a follow-your-nose approach
+to locating query-relevant data by following series of links through documents.
+This traversal, however, incurs an unavoidable overhead in the form
+of data access costs. Through only following links known to be relevant
+for answering a given query, this overhead could be minimized. Prior
+work exists in the form of reachability conditions to determine the links
+to dereference, however this does not take into consideration the contents
+behind a given link. Within this work, we have explored the possibility
+of using Bloom filters to prune query-irrelevant links based on the triple
+patterns contained within a given query, when performing traversal-based
+query execution over Solid pods containing simulated social network data
+as an example use case. Our discoveries show that, with relatively uniform
+data across an entire benchmark dataset, this approach fails to effectively
+filter links, especially when the queries contain triple patterns with low
+selectivity. Thus, future work should consider the query plan beyond
+individual patterns, or the structure of the data beyond individual triples,
+to allow for more effective pruning of links.
+},
+  _type     = {Poster}
+}
+
 @inproceedings{smessaert_sds_dfdp_2024,
   author    = {Smessaert, Ieben and Hochstenbach, Patrick and De Meester, Ben and Taelman, Ruben and Verborgh, Ruben},
   title     = {DFDP: A Declarative Form Description Pipeline for Decentralizing Web Forms},
