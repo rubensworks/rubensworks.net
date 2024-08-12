@@ -108,7 +108,7 @@ Additionally, he has served as a reviewer and program committee member for these
 {% include cv-listing.html
     subject="Linked Data & Solid"
     startdate="2023"
-    enddate="2023"
+    enddate="2024"
     location="VAIA"
     description="Teaching about Web Querying to professionals wanting to learn about Linked Data and Solid."
 %}
