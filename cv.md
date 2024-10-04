@@ -136,7 +136,7 @@ Additionally, he has served as a reviewer and program committee member for these
     startdate="2023"
     enddate="2024"
     location="Ghent University, Belgium"
-    description="Analyzing Security when Querying over Decentralized Environments"
+    description=" [Abstracting Data Updates over a Document-oriented interface of a Permissioned Decentralized Environment](https://thesis.jitsedesmet.be/presentation/final-presentation.html)"
 %}
 {% include cv-listing.html
     subject="Victor Ronsyn"
