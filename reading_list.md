@@ -117,6 +117,16 @@ together with a brief summary containing personal thoughts I had after reading.
 	   After reading this book, you'll never be able to use the excuse anymore that you're just not talented enough to do something.
 	 "
   %}
+  {% include book.html
+     title="Extreme Ownership"
+     authors=" Jocko Willink, Leif Babin"
+	 img="/img/reading_list/extreme_ownership.jpg"
+     link="https://www.amazon.com.be/-/nl/Extreme-Ownership-Navy-Seals-Lead/dp/1250183863/"
+     description="
+	   Based on some real-life situations from two former US Navy SEALs explain how taking full control and ownership
+	   over everything that happens to you (good or bad) or around you leads to better results for yourself and the people around you.
+	 "
+  %}
 </div>
 
 ## Sociology and Psychology
@@ -173,6 +183,21 @@ together with a brief summary containing personal thoughts I had after reading.
 	   1) a fast and emotional brain, and
 	   2) a slow but deliberative brain.
 	   Understanding how and when to use each brain is key to making good decisions.
+	 "
+  %}
+  {% include book.html
+     title="Bad Therapy"
+     authors="Abigail Shrier"
+	 img="/img/reading_list/bad_therapy.jpg"
+     link="https://www.amazon.com.be/-/nl/Abigail-Shrier/dp/1800754132/"
+     description="
+	   In essence, the author of this book argues that we have been over-therapizing kids.
+	   While children with real trauma do exist,
+	   she explains how sending children to therapy that do not really need it,
+	   can have a negative impact.
+	   Therapy always comes with a risk, so if kids don't really need it, it may be better to avoid it.
+	   This book reminded me a bit of <i>The Coddling of the American Mind</i>,
+	   as the impact of coddling kids too much is discussed.
 	 "
   %}
   {% include book.html
@@ -251,6 +276,19 @@ together with a brief summary containing personal thoughts I had after reading.
 	   This is a very old Chinese book on war tactics, but it contains many useful insights that apply to all sorts of things outside of war.
 	   The general gist of this book is that you must know when to fight and when not to fight,
 	   and that you must know the enemy and yourself before every battle.
+	 "
+  %}
+  {% include book.html
+     title="Paper Belt on Fire: How Renegade Investors Sparked a Revolt Against the University"
+     authors="Michael Gibson"
+	 img="/img/reading_list/paper_belt_on_fire.jpg"
+     link="https://www.amazon.com/Paper-Belt-Fire-Fight-Progress/dp/164177245X"
+     description="
+	   As an academic, this was a very interesting read.
+	   The author argues that universities have been growing estranged to the needs of real-life businesses,
+	   and how the system can diminish creativity in people.
+	   He tells his story of how he started in a traditional academic path,
+	   and eventually started a fund in which he sought young people to start a business instead of attending university.
 	 "
   %}
 </div>
@@ -341,6 +379,17 @@ together with a brief summary containing personal thoughts I had after reading.
      description="
 	   The well-known satirical story resembling totalitarian societies such as the Soviet Union,
 	   which shows the dangers of the utopian tunnel-vision provided by ideologies.
+	 "
+  %}
+  {% include book.html
+     title="Nuclear War: A Scenario"
+     authors="Annie Jacobsen"
+	 img="/img/reading_list/nuclear_war.jpg"
+     link="https://www.amazon.com.be/-/en/Annie-Jacobsen/dp/0593476093"
+     description="
+	   Based on true foundations, this book gives a example of a scenario on how a nuclear war could unfold.
+	   While it is fiction, it gives some interesting details on nuclear boms and the processes and politics behind them.
+	   In addition, some interesting historical facts are sprinkled in.
 	 "
   %}
 </div>
