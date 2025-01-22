@@ -1,3 +1,14 @@
+"2025-ugent-knowledgegraphs-linktraversal":
+    title: "Link Traversal-based Query Processing"
+    venue: "Knowledge Graphs, UGent"
+    date: "7 March 2025"
+    url: "https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-linktraversal/"
+"2025-ugent-knowledgegraphs-sparqlengines":
+    title: "SPARQL Query Evaluation"
+    venue: "Knowledge Graphs, UGent"
+    date: "7 March 2025"
+    url: "https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-sparqlengines/"
+
 "2024-vaia-webquerying":
     title: "Web Querying"
     venue: "VAIA course Linked Data & Solid"
