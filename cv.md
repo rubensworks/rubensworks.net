@@ -302,6 +302,12 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-sparqlengines/) and [Link Traversal Query Processing](https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-linktraversal/)"
+    date="2025"
+    location="Ghent University, Belgium"
+    description="Guest lecture at the [Knowledge Graphs](https://studiekiezer.ugent.be/studiefiche/en/E018160/2025) course at Ghent University"
+%}
+{% include cv-listing.html
     subject="[Requirements and Challenges for Query Execution across Decentralized Environments](https://www.rubensworks.net/raw/slides/2024/webconf-desere-querydecentralized/)"
     date="2024"
     location="DeSeRe 2024, The Web Conference"
