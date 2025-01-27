@@ -302,8 +302,14 @@ Additionally, he has served as a reviewer and program committee member for these
 
 <ul class="cv-listing">
 {% include cv-listing.html
-    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-sparqlengines/) and [Link Traversal Query Processing](https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-linktraversal/)"
+    subject="[Biological Knowledge Graphs](https://www.rubensworks.net/raw/slides/2025/ugent-bio-kgs/)"
     date="2025"
+    location="Ghent University, Belgium"
+    description="Guest lecture at the [Biological Databases](https://studiekiezer.ugent.be/2024/studiefiche/en/I002642) course at Ghent University"
+%}
+{% include cv-listing.html
+    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-sparqlengines/) and [Link Traversal Query Processing](https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-linktraversal/)"
+    date="2024 - 2025"
     location="Ghent University, Belgium"
     description="Guest lecture at the [Knowledge Graphs](https://studiekiezer.ugent.be/studiefiche/en/E018160/2025) course at Ghent University"
 %}
@@ -314,20 +320,8 @@ Additionally, he has served as a reviewer and program committee member for these
     description="Invited talk at [DeSeRe 2024](https://desere.org/) at the Web Conference"
 %}
 {% include cv-listing.html
-    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-sparqlengines/) and [Link Traversal Query Processing](https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-linktraversal/)"
-    date="2024"
-    location="Ghent University, Belgium"
-    description="Guest lecture at the [Knowledge Graphs](https://studiekiezer.ugent.be/studiefiche/en/E018160/2024) course at Ghent University"
-%}
-{% include cv-listing.html
     subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-sparqlengines/) and [Link Traversal-based Query Processing](https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-linktraversal/)"
-    date="2023"
-    location="Ghent University, Belgium"
-    description="Guest lecture at the [Web Fundamentals](https://rubenverborgh.github.io/WebFundamentals/) course at Ghent University"
-%}
-{% include cv-listing.html
-    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2022/ugent-webfundamentals-sparqlengines/) and [Link Traversal-based Query Processing](https://www.rubensworks.net/raw/slides/2022/ugent-webfundamentals-linktraversal/)"
-    date="2022"
+    date="2022 - 2023"
     location="Ghent University, Belgium"
     description="Guest lecture at the [Web Fundamentals](https://rubenverborgh.github.io/WebFundamentals/) course at Ghent University"
 %}
