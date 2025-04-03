@@ -469,6 +469,8 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2020 (Research Track)
     * 2021 (Research Track)
     * 2022 (Research Track)
+* [Wikidata Workshop](https://wikidataworkshop.github.io/)
+    * 2025
 * [ACM International Conference on Information and Knowledge Management](https://cikm2020.org/)
     * 2020
 * [Workshop on Decentralizing the Semantic Web](https://iswc2019.desemweb.org/)
