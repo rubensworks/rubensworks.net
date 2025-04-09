@@ -426,7 +426,9 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2020 (including member of editorial board for [Special Issue on Semantic Technologies for Data and Algorithmic Governance](http://www.semantic-web-journal.net/blog/call-papers-special-issue-semantic-technologies-data-and-algorithmic-governance)
     * 2021
     * 2022
-    * 2023
+    * 2023 
+* [ACM Transactions on the Web](https://dl.acm.org/journal/tweb/)
+    * 2025
 * [Journal of Web Semantics](https://www.journals.elsevier.com/journal-of-web-semantics)
     * 2017
     * 2018
