@@ -411,6 +411,8 @@ Additionally, he has served as a reviewer and program committee member for these
 
 ### Organizing Committee Member
 
+* [Developers Workshop (Semantics)](https://semantics2025.semdev.org/)
+    * 2025 (Organizer)
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2020 (Metadata Chair)
 * [Trusting Decentralised Knowledge Graphs and Web Data Workshop (TrusDeKW)](https://events.kmi.open.ac.uk/trusting-decentralised-knowledge-graphs-and-web-data/)
