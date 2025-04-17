@@ -139,74 +139,60 @@ Additionally, he has served as a reviewer and program committee member for these
     description=" [Abstracting Data Updates over a Document-oriented interface of a Permissioned Decentralized Environment](https://thesis.jitsedesmet.be/presentation/final-presentation.html)"
 %}
 {% include cv-listing.html
-    subject="Victor Ronsyn"
-    startdate="2023"
-    enddate="2024"
-    location="Ghent University, Belgium"
-    description="Performance evaluation of the variety of Linked Data Interfaces"
-%}
-{% include cv-listing.html
     subject="Elias Vervacke"
     startdate="2022"
     enddate="2023"
     location="Ghent University, Belgium"
-    description="Writing a highly efficient JSON-LD parser for specific frames"
+    description="[An efficient frame-based JSON-LD metaparser](https://libstore.ugent.be/fulltxt/RUG01/003/150/094/RUG01-003150094_2023_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Simon Van Braeckel"
     startdate="2022"
     enddate="2023"
     location="Ghent University, Belgium"
-    description="Adaptive query optimization during Link Traversal Query Processing"
+    description="[Using Discovery of Pre-Generated Metadata with Adaptive Query Planning to Improve Query Performance over Decentralized Environments](https://libstore.ugent.be/fulltxt/RUG01/003/150/089/RUG01-003150089_2023_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Laurens Debackere"
     startdate="2021"
     enddate="2022"
     location="Ghent University, Belgium"
-    description="Efficient and secure querying of Linked Data federations"
+    description="[Enforcing Data Protection in Solid: A Policy-Oriented framework](https://libstore.ugent.be/fulltxt/RUG01/003/059/964/RUG01-003059964_2022_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Robin De Baets"
     startdate="2021"
     enddate="2022"
     location="Ghent University, Belgium"
-    description="Caching and replication in decentralized Linked Data environments"
+    description="[Improving Linked Data query execution using summaries](https://libstore.ugent.be/fulltxt/RUG01/003/063/250/RUG01-003063250_2022_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Jasper Vrints"
     startdate="2021"
     enddate="2022"
     location="Ghent University, Belgium"
-    description="Query Optimization using WebAssembly"
+    description="[Optimization of Sorting Algorithms in Query Engines using WebAssembly](https://libstore.ugent.be/fulltxt/RUG01/003/150/197/RUG01-003150197_2023_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Jonas Bovyn"
     startdate="2021"
     enddate="2022"
     location="Ghent University, Belgium"
-    description="Query Optimization using WebAssembly"
-%}
-{% include cv-listing.html
-    subject="Sammy Delanghe"
-    startdate="2021"
-    enddate="2022"
-    location="Ghent University, Belgium"
-    description="Analysis of Property Graphs in SPARQL engines"
+    description="[Optimizing Query Join Planning using WebAssembly](https://libstore.ugent.be/fulltxt/RUG01/003/063/185/RUG01-003063185_2022_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Thomas Devriese"
     startdate="2020"
     enddate="2021"
     location="Ghent University, Belgium"
-    description="Scaling networks of personal data stores through Approximate Membership Functions"
+    description="[Scaling networks of personal data stores through Approximate Membership Functions](https://libstore.ugent.be/fulltxt/RUG01/003/014/671/RUG01-003014671_2021_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Marie Denoo"
     startdate="2020"
     enddate="2021"
     location="Ghent University, Belgium"
-    description="Enabling fine-grained access control in decentralized environments"
+    description="[Enabling fine-grained access control in decentralized environments](https://libstore.ugent.be/fulltxt/RUG01/003/014/644/RUG01-003014644_2021_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Karel Haerens"
