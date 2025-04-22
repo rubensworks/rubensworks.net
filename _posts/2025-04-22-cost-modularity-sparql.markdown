@@ -185,7 +185,7 @@ For the largest BSBM scale that was run (100K), Comunica-Memory is not included 
 ### WatDiv Results
 
 Below, execution times can be found for the WatDiv benchmark for an increasing dataset scale.
-For the largest WatDiv scale that was run (100K), Comunica-Memory is not included due to memory issues.
+For the largest WatDiv scale that was run (scale 100), Comunica-Memory is not included due to memory issues.
 
 <div class="plot">
 		<div class="plot-figures">
