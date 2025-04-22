@@ -1,17 +1,22 @@
 ---
 layout:      post
 categories:  blog
-tags:        [ querying, javascript, modular, knowledge graphs, rdf, linked data ]
+tags:        [ querying, javascript, modular, decentralization, centralization, knowledge graphs, rdf, linked data ]
 comments:    true
-title:       "The cost of speed in SPARQL"
-subtitle:    "The trade-off between flexibility and performance in a JavaScript query engine"
-date:        2025-04-22 10:00:00 +0100
+title:       "The cost of modularity in SPARQL"
+subtitle:    "How much do modularity and decentralization conflict with centralized speed?"
+date:        2025-04-22 09:25:00 +0200
 feature_img: /img/blog/red-car-sunset.jpg
 ---
 <p class="post-abstract" markdown="1">
-High flexibility and high performance usually form conflicting requirements in software projects.
-In this post, I explore the trade-off between these requirement in the JavaScript-based Comunica SPARQL query engine.
-Results show that Comunica can closely match the performance of state-of-the-art SPARQL query engines, despite having vastly different optimization criteria.
+The JavaScript-based Comunica SPARQL query engine is designed for querying over decentralized environments,
+e.g. through federation and link traversal.
+In addition, it makes use of a modular architecture to achieve high flexibility for developers.
+To determine the impact of these design decisions,
+and to be able to put the base level performance of Comunica in perspective,
+I compared its performance to state-of-the-art centralized SPARQL engines in terms of querying over *centralized* Knowledge Graphs.
+Results show that Comunica can closely match the performance of state-of-the-art SPARQL query engines,
+despite having vastly different optimization criteria.
 </p>
 <!--more-->
 
@@ -20,12 +25,12 @@ which I started developing in 2017, and has been evolving ever since.
 This post starts by discussing the motivations of Comunica,
 and what its primary optimization criteria are.
 Next, the reasons for using JavaScript are discussed.
-Finally, some results are presented about the performance of Comunica compared to state of the art SPARQL query engines.
+Finally, some results are presented about the performance of Comunica compared to state-of-the-art SPARQL query engines that focus on centralized datasets.
 
-<img src="/img/blog/red-car-sunset.png" alt="Red car driving into the sunset" class="feature-img" />
+<img src="/img/blog/scale-modularity-decentralization-perf.png" alt="A scale balancing modularity, decentralization, and centralized performance" class="feature-img" />
 
 <p>
-<center><em>Going fast is only one of many optimization criteria that matter</em></center>
+<center><em>How far can we get in terms of centralized querying performance with a modular SPARQL query engine that is designed for decentralized environments?</em></center>
 </p>
 
 ## Building a modular query engine for the Web
@@ -34,6 +39,10 @@ Back in 2018, Comunica was introduced to the scientific community through a [res
 In this article, Comunica was introduced as a framework for querying across *federations of Knowledge Graphs that are spread across the Web*,
 even if these Knowledge Graphs are hosted through different *heterogeneous APIs*.
 In addition, it was designed to be *flexible for researchers* to easily implement and compare different query algorithms through a highly modular architecture.
+As such, it provide an experimentation framework to make easier and faster advancements the domains of [federated](http://iswc2011.semanticweb.org/fileadmin/iswc/Papers/Research_Paper/05/70310592.pdf) and [link traversal query processing](https://www.rubensworks.net/publications/bogaerts_ruleml_2021/).
+This allows different algorithms to be compared to each other within the same framework in a fair manner,
+without the danger of experimental results being impacted by confounding variables,
+such as differences in programming language runtimes.
 
 Today, these are still the primary motivations, as they are [highlighted as such on the Comunica homepage](https://comunica.dev/).
 One thing that has changed, is that while originally Comunica was only targeted at researchers,
@@ -67,9 +76,9 @@ Neverheless, these limitations may be resolved in the future.
 So in this regard, any language that can be compiled to WebAssembly could become a valid alternative.
 
 For the requirements of flexibility and fast development,
-scripting languages such as JavaScript, PHP, Python, and Ruby are highly popular.
+scripting languages such as JavaScript, Python, Ruby, and PHP are highly popular.
 Most scripting languages are dynamically typed,
-which allows the developer to spend less time of typing out explicit type declarations.
+which allows the developer to spend less time of writing out explicit type declarations.
 Furthermore, scripting languages are interpreted or JIT compiled,
 which allows developers to quickly make changes to code without being blocked by long compilation times.
 This also allows developers to more easily debug code,
@@ -84,13 +93,13 @@ Since high performance tends to conflict with the other requirements, we have to
 This means that given the needs for execution in Web applications, flexibility, and fast development,
 we must achieve a level performance that is as high as possible.
 
-Given all these requirements, I consider JavaScript runtimes as the perfect solution.
+Given all these requirements, I consider JavaScript runtimes as the perfect middle ground.
 First, JavaScript has been specifically designed for running in Web environments,
 and since the introduction of runtime environments such as [Node.js](https://nodejs.org/),
 JavaScript can run *anywhere*, even outside of the browser.
 Second, since it runs directly from source files,
 it excels in high developer producivity.
-And if your project reaches a certain size, you can consider introducing [TypeScript](https://www.typescriptlang.org/) to get type-safety when needed.
+And if your project reaches a certain size, you can consider introducing [TypeScript](https://www.typescriptlang.org/) to get type-safety when needed (which is what Comunica uses).
 Third, since the introduction of the [V8 engine](https://v8.dev/),
 JavaScript execution has become [*extremely fast*](https://v8.dev/blog/10-years)
 thanks to its JIT compilation.
@@ -105,7 +114,8 @@ the question rises as to how performant we can get based on these restrictions?
 
 To answer this question, one would to have to implement algorithmically identical versions of the same software in different languages, which is difficult to near impossible.
 What we can do instead, is compare Comunica against similar query engines, and run identical query workloads over them.
-Unfortunately, no production-ready equivalents to Comunica currently exist that are able to perform federated queries over heterogeneous APIs.
+Unfortunately, no production-ready equivalents to Comunica currently exist that focus on decentralization.
+Or in other words, no other production-ready engines exist that are able to perform federated SPARQL queries over heterogeneous APIs.
 The closest we can get, is to compare Comunica to SPARQL engines that are designed for a single data store in a centralized setting.
 While querying with Comunica in a centralized setting is possible,
 it's archicture is optimized for federation over remote sources,
@@ -150,24 +160,24 @@ For the largest BSBM scale that was run (100K), Comunica-Memory is not included 
 
 <div class="plot">
 	<div class="plot-figures">
-		<div><img src="/img/blog/cost-benefit-query-engine-js/bsbm-1k/plot_small.svg" alt="BSBM 1k small" /></div>
-		<div><img src="/img/blog/cost-benefit-query-engine-js/bsbm-1k/plot_large.svg" alt="BSBM 1k large" /></div>
+		<div><img src="/img/blog/cost-modularity-sparql/bsbm-1k/plot_small.svg" alt="BSBM 1k small" /></div>
+		<div><img src="/img/blog/cost-modularity-sparql/bsbm-1k/plot_large.svg" alt="BSBM 1k large" /></div>
 	</div>
 <strong>Figure 1</strong>: BSBM with 1K resources (0,35M triples).
 </div>
 
 <div class="plot">
 		<div class="plot-figures">
-			<div><img src="/img/blog/cost-benefit-query-engine-js/bsbm-10k/plot_small.svg" alt="BSBM 10k small" /></div>
-			<div><img src="/img/blog/cost-benefit-query-engine-js/bsbm-10k/plot_large.svg" alt="BSBM 10k large" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/bsbm-10k/plot_small.svg" alt="BSBM 10k small" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/bsbm-10k/plot_large.svg" alt="BSBM 10k large" /></div>
 		</div>
 <strong>Figure 2</strong>: BSBM with 10K resources (3,5M triples).
 </div>
 
 <div class="plot">
 		<div class="plot-figures">
-			<div><img src="/img/blog/cost-benefit-query-engine-js/bsbm-100k/plot_small.svg" alt="BSBM 100k small" /></div>
-			<div><img src="/img/blog/cost-benefit-query-engine-js/bsbm-100k/plot_large.svg" alt="BSBM 100k large" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/bsbm-100k/plot_small.svg" alt="BSBM 100k small" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/bsbm-100k/plot_large.svg" alt="BSBM 100k large" /></div>
 		</div>
 <strong>Figure 3</strong>: BSBM with 100K resources (35M triples).
 </div>
@@ -179,17 +189,17 @@ For the largest WatDiv scale that was run (100K), Comunica-Memory is not include
 
 <div class="plot">
 		<div class="plot-figures">
-			<div><img src="/img/blog/cost-benefit-query-engine-js/watdiv-10/plot_small.svg" alt="WatDiv 10 small" /></div>
-			<div><img src="/img/blog/cost-benefit-query-engine-js/watdiv-10/plot_large.svg" alt="WatDiv 10 large" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/watdiv-10/plot_small.svg" alt="WatDiv 10 small" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/watdiv-10/plot_large.svg" alt="WatDiv 10 large" /></div>
 		</div>
 <strong>Figure 4</strong>: WatDiv at scale 10 (1M triples).
 </div>
 
 <div class="plot">
 		<div class="plot-figures">
-			<div><img src="/img/blog/cost-benefit-query-engine-js/watdiv-100/plot_small.svg" alt="WatDiv 100 small" /></div>
-			<div><img src="/img/blog/cost-benefit-query-engine-js/watdiv-100/plot_medium.svg" alt="WatDiv 100 medium" /></div>
-			<div><img src="/img/blog/cost-benefit-query-engine-js/watdiv-100/plot_large.svg" alt="WatDiv 100 large" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/watdiv-100/plot_small.svg" alt="WatDiv 100 small" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/watdiv-100/plot_medium.svg" alt="WatDiv 100 medium" /></div>
+			<div><img src="/img/blog/cost-modularity-sparql/watdiv-100/plot_large.svg" alt="WatDiv 100 large" /></div>
 		</div>
 <strong>Figure 5</strong>: WatDiv at scale 100 (10M triples).
 </div>
@@ -206,7 +216,7 @@ Fully compiled engines such as Oxigraph and QLever mostly (but not always) outpe
 For larger dataset sizes (10M-35M triples), Comunica starts experiencing overhead from data crossing the V8/C++ barrier
 when requesting large numbers of intermediate results from HDT.
 At these dataset scales, a dedicated persisted triple store for Comunica could avoid this overhead.
-But this is currently not part of the roadmap.
+But this is currently not a primary aim of Comunica.
 
 In general, the JavaScript-based Comunica engine can perform similar to Java-based engines,
 despite Java benefiting from compilation source code to byte code (after which JIT compilation occurs to machine code),
@@ -216,4 +226,4 @@ But if high performance is absolutely critical, then no JIT environment can beat
 
 In summary, this analysis shows that despite Comunica's focus on execution over decentralized environments, with high flexibility, and high developer productivity,
 overall performance is still very comparable to state-of-the-art engines that focus on a centralized setting.
-So while there is certainly a cost that comes with flexibility and modularity, the impact on performance appears to be more limited than one would initially expect.
+So while there is certainly a cost that comes with flexibility and modularity, the impact on performance appears to be smaller than one would initially expect.
