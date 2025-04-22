@@ -6,7 +6,7 @@ comments:    true
 title:       "The cost of modularity in SPARQL"
 subtitle:    "How much do modularity and decentralization conflict with centralized speed?"
 date:        2025-04-22 09:25:00 +0200
-feature_img: /img/blog/red-car-sunset.jpg
+feature_img: /img/blog/scale-modularity-decentralization-perf.png
 ---
 <p class="post-abstract" markdown="1">
 The JavaScript-based Comunica SPARQL query engine is designed for querying over decentralized environments,
