@@ -133,7 +133,7 @@ I ran both the [Berlin SPARQL benchmark](http://wbsg.informatik.uni-mannheim.de/
 and the [WatDiv benchmark](https://dsg.uwaterloo.ca/watdiv/) at multiple scales.
 The following engines were compared:
 
-- [Comunica Memory](https://github.com/comunica/comunica/tree/master/engines/query-sparql#readme) (`@comunica/query-sparql` v4.3.0) using [in-memory triple store](https://github.com/rubensworks/rdf-stores.js).
+- [Comunica Memory](https://github.com/comunica/comunica/tree/master/engines/query-sparql#readme) (`@comunica/query-sparql` v4.2.0) using [in-memory triple store](https://github.com/rubensworks/rdf-stores.js).
 - [Comunica HDT](https://github.com/comunica/comunica-feature-hdt/tree/master/engines/query-sparql-hdt#readme) (`@comunica/query-sparql-hdt` v4.0.2) using an [HDT-based triple store](https://www.rdfhdt.org/).
 - [Jena Fuseki](https://jena.apache.org/) (v4.8.0): A Java-based engine.
 - [Blazegraph](https://blazegraph.com/) (v2.1.5): A Java-based engine.
