@@ -450,6 +450,8 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2023 (Semantics and Knowledge Track)
     * 2022 (Semantics and Knowledge Track)
     * 2018 ([Developers' Track](https://www2018.thewebconf.org/program/developers-track/))
+* [International Conference on Cooperative Information Systems](https://coopis.scitevents.org/Home.aspx)
+    * 2025
 * [International Conference on Ontologies, DataBases, and Applications of Semantics (ODBASE)](http://www.otmconferences.org/index.php/conferences/odbase-2020)
     * 2020
 * [SEMANTiCS Conference](https://semantics.cc/)
