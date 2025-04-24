@@ -206,7 +206,7 @@ Additionally, he has served as a reviewer and program committee member for these
     startdate="2018"
     enddate="2019"
     location="Ghent University, Belgium"
-    description="[Computational integrity for outsourced execution of SPARQL queries](https://www.scriptiebank.be/sites/default/files/thesis/2019-10/main_0.pdf)"
+    description="[Computational integrity for outsourced execution of SPARQL queries](https://libstore.ugent.be/fulltxt/RUG01/002/785/862/RUG01-002785862_2019_0001_AC.pdf)"
 %}
 {% include cv-listing.html
     subject="Isa Sebrechts"
