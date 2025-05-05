@@ -1,3 +1,78 @@
+@article{minoo_swj_algebraicmappingoperators_2025,
+  author    = {Min Oo, Sitt and De Meester, Ben and Taelman, Ruben and Colpaert, Pieter},
+  title     = {Algebraic Mapping Operators for Knowledge Graph Generation},
+  month     = {may},
+  journal   = {Semantic Web Journal},
+  year      = {2025},
+  url       = {https://www.semantic-web-journal.net/system/files/swj3806.pdf},
+  abstract  = {
+Recent advancements in declarative knowledge graph generation have led to the development of multiple mapping
+languages, their various versions, and different mapping engines that can interpret these languages and execute the mapping
+process. The field has progressed to the extent that current studies are now more focused on optimizing the knowledge graph
+generation process. Although different mapping engines share the common functionality of generating knowledge graphs from
+heterogeneous data sources, sharing the various optimization techniques and features of these engines remains challenging due to
+the lack of formal operational semantics for the general mapping processes. A set of algebraic mapping operators can provide the
+necessary operational semantics for general mapping processes, establish a theoretical foundation for mapping languages, and
+facilitate the introduction and evaluation of a compliant implementation, that is capable of interpreting and executing multiple
+mapping languages. In this paper, we propose such an algebra based on the SPARQL algebra. This allows us to maximally
+reuse established definitions, and further bridge the world of knowledge graph generation with query engines. To evaluate that
+our work is not limited to a single specific mapping language, we translated mapping languages ShExML and RML to our
+mapping plan composed of algebraic mapping operators. The results of our completeness evaluation shows that our algebraic
+operators cover the operational semantics of RML and partially for ShExML. To fully cover ShExML, further analysis into
+ShExML’s concise operational semantics is needed (e.g. for joining data from two input sources). For performance evaluation,
+our proof-of-concept algebraic mapping engine has a consistent and low memory usage across the different workloads, and
+achieved second place in the Knowledge Graph Construction Workshop’s performance challenge. Algebraic mapping operators
+decouple mapping engines from the mapping languages, enabling multilingual mapping engines. Furthermore, the mapping
+plan can incorporate optimization techniques as a separate process from the mapping itself, allowing us to benefit from state-of-the-art mapping process optimizations.
+The proposed set of algebraic mapping operators will lay the foundation for future
+studies on the theoretical analysis of complexity and expressiveness of mapping languages, and will provide consistency in the
+execution semantics of mapping engines. Furthermore, the alignment of our algebra with SPARQL will enable further research
+into advanced methods such as virtualization, enabling heterogeneous data querying.
+},
+  _type     = {Journal}
+}
+
+@inproceedings{vandenbrande_incremunica_eswc_2025,
+  author    = {Vandenbrandere, Maarten and Taelman, Ruben and Bonte, Pieter and Ongenae, Femke},
+  title     = {Incremunica: Web-based Incremental View Maintenance for SPARQL},
+  booktitle = {Proceedings of the 22nd Extended Semantic Web Conference},
+  year      = {2025},
+  month     = {may},
+  url       = {https://github.com/maartyman/Incremunica-Web-based-Incremental-View-Maintenance-for-SPARQL/blob/main/incremunica_resource_paper-camera_ready.pdf},
+  abstract  = {
+The dynamic nature of Linked Data from IoT devices, social media,
+and the financial sector requires efficient mechanisms to keep SPARQL query results
+up to date, as traditional reevaluation methods are computationally expensive
+and impractical. Incremental view maintenance (IVM) offers a more efficient alternative
+by updating query results incrementally. However, existing engines lack
+support for federated querying, dynamically adding and removing sources during
+query execution, SPARQL Query Language support, multiple IVM techniques,
+and client-side execution. In this paper, we present Incremunica, an incremental
+query engine that addresses these gaps. Incremunica uniquely integrates multiple
+state-of-the-art incremental operators, allowing it to adapt to different queries and
+data for optimal performance. In this article, we provide 1) a requirements analysis
+comparing Incremunica to related work, 2) an explanation of Incremunica’s architecture
+and features, 3) a performance evaluation showing improvements over
+reevaluation, and 4) a demonstration of its benefits through a social media watch
+party application.
+  },
+  _type     = {Conference}
+}
+
+@inproceedings{desmet_demo_sgf_2025,
+  author    = {De Smet, Jitse and Taelman, Ruben},
+  title     = {SGF: SPARQL Updates over Decentralized Knowledge Graphs without Access Path Dependencies},
+  month     = {may},
+  booktitle = {Proceedings of the 22nd Extended Semantic Web Conference: Posters and Demos},
+  year      = {2025},
+  url       = {https://sgf-demo-eswc-2025.jitsedesmet.be/},
+  abstract  = {
+Decentralized data ecosystems, such as the Solid project, empower users to control their data but introduce complexities in data storage and retrieval. Current solutions provide mechanisms for describing data structures but lack sufficient guidance for determining where to create or update resources. To address this challenge, we propose the Storage Guiding Framework (SGF), a framework that enables clients to manage RDF resource storage within Solid pods. This paper introduces SGF, detailing the describing structure and how SGF allows clients to treat Solid pods as RDF collections rather than a collection of unstructured HTTP documents. Our findings show that SGV enhances data accessibility by eliminating the access path data-dependency and providing clear storage strategies. This improvement simplifies client-side data management while maintaining flexibility in data organization.
+},
+  _type     = {Demo}
+}
+
+
 @article{taelman_sigweb_queryengineshypermedia_2024,
   author    = {Taelman, Ruben},
   title     = {Towards Applications on the Decentralized Web using Hypermedia-driven Query Engines},
