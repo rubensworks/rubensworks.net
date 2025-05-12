@@ -465,6 +465,8 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2025
 * [ACM International Conference on Information and Knowledge Management](https://cikm2020.org/)
     * 2020
+* [HyperAgents](https://ecai2025.hyperagents.org/)
+    * 2025
 * [Workshop on Decentralizing the Semantic Web](https://iswc2019.desemweb.org/)
     * 2018
     * 2019
