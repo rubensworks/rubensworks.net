@@ -406,6 +406,8 @@ Additionally, he has served as a reviewer and program committee member for these
 
 ### Journal Reviewer
 
+* [Transactions on Graph Data and Knowledge](https://drops.dagstuhl.de/entities/journal/TGDK)
+    * 2025 (editorial board member)
 * [IEEE Access](https://ieeeaccess.ieee.org/)
     * 2020
 * [Semantic Web Journal](http://semantic-web-journal.net/)
