@@ -291,7 +291,7 @@ Additionally, he has served as a reviewer and program committee member for these
     subject="[An Introduction to Querying over Knowledge Graphs on the Web](https://www.rubensworks.net/raw/slides/2025/vliruos/)"
     date="2025"
     location="VLIR-UOS, Belgium"
-    description="Guest lecture for a [VLIR-UOS cooperation between Mzumbe University and Ghent University](https://www.vliruos.be/)"
+    description="Guest lecture for a [VLIR-UOS ITP between Mzumbe University and Ghent University]([https://www.vliruos.be/](https://www.vliruos.be/get-funded/developing-advanced-training-empower-professionals-international-training-programme-itp))"
 %}
 {% include cv-listing.html
     subject="[Biological Knowledge Graphs](https://www.rubensworks.net/raw/slides/2025/ugent-bio-kgs/)"
