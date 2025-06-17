@@ -85,12 +85,18 @@
 "Ieben Smessaert":
   url: "https://smessaert.be/"
   foaf: "https://data.verborgh.org/people/ieben_messaert"
+"Jitse De Smet":
+  url: "https://jitsedesmet.be/"
+  foaf: "https://jitsedesmet.be/#me"
 "Laurens Debackere":
   url: "https://www.linkedin.com/in/laurensdebackere/"
   foaf: "https://data.verborgh.org/people/laurens_debackere"
 "Luis Galárraga":
   url: "http://luisgalarraga.de/"
   foaf: "http://luisgalarraga.de/"
+"Maarten Vandenbrandere":
+  url: "https://www.linkedin.com/in/maarten-vandenbrande-878755219/"
+  foaf: "https://www.linkedin.com/in/maarten-vandenbrande-878755219/"
 "Marlies Van der Wee":
   url: "http://technoeconomics.idlab.ugent.be/team/marlies.html"
   foaf: "https://data.verborgh.org/people/marlies_van_der_wee"
@@ -106,6 +112,9 @@
 "Olivier Pelgrin":
   url: "https://vbn.aau.dk/en/persons/olivier-paul-pelgrin"
   foaf: "https://vbn.aau.dk/en/persons/olivier-paul-pelgrin"
+"Pieter Bonte":
+  url: "http://pieterbonte.be/"
+  foaf: "http://pieterbonte.be/"
 "Pieter Colpaert":
   url: "https://pietercolpaert.be/"
   foaf: "https://pietercolpaert.be/#me"
