@@ -306,6 +306,12 @@ Additionally, he has served as a reviewer and program committee member for these
     description="Guest lecture at the [Knowledge Graphs](https://studiekiezer.ugent.be/studiefiche/en/E018160/2025) course at Ghent University"
 %}
 {% include cv-listing.html
+    subject="[Querying in Solid](https://www.rubensworks.net/raw/slides/2024/sib-solidquery/)"
+    date="2024"
+    location="RDF Focus Group, Swiss Institute of Bioinformatics"
+    description="Invited talk at the [SIB RDF Focus Group](https://www.sib.swiss/)"
+%}
+{% include cv-listing.html
     subject="[Requirements and Challenges for Query Execution across Decentralized Environments](https://www.rubensworks.net/raw/slides/2024/webconf-desere-querydecentralized/)"
     date="2024"
     location="DeSeRe 2024, The Web Conference"
