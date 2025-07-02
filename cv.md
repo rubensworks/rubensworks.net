@@ -294,6 +294,12 @@ Additionally, he has served as a reviewer and program committee member for these
     description="Guest lecture for a [VLIR-UOS ITP between Mzumbe University and Ghent University]([https://www.vliruos.be/](https://www.vliruos.be/get-funded/developing-advanced-training-empower-professionals-international-training-programme-itp))"
 %}
 {% include cv-listing.html
+    subject="[Client-driven Query Execution across Solid Pods](https://www.rubensworks.net/raw/slides/2025/sosy-querydecentralized/)"
+    date="2025"
+    location="Solid Symposium 2025, Leiden, Netherlands"
+    description="Invitated talk at the [Solid Symposium 2025](https://www.sosy2025.eu/)"
+%}
+{% include cv-listing.html
     subject="[Biological Knowledge Graphs](https://www.rubensworks.net/raw/slides/2025/ugent-bio-kgs/)"
     date="2025"
     location="Ghent University, Belgium"
