@@ -1,0 +1,90 @@
+"Jitse De Smet":
+    startdate: 2023
+    enddate: 2024
+    location: "Ghent University, Belgium"
+    title: Abstracting Data Updates over a Document-oriented interface of a Permissioned Decentralized Environment
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/215/161/RUG01-003215161_2024_0001_AC.pdf"
+"Elias Vervacke":
+    startdate: 2022
+    enddate: 2023
+    location: "Ghent University, Belgium"
+    title: An efficient frame-based JSON-LD metaparser
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/150/094/RUG01-003150094_2023_0001_AC.pdf"
+"Simon Van Braeckel":
+    startdate: 2022
+    enddate: 2023
+    location: "Ghent University, Belgium"
+    title: Using Discovery of Pre-Generated Metadata with Adaptive Query Planning to Improve Query Performance over Decentralized Environments
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/150/089/RUG01-003150089_2023_0001_AC.pdf"
+"Laurens Debackere":
+    startdate: 2021
+    enddate: 2022
+    location: "Ghent University, Belgium"
+    title: "Enforcing Data Protection in Solid: A Policy-Oriented framework"
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/059/964/RUG01-003059964_2022_0001_AC.pdf"
+"Robin De Baets":
+    startdate: 2021
+    enddate: 2022
+    location: "Ghent University, Belgium"
+    title: Improving Linked Data query execution using summaries
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/063/250/RUG01-003063250_2022_0001_AC.pdf"
+"Jasper Vrints":
+    startdate: 2021
+    enddate: 2022
+    location: "Ghent University, Belgium"
+    title: Optimization of Sorting Algorithms in Query Engines using WebAssembly
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/150/197/RUG01-003150197_2023_0001_AC.pdf"
+"Jonas Bovyn":
+    startdate: 2021
+    enddate: 2022
+    location: "Ghent University, Belgium"
+    title: Optimizing Query Join Planning using WebAssembly
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/063/185/RUG01-003063185_2022_0001_AC.pdf"
+"Thomas Devriese":
+    startdate: 2020
+    enddate: 2021
+    location: "Ghent University, Belgium"
+    title: Scaling networks of personal data stores through Approximate Membership Functions
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/014/671/RUG01-003014671_2021_0001_AC.pdf"
+"Marie Denoo":
+    startdate: 2020
+    enddate: 2021
+    location: "Ghent University, Belgium"
+    title: Enabling fine-grained access control in decentralized environments
+    url: "https://libstore.ugent.be/fulltxt/RUG01/003/014/644/RUG01-003014644_2021_0001_AC.pdf"
+"Karel Haerens":
+    startdate: 2019
+    enddate: 2020
+    location: "Ghent University, Belgium"
+    title: Query execution over decentralized social media networks
+    url: "https://libstore.ugent.be/fulltxt/RUG01/002/945/736/RUG01-002945736_2021_0001_AC.pdf"
+"Serge Morel":
+    startdate: 2018
+    enddate: 2019
+    location: "Ghent University, Belgium"
+    title: Computational integrity for outsourced execution of SPARQL queries
+    url: "https://libstore.ugent.be/fulltxt/RUG01/002/785/862/RUG01-002785862_2019_0001_AC.pdf"
+"Isa Sebrechts":
+    startdate: 2018
+    enddate: 2019
+    location: "Ghent University, Belgium"
+    title: Usability of distributed data sources for modern Web applications
+    url: "https://lib.ugent.be/fulltxt/RUG01/002/785/839/RUG01-002785839_2019_0001_AC.pdf"
+"Wouter Vandenberghe":
+    startdate: 2017
+    enddate: 2019
+    location: "Ghent University, Belgium"
+    title: An analysis of the effects of HTTP2 on a low-cost query interface
+    url: "https://libstore.ugent.be/fulltxt/RUG01/002/785/822/RUG01-002785822_2019_0001_AC.pdf"
+"Thibault Mahieu":
+    startdate: 2017
+    enddate: 2018
+    location: "Ghent University, Belgium"
+    title: Reducing storage requirements of multi-version graph databases using forward and reverse deltas
+    url: "https://lib.ugent.be/fulltxt/RUG01/002/495/106/RUG01-002495106_2018_0001_AC.pdf"
+"Brecht Hendrickx":
+    startdate: 2017
+    enddate: 2018
+    location: "Ghent University, Belgium"
+    title: Client-side querying of media fragments using a low-cost server interface
+    url: "https://lib.ugent.be/fulltxt/RUG01/002/494/561/RUG01-002494561_2018_0001_AC.pdf"

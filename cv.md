@@ -128,114 +128,42 @@ Additionally, he has served as a reviewer and program committee member for these
 %}
 </ul>
 
+### Supervision of PhD Students
+
+<ul class="cv-listing">
+{% for student in site.data.studentsphd %}
+  {% capture subject %}{{ student[0] }}{% endcapture %}
+  {% capture startdate %}{{ student[1].startdate }}{% endcapture %}
+  {% capture enddate %}{{ student[1].enddate }}{% endcapture %}
+  {% capture location %}{{ student[1].location }}{% endcapture %}
+  {% capture description %}{{ student[1].title }}{% endcapture %}
+  {% include cv-listing.html
+      subject=subject
+      startdate=startdate
+      enddate=enddate
+      location=location
+      description=description
+  %}
+{% endfor %}
+</ul>
+
 ### Supervision of Master Students
 
 <ul class="cv-listing">
-{% include cv-listing.html
-    subject="Jitse De Smet"
-    startdate="2023"
-    enddate="2024"
-    location="Ghent University, Belgium"
-    description=" [Abstracting Data Updates over a Document-oriented interface of a Permissioned Decentralized Environment](https://thesis.jitsedesmet.be/presentation/final-presentation.html)"
-%}
-{% include cv-listing.html
-    subject="Elias Vervacke"
-    startdate="2022"
-    enddate="2023"
-    location="Ghent University, Belgium"
-    description="[An efficient frame-based JSON-LD metaparser](https://libstore.ugent.be/fulltxt/RUG01/003/150/094/RUG01-003150094_2023_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Simon Van Braeckel"
-    startdate="2022"
-    enddate="2023"
-    location="Ghent University, Belgium"
-    description="[Using Discovery of Pre-Generated Metadata with Adaptive Query Planning to Improve Query Performance over Decentralized Environments](https://libstore.ugent.be/fulltxt/RUG01/003/150/089/RUG01-003150089_2023_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Laurens Debackere"
-    startdate="2021"
-    enddate="2022"
-    location="Ghent University, Belgium"
-    description="[Enforcing Data Protection in Solid: A Policy-Oriented framework](https://libstore.ugent.be/fulltxt/RUG01/003/059/964/RUG01-003059964_2022_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Robin De Baets"
-    startdate="2021"
-    enddate="2022"
-    location="Ghent University, Belgium"
-    description="[Improving Linked Data query execution using summaries](https://libstore.ugent.be/fulltxt/RUG01/003/063/250/RUG01-003063250_2022_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Jasper Vrints"
-    startdate="2021"
-    enddate="2022"
-    location="Ghent University, Belgium"
-    description="[Optimization of Sorting Algorithms in Query Engines using WebAssembly](https://libstore.ugent.be/fulltxt/RUG01/003/150/197/RUG01-003150197_2023_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Jonas Bovyn"
-    startdate="2021"
-    enddate="2022"
-    location="Ghent University, Belgium"
-    description="[Optimizing Query Join Planning using WebAssembly](https://libstore.ugent.be/fulltxt/RUG01/003/063/185/RUG01-003063185_2022_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Thomas Devriese"
-    startdate="2020"
-    enddate="2021"
-    location="Ghent University, Belgium"
-    description="[Scaling networks of personal data stores through Approximate Membership Functions](https://libstore.ugent.be/fulltxt/RUG01/003/014/671/RUG01-003014671_2021_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Marie Denoo"
-    startdate="2020"
-    enddate="2021"
-    location="Ghent University, Belgium"
-    description="[Enabling fine-grained access control in decentralized environments](https://libstore.ugent.be/fulltxt/RUG01/003/014/644/RUG01-003014644_2021_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Karel Haerens"
-    startdate="2019"
-    enddate="2020"
-    location="Ghent University, Belgium"
-    description="[Query execution over decentralized social media networks](https://libstore.ugent.be/fulltxt/RUG01/002/945/736/RUG01-002945736_2021_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Serge Morel"
-    startdate="2018"
-    enddate="2019"
-    location="Ghent University, Belgium"
-    description="[Computational integrity for outsourced execution of SPARQL queries](https://libstore.ugent.be/fulltxt/RUG01/002/785/862/RUG01-002785862_2019_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Isa Sebrechts"
-    startdate="2018"
-    enddate="2019"
-    location="Ghent University, Belgium"
-    description="[Usability of distributed data sources for modern Web applications](https://lib.ugent.be/fulltxt/RUG01/002/785/839/RUG01-002785839_2019_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Wouter Vandenberghe"
-    startdate="2017"
-    enddate="2019"
-    location="Ghent University, Belgium"
-    description="[An analysis of the effects of HTTP2 on a low-cost query interface](https://libstore.ugent.be/fulltxt/RUG01/002/785/822/RUG01-002785822_2019_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Thibault Mahieu"
-    startdate="2017"
-    enddate="2018"
-    location="Ghent University, Belgium"
-    description="[Reducing storage requirements of multi-version graph databases using forward and reverse deltas](https://lib.ugent.be/fulltxt/RUG01/002/495/106/RUG01-002495106_2018_0001_AC.pdf)"
-%}
-{% include cv-listing.html
-    subject="Brecht Hendrickx"
-    startdate="2017"
-    enddate="2018"
-    location="Ghent University, Belgium"
-    description="[Client-side querying of media fragments using a low-cost server interface](https://lib.ugent.be/fulltxt/RUG01/002/494/561/RUG01-002494561_2018_0001_AC.pdf)"
-%}
+{% for student in site.data.studentsmaster %}
+  {% capture subject %}{{ student[0] }}{% endcapture %}
+  {% capture startdate %}{{ student[1].startdate }}{% endcapture %}
+  {% capture enddate %}{{ student[1].enddate }}{% endcapture %}
+  {% capture location %}{{ student[1].location }}{% endcapture %}
+  {% capture description %}[{{ student[1].title }}]({{ student[1].url }}){% endcapture %}
+  {% include cv-listing.html
+      subject=subject
+      startdate=startdate
+      enddate=enddate
+      location=location
+      description=description
+  %}
+{% endfor %}
 </ul>
 
 ## Fellowships
