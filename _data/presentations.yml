@@ -1,224 +1,278 @@
+# Types:
+# - Organized Lecture: for courses I organize
+# - Guest Lecture: for courses others organize
+# - Keynote: Main invited talk
+# - Invited Talk: One of the invited talks
+# - Conference
+# - Workshop
+# - Other
+
 "2025-ugm-queryingkgs":
     title: "An Introduction to Querying over Knowledge Graphs on the Web"
     venue: "Data & Software Engineering, Universitas Gadjah Mada, Indonesia"
     date: "27 August 2025"
     url: "https://www.rubensworks.net/raw/slides/2025/ugm-queryingkgs/"
+    type: "Guest Lecture"
 "2025-vliruos":
     title: "An Introduction to Querying over Knowledge Graphs on the Web"
     venue: "VLIR-UOS 2025"
     date: "19 June 2025"
     url: "https://www.rubensworks.net/raw/slides/2025/vliruos/"
+    type: "Guest Lecture"
 "2025-sosy-querydecentralized":
     title: "Client-driven Query Execution across Solid Pods"
     venue: "Solid Symposium 2025"
     date: "24 April 2025"
     url: "https://www.rubensworks.net/raw/slides/2025/sosy-querydecentralized/"
+    type: "Invited Talk"
 "2025-ugent-bio-kgs":
     title: "Biological Knowledge Graphs"
     venue: "Biological Databases, UGent"
     date: "22 April 2025"
     url: "https://www.rubensworks.net/raw/slides/2025/ugent-bio-kgs/"
+    type: "Guest Lecture"
 "2025-ugent-knowledgegraphs-linktraversal":
     title: "Link Traversal-based Query Processing"
     venue: "Knowledge Graphs, UGent"
     date: "7 March 2025"
     url: "https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-linktraversal/"
+    type: "Guest Lecture"
 "2025-ugent-knowledgegraphs-sparqlengines":
     title: "SPARQL Query Evaluation"
     venue: "Knowledge Graphs, UGent"
     date: "7 March 2025"
     url: "https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-sparqlengines/"
+    type: "Guest Lecture"
 
 "2024-vaia-webquerying":
     title: "Web Querying"
     venue: "VAIA course Linked Data & Solid"
     date: "24 October 2024"
     url: "https://www.rubensworks.net/raw/slides/2024/vaia-webquerying/"
+    type: "Organized Lecture"
 "2024-fedquery-heterogeneous-discovery":
     title: "Discovery of Heterogeneous Interfaces in Decentralized Environments"
     venue: "FedQuery 2024, Malaga"
     date: "26 June 2024"
     url: "https://www.rubensworks.net/raw/slides/2024/fedquery-heterogeneous-discovery/"
+    type: "Other"
 "2024-sib-solidquery":
     title: "Querying in Solid"
     venue: "RDF Focus Group, Swiss Institute of Bioinformatics"
     date: "4 June 2024"
     url: "https://www.rubensworks.net/raw/slides/2024/sib-solidquery/"
+    type: "Invited Talk"
 "2024-webconf-desere-querydecentralized":
     title: "Requirements and Challenges for Query Execution across Decentralized Environments"
     venue: "DeSeRe 2024, The Web Conference"
     date: "13 May 2024"
     url: "https://www.rubensworks.net/raw/slides/2024/webconf-desere-querydecentralized/"
     video: "https://www.youtube.com/watch?v=C58VzFLcks0"
+    type: "Keynote"
 "2024-swat4hcls-hackathon-comunica":
     title: "Comunica Introduction"
     venue: "SWAT4HCLS Hackathon"
     date: "29 February 2024"
     url: "https://www.rubensworks.net/raw/slides/2024/swat4hcls-hackathon-comunica/"
+    type: "Workshop"
 "2024-ugent-knowledgegraphs-linktraversal":
     title: "Link Traversal-based Query Processing"
     venue: "Knowledge Graphs, UGent"
     date: "14 March 2024"
     url: "https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-linktraversal/"
+    type: "Guest Lecture"
 "2024-ugent-knowledgegraphs-sparqlengines":
     title: "SPARQL Query Evaluation"
     venue: "Knowledge Graphs, UGent"
     date: "14 May 2024"
     url: "https://www.rubensworks.net/raw/slides/2024/ugent-knowledgegraphs-sparqlengines/"
+    type: "Guest Lecture"
 
 "2023-iswc-solidquery":
     title: "Link Traversal Query Processing over Decentralized Environments with Structural Assumptions"
     venue: "ISWC 2023"
     date: "10 November 2023"
     url: "https://www.rubensworks.net/raw/slides/2023/iswc-solidquery/"
+    type: "Conference"
 "2023-iswc-quweda-quotedtriplesindex":
     title: "In-Memory Dictionary-Based Indexing of Quoted RDF Triples"
     venue: "QuWeDa, ISWC 2023"
     date: "6 November 2023"
     url: "https://www.rubensworks.net/raw/slides/2023/iswc-quweda-quotedtriplesindex/"
+    type: "Workshop"
 "2023-vaia-webquerying":
     title: "Web Querying"
     venue: "VAIA course Linked Data & Solid"
     date: "26 October 2023"
     url: "https://www.rubensworks.net/raw/slides/2023/vaia-webquerying/"
+    type: "Organized Lecture"
 "2023-ugent-webfundamentals-linktraversal":
     title: "Link Traversal-based Query Processing"
     venue: "Web Fundamentals, UGent"
     date: "4 May 2023"
     url: "https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-linktraversal/"
+    type: "Guest Lecture"
 "2023-ugent-webfundamentals-sparqlengines":
     title: "SPARQL Query Evaluation"
     venue: "Web Fundamentals, UGent"
     date: "4 May 2023"
     url: "https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-sparqlengines/"
+    type: "Guest Lecture"
 "2023-costdkg-fedhackathon":
     title: "Comunica Introduction"
     venue: "Hackathon on Querying Federations of Knowledge Graphs"
     date: "25 April 2023"
     url: "https://www.rubensworks.net/raw/slides/2023/costdkg-fedhackathon/"
+    type: "Other"
 "2023-dagstuhl-querychallenges":
     title: "Challenges for Query Agents on the Decentralized Web"
     venue: "Dagstuhl 2023 - Agents on the Web"
     date: "20 February 2023"
     url: "https://www.rubensworks.net/raw/slides/2023/dagstuhl-querychallenges/"
+    type: "Other"
 
 "2022-iswc-quweda-ldtraversalsecurity":
     title: "Security Vulnerabilities within Link Traversal-Based Query Processing"
     venue: "QuWeDa 2022"
     date: "23 October 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/iswc-quweda-ldtraversalsecurity/"
+    type: "Workshop"
 "2022-semantics-comunica":
     title: "Querying Knowledge Graphs on the Web with Comunica"
     venue: "Semantics 2022"
     date: "14 September 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/semantics-comunica/"
+    type: "Conference"
 "2022-comunica-launch-intro":
     title: "Comunica Association Introduction"
     venue: "Comunica Association Launch Event"
     date: "7 September 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/comunica-launch-intro/"
+    type: "Other"
 "2022-dkw-solid-query":
     title: "Querying in Solid"
     venue: "Research Visit DKW 2022"
     date: "20 June 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/dkw-solid-query/"
+    type: "Invited Talk"
 "2022-comunica-webinar-intro":
     title: "Comunica Introduction"
     venue: "Comunica Webinar"
     date: "17 May 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/comunica-webinar-intro/"
+    type: "Other"
 "2022-ugent-webfundamentals-linktraversal":
     title: "Link Traversal-based Query Processing"
     venue: "Web Fundamentals, UGent"
     date: "12 May 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/ugent-webfundamentals-linktraversal/"
+    type: "Guest Lecture"
 "2022-ugent-webfundamentals-sparqlengines":
     title: "SPARQL Query Evaluation"
     venue: "Web Fundamentals, UGent"
     date: "12 May 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/ugent-webfundamentals-sparqlengines/"
+    type: "Guest Lecture"
 "2022-eiso-solid":
     title: "Decentralisation with Solid"
     venue: "Masterclass M2 IMST EISO 2022"
     date: "5 May 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/eiso-solid/"
+    type: "Guest Lecture"
 "2022-knows-componentsjsarticle":
     title: "The Adventures of Components.js"
     venue: "KNoWS"
     date: "20 January 2022"
     url: "https://www.rubensworks.net/raw/slides/2022/knows-componentsjsarticle/"
+    type: "Other"
 
 "2021-geonovum-inspiratiedag":
     title: "Integrale bevraging van kennisgrafen met intelligente clients"
     venue: "Geo-inspiratiedag, Geonovum"
     date: "5 October 2021"
     url: "https://www.rubensworks.net/raw/slides/2021/geonovum-inspiratiedag/"
+    type: "Invited Talk"
 "2021-knows-master-thesis-intro":
     title: "Master Thesis Introduction"
     venue: "KNoWS"
     date: "September 2021"
     url: "https://www.rubensworks.net/raw/slides/2021/knows-master-thesis-intro/"
+    type: "Other"
 "2021-iv-querying":
     title: "De Toekomst van Queries over Linked Data"
     venue: "Kennisdelingssessie LDES"
     date: "16 June 2021"
     url: "https://www.rubensworks.net/raw/slides/2021/iv-querying/"
+    type: "Invited Talk"
 "2021-ugent-webfundamentals-linktraversal":
     title: "Link Traversal-based Query Processing"
     venue: "Web Fundamentals, UGent"
     date: "22 April 2021"
     url: "https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-linktraversal/"
+    type: "Guest Lecture"
 "2021-ugent-webfundamentals-sparqlengines":
     title: "SPARQL Query Evaluation"
     venue: "Web Fundamentals, UGent"
     date: "22 April 2021"
     url: "https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-sparqlengines/"
+    type: "Guest Lecture"
 "2021-knows-linktraversal":
     title: "Introduction to Link Traversal Query Processing"
     venue: "KNoWS"
     date: "26 February 2021"
     url: "https://www.rubensworks.net/raw/slides/2021/knows-linktraversal/"
+    type: "Other"
+
+
 "2020-knows-linktraversal":
     title: "Introduction to Link Traversal Query Processing"
     venue: "KNoWS"
     date: "30 November 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/knows-linktraversal/"
+    type: "Other"
 "2020-iswc-ssws-amf":
     title: "Optimizing Approximate Membership Metadata in Triple Pattern Fragments"
     venue: "SSWS, ISWC 2020"
     date: "2 November 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/iswc-ssws-amf/"
+    type: "Workshop"
 "2020-iswc-praxis-rts":
     title: "RDF Test Suite"
     venue: "PRAXIS, ISWC 2020"
     date: "1 November 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/iswc-praxis-rts/"
+    type: "Workshop"
 "2020-oslc-solid-tech":
     title: "A Technical View on the Solid Ecosystem"
     venue: "OSLC Fest 2020, Virtual Conference"
     date: "20 May 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/oslc-solid-tech/"
     video: "https://youtu.be/t1AJg8HAEn4?t=6705"
+    type: "Invited Talk"
 "2020-phd-public":
     title: "Storing and Querying Evolving Knowledge Graphs on the Web"
     venue: "Public PhD Defense, IDLab — Ghent University — imec"
     date: "17 February 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/phd-public/"
+    type: "Other"
 "2020-ai-comunica":
     title: "Comunica: a Modular SPARQL Query Engine for the Web"
     venue: "D²AI, Square Sainctelette 17, Brussels"
     date: "6 January 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/ai-comunica/"
+    type: "Other"
 "2020-sympdecentweb-mellon":
     title: "Scholarly Communications Using the Decentralized Web"
     venue: "Decentralised Web Symposium, Vienna"
     date: "17 January 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/sympdecentweb-mellon/"
+    type: "Workshop"
 "2020-phd-internal":
     title: "Storing and Querying Evolving Knowledge Graphs on the Web"
     venue: "Internal PhD Defense, IDLab — Ghent University — imec"
     date: "9 January 2020"
     url: "https://www.rubensworks.net/raw/slides/2020/phd-internal/"
+    type: "Other"
 
 
 
@@ -227,86 +281,103 @@
     venue: "Institute for Information Business, WU Vienna University of Economics and Business"
     date: "5 December 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/wu-comunica/"
+    type: "Invited Talk"
 "2019-iswc-ostrich":
     title: "Triple Storage for Random-Access Versioned Querying of RDF Archives"
     venue: "ISWC 2019, Auckland"
     date: "30 October 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/iswc-ostrich/"
+    type: "Conference"
 "2019-iswc-graphql-rdf":
     title: "GraphQL Tutorial: GraphQL and RDF"
     venue: "ISWC 2019, Auckland"
     date: "27 October 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/iswc-graphql-rdf/"
+    type: "Tutorial"
 "2019-iswc-graphql-interface":
     title: "GraphQL Tutorial: Setting up a GraphQL Interface"
     venue: "ISWC 2019, Auckland"
     date: "27 October 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/iswc-graphql-interface/"
+    type: "Tutorial"
 "2019-iswc-graphql-client":
     title: "GraphQL Tutorial: Client-side GraphQL"
     venue: "ISWC 2019, Auckland"
     date: "27 October 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/iswc-graphql-client/"
+    type: "Tutorial"
 "2019-iswc-socom-hackathon":
     title: "SOCOM Tutorial Slides - Hackathon"
     venue: "ISWC 2019, Auckland"
     date: "26 October 2019"
     url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-Hackathon/"
+    type: "Tutorial"
 "2019-iswc-socom-graphqlld":
     title: "SOCOM Tutorial Slides - GraphQL-LD"
     venue: "ISWC 2019, Auckland"
     date: "26 October 2019"
     url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-GraphQL-LD/"
+    type: "Tutorial"
 "2019-iswc-socom-ldflex":
     title: "SOCOM Tutorial Slides - LDflex"
     venue: "ISWC 2019, Auckland"
     date: "26 October 2019"
     url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-LDflex/"
+    type: "Tutorial"
 "2019-iswc-socom-comunica":
     title: "SOCOM Tutorial Slides - Comunica"
     venue: "ISWC 2019, Auckland"
     date: "26 October 2019"
     url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-Comunica/"
+    type: "Tutorial"
 "2019-iswc-socom-solid":
     title: "SOCOM Tutorial Slides - Solid"
     venue: "ISWC 2019, Auckland"
     date: "26 October 2019"
     url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-Solid/"
+    type: "Tutorial"
 "2019-iswc-socom-intro":
     title: "SOCOM Tutorial Slides - Introduction"
     venue: "ISWC 2019, Auckland"
     date: "26 October 2019"
     url: "https://comunica.github.io/Tutorial-ISWC2019-Slides-Introduction/"
+    type: "Tutorial"
 "2019-semmering-queryinglinkeddata":
     title: "Querying Linked Data on the Web, for real this time"
     venue: "Sporthotel, Semmering"
     date: "23 September 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/semmering-queryinglinkeddata/"
+    type: "Other"
 "2019-w3c-data-ws-graphql-rdf":
     title: "Bridges between GraphQL and RDF"
     venue: "W3C Workshop on Web Standardization for Graph Data 2019, Berlin"
     date: "March 5 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/w3c-data-ws-graphql-rdf/"
+    type: "Workshop"
 "2019-eswc-comunica-advanced":
     title: "Comunica Tutorial - Advanced"
     venue: "ESWC 2019, Portorož"
     date: "3 June 2019"
     url: "https://comunica.github.io/Tutorial-ESWC2019-Comunica-Advanced-Slides/"
+    type: "Tutorial"
 "2019-eswc-comunica-basic":
     title: "Comunica Tutorial - Basic"
     venue: "ESWC 2019, Portorož"
     date: "3 June 2019"
     url: "https://comunica.github.io/Tutorial-ESWC2019-Comunica-Basic-Slides/"
+    type: "Tutorial"
 "2019-oslo-solid":
     title: "OSLO Inspiratienamiddag - Solid"
     venue: "OSLO Inspiratienamiddag, Brussel"
     date: "19 Februari 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/oslo-solid/"
+    type: "Invited Talk"
 "2019-knows-journal-cake":
     title: "The struggles of OSTRICH and PoDiGG"
     venue: "IDLab, Ghent"
     date: "10 January 2019"
     url: "https://www.rubensworks.net/raw/slides/2019/knows-journal-cake/"
+    type: "Other"
 
 
 
@@ -315,21 +386,25 @@
     venue: "ISWC 2018, Monterey"
     date: "11 October 2018"
     url: "https://www.rubensworks.net/raw/slides/2018/iswc-comunica/"
+    type: "Conference"
 "2018-iswc-semverquerying":
     title: "The Fundamentals of Semantic Versioned Querying"
     venue: "SSWS, ISWC, Monterey"
     date: "9 October 2018"
     url: "https://www.rubensworks.net/raw/slides/2018/iswc-semverquerying/"
+    type: "Conference"
 "2018-semantics-tpfqs":
     title: "On the Semantics of TPF-QS"
     venue: "SEMANTiCS 2018, Vienna"
     date: "12 September 2018"
     url: "https://www.rubensworks.net/raw/slides/2018/semantics-tpfqs/"
-"2018-webconf-componentsks":
+    type: "Conference"
+"2018-webconf-componentsjs":
     title: "Components.js"
     venue: "WebConf 2018, Lyon"
     date: "26 April 2018"
     url: "https://www.slideshare.net/RubenTaelman/componentsjs"
+    type: "Workshop"
 
 
 
@@ -338,6 +413,7 @@
     venue: "MEPDaW, ESWC 2017, Portorož"
     date: "28 May 2017"
     url: "https://www.slideshare.net/RubenTaelman/versioned-triple-pattern-fragments"
+    type: "Workshop"
 
 
 
@@ -346,33 +422,40 @@
     venue: "EKAW 2016"
     date: "20 November 2016"
     url: "https://www.slideshare.net/RubenTaelman/ekaw-publishing-with-triple-pattern-fragments"
+    type: "Tutorial"
 "2016-ekaw-tpf":
     title: "Triple Pattern Fragments"
     venue: "EKAW 2016"
     date: "20 November 2016"
     url: "https://www.slideshare.net/RubenTaelman/ekaw-triple-pattern-fragments"
+    type: "Tutorial"
 "2016-ekaw-ldpublishing":
     title: "Linked Data Publishing"
     venue: "EKAW 2016"
     date: "20 November 2016"
     url: "https://www.slideshare.net/RubenTaelman/ekaw-linked-data-publishing"
+    type: "Tutorial"
 "2016-docker-intro":
     title: "An Introduction to Docker"
     venue: "IDLab — Ghent University — imec"
     date: "8 November 2016"
     url: "https://www.slideshare.net/RubenTaelman/docker-intro-68380579"
+    type: "Other"
 "2016-cold-mdi":
     title: "Multidimensional Interfaces for Selecting Data with Order"
     venue: "COLD, ISWC 2016, Kobe"
     date: "18 October 2016"
     url: "https://www.slideshare.net/RubenTaelman/multidimensional-interfaces-for-selecting-data-with-order"
+    type: "Workshop"
 "2016-phd-continuous-selfupdating-query-results-over-dynamic-linked-data":
     title: "Continuous Self-Updating Query Results over Dynamic Linked Data"
     venue: "PhD Symposium, ESWC 2016, Crete"
     date: "30 May 2016"
     url: "https://www.slideshare.net/RubenTaelman/continuous-selfupdating-query-results-over-dynamic-linked-data"
+    type: "Other"
 "2016-mepdaw-continuously-updating-query-results-over-realtime-linked-data":
     title: "Continuously Updating Query Results over Real-Time Linked Data"
     venue: "MEPDaW, ESWC 2016, Crete"
     date: "30 May 2016"
     url: "https://www.slideshare.net/RubenTaelman/continuously-updating-query-results-over-realtime-linked-data"
+    type: "Workshop"

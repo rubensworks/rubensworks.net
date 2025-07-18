@@ -284,88 +284,12 @@ Additionally, he has served as a reviewer and program committee member for these
 %}
 </ul>
 
-## Invited talks
+## Invited presentations
 
-<ul class="cv-listing">
-{% include cv-listing.html
-    subject="[An Introduction to Querying over Knowledge Graphs on the Web](https://www.rubensworks.net/raw/slides/2025/ugm-queryingkgs/)"
-    date="2025"
-    location="Data & Software Engineering, Universitas Gadjah Mada, Indonesia"
-    description="Guest lecture for at [Universitas Gadjah Mada](https://dcse.fmipa.ugm.ac.id/en/software-and-data-engineering-research-lab/)"
+{% include presentations.html
+   presentations=site.data.presentations
+   types="Keynote, Invited Talk, Guest Lecture"
 %}
-{% include cv-listing.html
-    subject="[An Introduction to Querying over Knowledge Graphs on the Web](https://www.rubensworks.net/raw/slides/2025/vliruos/)"
-    date="2025"
-    location="VLIR-UOS, Belgium"
-    description="Guest lecture for a [VLIR-UOS ITP between Mzumbe University and Ghent University](https://www.vliruos.be/get-funded/developing-advanced-training-empower-professionals-international-training-programme-itp)"
-%}
-{% include cv-listing.html
-    subject="[Client-driven Query Execution across Solid Pods](https://www.rubensworks.net/raw/slides/2025/sosy-querydecentralized/)"
-    date="2025"
-    location="Solid Symposium 2025, Leiden, Netherlands"
-    description="Invitated talk at the [Solid Symposium 2025](https://www.sosy2025.eu/)"
-%}
-{% include cv-listing.html
-    subject="[Biological Knowledge Graphs](https://www.rubensworks.net/raw/slides/2025/ugent-bio-kgs/)"
-    date="2025"
-    location="Ghent University, Belgium"
-    description="Guest lecture at the [Biological Databases](https://studiekiezer.ugent.be/2024/studiefiche/en/I002642) course at Ghent University"
-%}
-{% include cv-listing.html
-    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-sparqlengines/) and [Link Traversal Query Processing](https://www.rubensworks.net/raw/slides/2025/ugent-knowledgegraphs-linktraversal/)"
-    date="2024 - 2025"
-    location="Ghent University, Belgium"
-    description="Guest lecture at the [Knowledge Graphs](https://studiekiezer.ugent.be/studiefiche/en/E018160/2025) course at Ghent University"
-%}
-{% include cv-listing.html
-    subject="[Querying in Solid](https://www.rubensworks.net/raw/slides/2024/sib-solidquery/)"
-    date="2024"
-    location="RDF Focus Group, Swiss Institute of Bioinformatics"
-    description="Invited talk at the [SIB RDF Focus Group](https://www.sib.swiss/)"
-%}
-{% include cv-listing.html
-    subject="[Requirements and Challenges for Query Execution across Decentralized Environments](https://www.rubensworks.net/raw/slides/2024/webconf-desere-querydecentralized/)"
-    date="2024"
-    location="DeSeRe 2024, The Web Conference"
-    description="Invited talk at [DeSeRe 2024](https://desere.org/) at the Web Conference"
-%}
-{% include cv-listing.html
-    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-sparqlengines/) and [Link Traversal-based Query Processing](https://www.rubensworks.net/raw/slides/2023/ugent-webfundamentals-linktraversal/)"
-    date="2022 - 2023"
-    location="Ghent University, Belgium"
-    description="Guest lecture at the [Web Fundamentals](https://rubenverborgh.github.io/WebFundamentals/) course at Ghent University"
-%}
-{% include cv-listing.html
-    subject="[Decentralisation with Solid](https://www.rubensworks.net/raw/slides/2022/eiso-solid/)"
-    date="2022"
-    location="University of Lyon, France"
-    description="Invited talk at [Masterclass M2 IMST EISO 2022](https://offre-de-formations.univ-lyon1.fr/mention-72/information-et-mediation-scientifique-et-technique.html)"
-%}
-{% include cv-listing.html
-    subject="[Integrale bevraging van kennisgrafen met intelligente clients](https://www.rubensworks.net/raw/slides/2021/geonovum-inspiratiedag/)"
-    date="2021"
-    location="Geonovum, Netherlands"
-    description="Invited talk at [Geo-inspiratiedag](https://www.geonovum.nl/terugblik-geo-inspiratiedag-5-oktober-2021) by Geonovum"
-%}
-{% include cv-listing.html
-    subject="[SPARQL Query Processing](https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-sparqlengines/) and [Link Traversal-based Query Processing](https://www.rubensworks.net/raw/slides/2021/ugent-webfundamentals-linktraversal/)"
-    date="2021"
-    location="Ghent University, Belgium"
-    description="Guest lecture at the [Web Fundamentals](https://rubenverborgh.github.io/WebFundamentals/) course at Ghent University"
-%}
-{% include cv-listing.html
-    subject="[A Technical View on the Solid Ecosystem](https://www.rubensworks.net/raw/slides/2020/oslc-solid-tech/)"
-    date="2020"
-    location="OSLC Fest 2020"
-    description="Invited talk on the fundamentals of the Solid ecosystem at [OSLC Fest](http://oslcfest.org/) ([video](https://www.youtube.com/watch?v=t1AJg8HAEn4&t=6705s))"
-%}
-{% include cv-listing.html
-    subject="[Comunica: a Modular SPARQL Query Engine for the Web](https://www.rubensworks.net/raw/slides/2019/wu-comunica/)"
-    date="2019"
-    location="Institute for Information Business, WU Vienna University of Economics and Business"
-    description="Invited talk on the Comunica query engine"
-%}
-</ul>
 
 ## Publications
 

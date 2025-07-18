@@ -1,0 +1,16 @@
+<ol class="presentations">
+{% for presentation in include.presentations %}
+  {% capture presentation_year %}{{ presentation[1].date | date: "%Y" }}{% endcapture %}
+  {% assign presentation_year_string = presentation_year | plus: 0 %}
+  {% if presentation_year_string == include.year or include.types contains presentation[1].type %}
+    <li>
+    <div class="presentation listed" itemscope itemtype="http://schema.org/PresentationDigitalDocument" typeof="schema:PresentationDigitalDocument schema:CreativeWork" about="/presentations#{{ presentation[0] }}">
+        <span class="type">{{ presentation[1].type }}</span>
+        <span itemprop="name" property="schema:name" class="title"><a href="{{ presentation[1].url }}">{{ presentation[1].title }}</a></span>
+        <span itemprop="location" property="schema:location" class="venue">{{ presentation[1].venue }}</span>
+        <span itemprop="datePublished" property="schema:datePublished" class="date">{{ presentation[1].date }}</span>
+    </div>
+    </li>
+  {% endif %}
+{% endfor %}
+</ol>
