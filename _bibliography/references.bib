@@ -1,3 +1,41 @@
+@inproceedings{eschauzier_iswc_research_linkprioritization_2025,
+  author    = {Eschauzier, Ruben and Taelman, Ruben and Verborgh, Ruben},
+  title     = {Revisiting Link Prioritization for Efficient Traversal in Structured Decentralized Environments},
+  booktitle = {Proceedings of the 24th International Semantic Web Conference},
+  year      = {2025},
+  month     = {november},
+  abstract  = {
+Decentralized environments distribute personal data across
+numerous small, independent data sources; a necessity driven by legal
+and socio-economic constraints that prevent the technologically more
+convenient central aggregation. Link Traversal-based Query Processing
+(LTQP) is a query technique that respects these constraints by iteratively discovering and accessing data sources while enabling fine-grained
+access control. Unfortunately, current LTQP implementations are slow
+due to limited prior knowledge of queried data and the high volume
+of HTTP requests required. Prioritizing data sources likely to lead to
+query-relevant data can improve query result arrival times. However,
+while link prioritization algorithms have been studied for Linked Open
+Data (LOD), their performance in structured decentralized environments
+remains untested. Evaluating this performance is essential to establish
+a baseline as a reference point for improving future implementations.
+We formally define the R3 metric to measure prioritization performance,
+extend it to continuous efficiency, and account for real-world scenarios.
+Furthermore, we provide modular and open-source implementations of
+the prioritization algorithms from the literature. Finally, using the R3
+metric with existing metrics from the literature, we benchmark these link
+prioritization algorithms in a simulated Solid environment. In this paper,
+we report the benchmark results, provide a thorough analysis, and lessons
+learned for future work. We find that existing prioritization algorithms
+fail to improve performance in structured decentralized environments,
+with no non-Oracle method outperforming the look-up order produced
+by a FIFO queue. We conclude that prioritization algorithms have little
+benefit in a structured decentralized environment, and recommend that
+research shift to pruning irrelevant links or improving the query plan.
+  },
+  url       = {https://rubeneschauzier.github.io/r3-metric-data-processor/Revisiting_Link_Prioritization_for_Efficient_Traversal_in_Structured_Decentralized_Environments-camera-ready.pdf},
+  _type     = {Conference}
+}
+
 @inproceedings{desmet_hyperagents_algebraicflows_2025,
   author    = {De Smet, Jitse and Verborgh, Ruben and Taelman, Ruben},
   title     = {A vision on algebraic flows for declarative resource descriptions},
