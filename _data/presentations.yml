@@ -7,6 +7,12 @@
 # - Workshop
 # - Other
 
+"2025-vito-dph-querydecentralized":
+    title: "Query-driven Data Integration for a Decentralized Web"
+    venue: "VITO Digital Precision Health Day 2025"
+    date: "10 October 2025"
+    url: "https://www.rubensworks.net/raw/slides/2025/vito-dph-querydecentralized/"
+    type: "Invited Talk"
 "2025-ugm-queryingkgs":
     title: "An Introduction to Querying over Knowledge Graphs on the Web"
     venue: "Data & Software Engineering, Universitas Gadjah Mada, Indonesia"
