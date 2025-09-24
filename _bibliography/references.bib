@@ -36,6 +36,32 @@ research shift to pruning irrelevant links or improving the query plan.
   _type     = {Conference}
 }
 
+@inproceedings{hanski_wikidata_federation_2025,
+  author    = {Hanski, Jonni and Crum, Elias and Taelman, Ruben},
+  title     = {Observations on automated client-side query federation over Wikidata SPARQL endpoints},
+  booktitle = {Proceedings of the Wikidata Workshop 2025 co-located with 24th International Semantic Web Conference (ISWC 2025)},
+  year      = {2025},
+  month     = {nov},
+  url       = {https://www.rubensworks.net/raw/publications/2025/hanski_wikidata_federation_2025.pdf},
+  abstract  = {
+The recent Wikidata graph split divided a previously singular SPARQL endpoint into two distinct ones, breaking
+existing queries that depend on the combined data from these endpoints. To accommodate this graph split,
+instructions for manual source assignment have been provided. However, the proposed solution of manual source
+annotations within the queries themselves, through the use of SPARQL SERVICE clauses, not only imposes
+additional work on users of these endpoints, but also assumes prior knowledge of which data come from which
+endpoint, and how they should be combined. Potential future graph splits would result in this manual source
+assignment having to be done again. Within this work, we employ client-side query federation over the two
+Wikidata endpoints, using state-of-the-art source assignment approaches for query operations, to demonstrate
+the feasibility and challenges of automated federation as an alternative to manual source assignment. Through
+our experiments, we show how client-side federation can offer a viable alternative to manual source assignment
+for certain queries, where the amount of data to process remains within client-side resource limits, and provided
+no custom behaviour is attached to standard SPARQL operations. Future work will be needed to address the
+trade-offs between network request counts and client-side data processing, to be able to execute queries that
+access large amounts of data from multiple sources.
+  },
+  _type     = {Workshop}
+}
+
 @inproceedings{desmet_hyperagents_algebraicflows_2025,
   author    = {De Smet, Jitse and Verborgh, Ruben and Taelman, Ruben},
   title     = {A vision on algebraic flows for declarative resource descriptions},
