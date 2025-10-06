@@ -329,7 +329,6 @@ Additionally, he has served as a reviewer and program committee member for these
     * 2024 (Research Track)
     * 2025 (Research Track)
 * [The Web Conference](https://www.iw3c2.org/)
-    * 2026 (Semantics and Knowledge Track)
     * 2025 (Semantics and Knowledge Track - Area Chair)
     * 2024 (Semantics and Knowledge Track - Area Chair)
     * 2023 (Semantics and Knowledge Track)
