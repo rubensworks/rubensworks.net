@@ -8,19 +8,24 @@ show_in_nav: false
 ## Short Biography
 
 {:.cv-biography}
-Ruben Taelman is a Postdoctoral Researcher at [IDLab](http://www.ugent.be/ea/idlab/en), Ghent University – imec, Belgium.
-His research concerns the decentralized publication and querying of Linked Data on the Web,
+Ruben Taelman is a Postdoctoral Researcher at <a href="https://knows.idlab.ugent.be/">KNoWS</a>, Ghent University – imec, Belgium.
+He leads a team of researchers that focuses on querying over Decentralized Knowledge Graphs on the Web,
 and investigating the trade-offs that exist between server and client.
 He has contributed to this domain through publications in journals such as
 the [Semantic Web Journal](http://semantic-web-journal.net/)
 and the [Journal of Web Semantics](https://www.journals.elsevier.com/journal-of-web-semantics).
-Next to that, he is actively applying his research by developing [reusable software](/projects/)
-that can be used by developers and other researchers.
-Furthermore, he has presented his work at various conferences and workshops such as
+He has presented his work at various conferences and workshops such as
 the [Web Conference](https://www.iw3c2.org/),
 the [International Semantic Web Conference (ISWC)](http://swsa.semanticweb.org/content/international-semantic-web-conference-iswc),
 and the [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/).
 Additionally, he has served as a reviewer and program committee member for these journals and conferences.
+Furthermore, he is actively applying his research by developing various open-source [software libraries](/projects/)
+that can be used by developers and other researchers.
+The most notable among them is the <a href="https://comunica.dev/">Comunica query engine</a>,
+which was the first engine to establish federated SPARQL querying over heterogeneous sources.
+Today, Comunica is widely used within the scientific community and industry.
+To ensure its long-term maintenance beyond research, he founded the non-profit Comunica Association.
+Besides research, he teaches the fundamentals of Web technologies and Web querying at <a href="https://www.ugent.be/en">Ghent University</a>.
 
 ## Academic Work Experience
 
@@ -209,6 +214,41 @@ Additionally, he has served as a reviewer and program committee member for these
     date="2016"
     subtitle="[Continuously Updating Query Results over Real-Time Linked Data](/publications/taelman_mepdaw_2016/)"
     description="2nd Workshop on Managing the Evolution and Preservation of the Data Web)"
+%}
+</ul>
+
+## Standardization Efforts
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="RDF and SPARQL W3C Working group member"
+    startdate="2022"
+    enddate="2026"
+    description="Co-editor of [SPARQL 1.2 specifications](https://www.w3.org/TR/sparql12-query/)"
+%}
+{% include cv-listing.html
+    subject="RDF Test Suite Curation W3C Community Group"
+    startdate="2025"
+    enddate="now"
+    description="Co-chair of the [community group](https://www.w3.org/groups/cg/rdf-tests/)"
+%}
+{% include cv-listing.html
+    subject="RDF/JS W3C Community Group member"
+    startdate="2016"
+    enddate="now"
+    description="Co-editor of [RDF/JS specifications](https://rdf.js.org/data-model-spec/)"
+%}
+{% include cv-listing.html
+    subject="JSON-LD 1.1 W3C Working group member"
+    startdate="2018"
+    enddate="2020"
+    description="Editor of [Streaming JSON-LD](https://www.w3.org/TR/json-ld11-streaming/)"
+%}
+{% include cv-listing.html
+    subject="Bridging GraphQL and RDF W3C Community Group"
+    startdate="2019"
+    enddate="2023"
+    description="Chair of the [community group](https://www.w3.org/groups/cg/graphql-rdf/)"
 %}
 </ul>
 
