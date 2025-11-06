@@ -192,6 +192,18 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="Best Reviewer Award"
+    date="2025"
+    subtitle="Among all Senior PC Members for the [Resources Track](https://iswc2025.semanticweb.org/#/calls/resource)"
+    description="ISWC 2025 - International Semantic Web Conference"
+%}
+{% include cv-listing.html
+    subject="Best Student Paper Award"
+    date="2025"
+    subtitle="[Revisiting Link Prioritization for Efficient Traversal in Structured Decentralized Environments](/publications/eschauzier_iswc_research_linkprioritization_2025/)"
+    description="ISWC 2025 - International Semantic Web Conference"
+%}
+{% include cv-listing.html
     subject="Best Demo Paper Award"
     date="2023"
     subtitle="[GLENDA: Querying over RDF Archives with SPARQL](/publications/pelgrin_eswc_glenda_2023/)"
