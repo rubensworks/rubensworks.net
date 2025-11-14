@@ -13,12 +13,24 @@
     date: "26 November 2025"
     url: "https://www.rubensworks.net/raw/slides/2025/goblin-challengesquerydecentralized/"
     type: "Invited Talk"
+"2025-iswc-tutorial-rdfsparql-12":
+    title: "An Introduction to RDF and SPARQL 1.2"
+    venue: "ISWC 2025, Nara"
+    date: "2 November 2025"
+    url: "https://www.w3.org/Talks/2025/iswc-tutorial-rdfsparql-12/"
+    type: "Tutorial"
 "2025-vito-dph-querydecentralized":
     title: "Query-driven Data Integration for a Decentralized Web"
     venue: "VITO Digital Precision Health Day 2025"
     date: "10 October 2025"
     url: "https://www.rubensworks.net/raw/slides/2025/vito-dph-querydecentralized/"
     type: "Invited Talk"
+"2025-semantics-semdev":
+    title: "SEMANTICS 2025 Developers Workshop"
+    venue: "SEMANTiCS 2025, Vienna"
+    date: "3 September 2025"
+    url: "https://semantics2025.semdev.org/"
+    type: "Workshop"
 "2025-ugm-queryingkgs":
     title: "An Introduction to Querying over Knowledge Graphs on the Web"
     venue: "Data & Software Engineering, Universitas Gadjah Mada, Indonesia"
