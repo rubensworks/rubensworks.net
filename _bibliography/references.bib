@@ -1,3 +1,29 @@
+@article{pelgrin_swj_largerdfarchives_2025,
+  author    = {Pelgrin, Olivier and Taelman, Ruben and Galàrraga, Luis and Hose, Katja},
+  title     = {Expressive Querying and Scalable Management of Large RDF Archives},
+  month     = {dec},
+  journal   = {Semantic Web Journal},
+  year      = {2025},
+  url       = {https://www.semantic-web-journal.net/system/files/swj3940.pdf},
+  abstract  = {
+The proliferation of large and ever-growing RDF datasets has sparked a need for robust and performant RDF archiving
+systems. In order to tackle this challenge, several solutions have been proposed throughout the years, including archiving systems
+based on independent copies, time-based indexes, and change-based approaches. In recent years, modern solutions combine
+several of the above mentioned paradigms. In particular, aggregated changesets of time-annotated triples have showcased a
+noteworthy ability to handle and query relatively large RDF archives. However, such approaches still suffer from scalability
+issues, notably at ingestion time. This makes the use of these solutions prohibitive for large revision histories. Furthermore,
+applications for such systems remain often constrained by their limited querying abilities, where SPARQL is often left out in favor
+of single triple-pattern queries. In this paper, we propose a hybrid storage approach based on aggregated changesets, snapshots,
+and multiple delta chains that additionally provides full querying SPARQL on RDF archives. This is done by interfacing our
+system with a modified SPARQL query engine. We evaluate our system with different snapshot creation strategies on the BEAR
+benchmark for RDF archives and showcase improvements of up to one order of magnitude in ingestion speed compared to
+state-of-the-art approaches, while keeping competitive querying performance. Furthermore, we demonstrate our SPARQL query
+processing capabilities on the BEAR-C variant of BEAR. This is, to the best of our knowledge, the first openly-available endeavor
+that provides full SPARQL querying on RDF archives.
+},
+  _type     = {Journal}
+}
+
 @inproceedings{eschauzier_iswc_research_linkprioritization_2025,
   author    = {Eschauzier, Ruben and Taelman, Ruben and Verborgh, Ruben},
   title     = {Revisiting Link Prioritization for Efficient Traversal in Structured Decentralized Environments},
