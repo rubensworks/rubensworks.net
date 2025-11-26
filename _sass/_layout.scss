@@ -392,18 +392,18 @@ a.source {
         }
         .venue {
             display: block;
-            font-size: 14px;
+            font-size: 0.9em;
             margin-left: 10px;
         }
         .date {
             display: block;
-            font-size: 12px;
+            font-size: 0.8em;
             color: $grey-color;
             margin-left: 10px;
         }
         .type {
             display: block;
-            font-size: 10px;
+            font-size: 0.6em;
             font-weight: bold;
             float: right;
             padding: 2px;
@@ -528,12 +528,12 @@ figure {
             font-style: italic;
         }
         .in {
-            font-size: 12px;
+            font-size: 0.8em;
             color: $grey-color;
         }
         .type {
             display: block;
-            font-size: 10px;
+            font-size: 0.6em;
             font-weight: bold;
             float: right;
             padding: 2px;
@@ -553,7 +553,7 @@ figure {
 .publication {
     .type {
         display: block;
-        font-size: 10px;
+        font-size: 0.6em;
         font-weight: bold;
         float: right;
         padding: 2px;

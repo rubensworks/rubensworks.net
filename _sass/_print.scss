@@ -14,16 +14,30 @@
     }
     
     body {
-        font-size: 12px;
+        font-size: 11px;
     }
     
     h1 {
         font-size: 22px !important;
+        margin: .25em 0
     }
     h2 {
         font-size: 18px !important;
+        margin: .25em 0
     }
     h3, h4 {
         font-size: 15px !important;
+        margin: .20em 0
+    }
+    
+    .type {
+        color: black !important;
+        font-size: 10px !important;
+        font-style: italic;
+        font-weight: normal !important;
+    }
+    
+    .presentation, .publication {
+        padding-bottom: 4px !important;
     }
 }

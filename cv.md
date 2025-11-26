@@ -35,7 +35,7 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
     startdate="2020"
     enddate="now"
     location="[IDLab, Ghent University — imec](http://www.ugent.be/ea/idlab/en)"
-    description="Together with a team of PhD students and postdocs, I am researching decentralized publication and querying of Linked Data on the Web."
+    description="Together with my team of five PhD students, I am researching query algorithms over Decentralized Knowledge Graphs on the Web."
 %}
 {% include cv-listing.html
     subject="Visiting Researcher"
@@ -95,6 +95,122 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
     enddate="2013"
     location="Ghent University, Belgium"
     description="With honor"
+%}
+</ul>
+
+## Fellowships
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Postdoctoral Fellowship"
+    date="2023 - 2026"
+    subtitle="[Research Foundation Flanders](https://www.fwo.be/en/)"
+    description="Full research grant for a 3-year sensior postdoctoral fellowship (25.8% acceptance rate)"
+%}
+{% include cv-listing.html
+    subject="Postdoctoral Fellowship"
+    date="2020 - 2023"
+    subtitle="[Research Foundation Flanders](https://www.fwo.be/en/)"
+    description="Full research grant for a 3-year junior postdoctoral fellowship (26.6% acceptance rate)"
+%}
+</ul>
+
+## Awards
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Best Reviewer Award"
+    date="2025"
+    subtitle="Among all Senior PC Members for the [Resources Track](https://iswc2025.semanticweb.org/#/calls/resource)"
+    description="ISWC 2025 - International Semantic Web Conference"
+%}
+{% include cv-listing.html
+    subject="Best Student Paper Award"
+    date="2025"
+    subtitle="[Revisiting Link Prioritization for Efficient Traversal in Structured Decentralized Environments](/publications/eschauzier_iswc_research_linkprioritization_2025/)"
+    description="ISWC 2025 - International Semantic Web Conference"
+%}
+{% include cv-listing.html
+    subject="Best Demo Paper Award"
+    date="2023"
+    subtitle="[GLENDA: Querying over RDF Archives with SPARQL](/publications/pelgrin_eswc_glenda_2023/)"
+    description="ESWC 2023 - Extended Semantic Web Conference"
+%}
+{% include cv-listing.html
+    subject="Best Demo Paper Award"
+    date="2022"
+    subtitle="[Solid Web Monetization](/publications/sebrechts_icwe_2022/)"
+    description="ICWE2022 - International Conference on Web Engineering"
+%}
+{% include cv-listing.html
+    subject="Best Paper Award"
+    date="2020"
+    subtitle="[Pattern-based Access Control in a Decentralised Collaboration Environment](/publications/werbrouck_ldac_2020/)"
+    description="LDAC2020 - 8th Linked Data in Architecture and Construction Workshop"
+%}
+{% include cv-listing.html
+    subject="Best Paper Award"
+    date="2016"
+    subtitle="[Continuously Updating Query Results over Real-Time Linked Data](/publications/taelman_mepdaw_2016/)"
+    description="2nd Workshop on Managing the Evolution and Preservation of the Data Web)"
+%}
+</ul>
+
+## Standardization Efforts
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="RDF and SPARQL W3C Working group member"
+    startdate="2022"
+    enddate="now"
+    description="Co-editor of [SPARQL 1.2 specifications](https://www.w3.org/TR/sparql12-query/)"
+%}
+{% include cv-listing.html
+    subject="RDF Test Suite Curation W3C Community Group"
+    startdate="2025"
+    enddate="now"
+    description="Co-chair of the [community group](https://www.w3.org/groups/cg/rdf-tests/)"
+%}
+{% include cv-listing.html
+    subject="RDF/JS W3C Community Group member"
+    startdate="2016"
+    enddate="now"
+    description="Co-editor of [RDF/JS specifications](https://rdf.js.org/data-model-spec/)"
+%}
+{% include cv-listing.html
+    subject="JSON-LD 1.1 W3C Working group member"
+    startdate="2018"
+    enddate="2020"
+    description="Editor of [Streaming JSON-LD](https://www.w3.org/TR/json-ld11-streaming/)"
+%}
+{% include cv-listing.html
+    subject="Bridging GraphQL and RDF W3C Community Group"
+    startdate="2019"
+    enddate="2023"
+    description="Chair of the [community group](https://www.w3.org/groups/cg/graphql-rdf/)"
+%}
+</ul>
+
+## Key Software Projects
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="[Comunica](https://comunica.dev/)"
+    startdate="2017"
+    enddate="now"
+    description="Lead developer and maintainer of the open-source SPARQL query engine framework."
+%}
+{% include cv-listing.html
+    subject="[RDF/JS libraries](https://www.rubensworks.net/projects/rdfjs/)"
+    startdate="2017"
+    enddate="now"
+    description="Lead developer of a large number of fundamental open-source RDF-related libraries for JavaScript."
+%}
+{% include cv-listing.html
+    subject="[OSTRICH](https://www.rubensworks.net/projects/ostrich/)"
+    startdate="2016"
+    enddate="now"
+    description="Lead developer of an RDF triple store that allows multiple versions of a dataset to be stored at the same time."
 %}
 </ul>
 
@@ -171,99 +287,6 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 {% endfor %}
 </ul>
 
-## Fellowships
-
-<ul class="cv-listing">
-{% include cv-listing.html
-    subject="Postdoctoral Fellowship"
-    date="2023 - 2026"
-    subtitle="[Research Foundation Flanders](https://www.fwo.be/en/)"
-    description="Full research grant for a 3-year sensior postdoctoral fellowship"
-%}
-{% include cv-listing.html
-    subject="Postdoctoral Fellowship"
-    date="2020 - 2023"
-    subtitle="[Research Foundation Flanders](https://www.fwo.be/en/)"
-    description="Full research grant for a 3-year junior postdoctoral fellowship"
-%}
-</ul>
-
-## Awards
-
-<ul class="cv-listing">
-{% include cv-listing.html
-    subject="Best Reviewer Award"
-    date="2025"
-    subtitle="Among all Senior PC Members for the [Resources Track](https://iswc2025.semanticweb.org/#/calls/resource)"
-    description="ISWC 2025 - International Semantic Web Conference"
-%}
-{% include cv-listing.html
-    subject="Best Student Paper Award"
-    date="2025"
-    subtitle="[Revisiting Link Prioritization for Efficient Traversal in Structured Decentralized Environments](/publications/eschauzier_iswc_research_linkprioritization_2025/)"
-    description="ISWC 2025 - International Semantic Web Conference"
-%}
-{% include cv-listing.html
-    subject="Best Demo Paper Award"
-    date="2023"
-    subtitle="[GLENDA: Querying over RDF Archives with SPARQL](/publications/pelgrin_eswc_glenda_2023/)"
-    description="ESWC 2023 - Extended Semantic Web Conference"
-%}
-{% include cv-listing.html
-    subject="Best Demo Paper Award"
-    date="2022"
-    subtitle="[Solid Web Monetization](/publications/sebrechts_icwe_2022/)"
-    description="ICWE2022 - International Conference on Web Engineering"
-%}
-{% include cv-listing.html
-    subject="Best Paper Award"
-    date="2020"
-    subtitle="[Pattern-based Access Control in a Decentralised Collaboration Environment](/publications/werbrouck_ldac_2020/)"
-    description="LDAC2020 - 8th Linked Data in Architecture and Construction Workshop"
-%}
-{% include cv-listing.html
-    subject="Best Paper Award"
-    date="2016"
-    subtitle="[Continuously Updating Query Results over Real-Time Linked Data](/publications/taelman_mepdaw_2016/)"
-    description="2nd Workshop on Managing the Evolution and Preservation of the Data Web)"
-%}
-</ul>
-
-## Standardization Efforts
-
-<ul class="cv-listing">
-{% include cv-listing.html
-    subject="RDF and SPARQL W3C Working group member"
-    startdate="2022"
-    enddate="2026"
-    description="Co-editor of [SPARQL 1.2 specifications](https://www.w3.org/TR/sparql12-query/)"
-%}
-{% include cv-listing.html
-    subject="RDF Test Suite Curation W3C Community Group"
-    startdate="2025"
-    enddate="now"
-    description="Co-chair of the [community group](https://www.w3.org/groups/cg/rdf-tests/)"
-%}
-{% include cv-listing.html
-    subject="RDF/JS W3C Community Group member"
-    startdate="2016"
-    enddate="now"
-    description="Co-editor of [RDF/JS specifications](https://rdf.js.org/data-model-spec/)"
-%}
-{% include cv-listing.html
-    subject="JSON-LD 1.1 W3C Working group member"
-    startdate="2018"
-    enddate="2020"
-    description="Editor of [Streaming JSON-LD](https://www.w3.org/TR/json-ld11-streaming/)"
-%}
-{% include cv-listing.html
-    subject="Bridging GraphQL and RDF W3C Community Group"
-    startdate="2019"
-    enddate="2023"
-    description="Chair of the [community group](https://www.w3.org/groups/cg/graphql-rdf/)"
-%}
-</ul>
-
 ## Invited presentations
 
 {% include presentations.html
@@ -329,14 +352,14 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 %}
 </ul>
 
-### Organizing Committee Member
+### Organization Committee Member
 
 * [Developers Workshop (Semantics)](https://semantics2025.semdev.org/)
     * 2025 (Organizer)
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2020 (Metadata Chair)
-* [Trusting Decentralised Knowledge Graphs and Web Data Workshop (TrusDeKW)](https://events.kmi.open.ac.uk/trusting-decentralised-knowledge-graphs-and-web-data/)
-    * 2023 (ESWC)
+* [Trusting Decentralised Knowledge Graphs and Web Data Workshop (TrusDeKW) (ESWC)](https://events.kmi.open.ac.uk/trusting-decentralised-knowledge-graphs-and-web-data/)
+    * 2023 (Co-organizer)
 
 ### Journal Reviewer
 
@@ -345,18 +368,12 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 * [IEEE Access](https://ieeeaccess.ieee.org/)
     * 2020
 * [Semantic Web Journal](http://semantic-web-journal.net/)
-    * 2017
-    * 2018
-    * 2020 (including member of editorial board for [Special Issue on Semantic Technologies for Data and Algorithmic Governance](http://www.semantic-web-journal.net/blog/call-papers-special-issue-semantic-technologies-data-and-algorithmic-governance)
-    * 2021
-    * 2022
-    * 2023 
+    * 2017 - 2025
+    * 2020 (editorial board member [Special Issue on Semantic Technologies for Data and Algorithmic Governance](http://www.semantic-web-journal.net/blog/call-papers-special-issue-semantic-technologies-data-and-algorithmic-governance)
 * [ACM Transactions on the Web](https://dl.acm.org/journal/tweb/)
     * 2025
 * [Journal of Web Semantics](https://www.journals.elsevier.com/journal-of-web-semantics)
-    * 2017
-    * 2018
-    * 2023
+    * 2017, 2018, 2023
 * [Data Science](https://www.iospress.nl/journal/data-science/)
     * 2019
 {:.cv-listing}
@@ -364,40 +381,25 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 ### Program Committee Member
 
 * [International Semantic Web Conference (ISWC)](http://swsa.semanticweb.org/content/international-semantic-web-conference-iswc)
-    * 2019 (Resources Track)
-    * 2020 (Resources Track)
-    * 2021 (Resources Track)
-    * 2022 (Research Track, Resources Track)
-    * 2023 (Research Track, Resources Track - Senior)
-    * 2024 (Research Track, Resources Track - Senior)
-    * 2025 (Research Track, Resources Track - Senior)
+    * 2019 - 2023 (Resources Track)
+    * 2022 - 2025 (Research Track)
+    * 2023 - 2025 (Resources Track - Senior)
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
-    * 2018 (Research Track)
-    * 2019 (Research Track)
-    * 2020 (Research Track, Poster & Demo Track)
-    * 2021 (Research Track, Resources Track, In-Use Track)
-    * 2022 (Research Track, Resources Track, In-Use Track)
-    * 2023 (Research Track, Resources Track)
-    * 2024 (Research Track)
-    * 2025 (Research Track)
-    * 2026 (Research Track)
+    * 2018 - 2026 (Research Track)
+    * 2020 (Poster & Demo Track)
+    * 2021 - 2023 (Resources Track)
+    * 2021 - 2022 (In-Use Track)
 * [The Web Conference](https://www.iw3c2.org/)
-    * 2025 (Semantics and Knowledge Track - Area Chair)
-    * 2024 (Semantics and Knowledge Track - Area Chair)
-    * 2023 (Semantics and Knowledge Track)
-    * 2022 (Semantics and Knowledge Track)
+    * 2024 - 2025 (Semantics and Knowledge Track - Area Chair)
+    * 2022 - 2023 (Semantics and Knowledge Track)
     * 2018 ([Developers' Track](https://www2018.thewebconf.org/program/developers-track/))
 * [International Conference on Cooperative Information Systems](https://coopis.scitevents.org/Home.aspx)
     * 2025
 * [International Conference on Ontologies, DataBases, and Applications of Semantics (ODBASE)](http://www.otmconferences.org/index.php/conferences/odbase-2020)
     * 2020
 * [SEMANTiCS Conference](https://semantics.cc/)
-    * 2017 (Poster & Demo Track)
-    * 2018 (Research Track, Poster & Demo Track)
-    * 2019 (Research Track)
-    * 2020 (Research Track)
-    * 2021 (Research Track)
-    * 2022 (Research Track)
+    * 2017 - 2018 (Poster & Demo Track)
+    * 2018 - 2022 (Research Track)
 * [Wikidata Workshop](https://wikidataworkshop.github.io/)
     * 2025
 * [ACM International Conference on Information and Knowledge Management](https://cikm2020.org/)
@@ -405,25 +407,74 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 * [HyperAgents](https://ecai2025.hyperagents.org/)
     * 2025
 * [Workshop on Decentralizing the Semantic Web](https://iswc2019.desemweb.org/)
-    * 2018
-    * 2019
+    * 2018 - 2019
 * [Workshop on Managing the Evolution and Preservation of the Data Web (MEPDaW)](https://mepdaw-ws.github.io/2022/)
-    * 2017
-    * 2018
-    * 2019
-    * 2020
-    * 2021
-    * 2022
-    * 2023
+    * 2017 - 2023
 * [Workshop on Data Management for Knowledge Graphs (DMKG)](https://dmkg-workshop.github.io/)
-    * 2023
-    * 2024
+    * 2023 - 2024
 * [Linked Data in Architecture and Construction Workshop](http://www.linkedbuildingdata.net/ldac2019/index.html)
     * 2019
 * [Open Mighty Storage Challenge (MOCHA)](https://project-hobbit.eu/open-challenges/mocha-open-challenge/)
     * 2017
 * [International Workshop on Semantics for Transport (Sem4Tra)](https://sem4tra.linkeddata.es/)
-    * 2019
-    * 2020
-    * 2021
+    * 2019 - 2021
 {:.cv-listing}
+
+## Acquired Funding 
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Optimizing Write Performance in Decentralized Personal Data Ecosystems"
+    startdate="2024"
+    enddate="2028"
+    description="FWO, Belgium. Supervisor on personal PhD grant for Jitse De Smet (124,800 EUR) (26% acceptance rate)"
+%}
+{% include cv-listing.html
+    subject="Personal Genome Query in Clinical Practice"
+    startdate="2024"
+    enddate="2028"
+    description="FWO, Belgium. Supervisor on personal PhD grant for Elias Crum (124,800 EUR) (26% acceptance rate)"
+%}
+{% include cv-listing.html
+    subject="Adaptive Query Optimization of Link Traversal within Decentralized Knowledge Graphs on the Web"
+    startdate="2023"
+    enddate="2026"
+    description="FWO, Belgium. Sole author and grantee of senior postdoc grant (214,659 EUR) (25.8% acceptance rate)"
+%}
+{% include cv-listing.html
+    subject="Transforming RDF Interoperability with Solid Pods for next Level Experience"
+    startdate="2023"
+    enddate="2025"
+    description="CHIST-ERA, Europe. Co-author and co-supervisor (653,687 EUR) (25.7% acceptance rate)"
+%}
+{% include cv-listing.html
+    subject="SolidLab"
+    startdate="2022"
+    enddate="2026"
+    description="Flanders, Belgium. Co-author and co-supervisor (14,000,000 EUR)"
+%}
+{% include cv-listing.html
+    subject="FRACTION: Efficient semantics-preserving and decentralized processing of Big Data spread across personal data vaults"
+    startdate="2021"
+    enddate="2024"
+    description="FWO, Belgium. Co-author and co-supervisor (520,000 EUR) (17,5% acceptance rate)"
+%}
+{% include cv-listing.html
+    subject="Incentivizing Decentralized Application Development within Solid through Web Monetization"
+    startdate="2021"
+    enddate="2022"
+    description="Grant for the Web, United States. Co-author and supervisor (108,885 USD)"
+%}
+{% include cv-listing.html
+    subject="Querying Decentralized Knowledge Graphs through Guided Link Traversal"
+    startdate="2020"
+    enddate="2023"
+    description="FWO, Belgium. Sole author and grantee of junior postdoc grant (198,244 EUR) (26.6% acceptance rate)"
+%}
+{% include cv-listing.html
+    subject="Scholarly Communications in the Decentralized Web"
+    startdate="2020"
+    enddate="2022"
+    description="Mellon Foundation, United States. Co-author (750,000 USD)"
+%}
+</ul>
