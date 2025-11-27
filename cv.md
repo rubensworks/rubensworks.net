@@ -355,11 +355,11 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 ### Organization Committee Member
 
 * [Developers Workshop (Semantics)](https://semantics2025.semdev.org/)
-    * 2025 (Organizer)
+    * 2025 (Organizer) (±40 participants)
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
-    * 2020 (Metadata Chair)
+    * 2020 (Metadata Chair) (±400 participants)
 * [Trusting Decentralised Knowledge Graphs and Web Data Workshop (TrusDeKW) (ESWC)](https://events.kmi.open.ac.uk/trusting-decentralised-knowledge-graphs-and-web-data/)
-    * 2023 (Co-organizer)
+    * 2023 (Co-organizer) (±20 participants)
 
 ### Journal Reviewer
 
