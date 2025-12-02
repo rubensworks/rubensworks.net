@@ -16,10 +16,10 @@
          endif %}</li>{%
     endfor %}</ol>
   {% if entry.booktitle %}
-  <span class="in">In {{ entry.booktitle }}</span>
+  <span class="in">In {{ entry.booktitle }} ({{ entry.year }})</span>
   {% endif %}
   {% if entry.journal %}
-  <span class="in">In {{ entry.journal }}</span>
+  <span class="in">In {{ entry.journal }} ({{ entry.year }})</span>
   {% endif %}
   <span property="schema:abstract" style="display:none">{{ entry.abstract }}</span>
   <span property="schema:datePublished" style="display:none" datatype="xsd:gYear">{{ entry.year }}</span>
