@@ -212,6 +212,12 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
     enddate="now"
     description="Lead developer of an RDF triple store that allows multiple versions of a dataset to be stored at the same time."
 %}
+{% include cv-listing.html
+    subject="[Integrated Dynamics](https://github.com/CyclopsMC/IntegratedDynamics)"
+    startdate="2015"
+    enddate="now"
+    description="Lead developer of a highly popular Minecraft mod (100M+ downloads) that enables advanced automation through visual functional programming (personal side-project, non-academic)"
+%}
 </ul>
 
 ## Teaching
