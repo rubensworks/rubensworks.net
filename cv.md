@@ -483,4 +483,10 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
     enddate="2022"
     description="Mellon Foundation, United States. Co-author (750,000 USD)"
 %}
+{% include cv-listing.html
+    subject="FWO Travel Grant for a long stay abroad"
+    startdate="2019"
+    enddate="2019"
+    description="FWO, Belgium. Sole author and grantee (funded 3-month stay in Vienna, Austria)"
+%}
 </ul>
