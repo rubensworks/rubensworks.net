@@ -220,6 +220,47 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 %}
 </ul>
 
+## International Collaborations (selection)
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Prof. Katja Hose, TU Vienna, Austria"
+    startdate="2022"
+    enddate="now"
+    description="Collaborations on query processing and RDF archiving. (4 co-authored publications)"
+%}
+{% include cv-listing.html
+    subject="Gokhan Ertaylan, VITO, Belgium"
+    startdate="2023"
+    enddate="now"
+    description="Co-supervising a PhD student around personal genomics and bioinformatics. (2 co-authored publications)"
+%}
+{% include cv-listing.html
+    subject="Karel Klíma, Charles University in Prague, Czechia"
+    startdate="2023"
+    enddate="2025"
+    description="Collaborated on improving developer experience when querying. (2 co-authored publications)"
+%}
+{% include cv-listing.html
+    subject="Prof. Sabrina Kirrane, Vienna University of Economics and Business, Austria"
+    startdate="2019"
+    enddate="2020"
+    description="Collaborated on the impact of privacy on querying in a decentralized environment. (1 co-authored publication)"
+%}
+{% include cv-listing.html
+    subject="Prof. Axel Polleres, Vienna University of Economics and Business, Austria"
+    startdate="2020"
+    enddate="2020"
+    description="Collaborated on trade-offs between Knowledge Graph publishing interfaces. (1 co-authored publication)"
+%}
+{% include cv-listing.html
+    subject="Prof. Tim Berners-Lee, University of Oxford, United Kingdom"
+    startdate="2019"
+    enddate="2023"
+    description="Collaborated on the Solid decentralized ecosystem. (1 co-authored publication)"
+%}
+</ul>
+
 ## Teaching
 
 ### Courses
