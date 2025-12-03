@@ -193,6 +193,8 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 
 ## Key Software Projects
 
+The following is a subset of the open-source projects I develop. A complete list is available at [https://github.com/rubensworks/](https://github.com/rubensworks/).
+
 <ul class="cv-listing">
 {% include cv-listing.html
     subject="[Comunica](https://comunica.dev/)"
