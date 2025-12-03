@@ -306,6 +306,10 @@ The following is a subset of the open-source projects I develop. A complete list
 
 ### Supervision of PhD Students
 
+<div class="indent">
+Total supervised PhD students: {{ site.data.studentsphd | size }}
+</div>
+
 <ul class="cv-listing">
 {% for student in site.data.studentsphd %}
   {% capture subject %}{{ student[0] }}{% endcapture %}
@@ -324,6 +328,10 @@ The following is a subset of the open-source projects I develop. A complete list
 </ul>
 
 ### Supervision of Master Students
+
+<div class="indent">
+Total supervised Master students: {{ site.data.studentsmaster | size }}
+</div>
 
 <ul class="cv-listing">
 {% for student in site.data.studentsmaster %}
@@ -344,6 +352,17 @@ The following is a subset of the open-source projects I develop. A complete list
 
 ## Invited presentations
 
+{% assign presentationstotal = 0 %}
+{% for presentation in site.data.presentations %}
+  {% if presentation[1].type == "Keynote" or presentation[1].type == "Invited Talk" or presentation[1].type == "Guest Lecture" %}
+    {% assign presentationstotal = presentationstotal | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+<div class="indent">
+Total invited presentations: {{ presentationstotal }}
+</div>
+
 {% include presentations.html
    presentations=site.data.presentations
    types="Keynote, Invited Talk, Guest Lecture"
@@ -351,11 +370,35 @@ The following is a subset of the open-source projects I develop. A complete list
 
 ## Publications
 
+<!-- Find possible query params at https://github.com/inukshuk/bibtex-ruby -->
+
+{% capture lastauthorcountpartial %}{% bibliography_count --query @*[author ~= Ruben$ && author !~ Verborgh] %}{% endcapture %}
+
+I have contributed to {% bibliography_count %} publications in total, of which {% bibliography_count --query @*[author ^= Taelman] %} as first author, {{ lastauthorcountpartial | plus: 3 }} as last author, and {% bibliography_count --query @*[author !~ Verborgh] %} without my PhD supervisor.
+
 ### Journal articles
+
+<div class="indent">
+Total journal articles: {% bibliography_count --query @*[_type=Journal] %}
+</div>
 
 {% bibliography --query @*[_type=Journal] %}
 
 ### Conference and workshop contributions
+
+<div class="indent">
+Total main-track conference publications: {% bibliography_count --query @*[_type=Conference] %}
+<br>
+Total challenge publications: {% bibliography_count --query @*[_type=Challenge] %}
+<br>
+Total workshop publications: {% bibliography_count --query @*[_type=Workshop] %}
+<br>
+Total demo publications: {% bibliography_count --query @*[_type=Demo] %}
+<br>
+Total poster publications: {% bibliography_count --query @*[_type=Poster] %}
+<br>
+Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Symposium] %}
+</div>
 
 {% bibliography --query @*[_type=Conference] %}
 {% bibliography --query @*[_type=Tutorial] %}
