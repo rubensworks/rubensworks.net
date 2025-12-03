@@ -238,6 +238,12 @@ The following is a subset of the open-source projects I develop. A complete list
     description="Co-supervising a PhD student around personal genomics and bioinformatics. (2 co-authored publications)"
 %}
 {% include cv-listing.html
+    subject="Prof. Fabien Gandon, Inria, France"
+    startdate="2024"
+    enddate="now"
+    description="Regularly joins discussions within the [monthly query progress livestreams](https://www.youtube.com/playlist?list=PLwhwIA9xTNXHDhr2BNC-fiZu8REmiXG7D) I organize for my team."
+%}
+{% include cv-listing.html
     subject="Karel Klíma, Charles University in Prague, Czechia"
     startdate="2023"
     enddate="2025"
