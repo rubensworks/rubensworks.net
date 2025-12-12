@@ -498,6 +498,8 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 * [SEMANTiCS Conference](https://semantics.cc/)
     * 2017 - 2018 (Poster & Demo Track)
     * 2018 - 2022 (Research Track)
+* [TAAPAAI Workshop](https://taapaai.github.io/)
+    * 2026
 * [Wikidata Workshop](https://wikidataworkshop.github.io/)
     * 2025
 * [ACM International Conference on Information and Knowledge Management](https://cikm2020.org/)
