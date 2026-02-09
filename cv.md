@@ -463,6 +463,8 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 
 * [Transactions on Graph Data and Knowledge](https://drops.dagstuhl.de/entities/journal/TGDK)
     * 2025 (editorial board member)
+* [Springer World Wide Web](https://link.springer.com/journal/11280)
+    * 2026
 * [IEEE Access](https://ieeeaccess.ieee.org/)
     * 2020
 * [Semantic Web Journal](http://semantic-web-journal.net/)
