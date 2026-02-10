@@ -506,6 +506,8 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
     * 2025
 * [ACM International Conference on Information and Knowledge Management](https://cikm2020.org/)
     * 2020
+* [Agents, Things and Lightweight AI for Sustainability (ATLAS)](https://atlas.liris.cnrs.fr/)
+    * 2026
 * [HyperAgents](https://ecai2025.hyperagents.org/)
     * 2025
 * [Workshop on Decentralizing the Semantic Web](https://iswc2019.desemweb.org/)
