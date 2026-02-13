@@ -465,6 +465,8 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
     * 2025 (editorial board member)
 * [Springer World Wide Web](https://link.springer.com/journal/11280)
     * 2026
+* [Elsevier Data & Knowledge Engineering](https://www.sciencedirect.com/journal/data-and-knowledge-engineering)
+    * 2026
 * [IEEE Access](https://ieeeaccess.ieee.org/)
     * 2020
 * [Semantic Web Journal](http://semantic-web-journal.net/)
