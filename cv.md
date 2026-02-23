@@ -485,7 +485,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 * [International Semantic Web Conference (ISWC)](http://swsa.semanticweb.org/content/international-semantic-web-conference-iswc)
     * 2019 - 2023 (Resources Track)
     * 2022 - 2026 (Research Track)
-    * 2023 - 2025 (Resources Track - Senior)
+    * 2023 - 2026 (Resources Track - Senior)
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2018 - 2026 (Research Track)
     * 2021 - 2023, 2026 (Resources Track)
