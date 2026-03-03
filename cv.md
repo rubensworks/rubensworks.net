@@ -452,6 +452,10 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 
 ### Organization Committee Member
 
+* [Workshop on Data Management for Knowledge Graphs (ISWC)](https://dmkg-workshop.github.io/2026/)
+    * 2026 (Organizer)
+* [Hackathon on Metadata and Provenance for Knowledge Graphs](https://dmki-tuwien.github.io/goblin-hackathon/)
+    * 2026 (Co-organizer)
 * [Developers Workshop (Semantics)](https://semantics2025.semdev.org/)
     * 2025 (Organizer) (±40 participants)
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
