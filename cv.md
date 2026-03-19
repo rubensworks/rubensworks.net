@@ -482,6 +482,8 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
     * 2017, 2018, 2023
 * [Data Science](https://www.iospress.nl/journal/data-science/)
     * 2019
+* [International Journal of Cooperative Information Systems](https://www.worldscientific.com/worldscinet/ijcis)
+    * 2026
 {:.cv-listing}
 
 ### Program Committee Member
