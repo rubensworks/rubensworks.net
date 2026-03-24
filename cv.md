@@ -457,6 +457,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 * [Hackathon on Metadata and Provenance for Knowledge Graphs](https://dmki-tuwien.github.io/goblin-hackathon/)
     * 2026 (Co-organizer)
 * [Developers Workshop (Semantics)](https://semantics2025.semdev.org/)
+    * 2026 (Organizer)
     * 2025 (Organizer) (±40 participants)
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2020 (Metadata Chair) (±400 participants)
