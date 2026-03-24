@@ -10,6 +10,7 @@ show_in_nav: false
 {:.cv-biography}
 Ruben Taelman is a Postdoctoral Researcher at <a href="https://knows.idlab.ugent.be/">KNoWS</a>, Ghent University – imec, Belgium.
 He leads a team of researchers that focuses on querying over Decentralized Knowledge Graphs on the Web,
+which includes introducing novel query processing algorithms
 and investigating the trade-offs that exist between server and client.
 He has contributed to this domain through publications in journals such as
 the [Semantic Web Journal](http://semantic-web-journal.net/)
