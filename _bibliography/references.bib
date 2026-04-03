@@ -1,3 +1,16 @@
+@inproceedings{desmet_offlinefirst_icwe_2026,
+  author    = {De Smet, Jitse and Taelman, Ruben},
+  title     = {Client-Driven Offline-First RDF 1.2 using OR-Sets},
+  month     = {jun},
+  booktitle = {International Conference on Web Engineering},
+  year      = {2026},
+  url       = {https://2026-icwe-poster.jitsedesmet.be/},
+  abstract  = {
+As autonomous agents increasingly write to shared RDF knowledge graphs concurrently, especially in the context of decentralized data ecosystems, principled conflict resolution becomes critical. Existing RDF CRDT approaches either require dedicated infrastructure or introduce consistency boundary problems when storing bookkeeping across multiple resources. We instantiate the state-based OR-Set over RDF 1.2 triple terms — unlike prior work, retaining all bookkeeping within a single dataset without additional infrastructure — and demonstrate a proof-of-concept datastore wrapper to use in query engines, enabling agents to query and update a conflict-free knowledge graph via standard SPARQL, unaware of the underlying merge machinery. Future work will investigate constraint-aware merge semantics for RDF CRDTs.
+},
+  _type     = {Demo}
+}
+
 @inproceedings{desmet_traqula_eswc_2026,
   author    = {De Smet, Jitse and Taelman, Ruben},
   title     = {Traqula: Providing a Foundation for The Evolving SPARQL Ecosystem Through Modular Query Parsing, Transformation, and Generation},
