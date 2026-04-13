@@ -468,7 +468,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 ### Journal Reviewer
 
 * [Transactions on Graph Data and Knowledge](https://drops.dagstuhl.de/entities/journal/TGDK)
-    * 2025 (editorial board member)
+    * 2025, 2026 (editorial board member)
 * [Springer World Wide Web](https://link.springer.com/journal/11280)
     * 2026
 * [Elsevier Data & Knowledge Engineering](https://www.sciencedirect.com/journal/data-and-knowledge-engineering)
