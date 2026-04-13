@@ -36,7 +36,7 @@ as many **federated SPARQL queries that used to work, simply can not be executed
 <!-- Object       -->
 I discuss where and how these restrictions have been put in place
 based on an analysis over Wikidata, DBpedia, and Uniprot,
-and I mention possible possible mitigations strategies.
+and I mention possible mitigations strategies.
 <!-- Findings     -->
 <!-- Conclusion   -->
 <!-- Perspectives -->
@@ -55,7 +55,7 @@ and challenge future research towards new querying or publishing techniques that
 with [SPARQL endpoints](https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/) being a popular way of exposing access to such KGs through a Web-based API.
 Since RDF is based on using global identifiers for resources,
 these identifiers can be used and interlinked across multiple distributed KGs.
-While each SPARQL endpoint offer queryable access to just a single KG,
+While each SPARQL endpoint offers queryable access to just a single KG,
 [SPARQL federated queries](https://www.w3.org/TR/2013/REC-sparql11-federated-query-20130321/) allow combining data from multiple endpoints
 through `SERVICE` clauses.
 
@@ -75,7 +75,7 @@ In recent years, we have seen the rapid rise of generative AI tools such as Chat
 These rely on Large Language Models (LLMs) that strongly depend on data that is accessible to them on the Web.
 LLMs use this data during their training,
 for gathering content in real-time based on user queries,
-and agentic actions using across services according to the [Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro) (e.g. a user navigating the Web using a headless browser).
+and performing agentic actions using across services according to the [Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro) (e.g. a user navigating the Web using a headless browser).
 Especially this training step requires massive amounts of data,
 which involves crawling large parts of the Web.
 
@@ -208,7 +208,7 @@ we see the same problems occurring for other federated queries over public endpo
 
 AI crawlers are placing open data infrastructure under great pressure.
 These findings show that public SPARQL endpoints are no exception to this,
-as well known endpoints are starting to put in place strict rate limits
+as well-known endpoints are starting to put in place strict rate limits
 to be able to cope with this added traffic.
 Unfortunately, not only AI crawlers are impacted by this,
 but also federated query engines are impacted as an unintended consequence.
@@ -255,7 +255,7 @@ is the ability to distribute and interlink data across different data sources,
 and integrate them through techniques such as SPARQL federated queries.
 However, we are on a trajectory where usage restrictions make it impossible for such federated queries to be executed.
 This problem is so significant that one might start questioning the fundamental motivations behind Knowledge Graph technologies.
-If we can not integrate data across multiple Knowledge Graphs anymore,
+If we cannot integrate data across multiple Knowledge Graphs anymore,
 what is their value compared to closed and silo-oriented databases?
 
 -----
