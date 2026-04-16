@@ -476,7 +476,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 * [IEEE Access](https://ieeeaccess.ieee.org/)
     * 2020
 * [Semantic Web Journal](http://semantic-web-journal.net/)
-    * 2017 - 2025
+    * 2017 - 2026
     * 2020 (editorial board member [Special Issue on Semantic Technologies for Data and Algorithmic Governance](http://www.semantic-web-journal.net/blog/call-papers-special-issue-semantic-technologies-data-and-algorithmic-governance)
 * [ACM Transactions on the Web](https://dl.acm.org/journal/tweb/)
     * 2025
