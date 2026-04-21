@@ -504,7 +504,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
     * 2022 - 2023 (Semantics and Knowledge Track)
     * 2018 ([Developers' Track](https://www2018.thewebconf.org/program/developers-track/))
 * [International Conference on Cooperative Information Systems](https://coopis.scitevents.org/Home.aspx)
-    * 2025
+    * 2025 - 2026
 * [International Conference on Ontologies, DataBases, and Applications of Semantics (ODBASE)](http://www.otmconferences.org/index.php/conferences/odbase-2020)
     * 2020
 * [SEMANTiCS Conference](https://semantics.cc/)
