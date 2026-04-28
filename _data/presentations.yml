@@ -9,7 +9,7 @@
 
 "2026-ugent-bio-kgs":
     title: "Biological Knowledge Graphs"
-    venue: "Biological Databases, UGent"
+    venue: "Biological Databases, UGent (±30 students)"
     date: "28 April 2026"
     url: "https://www.rubensworks.net/raw/slides/2026/ugent-bio-kgs/"
     type: "Guest Lecture"
@@ -21,13 +21,13 @@
     type: "Other"
 "2026-ugent-knowledgegraphs-querydecentralized":
     title: "Querying over Decentralized Data"
-    venue: "Knowledge Graphs, UGent"
+    venue: "Knowledge Graphs, UGent (±25 students)"
     date: "6 March 2026"
     url: "https://www.rubensworks.net/raw/slides/2026/ugent-knowledgegraphs-querydecentralized/"
     type: "Guest Lecture"
 "2026-ugent-knowledgegraphs-sparqlengines":
     title: "SPARQL Query Evaluation"
-    venue: "Knowledge Graphs, UGent"
+    venue: "Knowledge Graphs, UGent (±25 students)"
     date: "6 March 2026"
     url: "https://www.rubensworks.net/raw/slides/2026/ugent-knowledgegraphs-sparqlengines/"
     type: "Guest Lecture"
