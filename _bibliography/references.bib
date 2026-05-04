@@ -70,6 +70,32 @@ Despite the growing popularity of AI agents based on Large Language Models (LLMs
   _type     = {Demo}
 }
 
+@inproceedings{eschauzier_sds_hybridlinktraversal_2026,
+  author    = {Eschauzier, Ruben and Taelman, Ruben},
+  title     = {Towards Hybrid Link Traversal: Challenges and Research Directions for Heterogeneous Dataspaces},
+  month     = {may},
+  booktitle = {Proceedings of the 4th International Workshop on Semantics in Dataspaces},
+  year      = {2026},
+  url       = {https://rubeneschauzier.github.io/position-paper-hybrid-link-traversal-sds-workshop/position_paper_hybrid_querying_sds_2026_camera_ready.pdf},
+  abstract  = {
+Decentralized dataspaces preserve data sovereignty by keeping data at its source, but querying a large number
+(thousands) of autonomous sources with heterogeneous interfaces introduces significant challenges. Traditional
+Federated Query Processing (FQP) engines fail to scale to this size, while existing Link Traversal-based Query
+Processing (LTQP) systems can only handle Linked Data documents. By ignoring the (query) capabilities of
+alternative data interfaces, current engines fail to take advantage of the performance gains offered by more
+expressive interfaces. To address this, we advocate for Hybrid FQP-LTQP, an execution strategy that combines
+the dynamic runtime discovery of link traversal with the performance benefits of delegating complex sub-queries
+to capable server-side interfaces. This paper reviews the state-of-the-art in hybrid traversal and identifies
+the critical challenges hindering its implementation: establishing exclusive groups without prior knowledge,
+integrating dynamically identified sub-queries into query plans, enabling reliable data access interface discovery,
+and deduplicating results obtained from these interfaces. Solving the challenges identified in this paper is a
+strict prerequisite for making hybrid decentralized querying practically viable across heterogeneous dataspaces.
+Consequently, future research must prioritize these open problems to engineer the next generation of scalable,
+hybrid FQP-LTQP engines.
+},
+  _type     = {Workshop}
+}
+
 @inproceedings{crum_swat4hcls_vcfrdf_2026,
   author    = {Crum, Elias and Buelens, Bart and Ertaylan, Gokhan and Taelman, Ruben},
   title     = {From VCF to RDF: RML-Based Conversion Approaches for the Semantic Representation of Variant Data},
