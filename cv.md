@@ -420,7 +420,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 
 <ul class="cv-listing">
 {% include cv-listing.html
-    subject="[An Introduction to RDF and SPARQL 1.2]([https://www.ida.liu.se/research/semanticweb/events/GraphQLTutorialAtISWC2019.shtml](https://www.w3.org/Talks/2025/iswc-tutorial-rdfsparql-12/))"
+    subject="[An Introduction to RDF and SPARQL 1.2](https://www.w3.org/Talks/2025/iswc-tutorial-rdfsparql-12/)"
     date="2025"
     authors="Ruben Taelman, Enrico Franconi, Pierre-Antoine Champin, Ora Lassila"
     description="Half-day tutorial at the [24th International Semantic Web Conference (ISWC 2025)](https://iswc2025.semanticweb.org/), Nara, Japan, 2025."
