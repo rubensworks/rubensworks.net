@@ -513,7 +513,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 * [TAAPAAI Workshop](https://taapaai.github.io/)
     * 2026
 * [Wikidata Workshop](https://wikidataworkshop.github.io/)
-    * 2025
+    * 2025 - 2026
 * [ACM International Conference on Information and Knowledge Management](https://cikm2020.org/)
     * 2020
 * [Agents, Things and Lightweight AI for Sustainability (ATLAS)](https://atlas.liris.cnrs.fr/)
