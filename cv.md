@@ -369,6 +369,16 @@ Total invited presentations: {{ presentationstotal }}
    types="Keynote, Invited Talk, Guest Lecture"
 %}
 
+## Invited Panel Discussions 
+
+<ul class="cv-listing">
+{% include cv-listing.html
+    subject="Trust, Autonomy and Accountability in PKG-Based Agentic AI"
+    date="2026"
+    description="[TAAPAAI Workshop](https://taapaai.github.io/) at ESWC 2026"
+%}
+</ul>
+
 ## Publications
 
 <!-- Find possible query params at https://github.com/inukshuk/bibtex-ruby -->
