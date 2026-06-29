@@ -421,6 +421,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 
 ### Other publications
 
+{% bibliography --query @*[_type=Blue Sky] %}
 {% bibliography --query @*[_type=Position Statement] %}
 {% bibliography --query @*[_type=Master's Thesis] %}
 
