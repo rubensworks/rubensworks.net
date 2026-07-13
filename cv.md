@@ -545,6 +545,12 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
     * 2019 - 2021
 {:.cv-listing}
 
+### Other
+
+* PhD Committee Member
+    * Dore Staquet (Hasselt University, 2026)
+{:.cv-listing}
+
 ## Acquired Funding 
 
 <ul class="cv-listing">
