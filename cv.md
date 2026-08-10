@@ -8,7 +8,7 @@ show_in_nav: false
 ## Short Biography
 
 {:.cv-biography}
-Ruben Taelman is a Postdoctoral Researcher at <a href="https://knows.idlab.ugent.be/">KNoWS</a>, Ghent University – imec, Belgium.
+Ruben Taelman is an Assistant Professor of Data Retrieval in Decentralized Environments at <a href="https://knows.idlab.ugent.be/">KNoWS</a>, Ghent University – imec, Belgium.
 He leads a team of researchers that focuses on querying over Decentralized Knowledge Graphs on the Web,
 which includes introducing novel query processing algorithms
 and investigating the trade-offs that exist between server and client.
@@ -32,11 +32,18 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
 
 <ul class="cv-listing">
 {% include cv-listing.html
-    subject="Postdoctoral Researcher"
-    startdate="2020"
+    subject="Assistant Professor"
+    startdate="2026"
     enddate="now"
     location="[IDLab, Ghent University — imec](http://www.ugent.be/ea/idlab/en)"
     description="Together with my team of five PhD students, I am researching query algorithms over Decentralized Knowledge Graphs on the Web."
+%}
+{% include cv-listing.html
+    subject="Postdoctoral Researcher"
+    startdate="2020"
+    enddate="2026"
+    location="[IDLab, Ghent University — imec](http://www.ugent.be/ea/idlab/en)"
+    description="During this time, I started a team of PhD students with a focus on query processing over Decentralized Knowledge Graphs on the Web."
 %}
 {% include cv-listing.html
     subject="Visiting Researcher"
