@@ -11,6 +11,31 @@ Federated SPARQL querying theoretically enables data integration over distribute
   _type     = {Conference}
 }
 
+@inproceedings{eschauzier_iswc_resource_solidsessionbench_2026,
+  author    = {Eschauzier, Ruben and Taelman, Ruben},
+  title     = {SolidSessionBench: Realistic Query Sequences for User-Oriented Decentralized Environments},
+  booktitle = {Proceedings of the 25th International Semantic Web Conference},
+  year      = {2026},
+  month     = {october},
+  abstract  = {
+To build user-facing applications on decentralized data, clientside decentralized query engines offer a natural integration point. However, optimizing queries in these environments is challenging due to a
+lack of prior knowledge regarding data distribution and availability. By
+repeatedly interacting with the same engine from the same user, applications allow the engine to overcome this knowledge gap by exploiting
+patterns in previously issued queries. However, evaluating these techniques accurately is difficult because public query logs are scarce, and
+existing benchmarks rely on static, template-based structures that fail
+to capture realistic behavioral variability. To fill this gap, we introduce
+an evidence-based simulation of client query usage patterns as a reusable
+benchmark enabling realistic and reproducible evaluation of client-side
+optimization techniques. We demonstrate its utility by evaluating clientside caching strategies for link traversal query processing. By comparing our sequence-based approach against traditional, non-sequence-based
+workloads, we highlight how realistic sequence simulation heavily influences performance evaluations. Ultimately, our benchmark reveals important performance dynamics, such as the impact of session switching
+and query refinement, that traditional workloads do not. We conclude
+that modeling realistic user interactions provides an essential foundation
+for accurately evaluating client-side optimization techniques in decentralized environments.
+  },
+  url       = {https://rubeneschauzier.github.io/simulated-query-sequence-paper/build/main.pdf},
+  _type     = {Conference}
+}
+
 @inproceedings{taelman_semanticsbluesky_clientcentricqueryengines_2026,
   author    = {Taelman, Ruben},
   title     = {From Server-centric to Client-centric Data Integration over Decentralized Knowledge Graphs with Personal Query Engines},
