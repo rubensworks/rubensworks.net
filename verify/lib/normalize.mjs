@@ -15,6 +15,17 @@ export const JUSTIFIED = [
       '— and the screenshot pass at 1280/800/560 px is what confirms it.',
   },
   {
+    id: 'code-token-markup',
+    why:
+      'Inside <pre class="highlight"><code>, the token <span>s are reduced to their text on ' +
+      'both sides. Rouge emitted Pygments class names (<span class="k">) that no JS ' +
+      'highlighter produces; the replacement is a Shiki theme carrying the same colours as ' +
+      'inline styles, which is the trade-off chosen for plan §6.7. Everything around the ' +
+      'tokens is still compared exactly — the wrapper divs, the language class, the <pre> ' +
+      'and <code>, and the code text itself, character for character. The colours are what ' +
+      'the screenshot pass checks.',
+  },
+  {
     id: 'feed-build-time',
     why:
       'feed.xml <pubDate>/<lastBuildDate> are the build timestamp. They differ between any ' +
@@ -31,9 +42,21 @@ export function countStylesheetLinks(html) {
   return (html.match(SITE_STYLESHEET) ?? []).length
 }
 
+/**
+ * Strips syntax-highlighting token spans inside code blocks, leaving the code text. Only the
+ * `<span>` tags go — the text between them is untouched, so a change to the code itself
+ * still fails the diff.
+ */
+function stripCodeTokens(html) {
+  return html.replace(
+    /(<pre class="highlight"><code>)([\s\S]*?)(<\/code><\/pre>)/g,
+    (_, open, body, close) => open + body.replace(/<span\b[^>]*>|<\/span>/g, '') + close,
+  )
+}
+
 /** Rewrites both sides so accepted differences do not mask real ones. */
 export function normalizeHtml(html) {
-  return html.replace(SITE_STYLESHEET, '')
+  return stripCodeTokens(html.replace(SITE_STYLESHEET, ''))
 }
 
 export function normalizeXml(xml) {

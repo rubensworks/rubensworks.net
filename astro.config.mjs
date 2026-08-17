@@ -1,6 +1,8 @@
 import { defineConfig } from 'astro/config'
+import { unified } from '@astrojs/markdown-remark'
 import { site } from './src/site.config.ts'
-import { remarkInlineHtmlParagraph } from './src/lib/markdown/remark-inline-html-paragraph.ts'
+import { markdownExtension } from './src/integrations/markdown-extension.ts'
+import { markdownOptions } from './src/lib/markdown/pipeline.ts'
 
 export default defineConfig({
   site: site.url,
@@ -11,14 +13,20 @@ export default defineConfig({
   // review is worth more here than the handful of bytes gzip would have removed anyway.
   compressHTML: false,
   build: { format: 'directory' },
+  // Registers `.markdown` with the content layer so _posts/ can stay as it is.
+  integrations: [markdownExtension()],
   markdown: {
-    // OFF to match kramdown, which implements none of GFM's extensions: autolink literals
-    // (which would nest an <a> inside the hand-written <a href="mailto:…">…</a> on
-    // /contact/), strikethrough, task lists or footnotes. The content uses no GFM tables
-    // either, so nothing is lost.
-    gfm: false,
-    smartypants: true,
-    remarkPlugins: [remarkInlineHtmlParagraph],
+    // The remark/rehype processor rather than Astro 7's default Sätteri: custom plugins are
+    // only reachable through it, and this migration needs five of them for kramdown
+    // compatibility. It is also the older and more settled of the two engines, which matters
+    // because markdown fidelity is this migration's largest remaining risk.
+    processor: unified({
+      gfm: markdownOptions.gfm,
+      smartypants: markdownOptions.smartypants,
+      remarkPlugins: markdownOptions.remarkPlugins,
+      rehypePlugins: markdownOptions.rehypePlugins,
+    }),
+    shikiConfig: markdownOptions.shikiConfig,
   },
   vite: {
     css: {

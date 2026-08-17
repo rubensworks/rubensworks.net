@@ -9,3 +9,5 @@ _site_new
 dist
 node_modules
 verify/out
+
+node_modules/.astro

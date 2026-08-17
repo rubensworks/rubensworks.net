@@ -1,0 +1,31 @@
+---
+// Port of _includes/post-listing.html
+import { dateToXmlSchema, dateLong } from '../lib/dates'
+
+interface Props {
+  url: string
+  title: string
+  subtitle?: string
+  date: Date
+  /** Rendered excerpt HTML — everything before <!--more-->. */
+  excerpt: string
+}
+const { url, title, subtitle, date, excerpt } = Astro.props as Props
+
+// The original guards the thumbnail with `{% if post.feature-img %}`, but the front matter
+// key is `feature_img`. `post.feature-img` is never truthy, so the block has never rendered
+// on any post. Omitted here to match; the front-matter key is still read by head.html for
+// the og:image, which is where it does take effect.
+---
+<div class="post-listing listed" itemscope itemtype="http://schema.org/BlogPosting" typeof="schema:BlogPosting schema:CreativeWork" about={url}>
+    <div class="post-content">
+        <a href={url} class="title"><span about={url} itemprop="name headline" property="schema:name schema:headline">{title}</span></a><br />
+        {subtitle && (
+        <Fragment><span about={url} class="sub-title" itemprop="alternativeHeadline" rel="schema:alternativeHeadline">{subtitle}</span><br /></Fragment>
+        )}
+        <span class="post-meta"><time about={url} datetime={dateToXmlSchema(date)} itemprop="datePublished" property="schema:datePublished">{dateLong(date)}</time></span><br />
+        <span class="post-excerpt">
+        <Fragment set:html={excerpt} />
+        </span>
+    </div>
+</div>

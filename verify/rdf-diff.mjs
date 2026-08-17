@@ -56,15 +56,46 @@ function parseHtml(html, base) {
   })
 }
 
-const termKey = (t) => {
+/**
+ * Whitespace runs inside literals are collapsed before comparison.
+ *
+ * Only one kind of triple needs it: `schema:articleBody` on the 6 post pages, which is a
+ * microdata literal and therefore the element's *exact* text content. kramdown separated
+ * block elements with a blank line and indented blockquote content; remark-rehype uses a
+ * single newline and no indentation. None of that is visible to a reader — HTML collapses
+ * whitespace between block elements — but it does change the literal byte-for-byte.
+ * (RDFa already normalises whitespace in plain literals, which is why only the microdata
+ * half of the graph is affected.)
+ *
+ * Collapsing is the narrowest fix that still fails on any real text change: every character
+ * that is not whitespace is still compared. Triples that match only after collapsing are
+ * counted and reported, so this can never quietly grow.
+ */
+const collapseWhitespace = (s) => s.replace(/\s+/g, ' ').trim()
+
+const termKey = (t, { collapse = false } = {}) => {
   if (t.termType === 'Literal') {
-    return `"${t.value}"^^<${t.datatype.value}>${t.language ? `@${t.language}` : ''}`
+    const value = collapse ? collapseWhitespace(t.value) : t.value
+    return `"${value}"^^<${t.datatype.value}>${t.language ? `@${t.language}` : ''}`
   }
   if (t.termType === 'BlankNode') return '_:'
   return `<${t.value}>`
 }
-const quadKey = (q) =>
-  `${termKey(q.subject)} ${termKey(q.predicate)} ${termKey(q.object)} ${q.graph.value ? `<${q.graph.value}>` : ''}`
+const quadKey = (q, opts) =>
+  `${termKey(q.subject, opts)} ${termKey(q.predicate, opts)} ${termKey(q.object, opts)} ${q.graph.value ? `<${q.graph.value}>` : ''}`
+
+/** Multiset of quad keys, for comparing two graphs without blank-node matching. */
+const keyCounts = (quads, opts) => {
+  const m = new Map()
+  for (const q of quads) {
+    const k = quadKey(q, opts)
+    m.set(k, (m.get(k) ?? 0) + 1)
+  }
+  return m
+}
+
+const sameCounts = (a, b) =>
+  a.size === b.size && [...a].every(([k, v]) => b.get(k) === v)
 
 const goldenFiles = listHtml(goldenDir)
 const newSet = new Set(listHtml(newDir))
@@ -72,6 +103,8 @@ const newSet = new Set(listHtml(newDir))
 let checked = 0
 let failed = 0
 let totalTriples = 0
+let whitespaceOnly = 0
+const whitespacePages = []
 
 for (const f of goldenFiles) {
   if (only && !f.includes(only)) continue
@@ -86,12 +119,18 @@ for (const f of goldenFiles) {
 
   if (isomorphic(gq, nq)) continue
 
+  // Identical once literal whitespace is collapsed? Then the only difference is block-level
+  // formatting, which no reader can see. Counted and reported rather than ignored.
+  if (sameCounts(keyCounts(gq, { collapse: true }), keyCounts(nq, { collapse: true }))) {
+    whitespaceOnly++
+    whitespacePages.push(f)
+    continue
+  }
+
   failed++
   console.error(`\n══ ${f} ══  golden ${gq.length} triples, new ${nq.length}`)
-  const gm = new Map()
-  for (const q of gq) gm.set(quadKey(q), (gm.get(quadKey(q)) ?? 0) + 1)
-  const nm = new Map()
-  for (const q of nq) nm.set(quadKey(q), (nm.get(quadKey(q)) ?? 0) + 1)
+  const gm = keyCounts(gq, {})
+  const nm = keyCounts(nq, {})
   const keys = new Set([...gm.keys(), ...nm.keys()])
   let shown = 0
   for (const k of [...keys].sort()) {
@@ -107,6 +146,15 @@ for (const f of goldenFiles) {
 }
 
 console.log(`\nchecked ${checked} pages, ${totalTriples} golden triples`)
+if (whitespaceOnly) {
+  console.log(
+    `\n${whitespaceOnly} page(s) match only after collapsing whitespace inside literals — ` +
+      `the schema:articleBody microdata literal, where kramdown put a blank line between ` +
+      `block elements and remark-rehype puts one newline. Not visible to a reader; every ` +
+      `non-whitespace character still compared:`,
+  )
+  for (const p of whitespacePages) console.log(`  ${p}`)
+}
 if (failed) {
   console.error(`FAIL: ${failed} page(s) with differing RDF graphs`)
   process.exit(1)
