@@ -1,0 +1,92 @@
+---
+// Port of _includes/header.html
+import { site, absoluteUrl } from '../site.config'
+import SocialIcon from './SocialIcon.astro'
+import { navPages } from '../lib/nav'
+
+interface Props { url: string }
+const { url } = Astro.props as Props
+
+// The foaf:Person description block is emitted on the homepage only.
+const isHome = url === '/'
+---
+<header class="site-header">
+
+  <div id="me" class="wrapper" typeof="foaf:Person" resource={absoluteUrl('/#me')}>
+
+    <div class="site-title-wrapper">
+      <a class="site-title a-bland" href={`${site.baseurl}/`}>{site.title}</a>
+      {isHome && (
+        <>
+      <meta property="foaf:name" content={site.title}/>
+      <meta property="foaf:givenName" content="Ruben"/>
+      <meta property="foaf:familyName" content="Taelman"/>
+      <meta property="http://www.w3.org/2006/vcard/ns#title" content="Professor Data Retrieval in Decentralized Environments"/>
+      <meta property="foaf:logo" resource={absoluteUrl('/img/ruben.jpg')}/>
+      <meta property="foaf:img" resource={absoluteUrl('/img/ruben.jpg')}/>
+      <meta property="foaf:homepage" resource={site.url + site.baseurl}/>
+      <meta property="foaf:workplaceHomepage" resource="http://idlab.ugent.be/"/>
+      <meta property="foaf:workplaceHomepage" resource="http://www.ugent.be/"/>
+      <meta property="foaf:workplaceHomepage" resource="http://www.imec-int.com/"/>
+      <meta property="org:memberOf" resource="http://idlab.technology/#organization"/>
+      <meta property="org:memberOf" resource="http://dbpedia.org/resource/Ghent_University"/>
+      <meta property="org:memberOf" resource="http://dbpedia.org/resource/IMEC"/>
+      <meta property="owl:sameAs" resource="https://linkedsoftwaredependencies.org/users/npm/rubensworks"/>
+      <meta property="owl:sameAs" resource="https://orcid.org/0000-0001-5118-256X"/>
+      <meta property="owl:sameAs" resource="http://www.rubensworks.net/"/>
+      <meta property="foaf:mbox" resource="mailto:ruben.taelman@ugent.be"/>
+      <meta property="foaf:mbox" resource="mailto:rubensworks@gmail.com"/>
+      <meta property="foaf:topic_interest" resource="http://dbpedia.org/resource/Linked_Data"/>
+      <meta property="foaf:topic_interest" resource="http://dbpedia.org/resource/Semantic_Web"/>
+      <meta property="foaf:topic_interest" resource="http://dbpedia.org/resource/World_Wide_Web"/>
+      <meta property="foaf:topic_interest" resource="http://dbpedia.org/resource/Decentralization"/>
+      <meta property="foaf:topic_interest" resource="http://dbpedia.org/resource/Programming"/>
+      <meta property="foaf:topic_interest" resource="http://dbpedia.org/resource/Versioning"/>
+
+      <span rel="cert:key">
+          <meta rel="rdf:type" resource="cert:RSAPublicKey"/>
+          <meta property="cert:modulus" content="DDC6E0C40B8BBB73B881E67BDA5E66DF67DDB9B3895F73763CCB87FEE34AD51EDC64B8B20300332BFC3F936FF887FF7456506523CC4D556320FFA321B7C5C9126761E0D245E9F137365B12AF64F04C5CC4CE8206E277A18579EE4366D4F009EEF76249EC6D4C10D39CFC7721C26FC38D8BBFDFDA6E1AE59A902C3FCEC574CE1B2042DB3DB1595CF9A81A1C8F4413D7D4D195CF8740D0618F595AB032C175F4D1F82B525A22EBA4710EF0DF25AB6745E7D008CF17B59A226DEA17D0A376346A1CDE6BBC31B7AED778E86C2A18C1F80E26D6B84F4368CA8A45238BB451BD6AB370D614F6A4BCD7977A46ADB11C34F2E6C5BB2A66161FC1463DC86919285B4B1FA1"/>
+          <meta property="cert:exponent" content="65537" datatype="xsd:integer"/>
+      </span>
+        </>
+      )}
+    </div>
+
+    <div class="social-media-list-wrapper">
+      <ul class="social-media-list">
+        <li>
+          <SocialIcon network="github" username={site.githubUsername} />
+        </li>
+
+        <li>
+          <SocialIcon network="twitter" username={site.twitterUsername} />
+        </li>
+
+        <li>
+          <SocialIcon network="linkedin" username={site.linkedinUsername} />
+        </li>
+
+        <li>
+          <SocialIcon network="googlescholar" username={site.googlescholarUsername} />
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</header>
+
+<div class="site-nav-header">
+  <div class="wrapper">
+    <nav class="site-nav">
+      <div class="trigger">
+        <a href={`${site.baseurl}/`} class="rt-icon">
+          <img src={`${site.baseurl}/img/ruben.jpg`} alt="Ruben Taelman" />
+        </a>
+        {navPages.map((p) => (
+          <a class="a-white page-link" href={`${site.baseurl}${p.url}`}>{p.title}</a>
+        ))}
+      </div>
+    </nav>
+  </div>
+</div>

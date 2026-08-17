@@ -1,0 +1,31 @@
+---
+// Port of _includes/comments.html
+//
+// The Disqus loader inside the IIFE is commented out upstream, so comments have been inert
+// on all 6 posts for some time despite `comments: true` in their front matter. Ported
+// as-is — including the unclosed <h1> and the dead code — because the contract for this
+// migration is identical output, and removing it would change all 6 post pages.
+import { site, absoluteUrl } from '../site.config'
+
+interface Props { url: string }
+const { url } = Astro.props as Props
+
+// `<h1>Comments<h1>` (unclosed, upstream typo) is not parseable by the Astro compiler, so
+// the block is emitted through set:html to keep the shipped markup identical.
+const heading = '<hr />\n<h1>Comments<h1>\n<div id="disqus_thread"></div>'
+
+const disqusScript = `
+var disqus_config = function () {
+    this.page.url = "${absoluteUrl(url.replace(/index\.html$/, ''))}";
+    this.page.identifier = "${url}";
+};
+(function() {
+//var d = document, s = d.createElement('script');
+//s.src = 'https://rubensworks-net.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+`
+---
+<Fragment set:html={heading} />
+<script is:inline set:html={disqusScript}></script>

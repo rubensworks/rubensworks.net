@@ -1,8 +1,7 @@
 ---
-layout: page
-title: Contact
-permalink: /contact/
-order: 999
+layout: ../layouts/Page.astro
+title: 'Contact'
+permalink: '/contact/'
 ---
 
 You are more than welcome to contact me for anything <a href="#contact-work">work-related</a> or <a href="#contact-other">other matters</a>.

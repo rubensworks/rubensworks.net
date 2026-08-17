@@ -1,8 +1,7 @@
 ---
-layout: page
-title: Research Goals
-permalink: /research_goals/
-show_in_nav: false
+layout: ../layouts/Page.astro
+title: 'Research Goals'
+permalink: '/research_goals/'
 ---
 
 In general, my research concerns <strong>decentralization</strong>, <strong>publication</strong> and <strong>querying</strong> on the <strong>Web</strong>.

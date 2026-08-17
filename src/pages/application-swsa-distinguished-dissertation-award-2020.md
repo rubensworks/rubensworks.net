@@ -1,8 +1,7 @@
 ---
-layout: page
-title: Application for SWSA Award
-permalink: /application-swsa-distinguished-dissertation-award-2020/
-show_in_nav: false
+layout: ../layouts/Page.astro
+title: 'Application for SWSA Award'
+permalink: '/application-swsa-distinguished-dissertation-award-2020/'
 ---
 
 This is my application for the [2020 SWSA Distinguished Dissertation Award](http://swsa.semanticweb.org/content/swsa-distinguished-dissertation-award) regarding my dissertation *Storing and Querying Evolving Knowledge Graphs on the Web*.

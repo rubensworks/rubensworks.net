@@ -3,3 +3,9 @@ _site
 .jekyll-metadata
 deploy_rsa
 deploy_rsa.pub
+
+_site_golden
+_site_new
+dist
+node_modules
+verify/out
