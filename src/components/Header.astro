@@ -83,8 +83,11 @@ const isHome = url === '/'
         <a href={`${site.baseurl}/`} class="rt-icon">
           <img src={`${site.baseurl}/img/ruben.jpg`} alt="Ruben Taelman" />
         </a>
+        {/* The trailing newline is load-bearing: .page-link is inline-block, so the
+            whitespace Liquid left between links renders as a real gap between them.
+            Emitting the anchors back-to-back closes that gap and shifts the whole nav. */}
         {navPages.map((p) => (
-          <a class="a-white page-link" href={`${site.baseurl}${p.url}`}>{p.title}</a>
+          <Fragment><a class="a-white page-link" href={`${site.baseurl}${p.url}`}>{p.title}</a>{'\n        '}</Fragment>
         ))}
       </div>
     </nav>

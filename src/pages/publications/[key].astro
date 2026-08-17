@@ -1,0 +1,36 @@
+---
+// The 92 detail pages, replacing jekyll-scholar's DetailsGenerator.
+//
+// `details_permalink: /:details_dir/:key:extension` with the key transformed by
+// `key.gsub(/[:\s]+/, '_')`. No key in references.bib contains a colon or whitespace, so
+// keys pass through unchanged — asserted below rather than assumed.
+import PublicationDetail from '../../layouts/PublicationDetail.astro'
+import { loadBibliography, loadKnows } from '../../lib/bibliography'
+import { loadBibtexBlocks } from '../../lib/bibtex-serialise'
+import { site } from '../../site.config'
+
+export async function getStaticPaths() {
+  const entries = loadBibliography()
+  const knows = loadKnows()
+  const blocks = loadBibtexBlocks(site.scholar.bibtexSkipFields)
+
+  if (entries.length !== blocks.size) {
+    throw new Error(
+      `bibliography/serialiser disagree: ${entries.length} entries vs ${blocks.size} BibTeX blocks`,
+    )
+  }
+
+  return entries.map((entry) => {
+    const key = entry.key.replace(/[:\s]+/g, '_')
+    if (key !== entry.key) {
+      throw new Error(`Entry key "${entry.key}" would be rewritten to "${key}" — URLs would change`)
+    }
+    const bibtex = blocks.get(entry.key)
+    if (!bibtex) throw new Error(`No serialised BibTeX for entry "${entry.key}"`)
+    return { params: { key }, props: { entry, knows, bibtex } }
+  })
+}
+
+const { entry, knows, bibtex } = Astro.props
+---
+<PublicationDetail entry={entry} knows={knows} bibtex={bibtex} url={`/publications/${entry.key}/`} />

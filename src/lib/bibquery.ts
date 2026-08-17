@@ -19,8 +19,10 @@ export function matchOp(actual: string | undefined, op: Op, value: string): bool
 }
 
 function field(e: Entry, name: string): string | undefined {
+  // Raw values, not rendered ones: jekyll-scholar queries the bibliography before
+  // bibtex_filters runs. See Entry.queryFields.
   if (name === 'author') return e.authorString
-  return e.fields[name]
+  return e.queryFields[name.toLowerCase()]
 }
 
 /** Parses `@*[cond && cond]` and returns a predicate. */

@@ -1,0 +1,49 @@
+---
+// Port of _layouts/bibtex.html — one of the 92 /publications/:key/ pages.
+import Default from './Default.astro'
+import type { Entry, Knows } from '../lib/bibliography'
+
+interface Props { entry: Entry; knows: Knows; bibtex: string; url: string }
+const { entry, knows, bibtex, url } = Astro.props as Props
+---
+<Default title={entry.title} url={url}>
+<div class="publication" itemscope itemtype="http://schema.org/ScholarlyArticle" typeof="schema:ScholarlyArticle schema:CreativeWork" about={`${url}#publication`}>
+  <span class="type">{entry._type}</span>
+  <h1 itemprop="name" property="schema:name">{entry.title}</h1>
+  <div class="details">
+    <ol class="authors">{entry.authors.map((author) => {
+      const k = knows[author.display]
+      return <li>{k
+        ? <a class="author" itemprop="author" rel="foaf:maker schema:creator schema:author" href={k.url} resource={k.foaf} target="_blank">{author.display}</a>
+        : <span itemprop="author">{author.display}</span>}</li>
+    })}</ol>
+    {entry.booktitle && <span class="in" rel="schema:isPartOf">In {entry.booktitle} ({entry.year})</span>}
+    {entry.journal && <span class="in" rel="schema:isPartOf">In {entry.journal} ({entry.year})</span>}
+  </div>
+
+  <p class="abstract" rel="schema:description">{entry.abstract}</p>
+  <hr />
+
+
+  <div class="links">
+    {entry.url && <a rel="schema:associatedMedia" href={entry.url} target="_blank">Article</a>}
+    {entry._poster && <a rel="schema:associatedMedia" href={entry._poster} target="_blank">Poster</a>}
+    {entry._slides && <a rel="schema:associatedMedia" href={entry._slides} target="_blank">Slides</a>}
+    {entry._video && <a rel="schema:associatedMedia" href={entry._video} target="_blank">Video</a>}
+    <div class="toggle">
+      <input type="checkbox" id="checkbox-bibtex" name="checkbox-bibtex" />
+      <label for="checkbox-bibtex">BibTeX</label><br />
+      <pre class="bibtex content">{bibtex}</pre>
+    </div>
+  </div>
+
+  {/* Empty by design: bibtex.html reads `{{ entry.year }}` where the entry is bound to
+      `page.entry`, so the variable is undefined and the span renders with no content.
+      A bug in the original template, kept because it is part of the published markup —
+      and because removing it would add a schema:datePublished triple to 92 pages. */}
+  <span property="schema:datePublished" style="display:none" datatype="xsd:gYear"></span>
+  <a rel="schema:contributor" style="display:none" href="https://data.knows.idlab.ugent.be/person/office/#"></a>
+  <a rel="schema:about" style="display:none" href="http://dbpedia.org/resource/Semantic_Web"></a>
+
+</div>
+</Default>

@@ -21,6 +21,17 @@ const TOKEN_ATTRS = new Set(['class', 'rel', 'itemprop', 'property', 'typeof'])
 
 const collapse = (s) => s.replace(/\s+/g, ' ')
 
+// Elements whose default `display` is inline or inline-block, i.e. the ones for which the
+// whitespace between siblings is rendered rather than discarded. `a` covers the nav links;
+// the site's SCSS also makes `.page-link`, `.icon` and the social list items inline-block.
+const INLINE = new Set([
+  'a', 'abbr', 'b', 'bdo', 'br', 'button', 'cite', 'code', 'dfn', 'em', 'i', 'img', 'input',
+  'kbd', 'label', 'map', 'object', 'q', 'samp', 'select', 'small', 'span', 'strong', 'sub',
+  'sup', 'textarea', 'time', 'tt', 'var',
+])
+
+const isInline = (node) => node !== undefined && node.n !== undefined && INLINE.has(node.n)
+
 function normStyle(v) {
   return v
     .split(';')
@@ -54,8 +65,9 @@ function normAttrs(node, opts) {
 
 function walk(node, opts, inPre = false) {
   if (node.nodeName === '#text') {
-    const t = inPre ? node.value : collapse(node.value)
-    return t.trim() === '' && !inPre ? null : { t: inPre ? t : t }
+    // Whitespace-only nodes are kept here and resolved by the sibling pass below, which is
+    // the only place that can tell a rendered inter-inline space from mere indentation.
+    return { t: inPre ? node.value : collapse(node.value) }
   }
   if (node.nodeName === '#comment') {
     return opts.keepComments ? { c: collapse(node.data).trim() } : null
@@ -80,10 +92,20 @@ function walk(node, opts, inPre = false) {
   }
   if (!pre) {
     for (const c of merged) if (c.t !== undefined) c.t = collapse(c.t)
-    // A text node that is pure whitespace between two elements carries no meaning.
+    // Whitespace-only text nodes are dropped — with one exception. Between two inline-level
+    // elements, whitespace collapses to a rendered space and moves the layout: this is what
+    // separates the inline-block nav links, and dropping it hid a real regression that only
+    // the screenshot pass caught. So it survives as a single space, and any *other*
+    // whitespace-only node (block layout, indentation) is discarded as noise.
     for (let i = merged.length - 1; i >= 0; i--) {
-      if (merged[i].t !== undefined && merged[i].t.trim() === '') merged.splice(i, 1)
-      else if (merged[i].t !== undefined) merged[i].t = merged[i].t.trim()
+      const c = merged[i]
+      if (c.t === undefined) continue
+      if (c.t.trim() !== '') {
+        c.t = c.t.trim()
+        continue
+      }
+      if (c.t !== '' && isInline(merged[i - 1]) && isInline(merged[i + 1])) c.t = ' '
+      else merged.splice(i, 1)
     }
   }
   if (node.nodeName === '#document' || node.nodeName === '#document-fragment') {

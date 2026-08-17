@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { readFileSync } from 'node:fs'
 import { loadBibliography, groupByYear, monthToNumber, loadKnows } from '../src/lib/bibliography'
 import { matchOp, queryEntries, compileQuery } from '../src/lib/bibquery'
 
@@ -18,12 +19,18 @@ describe('parsing', () => {
   })
 
   it('covers every _type value used by cv.md', () => {
-    const types = new Set(entries.map((e) => e._type))
+    // Two views of the same field. cv.md's queries carry the straight apostrophe because
+    // they run against the raw file; the rendered value has the typographic one because
+    // latex-decode reads `'` as a right single quote.
+    const rendered = new Set(entries.map((e) => e._type))
+    const queryable = new Set(entries.map((e) => e.queryFields._type))
     for (const t of ['Journal', 'Conference', 'Workshop', 'Demo', 'Poster', 'Challenge',
-                     'Tutorial', 'PhD Symposium', 'Blue Sky', 'Position Statement',
-                     "Master's Thesis"]) {
-      expect(types, `_type ${t} must exist`).toContain(t)
+                     'Tutorial', 'PhD Symposium', 'Blue Sky', 'Position Statement']) {
+      expect(rendered, `_type ${t} must exist`).toContain(t)
+      expect(queryable, `_type ${t} must be queryable`).toContain(t)
     }
+    expect(rendered).toContain('Master’s Thesis')
+    expect(queryable).toContain("Master's Thesis")
   })
 })
 
@@ -96,8 +103,13 @@ describe('sorting and grouping', () => {
     expect(groups.reduce((n, [, es]) => n + es.length, 0)).toBe(92)
   })
 
-  it('commits the full entry order as a fixture', () => {
-    expect(entries.map((e) => e.key)).toMatchSnapshot()
+  // Ground truth, not a self-snapshot: the order the Jekyll site actually published,
+  // scraped from the 92 "More" links on _site_golden/publications/index.html. An earlier
+  // self-referential snapshot hid a real bug — monthToNumber was returning null for 91 of
+  // 92 entries, so the secondary sort key did nothing.
+  it('matches the entry order published by the Jekyll site', () => {
+    const golden: string[] = JSON.parse(readFileSync('test/fixtures/entry-order.json', 'utf8'))
+    expect(entries.map((e) => e.key)).toEqual(golden)
   })
 })
 
@@ -138,7 +150,10 @@ describe('query operators (bibtex-ruby elements.rb:195-232)', () => {
       '@*[author !~ Verborgh]',
       '@*',
     ].map((q) => [q, queryEntries(entries, q).length]))
-    expect(counts).toMatchSnapshot()   // compare against golden bibliography_count output
+    // Expected values are the {% bibliography_count %} numbers rendered on the golden
+    // /cv/ page, so this asserts against the live site rather than against ourselves.
+    const golden = JSON.parse(readFileSync('test/fixtures/query-counts.json', 'utf8'))
+    expect(counts).toEqual(golden)
   })
 
   it('^= on author means first author', () => {
