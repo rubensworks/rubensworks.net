@@ -180,27 +180,57 @@ filters and globals. No JS framework reproduces that combination. Since the user
 already accepted that "the jekyll-specific template files can of course change", this is
 budgeted work, not a regression.
 
-### 4.5 Dependencies — all npm, all verified against this repo
+### 4.5 Dependencies — chosen for maintenance health, not just capability
 
-Astro is a plain npm dev-dependency (`npm i astro`); nothing is installed globally and
-`astro build` emits a static `dist/`. Versions below are what is current as of August 2026
-and what the §7 spike was validated against.
+Astro is a plain npm dependency (`npm i astro`); nothing is installed globally and
+`astro build` emits a static `dist/`.
 
-| Package | Version | Role |
-|---|---|---|
-| `astro` | 7.2.2 | SSG. Natively supports the `.markdown` extension, so `_posts/` is read as-is |
-| `sass` | 1.102.0 | Compiles `_sass/` + `css/main.scss` |
-| `@retorquere/bibtex-parser` | 10.0.1 | **BibTeX parser — see §4.6** |
-| `yaml` | 2.x | Reads `_data/*.yml` |
-| `vitest` | 4.1.10 | Unit tests (§7.6) |
-| `playwright` | 1.62.1 | Screenshot harness (§7.5) |
-| `remark-smartypants` | 3.0.3 | Kramdown-style typographic substitution (§6.4.4) |
-| `rehype-raw` | 7.0.0 | Raw HTML in markdown; basis for the `markdown="block"` plugin (§6.4.1) |
-| `rehype-slug` + `github-slugger` | 6.0.0 / 2.0.0 | Heading IDs (§6.4.3) |
-| `shiki` / `@shikijs/rehype` | 4.4.3 | Syntax highlighting (§6.7). Bundled with Astro |
-| `rdf-parse` | 5.0.0 | RDFa/microdata extraction for the graph diff (§7.3) |
-| `rdf-isomorphic` | 2.0.1 | Graph comparison |
-| `linkinator` | 8.0.4 | Link/anchor integrity, replacing `html-proofer` (§7.4) |
+**Popularity caveat:** npm download counts come from `api.npmjs.org`, which this
+environment's egress policy blocks (403). The figures below are maintenance signals read
+from `registry.npmjs.org` instead — release cadence, package age, maintainer count. Confirm
+download numbers on npmjs.com before committing if that matters to you.
+
+Astro 7 has a **much larger built-in surface than expected**, so most markdown plugins I
+would otherwise have added are unnecessary. Verified by probing a real build (§4.9). The
+actual direct dependency list is small:
+
+| Package | Version | Last publish | Releases/12m | Maintainers | Assessment |
+|---|---|---|---|---|---|
+| `astro` | 7.2.2 | 4 d | **148** | 2 | Very active. MIT, `withastro/astro` |
+| `sass` | 1.102.0 | 24 d | 28 | 2 | Official Dart Sass. Healthy |
+| `@retorquere/bibtex-parser` | 10.0.1 | 6 d | 7 | **1** | Active (264 versions over 7 y); parser behind Better BibTeX for Zotero. **Bus factor 1** — see below |
+| `yaml` | 2.9.0 | 98 d | 7 | **1** | 15 years old, ubiquitous, stable. Low risk despite one maintainer |
+| `vitest` *(dev)* | 4.1.10 | 42 d | 59 | 5 | Very active |
+| `playwright` *(dev)* | 1.62.1 | 18 d | **575** | 5 | Microsoft, Apache-2.0 |
+| `linkinator` *(dev)* | 8.0.4 | 1 d | 25 | 1 | Active; one maintainer but trivially replaceable |
+| `rdf-parse` *(dev)* | 5.0.0 | 220 d | 1 | 1 | **Your own package** |
+| `rdf-isomorphic` *(dev)* | 2.0.1 | 564 d | 0 | 1 | **Your own package** |
+
+Four runtime dependencies, five dev. Everything else comes through Astro.
+
+**Dropped from the earlier draft, because Astro 7 already provides it** (all verified in
+§4.9): `remark-smartypants`, `rehype-slug`, `github-slugger`, `shiki`, `@shikijs/rehype`,
+`unified`, `rehype-raw`.
+
+**Rejected on maintenance grounds:** `remark-attr` — last published **2293 days ago**
+(6.3 years), one maintainer, zero releases in 24 months. Effectively abandoned; do not use
+it for the inline-attribute-list work. A hand-written ~20-line remark plugin is both smaller
+and safer.
+
+**On the single-maintainer packages.** Bus factor 1 matters less here than it looks, because
+every one of them is a *build-time* dependency: nothing ships to visitors, and a failure mode
+is "the build breaks and you notice", not "the site is compromised at runtime". Specifically:
+
+- `@retorquere/bibtex-parser` is the only one on the critical path. It is genuinely active
+  (published 6 days ago) and backs a widely-used Zotero plugin. It is isolated behind
+  `lib/bibliography.ts`, and its output is pinned by the §7.6 snapshots, so a replacement
+  would touch one file and be caught immediately by tests.
+- The `rdf-*` packages are yours; their low release cadence reflects finished software, and
+  you are the maintainer.
+- The unified/rehype ecosystem packages (`github-slugger` last published 1390 days ago,
+  `unified` 789 days) look stale by cadence but are deliberately "done" software with very
+  large dependent trees — and they now arrive transitively via Astro, so they are Astro's
+  problem to keep current, not a direct dependency decision.
 
 ### 4.6 BibTeX parser: `@retorquere/bibtex-parser`, not citation-js
 
@@ -245,6 +275,65 @@ each produces plausible-looking but wrong output.
 3. **Astro's `compressHTML` defaults to ON**, minifying output onto one line and making the
    §7.2 byte/DOM diff far harder to read. **Set `compressHTML: false`** at least until the
    diff is clean.
+
+### 4.8 The one real maintenance risk: Astro 7's markdown engine is brand new
+
+Astro 7 replaced the long-standing remark/rehype pipeline (`@astrojs/markdown-remark`) with
+`@astrojs/markdown-satteri`, built on `satteri` — a Rust-backed Markdown/MDX processor.
+
+| Package | Version | First published | Age | Maintainers |
+|---|---|---|---|---|
+| `satteri` | 0.9.5 | 2026-04-05 | **134 days** | **1** |
+| `@astrojs/markdown-satteri` | 0.3.5 | 2026-05-28 | **81 days** | 2 |
+| `@astrojs/markdown-remark` | 7.2.2 | 2021-09-21 | 4.9 years | 2 |
+
+Astro's default markdown engine is a **four-month-old, pre-1.0, single-maintainer package**.
+That deserves attention here specifically because markdown fidelity is this migration's
+largest remaining risk (22 `markdown="block"` sites, 7 IALs, kramdown compatibility).
+
+Mitigating facts, all verified in §4.9 rather than assumed:
+
+- `remarkPlugins`, `rehypePlugins` and `remarkRehype` are still first-class config options
+  and are **not** deprecated; only `gfm` and `smartypants` are (the processor now owns those
+  defaults).
+- A custom remark plugin **does run** under satteri — it consumes standard mdast.
+- Smart typography already matches kramdown out of the box.
+- `@astrojs/markdown-remark` is still actively published (last release 2026-07-28) and
+  `markdown.processor` is a pluggable slot defaulting to `satteri()`, so the mature remark
+  pipeline remains available as a fallback.
+
+**Recommendation:** proceed on the default (satteri), because the §4.9 probe shows it behaves
+correctly and the plugin API we depend on is intact. If Phase 5 hits a satteri-specific
+markdown bug, the escape hatch is to set `markdown.processor` back to the remark
+implementation, or pin Astro 6.x — decide that *if* it happens rather than pre-emptively.
+
+### 4.9 What a real Astro 7 build actually does with kramdown constructs
+
+A probe page containing the exact constructs used by this site was built and the output
+inspected. Results, which reshape §6.4 and §6.7:
+
+| Construct | Astro 7 default behaviour | Verdict |
+|---|---|---|
+| `---` / `--` / `"..."` / `...` / `'` | → `—` `–` `“…”` `…` `’` | **Matches kramdown. No plugin needed** |
+| Heading IDs | auto-generated: `## Why JSON-LD parsing is hard` → `id="why-json-ld-parsing-is-hard"` | Built in. But kramdown yields `jsonld`, not `json-ld` — the §6.4.3 slug difference is **real and confirmed** |
+| `{:.cv-biography}` (IAL) | **leaks verbatim** into the paragraph text | Needs the custom plugin (§6.4.2) |
+| `markdown="block"` | **partially processed** — see below | Needs the custom plugin (§6.4.1) |
+| Fenced code block | Shiki with **inline styles**, theme `github-dark`: `<pre class="astro-code github-dark" style="background-color:#24292e;...">` | Completely unlike the current light Rouge/Pygments classes — confirms §6.7 is real work |
+
+The `markdown="block"` result is worse than a clean failure. CommonMark terminates the raw
+HTML block at the first blank line, so content is **inconsistently** handled:
+
+```html
+<figure id="jsonld-recipe-mojito" class="listing" markdown="block">
+This **markdown inside a raw HTML block** must be processed by kramdown.   <!-- ** stayed literal -->
+<ul><li>list item one</li></ul>                                           <!-- but this converted -->
+<p><a href="https://example.org/">A link</a></p>                           <!-- and so did this -->
+</figure>
+```
+
+The first line stays raw while everything after the blank line is parsed as markdown. That
+renders as *mostly* correct output with stray `**` markers — the kind of thing that survives
+a skim review. Treat the 22 occurrences as must-fix, and give each one a fixture test.
 
 
 ---
@@ -415,16 +504,19 @@ Four real incompatibilities, all bounded:
 2. **Inline attribute lists — 7 occurrences.** `{:.cv-biography}`, `{:.cv-listing}` ×3,
    `{:.demo-nodejs}` ×2, `{:#demo-nodejs-preamble .hide}`. All block-level; handle with a
    remark attributes plugin or convert to explicit wrappers.
-3. **Heading IDs.** Kramdown's `auto_ids` differs from `github-slugger` on strings like
-   `JSON-LD` (kramdown → `jsonld`, github-slugger → `json-ld`). Audited: the only
+3. **Heading IDs.** Astro generates these automatically via `github-slugger`, so no plugin
+   is needed — but the algorithm differs from kramdown's `auto_ids` on strings like
+   `JSON-LD` (kramdown → `jsonld`, github-slugger → `json-ld`), **confirmed by build probe
+   in §4.9**. Audited: the only
    auto-ID-dependent in-page anchors are the four in `research_goals.md`
    (`#research`, `#development`,
    `#enhancing-link-traversal-based-query-execution`,
    `#querying-over-decentralized-data-on-the-web`) and these slugify **identically** under
    both. The `#jsonld-recipe-mojito*` anchors point at explicit `id=` attributes on
    `<figure>` elements, not headings. Low risk — but §7.4 makes it a checked invariant.
-4. **Smart typography.** Kramdown applies smartypants-style substitutions (`--` → en dash,
-   `...` → ellipsis, curly quotes). Enable `remark-smartypants` and diff the result.
+4. **Smart typography.** ~~Enable `remark-smartypants`.~~ **No longer needed** — Astro 7's
+   processor does this by default and the output matches kramdown (§4.9). Just diff to
+   confirm; do not add a dependency.
 
 Also: fenced code blocks use `javascript` (21), `sparql` (3), `json` (2). There are no
 `{% highlight %}` Liquid tags, so all highlighting goes through the markdown pipeline.
@@ -460,6 +552,11 @@ Also: fenced code blocks use `javascript` (21), `sparql` (3), `json` (2). There 
 `_sass/_syntax-highlighting.scss` styles ~50 **Rouge/Pygments** token classes (`.k`, `.nt`,
 `.s`, `.na`, `.gd .x`, …) under `.highlight`. No JS highlighter emits those class names:
 Shiki uses inline styles, Prism and starry-night use their own vocabularies.
+
+Verified in §4.9: Astro's out-of-the-box output is a **dark** theme with inline styles —
+`<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8">` — so
+doing nothing is not an option; the current site's code blocks are light. Configure this
+through `markdown.shikiConfig`; Shiki ships with Astro, so no extra dependency.
 
 Options, in order of preference:
 
@@ -703,10 +800,12 @@ are. The `libxml2-dev`/`libxslt-dev` install and the Ruby setup steps disappear.
 | Risk | Severity | Status / mitigation |
 |---|---|---|
 | `entry.bibtex` serialisation differs from `BibTeX::Entry#to_s` (field order, `{}` quoting) — visible on all 92 detail pages | **High** | **Open.** The one piece of jekyll-scholar not yet reproduced. Extract the 92 golden `<pre class="bibtex">` blocks as fixtures in Phase 3 and make them a unit test |
-| `markdown="block"` handling (22 sites) subtly changes post structure | **High** | **Open.** Dedicated remark plugin + per-post DOM diff in Phase 5 |
+| `markdown="block"` handling (22 sites) subtly changes post structure | **High** | **Open, and confirmed nastier than expected** — output is *partially* converted, leaving stray `**` markers that survive a skim (§4.9). Dedicated remark plugin + a fixture test per occurrence |
 | Parser sentence-cases titles, corrupting all 92 booktitles | **High** | **Closed** — `sentenceCase: false`, §4.7.1, 2 regression tests |
 | LaTeX accents decode to NFD, breaking `knows.yml` lookup and dropping author RDFa | **High** | **Closed** — `.normalize('NFC')`, §4.7.2, covered by tests |
-| Syntax-highlighting colours drift | Medium | **Open.** §6.7; explicit before/after screenshots of all 26 blocks |
+| Syntax-highlighting colours drift | Medium | **Open, and larger than it looked.** Astro's default is a *dark* Shiki theme with inline styles (§4.9). §6.7; before/after screenshots of all 26 blocks |
+| Astro 7's markdown engine (`satteri`) is 4 months old, pre-1.0, single-maintainer | Medium | **Accepted with an escape hatch.** §4.8: remark plugins verified working; `markdown.processor` can be pointed back at `@astrojs/markdown-remark`, or pin Astro 6.x |
+| A single-maintainer package on the critical path (`@retorquere/bibtex-parser`) | Low | Build-time only, isolated behind `lib/bibliography.ts`, output pinned by snapshots (§4.5) |
 | Sort order differs on the entry with no `month`, or on month-name parsing | Medium | **Closed** — §7.6, entry order snapshotted, month parsing tested |
 | Custom `_type`/`_highlighted` fields dropped by the BibTeX parser | Medium | **Closed** — citation-js rejected for this reason (§4.6); test asserts they survive |
 | RDFa attribute loss during template rewrite | Medium | **Open.** §7.3 graph comparison at every phase, not just at the end |
