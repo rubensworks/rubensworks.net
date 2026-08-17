@@ -1,4 +1,5 @@
 import type { Root, Element, Parent } from 'hast'
+import { BLANK_LINE_MARKER } from './html-blocks'
 
 /**
  * The small kramdown output conventions that remark does not share.
@@ -38,6 +39,31 @@ const textOf = (node: any): string =>
 export function rehypeKramdown() {
   return (tree: Root) => {
     const seen = new Map<string, number>()
+
+    // Drop the markers html-blocks.ts used to keep raw HTML blocks open.
+    const unmark = (node: any) => {
+      if (typeof node.value === 'string' && node.value.includes(BLANK_LINE_MARKER)) {
+        node.value = node.value.split(BLANK_LINE_MARKER).join('')
+      }
+      for (const c of node.children ?? []) unmark(c)
+    }
+    unmark(tree)
+
+    /**
+     * hast reads an attribute named `datatype` as the `data-*` property `dataType` and
+     * serialises it back as `data-type`. That silently rewrites the RDFa `datatype` on every
+     * `schema:datePublished` in the bibliography blocks on /cv/, which reach rehype as raw
+     * HTML and so make the round trip. Renamed back on the way out.
+     */
+    const fixDatatype = (node: any) => {
+      if (node.properties && 'dataType' in node.properties) {
+        const value = node.properties.dataType
+        delete node.properties.dataType
+        node.properties.datatype = value
+      }
+      for (const c of node.children ?? []) fixDatatype(c)
+    }
+    fixDatatype(tree)
 
     const visit = (node: Parent, parent: Parent | null) => {
       for (const child of node.children ?? []) {

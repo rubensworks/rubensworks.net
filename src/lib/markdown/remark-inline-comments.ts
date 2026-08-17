@@ -35,7 +35,12 @@ export function remarkInlineComments() {
       for (let i = 0; i < children.length; i++) {
         const node = children[i]!
         if ('children' in node && node.type !== 'paragraph') walk(node as Parent)
-        if (node.type !== 'paragraph' && !isComment(node)) continue
+        // A run must *start* with a paragraph. kramdown keeps a comment that begins a block
+        // — one that follows a blank line — as its own block, and only treats comments that
+        // sit between a paragraph's lines as inline. The 2026 post has both: `<!-- Task -->`
+        // opens a block and stays outside the <p>, while `<!-- Object -->` is mid-paragraph
+        // and stays inside it.
+        if (node.type !== 'paragraph') continue
 
         // Grow a run of paragraph / comment nodes that touch each other in the source.
         let end = i

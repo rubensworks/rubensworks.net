@@ -1,4 +1,5 @@
 import type { Root, RootContent, Paragraph, Html, Parent } from 'mdast'
+import { protectBlankLines } from './html-blocks'
 
 /**
  * kramdown's `markdown="…"` attribute on raw HTML — 28 occurrences across 6 posts.
@@ -195,7 +196,9 @@ export function remarkMarkdownAttribute(this: any) {
   }
 
   return (tree: Root, file: { value: string }) => {
-    const source = String(file.value)
+    // Blank lines inside a plain raw HTML block are neutralised first, so CommonMark keeps
+    // the block open to its closing tag the way kramdown does. See html-blocks.ts.
+    const source = protectBlankLines(String(file.value))
     const rewritten = rewriteBlockElements(source)
     // Nothing may survive the rewrite: a leftover markdown="block" means the element was
     // never expanded, and its Markdown would ship literally.
@@ -207,7 +210,7 @@ export function remarkMarkdownAttribute(this: any) {
           JSON.stringify(rewritten.slice(Math.max(0, at - 120), at + 120)),
       )
     }
-    if (rewritten !== source) {
+    if (rewritten !== String(file.value)) {
       // Re-parse from the rewritten source so positions and content stay consistent.
       const reparsed = self.parse(rewritten) as Root
       tree.children = reparsed.children

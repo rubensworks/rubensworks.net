@@ -26,6 +26,17 @@ export const JUSTIFIED = [
       'the screenshot pass checks.',
   },
   {
+    id: 'feed-description-as-html',
+    why:
+      "feed.xml's <description> holds the whole rendered post as escaped HTML, so it is " +
+      'unescaped and compared as a DOM instead of as a string — the same comparison every ' +
+      'page gets, and what an RSS reader actually does with it. Three serialisation-only ' +
+      'differences would otherwise show: kramdown wrote block separators as a blank line ' +
+      'where remark-rehype writes one newline; kramdown closed void elements XHTML-style ' +
+      '(<img />); and kramdown nested <center> inside <p> where an HTML parser closes the ' +
+      'paragraph first, as every browser does on both sides.',
+  },
+  {
     id: 'feed-build-time',
     why:
       'feed.xml <pubDate>/<lastBuildDate> are the build timestamp. They differ between any ' +
@@ -59,9 +70,24 @@ export function normalizeHtml(html) {
   return stripCodeTokens(html.replace(SITE_STYLESHEET, ''))
 }
 
+const DESCRIPTION = /<description>([\s\S]*?)<\/description>/g
+
+/** Replaces each <description> with a placeholder; the bodies are compared separately. */
 export function normalizeXml(xml) {
-  return xml.replace(
-    /<(pubDate|lastBuildDate)>[^<]*<\/\1>/g,
-    '<$1>BUILD_TIME</$1>',
+  let i = 0
+  return xml
+    .replace(/<(pubDate|lastBuildDate)>[^<]*<\/\1>/g, '<$1>BUILD_TIME</$1>')
+    .replace(DESCRIPTION, () => `<description>DESCRIPTION_${i++}</description>`)
+}
+
+/** The escaped HTML inside each <description>, unescaped, in document order. */
+export function extractDescriptions(xml) {
+  return [...xml.matchAll(DESCRIPTION)].map(([, body]) =>
+    body
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, '&'),
   )
 }

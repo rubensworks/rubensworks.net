@@ -1,0 +1,27 @@
+---
+// Port of old-projects.html
+import Page from '../layouts/Page.astro'
+import { getCollection } from 'astro:content'
+
+// `{% assign projects = site.projects | sort:"start" | reverse %}` then `{% if project.end %}`.
+// Jekyll's sort compares the `start` strings lexicographically, not as dates — so "August
+// 2011" sorts before "October 2008". Reproduced literally, including the reverse, because
+// that is the order the page has always shown. Ties (two projects starting "2009") keep
+// their alphabetical file order under a stable sort, which reversing then flips.
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.end !== undefined)
+  .sort((a, b) => String(a.data.start ?? '').localeCompare(String(b.data.start ?? ''), 'en'))
+  .reverse()
+---
+<Page title="Old Projects" url="/old-projects/">
+<p>
+This page lists some of the projects I used to work on in the past.
+Their main purpose was learning experience.
+</p>
+
+<ul class="projects">
+{projects.map((project) => (
+    <li><a href={`/projects/${project.id}/`}>{project.data.title}</a></li>
+))}
+</ul>
+</Page>

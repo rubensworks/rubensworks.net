@@ -42,13 +42,47 @@ export function remarkAttributeLists() {
     const walk = (parent: Parent) => {
       for (let i = parent.children.length - 1; i >= 0; i--) {
         const node = parent.children[i]!
+
+        // A trailing IAL under a list has no blank line before it, so CommonMark folds it
+        // into the last item as a lazy continuation instead of leaving it as its own
+        // paragraph. cv.md's three `{:.cv-listing}` markers all look like this.
+        if (node.type === 'list') {
+          const text = lastText(node as Parent)
+          const m = text && /\n\{:([^}]*)\}\s*$/.exec(text.value)
+          if (text && m) {
+            applyIal(node, parseIal(m[1]!))
+            text.value = text.value.slice(0, m.index)
+          }
+        }
+
         if ('children' in node && node.type !== 'paragraph') walk(node as Parent)
 
-        // A lone IAL becomes a paragraph containing exactly one text node.
         if (node.type !== 'paragraph') continue
         const p = node as Paragraph
-        if (p.children.length !== 1 || p.children[0]!.type !== 'text') continue
-        const m = IAL_LINE.exec((p.children[0] as Text).value.trim())
+        if (p.children[0]?.type !== 'text') continue
+        const first = p.children[0] as Text
+
+        // kramdown accepts a block IAL either after its block or on the line directly
+        // before it. cv.md uses both: `{:.cv-listing}` follows its list, while
+        // `{:.cv-biography}` sits above the paragraph it applies to — and being on the line
+        // above means it is part of that same paragraph.
+        const leading = /^\{:([^}]*)\}\r?\n/.exec(first.value)
+        if (leading) {
+          const parsed = parseIal(leading[1]!)
+          const data = ((node as RootContent & { data?: any }).data ??= {})
+          const props = (data.hProperties ??= {})
+          if (parsed.id) props.id = parsed.id
+          if (parsed.classes.length) {
+            props.className = [...toArray(props.className), ...parsed.classes]
+          }
+          Object.assign(props, parsed.attrs)
+          first.value = first.value.slice(leading[0].length)
+          continue
+        }
+
+        // A trailing IAL is a paragraph of its own containing exactly one text node.
+        if (p.children.length !== 1) continue
+        const m = IAL_LINE.exec(first.value.trim())
         if (!m) continue
 
         const target = parent.children[i - 1]
@@ -85,6 +119,30 @@ export function remarkAttributeLists() {
     }
     walk(tree)
   }
+}
+
+/** The deepest, last text node in a subtree — where a lazy-continued IAL ends up. */
+function lastText(node: Parent): Text | null {
+  const children = (node as Parent).children
+  if (!children?.length) return null
+  for (let i = children.length - 1; i >= 0; i--) {
+    const child = children[i]!
+    if (child.type === 'text') return child as Text
+    if ('children' in child) {
+      const found = lastText(child as Parent)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+/** Merges an attribute list into a node's hProperties. */
+function applyIal(node: RootContent, parsed: { id?: string; classes: string[]; attrs: Record<string, string> }) {
+  const data = ((node as RootContent & { data?: any }).data ??= {})
+  const props = (data.hProperties ??= {})
+  if (parsed.id) props.id = parsed.id
+  if (parsed.classes.length) props.className = [...toArray(props.className), ...parsed.classes]
+  Object.assign(props, parsed.attrs)
 }
 
 const toArray = (v: unknown): string[] =>

@@ -8,7 +8,13 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { canonicalize, diffTrees } from './lib/dom.mjs'
-import { JUSTIFIED, normalizeHtml, normalizeXml, countStylesheetLinks } from './lib/normalize.mjs'
+import {
+  JUSTIFIED,
+  normalizeHtml,
+  normalizeXml,
+  extractDescriptions,
+  countStylesheetLinks,
+} from './lib/normalize.mjs'
 
 const [goldenDir, newDir] = process.argv.slice(2).filter((a) => !a.startsWith('--'))
 const flag = (name) => {
@@ -100,6 +106,30 @@ for (const f of [...html, ...xml]) {
   let g = readFileSync(join(goldenDir, f), 'utf8')
   let n = readFileSync(join(newDir, f), 'utf8')
   if (isXml) {
+    // The RSS <description>s carry escaped HTML; compare them as DOMs, like any page.
+    const gd = extractDescriptions(g)
+    const nd = extractDescriptions(n)
+    if (gd.length !== nd.length) {
+      differing++
+      failures++
+      console.error(`\n══ ${f} ══\n  ${gd.length} <description> elements on golden, ${nd.length} on new`)
+    }
+    for (let i = 0; i < Math.min(gd.length, nd.length); i++) {
+      const d = diffTrees(
+        canonicalize(normalizeHtml(gd[i])),
+        canonicalize(normalizeHtml(nd[i])),
+        '',
+        [],
+        limit,
+      )
+      if (d.length) {
+        differing++
+        failures++
+        console.error(`\n══ ${f} <description>[${i}] ══`)
+        for (const line of d) console.error('  ' + line)
+      }
+    }
+
     g = normalizeXml(g)
     n = normalizeXml(n)
     if (g !== n) {

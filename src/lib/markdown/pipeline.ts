@@ -46,3 +46,18 @@ export const markdownOptions = {
     transformers: [rougeIalTransformer() as any],
   },
 }
+
+/**
+ * Restores the RDFa `datatype` attribute after a Markdown round trip.
+ *
+ * hast matches any attribute starting with `data` against its `data-*` rule, so `datatype`
+ * is read as the property `dataType` and serialised back as `data-type`. That silently
+ * rewrites the RDFa on every `schema:datePublished` in the bibliography blocks on /cv/,
+ * which reach the pipeline as raw HTML and therefore make the round trip. Setting the
+ * property back to `datatype` does not help — it is re-matched on the way out.
+ *
+ * `data-type` appears nowhere in the site's own markup (checked against the whole golden
+ * tree), so undoing it on the rendered string is unambiguous.
+ */
+export const restoreRdfaDatatype = (html: string): string =>
+  html.replace(/\sdata-type="/g, ' datatype="')
