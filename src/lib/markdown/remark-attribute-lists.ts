@@ -4,16 +4,17 @@ import { IAL_META_PREFIX } from './shiki-rouge-wrapper'
 /**
  * kramdown block-level inline attribute lists — 7 occurrences.
  *
- * A line of the form `{:.cv-listing}` or `{:#demo-nodejs-preamble .hide}` on its own,
- * directly after a block, applies those attributes to that block. remark has no such
- * syntax, so without this the braces render as literal text in the paragraph.
+ * A line of the form `{:.cv-listing}` or `{:#demo-nodejs-preamble .hide}` applies those
+ * attributes to the neighbouring block. remark has no such syntax, so without this the
+ * braces render as literal text.
  *
- * Used by:
- *   cv.md                          {:.cv-biography}, {:.cv-listing} x3
- *   2019-03-13-streaming-rdf-parsers  {:#demo-nodejs-preamble .hide}, {:.demo-nodejs} x2
+ * All three placements the content uses are handled, and they reach the parser looking
+ * quite different:
+ *   after a fenced code block -> its own paragraph      (2019-03-13-streaming-rdf-parsers x3)
+ *   after a list, no blank line -> folded into the last item as a lazy continuation (cv.md x3)
+ *   on the line above a paragraph -> the first line of that paragraph  (cv.md, cv-biography)
  *
- * Only the block-level form is implemented — that is all the content uses — and anything
- * else throws rather than being silently dropped.
+ * Anything else throws rather than being silently dropped.
  */
 
 const IAL_LINE = /^\{:([^}]*)\}$/
@@ -68,14 +69,7 @@ export function remarkAttributeLists() {
         // above means it is part of that same paragraph.
         const leading = /^\{:([^}]*)\}\r?\n/.exec(first.value)
         if (leading) {
-          const parsed = parseIal(leading[1]!)
-          const data = ((node as RootContent & { data?: any }).data ??= {})
-          const props = (data.hProperties ??= {})
-          if (parsed.id) props.id = parsed.id
-          if (parsed.classes.length) {
-            props.className = [...toArray(props.className), ...parsed.classes]
-          }
-          Object.assign(props, parsed.attrs)
+          applyIal(node, parseIal(leading[1]!))
           first.value = first.value.slice(leading[0].length)
           continue
         }
@@ -106,14 +100,7 @@ export function remarkAttributeLists() {
           continue
         }
 
-        const data = ((target as RootContent & { data?: any }).data ??= {})
-        const props = (data.hProperties ??= {})
-        if (parsed.id) props.id = parsed.id
-        if (parsed.classes.length) {
-          props.className = [...toArray(props.className), ...parsed.classes]
-        }
-        Object.assign(props, parsed.attrs)
-
+        applyIal(target, parsed)
         parent.children.splice(i, 1)
       }
     }
@@ -137,7 +124,7 @@ function lastText(node: Parent): Text | null {
 }
 
 /** Merges an attribute list into a node's hProperties. */
-function applyIal(node: RootContent, parsed: { id?: string; classes: string[]; attrs: Record<string, string> }) {
+function applyIal(node: RootContent, parsed: Parsed) {
   const data = ((node as RootContent & { data?: any }).data ??= {})
   const props = (data.hProperties ??= {})
   if (parsed.id) props.id = parsed.id

@@ -1,15 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import { createMarkdownProcessor } from '@astrojs/markdown-remark'
-import { remarkMarkdownAttribute } from '../src/lib/markdown/remark-markdown-attribute'
-import { remarkInlineHtmlParagraph } from '../src/lib/markdown/remark-inline-html-paragraph'
+import { markdownOptions } from '../src/lib/markdown/pipeline'
 
-// The same pipeline astro.config.mjs configures, driven directly so each kramdown
-// construct can get a fixture instead of being checked only through a whole-page diff.
-const processor = await createMarkdownProcessor({
-  gfm: false,
-  smartypants: true,
-  remarkPlugins: [remarkMarkdownAttribute, remarkInlineHtmlParagraph],
-})
+// The exact pipeline astro.config.mjs uses, driven directly so each kramdown construct gets
+// a fixture of its own instead of being checked only through a whole-page diff.
+const processor = await createMarkdownProcessor(markdownOptions as any)
 
 const render = async (src: string) => (await processor.render(src)).code
 
@@ -91,5 +86,38 @@ describe('GFM extensions are off, matching kramdown', () => {
   it('does not autolink an email inside a hand-written anchor', async () => {
     const html = await render('mail me via <a href="mailto:a@b.com">a@b.com</a>.\n')
     expect(html.match(/<a /g)).toHaveLength(1)
+  })
+})
+
+describe('kramdown inline attribute lists', () => {
+  it('applies a list that follows its own block', async () => {
+    const html = await render('```\ncode\n```\n{:#preamble .hide}\n')
+    expect(html).toContain('id="preamble"')
+    expect(html).toContain('hide')
+    expect(html).not.toContain('{:')
+  })
+
+  it('applies a list folded into the preceding list as a lazy continuation', async () => {
+    // No blank line before `{:.cv-listing}`, so CommonMark makes it part of the last item.
+    const html = await render('* one\n* two\n{:.cv-listing}\n')
+    expect(html).toMatch(/<ul[^>]*class="cv-listing"/)
+    expect(html).not.toContain('{:')
+  })
+
+  it('applies a list written on the line above its paragraph', async () => {
+    const html = await render('{:.cv-biography}\nRuben Taelman is a professor.\n')
+    expect(html).toMatch(/<p[^>]*class="cv-biography"/)
+    expect(html).toContain('Ruben Taelman is a professor.')
+    expect(html).not.toContain('{:')
+  })
+})
+
+describe('raw HTML blocks end at their closing tag, as kramdown does', () => {
+  it('keeps indented prose inside the element instead of making it a code block', async () => {
+    // The whitespace-only line is what CommonMark would treat as ending the block; the
+    // tab-indented line after it would then become an indented code block.
+    const html = await render('<div class="books">\n  <p class="description">\n      \n\t   Some prose.\n  </p>\n</div>\n')
+    expect(html).toContain('Some prose.')
+    expect(html).not.toContain('<pre')
   })
 })
