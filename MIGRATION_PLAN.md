@@ -83,7 +83,7 @@ current setup is not merely slow, it is unmaintainable.
 
 | Input | Count / size | Notes |
 |---|---|---|
-| `_bibliography/references.bib` | 92 entries, 160 KB | Read in place. No LaTeX escapes; some literal UTF-8 (`Klíma`, `Nečaský`, curly apostrophes) |
+| `_bibliography/references.bib` | 92 entries, 160 KB | Read in place. Literal UTF-8 (`Klíma`, `Nečaský`, curly apostrophes) **and 10 LaTeX accent escapes** (`{\'a}`×4, `{\'e}`×4, `\'{a}`×2) across 6 entries — see §6.2 |
 | `_data/knows.yml` | 77 co-author entries | Author → `{url, foaf}` lookup |
 | `_data/presentations.yml` | 81 presentations | |
 | `_data/studentsphd.yml`, `_data/studentsmaster.yml` | | Used by `cv.md` |
@@ -180,6 +180,73 @@ filters and globals. No JS framework reproduces that combination. Since the user
 already accepted that "the jekyll-specific template files can of course change", this is
 budgeted work, not a regression.
 
+### 4.5 Dependencies — all npm, all verified against this repo
+
+Astro is a plain npm dev-dependency (`npm i astro`); nothing is installed globally and
+`astro build` emits a static `dist/`. Versions below are what is current as of August 2026
+and what the §7 spike was validated against.
+
+| Package | Version | Role |
+|---|---|---|
+| `astro` | 7.2.2 | SSG. Natively supports the `.markdown` extension, so `_posts/` is read as-is |
+| `sass` | 1.102.0 | Compiles `_sass/` + `css/main.scss` |
+| `@retorquere/bibtex-parser` | 10.0.1 | **BibTeX parser — see §4.6** |
+| `yaml` | 2.x | Reads `_data/*.yml` |
+| `vitest` | 4.1.10 | Unit tests (§7.6) |
+| `playwright` | 1.62.1 | Screenshot harness (§7.5) |
+| `remark-smartypants` | 3.0.3 | Kramdown-style typographic substitution (§6.4.4) |
+| `rehype-raw` | 7.0.0 | Raw HTML in markdown; basis for the `markdown="block"` plugin (§6.4.1) |
+| `rehype-slug` + `github-slugger` | 6.0.0 / 2.0.0 | Heading IDs (§6.4.3) |
+| `shiki` / `@shikijs/rehype` | 4.4.3 | Syntax highlighting (§6.7). Bundled with Astro |
+| `rdf-parse` | 5.0.0 | RDFa/microdata extraction for the graph diff (§7.3) |
+| `rdf-isomorphic` | 2.0.1 | Graph comparison |
+| `linkinator` | 8.0.4 | Link/anchor integrity, replacing `html-proofer` (§7.4) |
+
+### 4.6 BibTeX parser: `@retorquere/bibtex-parser`, not citation-js
+
+Both were run against the real `references.bib`:
+
+| | `@retorquere/bibtex-parser` | `citation-js` + `@citation-js/plugin-bibtex` |
+|---|---|---|
+| Entries parsed | 92, zero errors | 92 |
+| Parse time (once per build) | 759 ms | 52 ms |
+| Custom `_`-prefixed fields | **All preserved** (`_type`, `_highlighted`, `_slides`, `_poster`, `_video`) | **Dropped** — normalises to CSL-JSON |
+| LaTeX accents | Decoded (`Gal{\'a}rraga` → `Galárraga`) | Decoded |
+| Name particles | Grouped into `lastName` | Split into `non-dropping-particle` |
+
+**citation-js is disqualified.** Its CSL-JSON normalisation keeps only standard fields, so
+`_type` (which drives all eleven `cv.md` categories) and `_highlighted` (which drives the
+homepage) survive only inside an opaque `_graph` provenance blob. Verified: an entry's keys
+come back as `URL, _graph, abstract, author, citation-key, container-title, id, issued,
+title, type`.
+
+`@retorquere/bibtex-parser` (the parser behind Better BibTeX for Zotero) returns every field
+verbatim. Its 759 ms is irrelevant because it runs **once**, versus jekyll-scholar's 26
+parses.
+
+### 4.7 Three parser/framework defaults that silently break fidelity
+
+All three were found by building the spike (§7.7) — none are obvious from documentation, and
+each produces plausible-looking but wrong output.
+
+1. **`sentenceCase` defaults to ON** in `@retorquere/bibtex-parser`. It is Better-BibTeX
+   behaviour for Zotero and it rewrites `Proceedings of the 25th International Semantic Web
+   Conference` to `...international semantic web conference`. This would visibly corrupt the
+   `booktitle`/`journal` line of **all 92 entries** and titles such as `Traqula: Providing a
+   Foundation for The Evolving SPARQL Ecosystem...`. Jekyll never touches title casing.
+   **Always pass `{ sentenceCase: false }`.**
+2. **LaTeX accents decode to NFD, not NFC.** `Gal{\'a}rraga` becomes `Gala\u0301rraga`
+   (combining acute), whereas Ruby's `latex-decode` and `_data/knows.yml` use precomposed
+   `\u00e1`. The strings render identically but compare unequal, so the `knows.yml` lookup
+   fails and the `<a class="author">` link plus its `foaf:maker` / `schema:creator` /
+   `schema:author` RDFa triples are silently dropped. Both affected people — Luis Galárraga
+   and Julián Andrés Rojas Meléndez — *are* in `knows.yml`, across 6 entries.
+   **Normalise every parsed string with `.normalize('NFC')`.**
+3. **Astro's `compressHTML` defaults to ON**, minifying output onto one line and making the
+   §7.2 byte/DOM diff far harder to read. **Set `compressHTML: false`** at least until the
+   diff is clean.
+
+
 ---
 
 ## 5. Target layout
@@ -267,8 +334,9 @@ the gem source or verified against the real data.
 and `~= Ruben$` mean "last author". The TS port must match against that same normalised
 string, not against a parsed array.
 
-All 92 entries use the `Last, First and …` form and the file contains **zero** LaTeX
-escapes, so normalisation is a no-op in practice — but assert it rather than assume it.
+All 92 entries use the `Last, First and …` form. The file *does* contain LaTeX accent
+escapes (§6.2), so decode before matching — and assert the normalised form rather than
+assuming it.
 
 ### 6.2 Author display names — exact rule, verified against all 88 authors
 
@@ -293,8 +361,20 @@ So the rule is:
 displayName = `${given} ${familyFieldVerbatim}`
 ```
 
-This removes the largest fidelity risk in the whole migration. **Guard it with a build-time
-assertion**: every author name must either match a `knows.yml` key or appear in an explicit
+This removes the largest fidelity risk in the whole migration.
+
+Two caveats, both verified and both covered by tests in §7.6:
+
+- **Decode LaTeX first.** 6 of the 92 entries carry accent escapes; `bib.html` receives
+  values already passed through jekyll-scholar's `bibtex_filters`
+  (`[:smallcaps, :superscript, :italics, :latex]`), so production renders `Luis Galárraga`,
+  not `Luis Gal{\'a}rraga`. `@retorquere/bibtex-parser` decodes these natively.
+  (This could not be executed end-to-end here — `Names#convert!` is another Ruby-3
+  incompatibility in `bibtex-ruby` 4.4.7 — so confirm the 6 names against the golden
+  baseline in Phase 0.)
+- **Normalise to NFC**, per §4.7.2, or the `knows.yml` lookup fails for exactly those names.
+
+**Guard it with a build-time assertion**: every author name must either match a `knows.yml` key or appear in an explicit
 allowlist of known-unlinked authors, so a future name-parsing regression fails the build
 instead of silently dropping an `<a class="author">` and its RDFa triples.
 
@@ -365,6 +445,10 @@ Also: fenced code blocks use `javascript` (21), `sparql` (3), `json` (2). There 
   of `lighten()`/`darken()`. Modern `sass` (1.102) still accepts these but warns; convert
   to `math.div` / `color.adjust` as a mechanical fix.
 - `@extend %clearfix`, `%vertical-rhythm` and the `media-query` mixin all work unchanged.
+- **`css/main.scss` opens with a Jekyll front-matter fence** (`---` / comment / `---`) whose
+  only purpose was to trigger Jekyll's sass converter. `sass` fails on it with
+  `Error: expected "{"`. Delete those three lines — the one unavoidable edit to the SCSS
+  inputs.
 - **Keep the output at `/css/main.css`.** Add a prebuild step
   (`sass css/main.scss public/css/main.css --load-path=_sass`) rather than letting Astro
   bundle and hash the stylesheet. Astro's hashed filename would work fine for visitors, but
@@ -455,14 +539,125 @@ Replace the (currently non-blocking) `html-proofer` step with a JS equivalent, a
 every in-page `#anchor` resolves to an element with that `id` — the specific guard for the
 kramdown-slug risk in §6.4.3.
 
-### 7.5 Visual regression
+### 7.5 Visual regression — Playwright screenshots
 
-Playwright screenshots of `/`, `/publications/`, `/cv/`, `/presentations/`, `/blog/`, one
-post, one project, and one publication detail page — at desktop, `$on-laptop` (800 px) and
-`$on-palm` (600 px) widths, since `_layout.scss` has breakpoint-specific rules. Plus the
-dedicated code-block comparison from §6.7 and a `_print.scss` check.
+`playwright` 1.62.1 against Chromium. Serve `_site_golden` and `dist/` on two ports and shoot
+the same page list on both, then compare per pixel.
 
-### 7.6 Build-time assertions that stay in the repo
+**Page list** (covers every layout and every include):
+
+| Page | Why |
+|---|---|
+| `/` | `default` layout, JSON-LD block, 2 post listings, 2 bibliography queries |
+| `/publications/` | grouped bibliography, 92 entries |
+| `/publications/taelman_iswc_resources_comunica_2018/` | `bibtex` layout, `<pre>` BibTeX block |
+| `/cv/` | 11 bibliography + 11 count tags, `cv-listing` include, 3 IALs |
+| `/presentations/` | `presentations` include over 81 YAML entries |
+| `/blog/` + `/blog/2019/03/13/streaming-rdf-parsers/` | `post` layout, 17 `markdown="block"`, 21 code blocks |
+| `/projects/` + `/projects/comunica/` | `project` layout, collection sort |
+| `/reading_list/` | 28 `book` includes |
+| `/research_goals/` | auto-generated heading IDs |
+
+**Viewports:** 1280 px, 800 px (`$on-laptop`) and 560 px (`$on-palm`) — `_layout.scss` has
+breakpoint rules at both. `deviceScaleFactor: 2`. Plus one run with `media: 'print'` to
+exercise `_print.scss`, and the dedicated 26-code-block sheet from §6.7.
+
+**Harness notes learned from the spike:**
+
+- Chromium is preinstalled; pass
+  `executablePath: '/opt/pw-browsers/chromium-<build>/chrome-linux/chrome'` rather than
+  running `playwright install`.
+- Block or stub `fonts.googleapis.com` **on both sides** so a network hiccup cannot show up
+  as a font-metric diff. `head.html` loads Open Sans and Droid Sans remotely; if the CI
+  runner cannot reach Google Fonts the screenshots fall back to different metrics and every
+  text comparison fails spuriously. (This is exactly what happened in the sandbox used to
+  write this plan.)
+- Wait on `networkidle`, and mask nothing — the point is to catch layout drift.
+
+### 7.6 Unit tests — vitest
+
+The bibliography engine is pure TypeScript with no Astro dependency, so it is testable in
+isolation. **A working 28-test suite already exists and passes** — see
+`migration-reference/` in this repo (§7.7). Coverage:
+
+**Parsing (3 tests)**
+- all 92 entries parse with zero errors
+- the custom `_`-prefixed fields survive (`_type`, `_highlighted`; 3 highlighted entries) —
+  the regression that disqualified citation-js
+- every `_type` value used by `cv.md` exists: Journal, Conference, Workshop, Demo, Poster,
+  Challenge, Tutorial, PhD Symposium, Blue Sky, Position Statement, Master's Thesis
+
+**Author display names (9 tests)**
+- the 6 von-particle cases render as jekyll-scholar renders them
+  (`Van de Vyvere, Brecht` → `Brecht Van de Vyvere`, `Mendes de Farias, Tarcisio` →
+  `Tarcisio Mendes de Farias`, `de Valk, Sjors` → `Sjors de Valk`, …)
+- LaTeX accents decode **and** no raw `\`, `{`, `}` leaks into any name
+- exactly 88 distinct authors
+- every author resolves in `knows.yml` or a snapshotted allowlist — currently 12 legitimately
+  unlinked names, so any name-parsing regression changes the snapshot and fails the build
+
+**Sorting and grouping (5 tests)**
+- year descending, then month descending, checked pairwise across all 92
+- `monthToNumber` matches bibtex-ruby's `:parse_months` (`october`→10, `oct`→10, `June`→6,
+  `undefined`→null)
+- `dimou_ekaw_workshop_2016` (the one entry with no `month`) sorts last within 2016
+- year groups are descending and partition all 92 entries
+- **the full 92-key entry order is snapshotted** — the single most valuable fixture, since it
+  pins the exact publications-page ordering
+
+**Query operators (9 tests)**
+- one test per operator (`=`, `^=`, `~=`, `!~`, `!=`) against the semantics in
+  `elements.rb:195-232`
+- all 16 `--query` expressions used across the site, counts snapshotted:
+
+  ```
+  @*                                          92     @*[_type=Poster]              10
+  @*[_highlighted=true]                        3     @*[_type=Tutorial]             1
+  @*[_type=Journal]                           11     @*[_type=Challenge]            1
+  @*[_type=Conference]                        22     @*[_type=PhD Symposium]        1
+  @*[_type=Workshop]                          23     @*[_type=Blue Sky]             1
+  @*[_type=Demo]                              18     @*[_type=Position Statement]   1
+  @*[author ^= Taelman]                       37     @*[_type=Master's Thesis]      1
+  @*[author !~ Verborgh]                      37
+  @*[author ~= Ruben$ && author !~ Verborgh]   19
+  ```
+
+  These must equal the golden `{% bibliography_count %}` output. Note `cv.md` renders the
+  last-author count as `19 | plus: 3` = 22.
+- semantic assertions: `^= Taelman` really does select first-authored papers;
+  `~= Ruben$` really does select last-authored ones
+- unsupported query syntax throws rather than silently matching nothing
+
+**Title casing (2 tests)** — regression guards for §4.7.1
+- `booktitle` stays `Proceedings of the 25th International Semantic Web Conference`
+- no `booktitle`/`journal` in any of the 92 entries contains a lowercased
+  `semantic web conference` / `international conference` / `web conference`
+
+Add during later phases: a markdown-pipeline suite (one fixture per `markdown="block"` and
+IAL case), a `kramdownSlug` suite, and an `excerpt`/`truncatewords` suite.
+
+### 7.7 The spike — what has already been proven
+
+A working Astro spike was built against the real inputs to de-risk the plan's core claim. It
+lives in `migration-reference/` (`lib/bibliography.ts`, `lib/bibquery.ts`, `BibEntry.astro`,
+`test/`) and is a verified starting point for Phase 3–4.
+
+What it establishes:
+
+- `/publications/` renders from the real `references.bib` with the unmodified `_sass/`:
+  **92 entries, 12 year groups, 92 "More" links, 332 linked + 12 plain authors = 344 author
+  renderings**, matching the bibtex-ruby ground truth exactly.
+- Build time **1.5 s** for the page including the one-time 759 ms BibTeX parse.
+- All 28 unit tests pass.
+- It caught all three defaults in §4.7. Two of them — `sentenceCase` and NFD — produce
+  output that looks plausible and would very likely have shipped unnoticed.
+
+Screenshots at 1280/560 px confirm the rendering matches the production design. They are
+**not** a substitute for §7.2/§7.3: the spike has no golden baseline to diff against, because
+the Ruby 2.7 baseline could not be built in that environment (§7.1).
+
+
+### 7.8 Build-time assertions that stay in the repo
 
 Not one-off checks — permanent guards, so the bibliography pipeline cannot rot the way
 `jekyll-scholar` did:
@@ -470,8 +665,8 @@ Not one-off checks — permanent guards, so the bibliography pipeline cannot rot
 - 92 entries parsed; 92 detail pages emitted.
 - Every author resolves to a `knows.yml` entry or the explicit allowlist (§6.2).
 - Zod schemas on all four `_data/*.yml` files and on the parsed bibliography.
-- Unit tests for the five query operators (§6.1) and the sort comparator (§6.3), with the
-  current entry ordering committed as a fixture.
+- The §7.6 vitest suite in CI, with the entry-order, query-count and unlinked-author
+  snapshots committed.
 
 ---
 
@@ -484,12 +679,12 @@ Each phase ends in a reviewable, verifiable state.
 | 0 | **Baseline** | `_site_golden` via Docker Ruby 2.7; diff/RDF/anchor comparison scripts | Scripts show golden vs. golden = zero differences |
 | 1 | **Scaffold** | Astro + TS + `sass`; `site.config.ts`; SCSS prebuild; `public/` passthrough | `/css/main.css` byte-identical to golden |
 | 2 | **Shell** | `Default`/`Page` layouts; `Head`/`Header`/`Footer`/`GoogleAnalytics`/`SocialIcon` components | A static page (`/contact/`, `/research_goals/`) diffs clean, **including RDFa** |
-| 3 | **Bibliography engine** | `lib/bibliography.ts`, `bibquery.ts`, `authors.ts` + unit tests. No templates yet | Parsed entry set, order and `entry.bibtex` strings match fixtures extracted from golden |
+| 3 | **Bibliography engine** | `lib/bibliography.ts`, `bibquery.ts` + the 28-test suite — **already built and passing in `migration-reference/`**; port it in and add `entry.bibtex` serialisation | Entry set, order and query counts match golden; `entry.bibtex` matches the 92 golden `<pre>` fixtures |
 | 4 | **Publications** | `BibEntry`/`BibList` components; `/publications/` (grouped) and the 92 `/publications/:key/` pages | All 93 pages diff clean; RDF graphs identical |
 | 5 | **Markdown pipeline** | remark config: `markdown="block"`, IAL, smartypants, slugs, Shiki theme | 6 posts + `/cv/`, `/reading_list/`, `/research_goals/` diff clean; code blocks visually verified |
 | 6 | **Remaining pages** | `/`, `/about/`, `/blog/`, `/projects/`, `/old-projects/`, `/presentations/`, `/cv/`, `feed.xml` | Whole-tree diff clean; anchor + link checks pass |
 | 7 | **CI/CD** | Replace Ruby workflow with Node; keep the rsync deploy; make checks blocking | Green CI; build time recorded |
-| 8 | **Cleanup** | Remove `Gemfile`, `Gemfile.lock`, `Rakefile`, `.ruby-version`, `script/cibuild`, `_layouts/`, `_includes/`; update `README.md` | Nothing Ruby remains |
+| 8 | **Cleanup** | Remove `Gemfile`, `Gemfile.lock`, `Rakefile`, `.ruby-version`, `script/cibuild`, `_layouts/`, `_includes/`, `migration-reference/`; update `README.md` | Nothing Ruby remains |
 
 **Phases 0–4 are the critical path.** The bibliography is both the performance problem and
 the fidelity risk; getting it verified early de-risks everything after it. Phases 1–2 and 3
@@ -505,27 +700,31 @@ are. The `libxml2-dev`/`libxslt-dev` install and the Ruby setup steps disappear.
 
 ## 9. Risks
 
-| Risk | Severity | Mitigation |
+| Risk | Severity | Status / mitigation |
 |---|---|---|
-| `entry.bibtex` serialisation differs from `BibTeX::Entry#to_s` (field order, `{}` quoting) — visible on all 92 detail pages | **High** | Extract the 92 golden `<pre class="bibtex">` blocks as fixtures in phase 3; make them a unit test |
-| `markdown="block"` handling (22 sites) subtly changes post structure | **High** | Dedicated remark plugin + per-post DOM diff in phase 5 |
-| Syntax-highlighting colours drift | Medium | §6.7; explicit before/after screenshots of all 26 blocks |
-| Sort order differs on the entry with no `month`, or on month-name parsing | Medium | Commit the golden entry ordering as a fixture (§7.6) |
-| RDFa attribute loss during template rewrite | Medium | §7.3 graph comparison at every phase, not just at the end |
-| Excerpt/`truncatewords` differences change `<meta name="description">` | Low | Covered by the §7.2 diff |
+| `entry.bibtex` serialisation differs from `BibTeX::Entry#to_s` (field order, `{}` quoting) — visible on all 92 detail pages | **High** | **Open.** The one piece of jekyll-scholar not yet reproduced. Extract the 92 golden `<pre class="bibtex">` blocks as fixtures in Phase 3 and make them a unit test |
+| `markdown="block"` handling (22 sites) subtly changes post structure | **High** | **Open.** Dedicated remark plugin + per-post DOM diff in Phase 5 |
+| Parser sentence-cases titles, corrupting all 92 booktitles | **High** | **Closed** — `sentenceCase: false`, §4.7.1, 2 regression tests |
+| LaTeX accents decode to NFD, breaking `knows.yml` lookup and dropping author RDFa | **High** | **Closed** — `.normalize('NFC')`, §4.7.2, covered by tests |
+| Syntax-highlighting colours drift | Medium | **Open.** §6.7; explicit before/after screenshots of all 26 blocks |
+| Sort order differs on the entry with no `month`, or on month-name parsing | Medium | **Closed** — §7.6, entry order snapshotted, month parsing tested |
+| Custom `_type`/`_highlighted` fields dropped by the BibTeX parser | Medium | **Closed** — citation-js rejected for this reason (§4.6); test asserts they survive |
+| RDFa attribute loss during template rewrite | Medium | **Open.** §7.3 graph comparison at every phase, not just at the end |
+| Excerpt/`truncatewords` differences change `<meta name="description">` | Low | **Open.** Covered by the §7.2 diff |
 | `.well-known` now published (§6.8) | Low | Intentional; confirm it is wanted |
 
 ---
 
 ## 10. Open questions
 
-1. **`.well-known/nostr.json`** — confirm it should be published (§6.8). If it is currently
-   served by other means, the new build may need to exclude it to avoid a conflict.
-2. **Syntax highlighting** — accept a visually-equivalent Shiki theme (option 1, §6.7), or
-   invest in exact Pygments class-name parity (option 2)?
-3. **`main.css` URL** — keep the stable `/css/main.css` path, or accept Astro's
-   content-hashed filename for better caching once the diff is clean?
-4. **Disqus** — `_includes/comments.html` has its loader fully commented out, so comments
+1. **Syntax highlighting** — accept a visually-equivalent Shiki theme (option 1, §6.7), or
+   invest in exact Pygments class-name parity (option 2)? *This is the only remaining
+   decision that changes how much work Phase 5 is.*
+2. **Disqus** — `_includes/comments.html` has its loader fully commented out, so comments
    are inert on all 6 posts despite `comments: true`. Port the dead code as-is, or drop it?
+3. **`.well-known/nostr.json`** — confirm it should be published (§6.8). If it is currently
+   served by other means, the new build may need to exclude it to avoid a conflict.
+4. **`main.css` URL** — keep the stable `/css/main.css` path, or accept Astro's
+   content-hashed filename for better caching once the diff is clean?
 5. **`_projects/*.html`** — keep as `.html` behind a custom loader (input files untouched,
    as assumed above), or convert to `.md`/`.astro` for simplicity?

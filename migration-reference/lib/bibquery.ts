@@ -1,0 +1,42 @@
+import type { Entry } from './bibliography'
+
+/**
+ * Port of bibtex-ruby's query operators (elements.rb:195-232).
+ * `actual` is the field's string form; for `author` that is the normalised
+ * "Last, First and Last, First" string — which is what makes
+ * `author ^= Taelman` mean "first author" and `author ~= Ruben$` mean "last author".
+ */
+export type Op = '=' | '^=' | '~=' | '!~' | '!='
+
+export function matchOp(actual: string | undefined, op: Op, value: string): boolean {
+  switch (op) {
+    case '=':  return actual != null && actual === value
+    case '^=': return actual != null && new RegExp('^' + value).test(actual)
+    case '~=': return actual != null && new RegExp(value).test(actual)
+    case '!~': return actual == null || !new RegExp(value).test(actual)
+    case '!=': return actual == null || actual !== value
+  }
+}
+
+function field(e: Entry, name: string): string | undefined {
+  if (name === 'author') return e.authorString
+  return e.fields[name]
+}
+
+/** Parses `@*[cond && cond]` and returns a predicate. */
+export function compileQuery(query: string): (e: Entry) => boolean {
+  const m = query.trim().match(/^@\*(?:\[(.*)\])?$/)
+  if (!m) throw new Error(`Unsupported query: ${query}`)
+  if (!m[1]) return () => true
+  const conds = m[1].split('&&').map((c) => {
+    const cm = c.trim().match(/^(\S+)\s*(\^=|~=|!~|!=|\/=|=)\s*(.+)$/)
+    if (!cm) throw new Error(`Unsupported condition: ${c}`)
+    const op = (cm[2] === '/=' ? '!=' : cm[2]) as Op
+    return { name: cm[1], op, value: cm[3].trim() }
+  })
+  return (e) => conds.every((c) => matchOp(field(e, c.name), c.op, c.value))
+}
+
+export function queryEntries(entries: Entry[], query: string): Entry[] {
+  return entries.filter(compileQuery(query))
+}
