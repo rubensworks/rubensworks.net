@@ -29,6 +29,14 @@ export default defineConfig({
     shikiConfig: markdownOptions.shikiConfig,
   },
   vite: {
+    build: {
+      // esbuild rewrites `(max-width: 600px)` to the Media Queries Level 4 range syntax
+      // `(width<=600px)` unless it knows it has to support older engines. Safari below 16.4
+      // (so every iOS 16.3 and earlier) drops the whole block, which loses the site's mobile
+      // layout. The targets below are the oldest engines the hand-written CSS still works
+      // in, and keep the minifier on the syntax Jekyll's sass emitted.
+      cssTarget: ['chrome61', 'edge18', 'firefox60', 'safari11'],
+    },
     css: {
       preprocessorOptions: {
         scss: {
