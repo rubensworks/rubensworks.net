@@ -8,6 +8,11 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { canonicalize, diffTrees } from './lib/dom.mjs'
+
+// Comments are compared, not dropped. <!--more--> is what splits every post's excerpt, and
+// the inert Disqus loader is a commented-out block that has to be ported verbatim; both are
+// invisible to a reader and would otherwise be invisible to this check too.
+const CANON = { keepComments: true }
 import {
   JUSTIFIED,
   normalizeHtml,
@@ -119,8 +124,8 @@ for (const f of [...html, ...xml]) {
     }
     for (let i = 0; i < Math.min(gd.length, nd.length); i++) {
       const d = diffTrees(
-        canonicalize(normalizeHtml(gd[i])),
-        canonicalize(normalizeHtml(nd[i])),
+        canonicalize(normalizeHtml(gd[i]), CANON),
+        canonicalize(normalizeHtml(nd[i]), CANON),
         '',
         [],
         limit,
@@ -157,8 +162,8 @@ for (const f of [...html, ...xml]) {
     console.error(`\n══ ${f} ══\n  site stylesheet <link> count: golden ${gs}, new ${ns} (expected 1 each)`)
   }
 
-  const gt = canonicalize(normalizeHtml(g))
-  const nt = canonicalize(normalizeHtml(n))
+  const gt = canonicalize(normalizeHtml(g), CANON)
+  const nt = canonicalize(normalizeHtml(n), CANON)
   const d = diffTrees(gt, nt, '', [], limit)
   if (d.length) {
     differing++

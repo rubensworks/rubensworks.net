@@ -80,6 +80,41 @@ function findCloseTag(source: string, tag: string, searchFrom: number): number {
 }
 
 /**
+ * The character ranges covered by fenced code blocks.
+ *
+ * This rewrite works on the raw source, before anything has parsed it, so it would happily
+ * rewrite a ```` ```html ```` sample that *shows* `<div markdown="1">` — mangling the
+ * example and, worse, having its content parsed as Markdown. Fenced blocks are excluded.
+ * (Indented code blocks are not: kramdown's `markdown` attribute only ever appears at the
+ * start of a line in this content, and a four-space indent would keep it out of the tag
+ * regex anyway.)
+ */
+export function fencedRanges(source: string): [number, number][] {
+  const ranges: [number, number][] = []
+  let offset = 0
+  let open: { char: string; len: number; start: number } | null = null
+  for (const line of source.split('\n')) {
+    const m = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(line)
+    if (m) {
+      const char = m[1]![0]!
+      const len = m[1]!.length
+      if (!open) open = { char, len, start: offset }
+      else if (char === open.char && len >= open.len && m[2]!.trim() === '') {
+        ranges.push([open.start, offset + line.length])
+        open = null
+      }
+    }
+    offset += line.length + 1
+  }
+  // An unterminated fence runs to the end of the document, as CommonMark says.
+  if (open) ranges.push([open.start, source.length])
+  return ranges
+}
+
+const inRanges = (ranges: [number, number][], at: number) =>
+  ranges.some(([a, b]) => at >= a && at < b)
+
+/**
  * Surrounds every block-mode element's content with blank lines and strips the attribute,
  * so CommonMark parses the content as Markdown. Nested elements are reached by re-scanning
  * from just after each rewritten opening tag.
@@ -94,6 +129,11 @@ export function rewriteBlockElements(source: string): string {
 
     const openStart = from + m.index
     const tag = m[1]!.toLowerCase()
+    // Recomputed each pass: the rewrite shifts every offset after the element it expands.
+    if (inRanges(fencedRanges(out), openStart)) {
+      from = endOfTag(out, openStart)
+      continue
+    }
     if (isSpanMode(tag, m[4]!)) {
       // Left for the tree pass; skip past this opening tag and keep scanning.
       from = endOfTag(out, openStart)
@@ -202,9 +242,18 @@ export function remarkMarkdownAttribute(this: any) {
     const rewritten = rewriteBlockElements(source)
     // Nothing may survive the rewrite: a leftover markdown="block" means the element was
     // never expanded, and its Markdown would ship literally.
-    const leftover = /<[a-zA-Z][^>]*\bmarkdown\s*=\s*(["'])(block|span)\1/.exec(rewritten)
+    const leftoverRe = /<[a-zA-Z][^>]*\bmarkdown\s*=\s*(["'])(block|span)\1/g
+    const fenced = fencedRanges(rewritten)
+    let leftover: RegExpExecArray | null = null
+    for (let hit = leftoverRe.exec(rewritten); hit; hit = leftoverRe.exec(rewritten)) {
+      // A fenced sample showing the attribute is content, not something to expand.
+      if (!inRanges(fenced, hit.index)) {
+        leftover = hit
+        break
+      }
+    }
     if (leftover) {
-      const at = rewritten.indexOf(leftover[0])
+      const at = leftover.index
       throw new Error(
         `markdown="${leftover[2]}" survived the block rewrite at offset ${at}: ` +
           JSON.stringify(rewritten.slice(Math.max(0, at - 120), at + 120)),

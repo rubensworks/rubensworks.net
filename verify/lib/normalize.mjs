@@ -40,8 +40,9 @@ export const JUSTIFIED = [
   {
     id: 'feed-build-time',
     why:
-      'feed.xml <pubDate>/<lastBuildDate> are the build timestamp. They differ between any ' +
-      'two builds, including two consecutive Jekyll builds.',
+      "feed.xml's channel-level <pubDate>/<lastBuildDate> are the build timestamp. They " +
+      'differ between any two builds, including two consecutive Jekyll builds. The ' +
+      '<pubDate> inside each <item> is the post date and is compared as normal.',
   },
 ]
 
@@ -73,12 +74,24 @@ export function normalizeHtml(html) {
 
 const DESCRIPTION = /<description>([\s\S]*?)<\/description>/g
 
-/** Replaces each <description> with a placeholder; the bodies are compared separately. */
+/**
+ * Replaces each <description> with a placeholder; the bodies are compared separately.
+ *
+ * Only the channel's own <pubDate>/<lastBuildDate> are blanked — the ones before the first
+ * <item>. Each item carries a <pubDate> too, and that one is the post's date: content, not a
+ * timestamp, and a regression in it has to fail.
+ */
 export function normalizeXml(xml) {
   let i = 0
-  return xml
+  const firstItem = xml.indexOf('<item>')
+  const cut = firstItem < 0 ? xml.length : firstItem
+  const head = xml
+    .slice(0, cut)
     .replace(/<(pubDate|lastBuildDate)>[^<]*<\/\1>/g, '<$1>BUILD_TIME</$1>')
-    .replace(DESCRIPTION, () => `<description>DESCRIPTION_${i++}</description>`)
+  return (head + xml.slice(cut)).replace(
+    DESCRIPTION,
+    () => `<description>DESCRIPTION_${i++}</description>`,
+  )
 }
 
 /** The escaped HTML inside each <description>, unescaped, in document order. */

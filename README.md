@@ -36,11 +36,16 @@ cp -r /tmp/jekyll/_site _site_golden
 Then:
 
 ```bash
-npm run verify        # DOM diff + RDF graph diff + link check
+npm run verify        # tests, DOM diff, RDF graph diff, CSS diff, code colours, link check
 npm run verify:shots  # Playwright, 1280/800/560 px, Google Fonts blocked on both sides
 ```
 
-Each script prints the differences it accepts and why; anything else fails.
+The screenshot pass is separate because it is slow — 22 pages at three viewports, each
+rendered twice and compared pixel by pixel. Run it before anything that touches templates,
+CSS or the Markdown pipeline.
+
+Each script prints the differences it accepts and why; anything else fails. The individual
+steps are `verify:html`, `verify:rdf`, `verify:css`, `verify:colors` and `check:links`.
 
 ## Images
 

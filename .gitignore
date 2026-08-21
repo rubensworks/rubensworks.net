@@ -11,3 +11,6 @@ node_modules
 verify/out
 
 node_modules/.astro
+
+# Astro's generated types and content-collection schemas; `astro build` recreates them.
+.astro

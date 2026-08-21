@@ -16,8 +16,6 @@ export interface Entry {
   booktitle?: string; journal?: string; abstract?: string; url?: string
   _type?: string; _slides?: string; _poster?: string; _video?: string
   _highlighted?: string
-  /** Decoded field values, as rendered. */
-  fields: Record<string, string>
   /**
    * RAW field values, straight from the file. jekyll-scholar evaluates `--query` against
    * `bibliography[query]` (utilities.rb:174), i.e. the parsed bibliography *before*
@@ -245,7 +243,6 @@ export function loadBibliography(path = '_bibliography/references.bib'): Entry[]
       abstract: str(f.abstract), url: str(f.url),
       _type: str(f._type), _slides: str(f._slides), _poster: str(f._poster),
       _video: str(f._video), _highlighted: str(f._highlighted),
-      fields: Object.fromEntries(Object.entries(f).map(([k, v]) => [k, clean(String(v))])),
       queryFields: raw ?? {},
     }
   })

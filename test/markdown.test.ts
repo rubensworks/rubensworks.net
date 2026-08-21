@@ -121,3 +121,23 @@ describe('raw HTML blocks end at their closing tag, as kramdown does', () => {
     expect(html).not.toContain('<pre')
   })
 })
+
+describe('fenced code is content, not something to rewrite', () => {
+  it('leaves a markdown="block" example inside a fence alone', async () => {
+    const html = await render(
+      'Here is how kramdown does it:\n\n```html\n<figure markdown="block">\n**bold**\n</figure>\n```\n',
+    )
+    const text = html.replace(/<[^>]*>/g, '')
+    expect(text).toContain('markdown="block"')
+    expect(text).toContain('**bold**')
+    expect(html).not.toContain('<strong>')
+  })
+
+  it('still rewrites a real block after a fence that mentions one', async () => {
+    const html = await render(
+      '```html\n<figure markdown="block">x</figure>\n```\n\n<figcaption markdown="block">\n**bold**\n</figcaption>\n',
+    )
+    expect(html).toContain('<figcaption>')
+    expect(html).toContain('<strong>bold</strong>')
+  })
+})

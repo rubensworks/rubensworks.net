@@ -211,21 +211,51 @@ function bibliography(entries: Entry[], knows: Knows): string {
 const TAG = /\{%\s*([\s\S]*?)\s*%\}/g
 const OUTPUT = /\{\{\s*([\s\S]*?)\s*\}\}/g
 const FOR_OPEN = /\{%\s*for\s+(\w+)\s+in\s+site\.data\.(\w+)\s*%\}/
-const FOR_CLOSE = /\{%\s*endfor\s*%\}/
 const CAPTURE = /\{%\s*capture\s+(\w+)\s*%\}([\s\S]*?)\{%\s*endcapture\s*%\}/
 const ASSIGN = /\{%\s*assign\s+(\w+)\s*=\s*([\s\S]*?)\s*%\}/
 const IF_OPEN = /\{%\s*if\s+([\s\S]*?)\s*%\}/
-const IF_CLOSE = /\{%\s*endif\s*%\}/
 
 /**
- * `{% if %}` conditions, as cv.md writes them: `a == "x" or a == "y"`. Only `==` joined by
- * `or`/`and` is supported; anything else throws.
+ * Offset of the `{% end… %}` that closes an already-consumed opening tag, relative to
+ * `from`. Blocks of the same kind nested inside are counted, so a nested loop no longer
+ * steals the outer one's `{% endfor %}`.
+ */
+function matchingClose(
+  source: string,
+  from: number,
+  kind: 'for' | 'if',
+  filePath: string,
+): { index: number; length: number } {
+  const re = new RegExp(`\\{%\\s*(end)?${kind}\\b[\\s\\S]*?%\\}`, 'g')
+  re.lastIndex = from
+  let depth = 1
+  for (let m = re.exec(source); m; m = re.exec(source)) {
+    depth += m[1] ? -1 : 1
+    if (depth === 0) return { index: m.index - from, length: m[0].length }
+  }
+  throw new Error(`${filePath}: {% ${kind} %} without {% end${kind} %}`)
+}
+
+/**
+ * `{% if %}` conditions, as cv.md writes them: `a == "x" or a == "y"`. Only `==` and `!=`
+ * joined by `or`/`and` are supported; anything else throws.
+ *
+ * The operators fold right to left with no precedence between them, which is Liquid's rule
+ * and not C's: `a and b or c` is `a and (b or c)`. cv.md uses only `or`, so the two readings
+ * agree today — but silently disagreeing the first time an `and` is added is worse than
+ * being right now.
  */
 function evalCondition(cond: string, scope: Scope, filePath: string): boolean {
-  const orParts = cond.split(/\s+or\s+/)
-  if (orParts.length > 1) return orParts.some((c) => evalCondition(c, scope, filePath))
-  const andParts = cond.split(/\s+and\s+/)
-  if (andParts.length > 1) return andParts.every((c) => evalCondition(c, scope, filePath))
+  const parts = cond.trim().split(/\s+(and|or)\s+/)
+  let value = evalComparison(parts[parts.length - 1]!, scope, filePath)
+  for (let i = parts.length - 2; i > 0; i -= 2) {
+    const left = evalComparison(parts[i - 1]!, scope, filePath)
+    value = parts[i] === 'and' ? left && value : left || value
+  }
+  return value
+}
+
+function evalComparison(cond: string, scope: Scope, filePath: string): boolean {
   const m = /^(.+?)\s*(==|!=)\s*"([^"]*)"$/.exec(cond.trim())
   if (!m) throw new Error(`${filePath}: unsupported Liquid condition "${cond}"`)
   const actual = resolve(m[1]!, scope, filePath)
@@ -263,15 +293,14 @@ async function expand(
   if (kind === 'if') {
     const ifOpen = match
     const bodyStart = ifOpen.index + ifOpen[0].length
-    const ifClose = IF_CLOSE.exec(source.slice(bodyStart))
-    if (!ifClose) throw new Error(`${filePath}: {% if %} without {% endif %}`)
+    const ifClose = matchingClose(source, bodyStart, 'if', filePath)
     const body = source.slice(bodyStart, bodyStart + ifClose.index)
     const before = await expand(source.slice(0, ifOpen.index), ctx, scope, filePath, render)
     const taken = evalCondition(ifOpen[1]!, scope, filePath)
       ? await expand(body, ctx, scope, filePath, render)
       : ''
     const after = await expand(
-      source.slice(bodyStart + ifClose.index + ifClose[0].length),
+      source.slice(bodyStart + ifClose.index + ifClose.length),
       ctx,
       scope,
       filePath,
@@ -305,8 +334,7 @@ async function expand(
   if (kind === 'for') {
     const open = match
     const bodyStart = open.index + open[0].length
-    const close = FOR_CLOSE.exec(source.slice(bodyStart))
-    if (!close) throw new Error(`${filePath}: {% for %} without {% endfor %}`)
+    const close = matchingClose(source, bodyStart, 'for', filePath)
     const body = source.slice(bodyStart, bodyStart + close.index)
     const table = ctx.data[open[2]!]
     if (!table) throw new Error(`${filePath}: no _data/${open[2]}.yml`)
@@ -325,7 +353,7 @@ async function expand(
       before +
       parts.join('') +
       (await expand(
-        source.slice(bodyStart + close.index + close[0].length),
+        source.slice(bodyStart + close.index + close.length),
         ctx,
         scope,
         filePath,
