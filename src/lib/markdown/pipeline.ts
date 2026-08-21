@@ -6,6 +6,7 @@ import { remarkInlineComments } from './remark-inline-comments'
 import { rehypeKramdown } from './rehype-kramdown'
 import { rehypeRougeBlocks } from './rehype-rouge-blocks'
 import { rougeIalTransformer } from './shiki-rouge-wrapper'
+import { rougeLexerQuirks } from './shiki-rouge-quirks'
 import { rougeGithub } from './shiki-rouge-github'
 
 /**
@@ -43,7 +44,7 @@ export const markdownOptions = {
     // No per-line <span class="line"> wrappers — Rouge put token spans straight into <code>.
     structure: 'inline' as const,
     // Carries code-block inline attribute lists across the Shiki pass.
-    transformers: [rougeIalTransformer() as any],
+    transformers: [rougeIalTransformer() as any, rougeLexerQuirks() as any],
   },
 }
 

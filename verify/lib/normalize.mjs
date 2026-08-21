@@ -22,8 +22,9 @@ export const JUSTIFIED = [
       'highlighter produces; the replacement is a Shiki theme carrying the same colours as ' +
       'inline styles, which is the trade-off chosen for plan §6.7. Everything around the ' +
       'tokens is still compared exactly — the wrapper divs, the language class, the <pre> ' +
-      'and <code>, and the code text itself, character for character. The colours are what ' +
-      'the screenshot pass checks.',
+      'and <code>, and the code text itself, character for character. The colours are ' +
+      'checked by verify/code-colors.mjs, which resolves every visible code character to ' +
+      'its effective colour, weight and slant on both sides and requires them to match.',
   },
   {
     id: 'feed-description-as-html',
