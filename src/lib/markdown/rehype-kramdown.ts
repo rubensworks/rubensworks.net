@@ -1,5 +1,5 @@
 import type { Root, Element, Parent } from 'hast'
-import { BLANK_LINE_MARKER } from './html-blocks'
+import { BLANK_LINE_MARKER, stripBlankLineMarkers } from './html-blocks'
 
 /**
  * The small kramdown output conventions that remark does not share.
@@ -43,7 +43,7 @@ export function rehypeKramdown() {
     // Drop the markers html-blocks.ts used to keep raw HTML blocks open.
     const unmark = (node: any) => {
       if (typeof node.value === 'string' && node.value.includes(BLANK_LINE_MARKER)) {
-        node.value = node.value.split(BLANK_LINE_MARKER).join('')
+        node.value = stripBlankLineMarkers(node.value)
       }
       for (const c of node.children ?? []) unmark(c)
     }

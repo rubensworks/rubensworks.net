@@ -31,7 +31,10 @@ export function compileQuery(query: string): (e: Entry) => boolean {
   if (!m) throw new Error(`Unsupported query: ${query}`)
   if (!m[1]) return () => true
   const conds = m[1].split('&&').map((c) => {
-    const cm = c.trim().match(/^(\S+)\s*(\^=|~=|!~|!=|\/=|=)\s*(.+)$/)
+    // The field name excludes the operator characters on purpose. `\S+` would happily
+    // swallow the `^` of a space-free `author^=Taelman` and leave `=` as the operator,
+    // turning "first author is Taelman" into an equality test that never matches.
+    const cm = c.trim().match(/^([A-Za-z_][\w-]*)\s*(\^=|~=|!~|!=|\/=|=)\s*(.+)$/)
     if (!cm) throw new Error(`Unsupported condition: ${c}`)
     const op = (cm[2] === '/=' ? '!=' : cm[2]) as Op
     return { name: cm[1], op, value: cm[3].trim() }

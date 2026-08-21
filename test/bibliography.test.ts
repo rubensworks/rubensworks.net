@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { loadBibliography, groupByYear, monthToNumber, loadKnows } from '../src/lib/bibliography'
+import {
+  loadBibliography,
+  groupByYear,
+  monthToNumber,
+  loadKnows,
+  protectWhitespace,
+  restoreWhitespace,
+} from '../src/lib/bibliography'
 import { matchOp, queryEntries, compileQuery } from '../src/lib/bibquery'
 
 const entries = loadBibliography()
@@ -169,6 +176,16 @@ describe('query operators (bibtex-ruby elements.rb:195-232)', () => {
   it('rejects query syntax it does not implement', () => {
     expect(() => compileQuery('@article[year>2020]')).toThrow()
   })
+  it('reads a two-character operator written without spaces', () => {
+    // A greedy `\S+` for the field name eats the `^`, leaving a plain `=` that matches
+    // nothing — the query silently returns an empty bibliography instead of failing.
+    const spaced = queryEntries(entries, '@*[author ^= Taelman]')
+    expect(queryEntries(entries, '@*[author^=Taelman]')).toEqual(spaced)
+    expect(spaced.length).toBeGreaterThan(0)
+    expect(queryEntries(entries, '@*[author!~Taelman]')).toEqual(
+      queryEntries(entries, '@*[author !~ Taelman]'),
+    )
+  })
 })
 
 describe('title casing (regression: @retorquere sentenceCase defaults to ON)', () => {
@@ -182,6 +199,37 @@ describe('title casing (regression: @retorquere sentenceCase defaults to ON)', (
     for (const e of entries) {
       for (const f of [e.booktitle, e.journal].filter(Boolean) as string[]) {
         expect(f, `${e.key}: ${f}`).not.toMatch(/\b(semantic web conference|international conference|web conference)\b/)
+      }
+    }
+  })
+})
+
+describe('whitespace protection', () => {
+  // The parser collapses whitespace inside a value; jekyll-scholar keeps it, and microdata
+  // literals are exact text content, so the raw runs have to survive the round trip.
+  it('encodes runs the parser would rewrite, and decodes them back', () => {
+    const protectedSrc = protectWhitespace('@article{x,\n  title = {A\n  wrapped  title},\n}')
+    expect(protectedSrc).not.toContain('A\n  wrapped')
+    expect(restoreWhitespace(protectedSrc)).toBe('@article{x,\n  title = {A\n  wrapped  title},\n}')
+  })
+
+  it('leaves name lists alone so " and " still separates them', () => {
+    // Encoding the newline after `and` would leave `Taelman and<NL>Dimou`, which the
+    // parser's ` and ` split no longer matches: two people silently become one, and the
+    // second one's foaf:maker triple disappears from every page that cites the entry.
+    const src = '@article{x,\n  author = {Taelman, Ruben and\n            Dimou, Anastasia},\n}'
+    expect(protectWhitespace(src)).toBe(src)
+  })
+
+  it('still protects the field after a name list', () => {
+    const out = protectWhitespace('@article{x,\n  author = {A, B},\n  title = {A\n  b},\n}')
+    expect(out).not.toContain('A\n  b')
+  })
+
+  it('parses multi-line author fields in the real bibliography into separate people', () => {
+    for (const e of entries) {
+      for (const a of e.authors) {
+        expect(a.display, `${e.key}: names ran together`).not.toMatch(/\band\b/)
       }
     }
   })

@@ -109,10 +109,34 @@ const SP = '\uE002'
  * two or more spaces — is encoded into private-use code points before parsing and decoded
  * afterwards. Single spaces are left alone so LaTeX macro parsing still sees the separators
  * it expects.
+ *
+ * Name lists are excluded. The parser splits `author` and friends on ` and `, and a name
+ * list wrapped across lines puts that newline right next to the separator — encoding it
+ * would leave `Taelman and<NL>Dimou`, which no longer matches, silently merging two people
+ * into one and taking their foaf:maker triples with them. Nothing is lost by skipping them:
+ * a name list is reassembled from its parsed parts, so its original spacing never reaches
+ * the page.
  */
+const NAME_FIELDS = new Set([
+  'author',
+  'bookauthor',
+  'commentator',
+  'editor',
+  'editora',
+  'editorb',
+  'editorc',
+  'holder',
+  'introduction',
+  'shortauthor',
+  'shorteditor',
+  'translator',
+])
+
 export function protectWhitespace(source: string): string {
   let out = ''
   let depth = 0
+  let field = ''
+  let pending = ''
   for (let i = 0; i < source.length; i++) {
     const c = source[i]!
     if (c === '\\') {
@@ -123,8 +147,21 @@ export function protectWhitespace(source: string): string {
     if (c === '{') depth++
     else if (c === '}') depth--
 
+    // At depth 1 — the entry body — track which field the next value belongs to.
+    if (depth === 1) {
+      if (c === '=') {
+        field = pending.trim().toLowerCase()
+        pending = ''
+      } else if (c === ',') {
+        field = ''
+        pending = ''
+      } else {
+        pending += c
+      }
+    }
+
     // depth >= 2 means "inside a field value" — depth 1 is the entry body itself.
-    if (depth >= 2 && /[ \t\n]/.test(c)) {
+    if (depth >= 2 && !NAME_FIELDS.has(field) && /[ \t\n]/.test(c)) {
       let j = i
       while (j < source.length && /[ \t\n]/.test(source[j]!)) j++
       const run = source.slice(i, j)
