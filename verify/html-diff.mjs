@@ -39,7 +39,10 @@ const EXPECTED_EXTRA = [
       'never reached _site. Astro publishes public/.well-known/**. Intentional (plan §6.8).',
   },
   {
-    match: (p) => p.startsWith('_astro/'),
+    // Stylesheets only, deliberately: the migration promised no client-side runtime, and
+    // this is the directory a stray `<script>` or hydrated island would land in. A .js file
+    // here has to fail the build, not be waved through as "bundle output".
+    match: (p) => /^_astro\/[^/]+\.css$/.test(p),
     why: 'Astro bundle output directory (hashed CSS). Counterpart of css/main.css.',
   },
 ]

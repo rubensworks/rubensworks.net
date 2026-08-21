@@ -21,14 +21,29 @@ const TOKEN_ATTRS = new Set(['class', 'rel', 'itemprop', 'property', 'typeof'])
 
 const collapse = (s) => s.replace(/\s+/g, ' ')
 
-// Elements whose default `display` is inline or inline-block, i.e. the ones for which the
-// whitespace between siblings is rendered rather than discarded. `a` covers the nav links;
-// the site's SCSS also makes `.page-link`, `.icon` and the social list items inline-block.
+// Elements for which the whitespace between two siblings is rendered rather than discarded,
+// because they lay out inline: the HTML defaults, plus every tag the site's own SCSS
+// switches to `display: inline` or `inline-block`. Dropping such a space moves the layout —
+// it is what separates the nav links, and losing it hid a real regression that only the
+// screenshot pass caught.
+//
+// This is a tag list, not a cascade: an element made inline by a rule this misses would
+// have its separating space discarded, and a change there would slip past *this* check.
+// verify/screenshots.mjs is the backstop, which is how the nav regression surfaced in the
+// first place. Grepping _sass for `display: inline` is what keeps the second group honest.
 const INLINE = new Set([
   'a', 'abbr', 'b', 'bdo', 'br', 'button', 'cite', 'code', 'dfn', 'em', 'i', 'img', 'input',
   'kbd', 'label', 'map', 'object', 'q', 'samp', 'select', 'small', 'span', 'strong', 'sub',
   'sup', 'textarea', 'time', 'tt', 'var',
+  // From _sass: `.cv-listing … p`, `.toggle` and `.icon > svg`.
+  'p', 'svg',
 ])
+// `li` is deliberately not in the set even though `.authors li` and `.social-media-list li`
+// are inline. Those lists carry `li:after { content: ", " }` / `padding-right`, which puts a
+// space between the items regardless, so the whitespace-only node between `</li>` and `<li>`
+// collapses into it and renders identically whether it is there or not — Jekyll emits one and
+// Astro does not. Including `li` reports all 92 publication pages as different, and the
+// screenshot pass confirms they are not.
 
 const isInline = (node) => node !== undefined && node.n !== undefined && INLINE.has(node.n)
 

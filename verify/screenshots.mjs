@@ -32,22 +32,36 @@ const newDir = arg('new', 'dist')
 const only = arg('only', null)
 const outDir = arg('out', 'verify/out/screenshots')
 
-// Covers every layout and every include (plan §7.5).
+// Covers every layout, every include and every page whose body is hand-written prose or
+// markdown (plan §7.5). All six posts are here rather than a representative one: the posts
+// are the only pages that run the kramdown-compatibility pipeline, and each uses a
+// different subset of it — figures, inline attribute lists, tables, code blocks, footnotes.
+// The publication and project pages are template-driven and identical in shape, so those
+// are sampled; the whole set of 92 publication URLs is checked by verify/html-diff.mjs.
 const PAGES = [
   ['/', 'home'],
   ['/publications/', 'publications'],
   ['/publications/taelman_iswc_resources_comunica_2018/', 'publication-detail'],
+  ['/publications/taelman_phd_2020/', 'publication-detail-phd'],
   ['/cv/', 'cv'],
   ['/presentations/', 'presentations'],
   ['/blog/', 'blog'],
   ['/blog/2019/03/13/streaming-rdf-parsers/', 'post-streaming-rdf-parsers'],
+  ['/blog/2019/10/06/using-rdf-in-javascript/', 'post-using-rdf-in-javascript'],
+  ['/blog/2021/05/24/5-rules-open-source-maintenance/', 'post-5-rules'],
+  ['/blog/2022/01/21/querying-a-decentralized-web/', 'post-querying-decentralized-web'],
+  ['/blog/2025/04/22/cost-modularity-sparql/', 'post-cost-modularity-sparql'],
+  ['/blog/2026/04/13/did-ai-clawlers-kill-sparql-federation/', 'post-did-ai-clawlers'],
   ['/projects/', 'projects'],
   ['/projects/comunica/', 'project-comunica'],
+  ['/projects/minecraft/', 'project-minecraft'],
+  ['/projects/rdfjs/', 'project-rdfjs'],
   ['/reading_list/', 'reading-list'],
   ['/research_goals/', 'research-goals'],
   ['/about/', 'about'],
   ['/contact/', 'contact'],
   ['/old-projects/', 'old-projects'],
+  ['/application-swsa-distinguished-dissertation-award-2020/', 'award-application'],
 ]
 
 /** url -> the largest pixel difference accepted for that page, with the reason. */
