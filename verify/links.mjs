@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Internal link and in-page anchor integrity (plan §7.4).
+// Built-site integrity: internal links, in-page anchors, and leaked internal markers
+// (plan §7.4).
 //
 //   node verify/links.mjs <dir>
 //
@@ -137,6 +138,27 @@ for (const e of errors) {
   else real.push(e)
 }
 
+// Two parts of the Markdown pipeline smuggle state through private-use code points, because
+// they have to survive a parser that would otherwise rewrite it: bibliography.ts protects
+// whitespace runs inside .bib values (U+E000-E002), and html-blocks.ts keeps raw HTML blocks
+// open past a whitespace-only line (U+E010). Both are decoded again before rendering. If one
+// ever is not, the marker ships as an invisible character inside the published text — and
+// inside the RDF literals built from it. This is the check that says it did not, and unlike
+// the golden comparisons it needs nothing but the build, so it keeps running in CI forever.
+const PRIVATE_USE = /[\uE000-\uF8FF]/
+const leaked = []
+for (const f of files) {
+  if (!f.endsWith('.html') && !f.endsWith('.xml') && !f.endsWith('.json')) continue
+  const text = readFileSync(join(dir, f), 'utf8')
+  const at = text.search(PRIVATE_USE)
+  if (at >= 0) {
+    leaked.push(
+      `${f}: U+${text.charCodeAt(at).toString(16).toUpperCase()} at offset ${at}\n    ` +
+        JSON.stringify(text.slice(Math.max(0, at - 60), at + 60)),
+    )
+  }
+}
+
 console.log(`checked ${pages.size} pages: ${internal} internal links, ${anchors} in-page anchors`)
 console.log(`  (${NOT_BUILT_HERE.length} same-host path prefix(es) treated as external: /raw/**)`)
 
@@ -144,9 +166,16 @@ if (known.length) {
   console.log(`\n${known.length} known pre-existing breakage(s), carried over deliberately:`)
   for (const e of known) console.log(`  ${e.file}: ${e.href}\n    ${e.why}`)
 }
+let failed = false
 if (real.length) {
   console.error(`\nFAIL: ${real.length} broken link(s)/anchor(s):`)
   for (const e of real) console.error(`  ${e.file}: <${e.tag} href="${e.href}"> -> ${e.reason}`)
-  process.exit(1)
+  failed = true
 }
-console.log('\nOK: every internal link and #anchor resolves')
+if (leaked.length) {
+  console.error(`\nFAIL: ${leaked.length} file(s) ship a private-use code point:`)
+  for (const l of leaked) console.error(`  ${l}`)
+  failed = true
+}
+if (failed) process.exit(1)
+console.log('\nOK: every internal link and #anchor resolves, and no internal marker leaked')
