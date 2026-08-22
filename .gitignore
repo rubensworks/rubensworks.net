@@ -3,3 +3,15 @@ _site
 .jekyll-metadata
 deploy_rsa
 deploy_rsa.pub
+
+_site_golden
+_site_new
+dist
+dist2
+node_modules
+verify/out
+
+node_modules/.astro
+
+# Astro's generated types and content-collection schemas; `astro build` recreates them.
+.astro

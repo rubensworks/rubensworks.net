@@ -1,0 +1,19 @@
+---
+// Port of _includes/presentations.html
+import type { Presentation } from '../lib/presentations'
+
+interface Props { presentations: [string, Presentation][] }
+const { presentations } = Astro.props as Props
+---
+<ol class="presentations">
+{presentations.map(([id, p]) => (
+    <li>
+    <div class="presentation listed" itemscope itemtype="http://schema.org/PresentationDigitalDocument" typeof="schema:PresentationDigitalDocument schema:CreativeWork" about={`/presentations#${id}`}>
+        <span class="type">{p.type}</span>
+        <span itemprop="name" property="schema:name" class="title"><a href={p.url}>{p.title}</a></span>
+        <span itemprop="location" property="schema:location" class="venue">{p.venue}</span>
+        <span itemprop="datePublished" property="schema:datePublished" class="date">{p.date}</span>
+    </div>
+    </li>
+))}
+</ol>

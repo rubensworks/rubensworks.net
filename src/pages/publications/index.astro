@@ -1,0 +1,15 @@
+---
+// Port of publications.md — `{% bibliography --group_by year --group_order descending %}`
+import Page from '../../layouts/Page.astro'
+import BibList from '../../components/BibList.astro'
+import { loadBibliography, loadKnows } from '../../lib/bibliography'
+
+const entries = loadBibliography()
+const knows = loadKnows()
+---
+<Page title="Publications" url="/publications/">
+<p>As a <a href="/about/">researcher</a>, I write publications about my work, which are listed on this page.
+If you are interested in any of these, feel free to contact me so we can discuss this further.</p>
+
+<BibList entries={entries} knows={knows} groupByYear />
+</Page>

@@ -1,0 +1,53 @@
+---
+// Port of _includes/icon-{github,twitter,linkedin,googlescholar}.html — four near-identical
+// includes collapsed into one component. The per-network differences are only the profile
+// URL, the title, the icon class and the accountServiceHomepage; GitHub additionally carries
+// a second `typeof` token, which is a real RDFa difference and is preserved.
+import github from '../icons/github.svg?raw'
+import twitter from '../icons/twitter.svg?raw'
+import linkedin from '../icons/linkedin.svg?raw'
+import googlescholar from '../icons/googlescholar.svg?raw'
+
+type Network = 'github' | 'twitter' | 'linkedin' | 'googlescholar'
+interface Props { network: Network; username: string }
+const { network, username } = Astro.props as Props
+
+const SVG: Record<Network, string> = { github, twitter, linkedin, googlescholar }
+
+const CONFIG: Record<Network, { typeof: string; href: (u: string) => string; title: string; service: string }> = {
+  github: {
+    typeof: 'foaf:OnlineAccount https://data.knows.idlab.ugent.be/person/office/#GitHubAccount',
+    href: (u) => `https://github.com/${u}`,
+    title: 'Github',
+    service: 'https://github.com/',
+  },
+  twitter: {
+    typeof: 'foaf:OnlineAccount',
+    href: (u) => `https://twitter.com/${u}`,
+    title: 'Twitter',
+    service: 'https://twitter.com/',
+  },
+  linkedin: {
+    typeof: 'foaf:OnlineAccount',
+    href: (u) => `https://www.linkedin.com/in/${u}`,
+    title: 'LinkedIn',
+    // Single slash after `https:` — a typo in _includes/icon-linkedin.html, reproduced
+    // verbatim because it is part of the published markup.
+    service: 'https:/www.linkedin.com/',
+  },
+  googlescholar: {
+    typeof: 'foaf:OnlineAccount',
+    href: (u) => `https://scholar.google.be/citations?user=${u}`,
+    title: 'Google Scholar',
+    service: 'https://scholar.google.com/',
+  },
+}
+
+const c = CONFIG[network]
+---
+<span rel="foaf:account">
+  <a typeof={c.typeof} class="a-bland" href={c.href(username)} title={c.title} target="_blank">
+    <span class={`icon icon--${network}`} rel="foaf:accountServiceHomepage" href={c.service} set:html={SVG[network]} />
+    <span class="rdfonly" property="foaf:accountName">{username}</span>
+  </a>
+</span>
