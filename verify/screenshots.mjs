@@ -10,13 +10,24 @@
 // if one side gets them and the other does not, every text comparison fails on font metrics
 // and buries the real differences.
 //
-// One page is expected to differ: the streaming-RDF-parsers post, whose 21 code blocks are
-// the only place the migration deliberately changes markup (plan §6.7 — a Shiki theme
-// carrying the Rouge palette instead of Rouge's class names). Splitting tokens across a
-// different number of <span>s moves glyphs by a fraction of a pixel. Most of that is
-// classified as antialiasing below; a residue of ~0.03% of pixels is not, and was checked by
-// cropping the affected rows and comparing them side by side — same colours, same glyphs,
-// same positions to the eye. EXPECTED_PIXEL_DIFF records it so it cannot grow unnoticed.
+// The three posts with code blocks are expected to differ inside those blocks, and nowhere
+// else. Code-block token markup is the one thing the migration deliberately changes (plan
+// §6.7 — a Shiki theme carrying the Rouge palette instead of Rouge's class names), and Shiki
+// breaks the text into <span>s at different places than Rouge did. A browser positions text
+// per run, so a different break point changes where sub-pixel LCD antialiasing lands: the
+// glyphs are the same glyphs, in the same places, in the same colours, but the orange/blue
+// fringes on some stems land differently. Magnifying an affected line 6x shows exactly that.
+//
+// Nothing here rests on that reading. verify/code-colors.mjs resolves every visible code
+// character to its effective colour, weight and slant on both sides and requires them to be
+// identical — 0 of 8511 differ — so the residue cannot be a recolouring. This pass then
+// pins down where it is allowed to be: inside `pre.highlight`, in the recorded quantity,
+// with the blocks in identical positions. Everywhere else, every viewport, zero.
+//
+// Merging same-colour spans was tried, to make the runs coarser: it made the residue
+// slightly worse (71245 -> 72444 px), because what matters is not how many breaks there are
+// but whether they are in the same places. Only reproducing Rouge's tokenizer would do
+// that, which is plan §6.7 option 2 and was not the option chosen.
 
 import { createServer } from 'node:http'
 import { readFileSync, existsSync, mkdirSync, statSync, writeFileSync, rmSync } from 'node:fs'
@@ -64,11 +75,40 @@ const PAGES = [
   ['/application-swsa-distinguished-dissertation-award-2020/', 'award-application'],
 ]
 
-/** url -> the largest pixel difference accepted for that page, with the reason. */
+/**
+ * url -> viewport -> `[differing pixels, antialiasing pixels]` accepted *inside the code
+ * blocks* on that page, at that width.
+ *
+ * Everything else has to be zero, at every viewport: `diffOutside` and
+ * `antialiasingOutside` fail on any page, and a page not listed here has no budget at all.
+ * Both buckets are bounded, deliberately — a classifier that can absorb an unlimited number
+ * of pixels is not a classifier, it is a hole. The numbers are exact measurements taken on
+ * a Linux/Chromium/DejaVu-Sans-Mono stack, not round headroom: if anything moves one of
+ * them, this run says so and the number has to be re-justified. They are specific to the
+ * rendering stack, so expect to re-record them if you run this somewhere else.
+ */
 const EXPECTED_PIXEL_DIFF = {
   '/blog/2019/03/13/streaming-rdf-parsers/': {
-    max: 9000,
-    why: 'sub-pixel glyph shifts inside the 21 code blocks; see the note above',
+    why: '21 code blocks, JavaScript and JSON',
+    1280: [5098, 26381],
+    800: [5098, 26381],
+    560: [5098, 26315],
+  },
+  '/blog/2019/10/06/using-rdf-in-javascript/': {
+    // The largest residue on the site, and the one that scales with how finely the grammar
+    // splits the text: 17 JavaScript blocks, where TextMate scopes are far more granular
+    // than Rouge's tokens. At 560 px the blocks are narrower, so less of the code is on
+    // screen and fewer glyphs are affected.
+    why: '17 code blocks, JavaScript and JSON',
+    1280: [71245, 213123],
+    800: [71230, 213138],
+    560: [8737, 248044],
+  },
+  '/blog/2026/04/13/did-ai-clawlers-kill-sparql-federation/': {
+    why: '3 code blocks, SPARQL',
+    1280: [1287, 26366],
+    800: [1287, 26385],
+    560: [1287, 25891],
   },
 }
 
@@ -141,15 +181,37 @@ async function shoot(context, port, url, vp) {
   await page.setViewportSize({ width: vp.width, height: Math.min(height, 20000) })
   await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
   const buf = await page.screenshot()
+  // Where the highlighted code sits, in device pixels. The page is not scrolled and the
+  // viewport is the whole document, so client rects are document coordinates.
+  const rects = await page.evaluate(() => {
+    const dpr = window.devicePixelRatio
+    return [...document.querySelectorAll('pre.highlight')].map((el) => {
+      const r = el.getBoundingClientRect()
+      return [
+        Math.floor(r.left * dpr),
+        Math.floor(r.top * dpr),
+        Math.ceil(r.right * dpr),
+        Math.ceil(r.bottom * dpr),
+      ]
+    })
+  })
   await page.close()
-  return buf
+  return { buf, rects }
 }
 
-/** Pure-JS PNG compare via canvas-free decoding: use Playwright itself to diff. */
-async function pixelDiff(context, a, b) {
+/**
+ * Pure-JS PNG compare via canvas-free decoding: use Playwright itself to diff.
+ *
+ * `rects` are the highlighted code blocks. Differences are counted inside and outside them
+ * separately, because the two have completely different standing: outside a code block
+ * nothing about this migration should move a pixel, while inside one the token markup was
+ * deliberately replaced and a residue of sub-pixel coverage differences is expected. A
+ * page-wide budget would let a real regression anywhere on the page hide behind it.
+ */
+async function pixelDiff(context, a, b, rects) {
   const page = await context.newPage()
   const result = await page.evaluate(
-    async ([aB64, bB64]) => {
+    async ([aB64, bB64, boxes]) => {
       const load = (b64) =>
         new Promise((res, rej) => {
           const img = new Image()
@@ -172,10 +234,20 @@ async function pixelDiff(context, a, b) {
       }
       const da = draw(ia)
       const db = draw(ib)
+      // One byte per pixel: is it inside a code block?
+      const inCode = new Uint8Array(w * h)
+      for (const [x0, y0, x1, y1] of boxes) {
+        for (let y = Math.max(0, y0); y < Math.min(h, y1); y++) {
+          inCode.fill(1, y * w + Math.max(0, x0), y * w + Math.min(w, x1))
+        }
+      }
       let diff = 0
+      let diffOutside = 0
       let antialiasing = 0
+      let antialiasingOutside = 0
       const out = new Uint8ClampedArray(da.length)
       for (let i = 0; i < da.length; i += 4) {
+        const code = inCode[i >> 2] === 1
         const dr = Math.abs(da[i] - db[i])
         const dg = Math.abs(da[i + 1] - db[i + 1])
         const db_ = Math.abs(da[i + 2] - db[i + 2])
@@ -189,6 +261,7 @@ async function pixelDiff(context, a, b) {
         const spread = Math.max(dr, dg, db_) - Math.min(dr, dg, db_)
         if (d > 12 && Math.max(dr, dg, db_) <= 20 && spread <= 8) {
           antialiasing++
+          if (!code) antialiasingOutside++
           const g = 255 - (255 - da[i]) * 0.15
           out[i] = out[i + 1] = out[i + 2] = g
           out[i + 3] = 255
@@ -196,6 +269,7 @@ async function pixelDiff(context, a, b) {
         }
         if (d > 12) {
           diff++
+          if (!code) diffOutside++
           out[i] = 255
           out[i + 1] = 0
           out[i + 2] = 0
@@ -213,7 +287,10 @@ async function pixelDiff(context, a, b) {
       g.putImageData(new ImageData(out, w, h), 0, 0)
       return {
         diff,
+        diffOutside,
         antialiasing,
+        antialiasingOutside,
+        codeBlocks: boxes.length,
         total: w * h,
         w,
         h,
@@ -222,7 +299,7 @@ async function pixelDiff(context, a, b) {
         png: c.toDataURL('image/png').split(',')[1],
       }
     },
-    [a.toString('base64'), b.toString('base64')],
+    [a.toString('base64'), b.toString('base64'), rects],
   )
   await page.close()
   return result
@@ -249,18 +326,34 @@ for (const [url, slug] of PAGES) {
     // timing noise in a comparison whose whole job is detecting small pixel differences.
     const ga = await shoot(context, g.port, url, vp)
     const na = await shoot(context, n.port, url, vp)
-    const r = await pixelDiff(context, ga, na)
+    // The code blocks must land in the same place on both sides before their contents are
+    // given any budget at all; if they do not, that is a layout regression, not a residue.
+    const sameBoxes = JSON.stringify(ga.rects) === JSON.stringify(na.rects)
+    const r = await pixelDiff(context, ga.buf, na.buf, ga.rects)
     const pct = ((r.diff / r.total) * 100).toFixed(4)
-    const allowed = EXPECTED_PIXEL_DIFF[url]
-    const ok = r.diff === 0 || (allowed !== undefined && r.diff <= allowed.max)
+    const [budget = 0, aaBudget = 0] = EXPECTED_PIXEL_DIFF[url]?.[vp.name] ?? []
+    const inside = r.diff - r.diffOutside
+    const aaInside = r.antialiasing - r.antialiasingOutside
+    const ok =
+      sameBoxes &&
+      r.diffOutside === 0 &&
+      r.antialiasingOutside === 0 &&
+      inside <= budget &&
+      aaInside <= aaBudget
     if (!ok) failures++
-    rows.push({ url, vp: vp.name, diff: r.diff, pct, ok, dims: r.dims, aa: r.antialiasing })
-    writeFileSync(join(outDir, `${slug}-${vp.name}-golden.png`), ga)
-    writeFileSync(join(outDir, `${slug}-${vp.name}-new.png`), na)
+    rows.push({
+      url, vp: vp.name, diff: r.diff, inside, outside: r.diffOutside, pct, ok, budget,
+      dims: r.dims, aa: r.antialiasing, aaInside, aaOutside: r.antialiasingOutside, aaBudget,
+      blocks: r.codeBlocks, sameBoxes,
+    })
+    writeFileSync(join(outDir, `${slug}-${vp.name}-golden.png`), ga.buf)
+    writeFileSync(join(outDir, `${slug}-${vp.name}-new.png`), na.buf)
     if (!ok) writeFileSync(join(outDir, `${slug}-${vp.name}-diff.png`), Buffer.from(r.png, 'base64'))
     console.log(
       `${ok ? (r.diff ? 'OK* ' : 'OK  ') : 'DIFF'} ${url} @${vp.name}  ${r.diff} px (${pct}%)` +
-        (r.antialiasing ? `  [+${r.antialiasing} px glyph antialiasing]` : '') +
+        (r.diff ? `  [${inside} in code, ${r.diffOutside} outside]` : '') +
+        (r.antialiasing ? `  [+${r.antialiasing} px glyph antialiasing, ${r.antialiasingOutside} outside]` : '') +
+        (sameBoxes ? '' : '  CODE-BLOCK GEOMETRY DIFFERS') +
         (r.sizeMismatch ? `  SIZE ${r.dims[0]}x${r.dims[1]} vs ${r.dims[2]}x${r.dims[3]}` : ''),
     )
     await context.close()
@@ -283,7 +376,22 @@ const tolerated = rows.filter((r) => r.ok && r.diff > 0)
 if (tolerated.length) {
   console.log(`\n${tolerated.length} comparison(s) within a recorded tolerance (marked OK*):`)
   for (const r of tolerated) {
-    console.log(`  ${r.url} @${r.vp}: ${r.diff} px — ${EXPECTED_PIXEL_DIFF[r.url].why}`)
+    console.log(
+      `  ${r.url} @${r.vp}: ${r.inside}/${r.budget} px plus ${r.aaInside}/${r.aaBudget} px ` +
+        `antialiasing, all inside ${r.blocks} code block(s) — ${EXPECTED_PIXEL_DIFF[r.url].why}`,
+    )
+  }
+}
+const failed = rows.filter((r) => !r.ok)
+if (failed.length) {
+  console.error(`\n${failed.length} comparison(s) failed:`)
+  for (const r of failed) {
+    console.error(
+      `  ${r.url} @${r.vp}: ${r.outside} px outside code blocks, ` +
+        `${r.aaOutside} px antialiasing outside, ${r.inside} px inside (budget ${r.budget}), ` +
+        `${r.aaInside} px antialiasing inside (budget ${r.aaBudget})` +
+        (r.sameBoxes ? '' : ', and the code blocks are in different places'),
+    )
   }
 }
 console.log(`screenshots in ${outDir}/`)
