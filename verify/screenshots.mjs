@@ -89,7 +89,7 @@ const PAGES = [
  */
 const EXPECTED_PIXEL_DIFF = {
   '/blog/2019/03/13/streaming-rdf-parsers/': {
-    why: '21 code blocks, JavaScript and JSON',
+    why: '11 code blocks, JavaScript and JSON',
     1280: [5098, 26381],
     800: [5098, 26381],
     560: [5098, 26315],

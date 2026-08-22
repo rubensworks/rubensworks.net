@@ -40,7 +40,7 @@ npm run verify        # tests, DOM diff, RDF graph diff, CSS diff, code colours,
 npm run verify:shots  # Playwright, 1280/800/560 px, Google Fonts blocked on both sides
 ```
 
-The screenshot pass is separate because it is slow — 22 pages at three viewports, each
+The screenshot pass is separate because it is slow — 23 pages at three viewports, each
 rendered twice and compared pixel by pixel. Run it before anything that touches templates,
 CSS or the Markdown pipeline.
 
