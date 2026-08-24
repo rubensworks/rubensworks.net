@@ -7,9 +7,15 @@
 # - Workshop
 # - Other
 
+"2026-semantics-semdev":
+    title: "SEMANTICS 2026 Developers Workshop"
+    venue: "SEMANTiCS 2026, Ghent"
+    date: "15 September 2026"
+    url: "https://semantics2026.semdev.org/"
+    type: "Workshop"
 "2026-goblinhackathon-sparql12":
     title: "An overview of the changes in SPARQL 1.2"
-    venue: "GOBLIN Hackathon on Metadata and Provenance for Knowledge Graphs"
+    venue: "GOBLIN Hackathon on Metadata and Provenance for Knowledge Graphs (25 participants)"
     date: "8 June 2026"
     url: "https://www.rubensworks.net/raw/slides/2026/goblinhackathon-sparql12/"
     type: "Other"
