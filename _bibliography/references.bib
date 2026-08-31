@@ -49,6 +49,36 @@ for accurately evaluating client-side optimization techniques in decentralized e
   _type     = {Conference}
 }
 
+@article{tam_swj_travelingmap_2026,
+  author    = {Tam, Bryan-Elliott and Van Herwegen, Joachim and Colpaert, Pieter and Verborgh, Ruben and Taelman, Ruben},
+  title     = {Traveling with a Map: Reducing the Search Space of Link Traversal Queries Using RDF Shapes},
+  month     = {sep},
+  journal   = {Semantic Web Journal},
+  year      = {2026},
+  url       = {https://www.semantic-web-journal.net/system/files/swj4106.pdf},
+  abstract  = {
+The centralization of web information raises legal and ethical concerns, particularly in social, healthcare, and education
+applications. Decentralized architectures offer a promising alternative by keeping data closer to its source, yet efficient
+query processing remains a significant challenge. Link Traversal Query Processing (LTQP) enables querying across
+decentralized networks, however, it often suffers from long execution times and high data transfer costs due to the large
+number of Hypertext Transfer Protocol (HTTP) requests involved. In many scenarios, queries are highly selective with
+respect to the data model objects distributed across the network. For example, in a social media application where
+users store heterogeneous data, a query may focus solely on the posts and comments created by users, without
+requiring any of their additional user information. We refer to such queries as data-model selective. We propose a
+shape-based pruning approach that relies on shape indexes and a query-shape subsumption algorithm to reduce
+the search space and, consequently, the number of HTTP requests for such queries. We formalize this approach
+as a link pruning mechanism for LTQP and evaluate its effectiveness on social media queries using the SolidBench
+benchmark across multiple evaluation metrics. Our results show that shape-based pruning substantially improves query
+execution time, first-result arrival time, diefficiency, and network usage for data-model selective queries, while having
+unsignificative impact on non-selective data-model queries. These gains come at the cost of only a minor increase in
+the number of triples per shape-index instance. Moreover, our approach is resilient, retaining performance benefits even
+in networks where some data providers do not supply shape-index information. This work demonstrates that shapebased metadata can significantly optimize LTQP in decentralized knowledge graphs for an important class of queries.
+By exposing such metadata, data providers not only enhance data quality and interoperability but also improve the
+efficiency of traversal-based query processing.
+},
+  _type     = {Journal}
+}
+
 @inproceedings{taelman_semanticsbluesky_clientcentricqueryengines_2026,
   author    = {Taelman, Ruben},
   title     = {From Server-centric to Client-centric Data Integration over Decentralized Knowledge Graphs with Personal Query Engines},
