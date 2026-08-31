@@ -49,6 +49,59 @@ for accurately evaluating client-side optimization techniques in decentralized e
   _type     = {Conference}
 }
 
+@inproceedings{tam_dmkg_largerdfbench_2026,
+  author    = {Tam, Bryan-Elliott and Muhammad, Saleem and Taelman, Ruben},
+  title     = {Strengthening LargeRDFBench for Interoperable Federated SPARQL Evaluation},
+  month     = {october},
+  booktitle = {Proceedings of the 2nd International Workshop on Data Management for Knowledge Graphs},
+  year      = {2026},
+  abstract  = {
+LargeRDFBench is one of the most comprehensive benchmarks for evaluating federated SPARQL query engines,
+combining a large collection of real, interlinked datasets with a rich query suite that has made it a reference
+point for the community. As the benchmark continues to be widely adopted and the range of conformant
+engines grows, the interoperability of its artifacts, and thus the reproducibility of comparisons across engines,
+becomes ever more important. Yet several of its data dumps violate the RDF specifications, and its expected query
+results are distributed in an ad hoc format and contain discrepancies with respect to the source datasets. We
+systematically identify and categorize these data-quality issues and repair them, producing standards-conformant
+serializations of every affected dataset; we re-encode the benchmark’s expected results in the W3C SPARQL
+1.1 Query Results JSON Format and correct their discrepancies. We contribute a standards-compliant edition
+of LargeRDFBench, produced by a reproducible cleaning pipeline, together with its expected query results in a
+standard, machine-verifiable format. Every dataset now parses under strict, specification-compliant RDF parsers,
+and the expected results are machine-verifiable through a standard format, extending the benchmark’s reach
+to the full range of conformant engines while staying faithful to the original data. Running the modernized
+benchmark end-to-end, we validate and correct its expected results, and find that the hosting engine can change
+the answers the benchmark returns, so that results obtained on it are not always reproducible across engines. We
+further perform a preliminary comparison, not previously explored, of ASK- and COUNT-based source selection in
+the FedX algorithm. This work strengthens an already valuable community resource by aligning its artifacts with
+the RDF standards. In doing so, we broaden the set of engines that can be fairly and reproducibly compared, and
+open the question of how the server-side SPARQL engines that host the data influence algorithmic choices and,
+through them, federated query performance.
+},
+  _type     = {Workshop}
+}
+
+@inproceedings{jakubowski_dmkg_largerdfbench_2026,
+  author    = {Jakubowski, Maxime and Tomaszuk, Dominik and Fernandez Alvarez, Daniel and Labra Gayo, Jose Emilio and Taelman, Ruben and Dedecker, Ruben and Hose, Katja},
+  title     = {Translating RDF 1.2 Graphs to Property Graphs},
+  month     = {october},
+  booktitle = {Proceedings of the 2nd International Workshop on Data Management for Knowledge Graphs},
+  year      = {2026},
+  abstract  = {
+RDF 1.2 introduces statement-level constructs, such as triple terms, reifiers, and descriptions, that pose new
+challenges for transforming RDF data into labeled property graphs (LPGs). This work presents and compares three
+algorithms for translating RDF 1.2 data into LPGs, each interpreting a different amount of the RDF 1.2 reification
+vocabulary. Algorithm Structural interprets no vocabulary and losslessly supports arbitrary RDF 1.2 graphs
+by representing triple terms explicitly as nodes; Direct interprets rdf:reifies to recover annotated edges
+while preserving reifiers as graph objects; and Fold additionally folds reifier descriptions into edge properties,
+resulting in a more concise, albeit lossy, LPG representation. We define the three translations, analyze which
+class of RDF 1.2 graphs each preserves, and experimentally evaluate their implementations. The experiments
+confirm the predicted trade-offs: all variants scale linearly on the tested workloads, the generality of Structural
+has no runtime penalty, and folding descriptions into edge records can significantly reduce the number of edges
+on description-heavy data.
+},
+  _type     = {Workshop}
+}
+
 @article{tam_swj_travelingmap_2026,
   author    = {Tam, Bryan-Elliott and Van Herwegen, Joachim and Colpaert, Pieter and Verborgh, Ruben and Taelman, Ruben},
   title     = {Traveling with a Map: Reducing the Search Space of Link Traversal Queries Using RDF Shapes},
