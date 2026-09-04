@@ -1,0 +1,36 @@
+---
+// Replaces jekyll-scholar's `{% bibliography %}` tag.
+//
+// Config comes from _config.yml's `scholar:` block and the gem defaults:
+//   bibliography_list_tag: ol, bibliography_item_tag: li  -> <ol class="bibliography"><li>
+//   bibliography_group_tag: 'h2,h3,h4,h5', first level    -> <h2 class="bibliography">YEAR</h2>
+//   details_link: More, details_link_class: details       -> <a class="details" href=…>More</a>
+//
+// Note the two hrefs differ by a trailing slash — `bib.html` links the title to
+// `/publications/KEY` while the details link points at `/publications/KEY/`. Both are
+// reproduced as-is.
+import BibEntry from './BibEntry.astro'
+import type { Entry, Knows } from '../lib/bibliography'
+import { groupByYear } from '../lib/bibliography'
+import { site } from '../site.config'
+
+interface Props {
+  entries: Entry[]
+  knows: Knows
+  /** `--group_by year --group_order descending`; ungrouped otherwise. */
+  groupByYear?: boolean
+}
+const { entries, knows, groupByYear: grouped = false } = Astro.props as Props
+
+const groups: [number | null, Entry[]][] = grouped
+  ? groupByYear(entries)
+  : [[null, entries]]
+---
+{groups.map(([year, groupEntries]) => (
+  <Fragment>
+    {year !== null && <h2 class="bibliography">{year}</h2>}
+    <ol class="bibliography">{groupEntries.map((entry) => (
+      <li><BibEntry entry={entry} knows={knows} /><a class={site.scholar.detailsLinkClass} href={`/${site.scholar.detailsDir}/${entry.key}/`}>{site.scholar.detailsLink}</a></li>
+    ))}</ol>
+  </Fragment>
+))}

@@ -1,0 +1,23 @@
+---
+// The 11 /projects/:name/ pages, from the `projects` output collection.
+import Project from '../../layouts/Project.astro'
+import { getCollection } from 'astro:content'
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects')
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }))
+}
+
+const { project } = Astro.props
+---
+{/* Jekyll gives every collection document an excerpt: `excerpt_separator: <!--more-->` is
+    never present in _projects/*.html, so the excerpt is the whole body. head.html then
+    strips the HTML and truncates it to 30 words for the description meta tags. */}
+<Project
+  excerpt={project.body ?? ''}
+  title={project.data.title}
+  url={`/projects/${project.id}/`}
+  start={project.data.start}
+  end={project.data.end}
+  body={project.body ?? ''}
+/>

@@ -1,0 +1,23 @@
+---
+// Port of blog.md
+import Page from '../../layouts/Page.astro'
+import PostListing from '../../components/PostListing.astro'
+import { loadPosts } from '../../lib/posts'
+
+const posts = await loadPosts()
+---
+<Page title="Blog" url="/blog/">
+<ul class="posts">
+  {posts.map((post) => (
+    <li>
+      <PostListing
+        url={post.url}
+        title={post.entry.data.title}
+        subtitle={post.entry.data.subtitle}
+        date={post.date}
+        excerpt={post.excerpt}
+      />
+    </li>
+  ))}
+</ul>
+</Page>

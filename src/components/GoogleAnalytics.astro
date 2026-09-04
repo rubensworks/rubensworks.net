@@ -1,0 +1,17 @@
+---
+// Port of _includes/google-analytics.html
+import { site } from '../site.config'
+
+// `is:inline` + `set:html` rather than `define:vars`: define:vars would prepend a generated
+// `const trackingId = ...` line, changing the shipped script text for no benefit.
+const gtagScript = `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '${site.googleAnalyticsTrackingId}');
+`
+---
+<!-- Google tag (gtag.js) -->
+<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${site.googleAnalyticsTrackingId}`}></script>
+<script is:inline set:html={gtagScript}></script>

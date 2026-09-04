@@ -1,0 +1,17 @@
+---
+// reading_list.md, read from the repository root exactly as it is: the 28 `{% include
+// book.html %}` tags are expanded first, then the result goes through the same Markdown
+// pipeline as every other page. See src/lib/liquid-pages.ts.
+import Page from '../layouts/Page.astro'
+import { createMarkdownProcessor } from '@astrojs/markdown-remark'
+import { loadLiquidPage } from '../lib/liquid-pages'
+import { markdownOptions, restoreRdfaDatatype } from '../lib/markdown/pipeline'
+
+const processor = await createMarkdownProcessor(markdownOptions as any)
+const renderFragment = async (md: string) => (await processor.render(md)).code
+const expanded = await loadLiquidPage('reading_list.md', renderFragment)
+const html = restoreRdfaDatatype((await processor.render(expanded)).code)
+---
+<Page title="Reading List" url="/reading_list/">
+<Fragment set:html={html} />
+</Page>

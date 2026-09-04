@@ -1,0 +1,37 @@
+---
+// Port of _layouts/project.html
+import Default from './Default.astro'
+
+interface Props {
+  title: string
+  url: string
+  start?: string | number
+  end?: string | number
+  /** The project's body, already HTML — see src/loaders/html-collection.ts. */
+  body: string
+  /** Feeds head.html's description meta tags; for a project that is the whole body. */
+  excerpt?: string
+}
+const { title, url, start, end, body, excerpt } = Astro.props as Props
+---
+<Default title={title} url={url} excerpt={excerpt}>
+<article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">{title}</h1>
+    <div class="duration">
+    {start !== undefined && (
+      <Fragment>
+      <span>{start}</span> -
+      {end !== undefined ? <span>{end}</span> : <span>...</span>}
+      </Fragment>
+    )}
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <Fragment set:html={body} />
+  </div>
+
+</article>
+</Default>

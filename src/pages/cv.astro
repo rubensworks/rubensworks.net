@@ -1,0 +1,21 @@
+---
+// cv.md, still read from the repository root exactly as it is.
+//
+// Jekyll's order of operations is reproduced: the Liquid tags — 55 cv-listing includes, one
+// presentations include, 11 {% bibliography %} and 11 {% bibliography_count %} — are
+// expanded first, and the result goes through the same Markdown pipeline as every other
+// page. See src/lib/liquid-pages.ts.
+import Page from '../layouts/Page.astro'
+import { createMarkdownProcessor } from '@astrojs/markdown-remark'
+import { loadLiquidPage } from '../lib/liquid-pages'
+import { markdownOptions, restoreRdfaDatatype } from '../lib/markdown/pipeline'
+
+const processor = await createMarkdownProcessor(markdownOptions as any)
+// Jekyll's `markdownify` filter, used by cv-listing for its subject/location/description.
+const renderFragment = async (md: string) => (await processor.render(md)).code
+const expanded = await loadLiquidPage('cv.md', renderFragment)
+const html = restoreRdfaDatatype((await processor.render(expanded)).code)
+---
+<Page title="Curriculum Vitae" url="/cv/">
+<Fragment set:html={html} />
+</Page>

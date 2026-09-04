@@ -1,0 +1,71 @@
+---
+// Port of _includes/head.html
+import { site, absoluteUrl } from '../site.config'
+
+interface Props {
+  title?: string
+  /** Rendered excerpt HTML. Only posts have one; every other page falls back to
+   *  site.description, exactly as `{% if page.excerpt %}` did. */
+  excerpt?: string
+  url: string
+  featureImg?: string
+}
+const { title: pageTitle, excerpt, url, featureImg } = Astro.props as Props
+
+/** Liquid's `escape` filter — HTML-escapes the five entities. */
+const escape = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+
+const title = escape(pageTitle ?? site.title)
+
+/**
+ * `page.excerpt | newline_to_br | strip_newlines | replace: '<br />', ' ' | strip_html
+ *   | strip | truncatewords: 30`
+ * Liquid's `truncatewords` keeps 30 words and appends three full stops, not an ellipsis
+ * character — confirmed against the golden <meta name="description">.
+ */
+function describe(html: string): string {
+  const withBr = html.replace(/\n/g, '<br />\n')          // newline_to_br
+  const oneLine = withBr.replace(/\r?\n/g, '')            // strip_newlines
+  const spaced = oneLine.split('<br />').join(' ')        // replace
+  const text = spaced.replace(/<[^>]*>/g, '')             // strip_html
+  const stripped = text.trim()                            // strip
+  const words = stripped.split(' ').filter((w) => w.length > 0)
+  if (words.length <= 30) return stripped
+  return words.slice(0, 30).join(' ') + '...'
+}
+
+const description = excerpt ? describe(excerpt) : site.description
+const canonical = absoluteUrl(url.replace(/index\.html$/, ''))
+const imageSmall = absoluteUrl('/img/favicon.jpg')
+const imageLarge = absoluteUrl(featureImg ?? '/img/ruben.jpg')
+---
+<head prefix="foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns#">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title set:html={title} />
+  <meta name="description" content={description} />
+
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" type="application/rss+xml" title={site.title} href={absoluteUrl('/feed.xml')} />
+  <link rel="shortcut icon" type="image/png" href={imageSmall} />
+  <link rel="foaf:primaryTopic" href={absoluteUrl('/#me')} />
+  <link rel="foaf:primaryTopic foaf:maker" href={absoluteUrl('/#me')} />
+  <meta property="og:image" content={imageLarge} />
+  <meta property="og:title" content={pageTitle ?? site.title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content={site.title} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:site" content="@rubensworks" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={pageTitle ?? site.title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={imageLarge} />
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+  <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css' />
+</head>

@@ -1,0 +1,26 @@
+---
+// Port of presentations.md
+//
+// The original is Markdown with `## {{ year }}` inside a Liquid loop, so the headings pick
+// up kramdown's auto-generated ids (`<h2 id="2026">`). Reproduced explicitly here, since the
+// page is now a component rather than Markdown.
+import Page from '../layouts/Page.astro'
+import Presentations from '../components/Presentations.astro'
+import { loadPresentations, presentationsByYear } from '../lib/presentations'
+
+// `{% assign currentyear = site.time | date: '%Y' %}` / `(2016..currentyear) | reverse`.
+const currentYear = new Date().getFullYear()
+const groups = presentationsByYear(loadPresentations(), 2016, currentYear)
+---
+<Page title="Presentations" url="/presentations/">
+<p>This page lists all my (public) presentations chronologically.<br />
+Unless otherwise noted, all publications are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a>.</p>
+
+{groups.map(([year, presentations]) => (
+  <Fragment>
+<h2 id={String(year)}>{year}</h2>
+
+<Presentations presentations={presentations} />
+  </Fragment>
+))}
+</Page>

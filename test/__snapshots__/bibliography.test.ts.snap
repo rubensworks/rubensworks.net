@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`author display names > every author resolves in knows.yml or the known-unlinked allowlist 1`] = `
+[
+  "Amr Azzam",
+  "Ana-Claudia Sima",
+  "Axel Polleres",
+  "Enno Meijers",
+  "Herbert Van de Sompel",
+  "Jakob Beetz",
+  "Jerven Bolleman",
+  "Meike Morren",
+  "Patrick Hochstenbach",
+  "Sjors de Valk",
+  "Tarcisio Mendes de Farias",
+  "Tom De Nies",
+]
+`;

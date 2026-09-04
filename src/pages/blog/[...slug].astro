@@ -1,0 +1,32 @@
+---
+// The 6 posts, at Jekyll's `permalink: pretty` + `categories: blog` URLs:
+// /blog/:year/:month/:day/:slug/
+import { render } from 'astro:content'
+import Post from '../../layouts/Post.astro'
+import { loadPosts } from '../../lib/posts'
+
+export async function getStaticPaths() {
+  const posts = await loadPosts()
+  return posts.map((post) => ({
+    // The leading slash is stripped: the route is /blog/[...slug].
+    params: { slug: post.url.replace(/^\/blog\//, '').replace(/\/$/, '') },
+    props: { post },
+  }))
+}
+
+const { post } = Astro.props
+const { Content } = await render(post.entry)
+const d = post.entry.data
+---
+<Post
+  url={post.url}
+  title={d.title}
+  subtitle={d.subtitle}
+  date={post.date}
+  author={d.author}
+  featureImg={d.feature_img}
+  excerpt={post.excerpt}
+  comments={d.comments ?? false}
+>
+  <Content />
+</Post>
