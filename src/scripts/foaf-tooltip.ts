@@ -3,7 +3,7 @@
  *
  * This file is the whole main-thread cost of the feature: it finds the author links, decides
  * when the reader means it, and draws the card. Everything expensive happens in
- * `foaf-worker.ts`, which is why this can stay small enough for Astro to inline it.
+ * `foaf-worker.ts`, which is why this stays a few kilobytes.
  *
  * The links need no markup of their own. `_data/knows.yml` already puts each co-author's
  * FOAF identifier in the `resource` attribute of `a.author`, for the RDFa the pages publish,
@@ -30,15 +30,6 @@ const DWELL_MS = 180
  * enough that a pointer travelling through the 8 px gap between them is not caught out.
  */
 const HIDE_MS = 120
-/**
- * How often a pointer-opened card re-checks that it is still wanted, with no event needed.
- *
- * Every earlier version of this file hung dismissal on receiving some event after the
- * pointer left — mouseout, then mousemove — and each time there was a way for that event
- * not to come. This is the backstop: while a card is up for the pointer, the same check
- * runs on a timer, so the card cannot outlive the reason it opened by more than a tick.
- */
-const WATCH_MS = 150
 /**
  * One pixel, for one reason: Chrome reports `MouseEvent.clientX` as an integer while the
  * name's rect is fractional, so a pointer on the last pixel of a glyph can read as one
@@ -76,7 +67,6 @@ let openedByPointer = false
  * the card grants this; a re-render that moves the card away from the pointer revokes it.
  */
 let onCard = false
-let watchTimer: number | undefined
 /** Whether the query panel is open, kept across the stages that re-render the card. */
 let queryOpen = false
 
@@ -272,7 +262,6 @@ function place(anchor: HTMLAnchorElement): void {
 function hide(): void {
   clearDwell()
   cancelHide()
-  stopWatch()
   onCard = false
   if (active) active.anchor.removeAttribute('aria-describedby')
   active = undefined
@@ -359,29 +348,18 @@ function scheduleHide(): void {
 }
 
 /**
- * Re-decides whether the card belongs on screen. Called on every pointer move, on every
- * re-render, and by the watchdog on a timer, so the decision never depends on any one of
- * those having happened.
+ * Re-decides whether the card belongs on screen, on every pointer move and every re-render.
  *
  * `mouseover`/`mouseout` are not used at all. They report what crossed the pointer, and
  * Chromium does not reliably dispatch them when the page moves under a still cursor:
- * scrolling 20 px away from a name fires no `mouseout`.
+ * scrolling 20 px away from a name fires no `mouseout`. A `mousemove`, by contrast, is
+ * what a pointer produces by moving, so it is the one event a dismissal can rest on; the
+ * scroll and window-exit cases, where the pointer does not move, have their own handlers.
  */
 function review(): void {
   if (!active || !openedByPointer) return
   if (held()) cancelHide()
   else scheduleHide()
-}
-
-function startWatch(): void {
-  stopWatch()
-  watchTimer = window.setInterval(review, WATCH_MS)
-}
-
-function stopWatch(): void {
-  if (watchTimer === undefined) return
-  window.clearInterval(watchTimer)
-  watchTimer = undefined
 }
 
 // -- what the reader did --------------------------------------------------------------
@@ -418,8 +396,6 @@ function show(anchor: HTMLAnchorElement, byPointer: boolean): void {
   onCard = false
   const pending: Pending = { person, displayName: (anchor.textContent ?? '').trim(), anchor }
   active = pending
-  if (byPointer) startWatch()
-  else stopWatch()
   anchor.setAttribute('aria-describedby', 'foaf-card')
 
   lastWikidataEntity = undefined
@@ -473,10 +449,9 @@ function start(): void {
 
   document.addEventListener('mousemove', onPointerMove, { passive: true })
 
-  // The pointer is gone — out of the window, or the window is no longer the one in front.
-  // There is no position left to check, so a pointer-opened card goes at once. Both the
-  // `mouseleave` on the root and the `mouseout` to nowhere are wired because neither is
-  // guaranteed on its own across browsers.
+  // The pointer left the window, or the window stopped being the one in front. Either way
+  // there is no position left to check, so a pointer-opened card goes at once; the last move
+  // inside may well have been on the name, and switching windows moves no pointer at all.
   const pointerGone = () => {
     pointer = undefined
     onCard = false
@@ -484,13 +459,7 @@ function start(): void {
     if (openedByPointer) hide()
   }
   document.documentElement.addEventListener('mouseleave', pointerGone)
-  document.addEventListener('mouseout', (event) => {
-    if (event.relatedTarget === null) pointerGone()
-  })
   window.addEventListener('blur', pointerGone)
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') pointerGone()
-  })
 
   // Keyboard readers get the same card; the author links are already focusable.
   document.addEventListener('focusin', (event) => {
