@@ -1,3 +1,16 @@
+@inproceedings{taelman_iswc_vision_symbioticknowledgegraphs_2026,
+  author    = {Taelman, Ruben},
+  title     = {Symbiotic Knowledge Graphs: A Vision for Semantic Brain-Computer Interfaces},
+  booktitle = {Proceedings of the 25th International Semantic Web Conference},
+  year      = {2026},
+  month     = {october},
+  abstract  = {
+A primary goal of the Semantic Web was to enable autonomous agents to take up tasks on behalf of humans. Now, 25 years after this initial vision, this goal could be considered partially realized. While these agents can be personal, and associated to specific humans, they are not directly integrated within human cognition. In other words, these intelligent agents are external to the human body and brain, and they require indirect communication through human sensory and motor functions. As such, the Semantic Web vision has set out a course to assist the evolution of human knowledge by creating intelligence in external agents, but the intelligence of individual humans remains untouched, or is even degrading. As such, to avoid human intelligence falling behind on artificial intelligence, there is a need to augment our human intelligence. Thanks to the Semantic Web technology stack, we already have a foundation to make machines understand data, which are often captured in the form of Knowledge Graphs. In this paper, we argue that this stack offer a basis to also make knowledge interoperable across humans and can augment human intelligence through Semantic Brain-Computer Interfaces. We present an interdisciplinary research roadmap for achieving this vision, which spans Augmented Cognition, Cognitive Neuroscience, Brain-Computer Interfaces, and Neuro-symbolic AI. This will enable the existence of Symbiotic Knowledge Graphs, which consist of the integration of human knowledge stored in the brain, and external knowledge stored on the Web. Concretely, we propose a research vision where artificial intelligence and human intelligence can co-evolve in a symbiotic manner, without one replacing the other.
+  },
+  url       = {https://rubensworks.github.io/article-iswc2026-vision-symbiotic-knowledge-graphs/},
+  _type     = {Blue Sky}
+}
+
 @inproceedings{crum_iswc_inuse_realworldfed_2026,
   author    = {Crum, Elias and Tam, Bryan-Elliott and Hanski, Jonni and Sima, Ana-Claudia and Mendes de Farias, Tarcisio and Bolleman, Jerven and Taelman, Ruben},
   title     = {Does SPARQL federation work in the real world? A case study over large biological SPARQL endpoints},
@@ -36,6 +49,91 @@ for accurately evaluating client-side optimization techniques in decentralized e
   _type     = {Conference}
 }
 
+@inproceedings{tam_dmkg_largerdfbench_2026,
+  author    = {Tam, Bryan-Elliott and Muhammad, Saleem and Taelman, Ruben},
+  title     = {Strengthening LargeRDFBench for Interoperable Federated SPARQL Evaluation},
+  month     = {october},
+  booktitle = {Proceedings of the 2nd International Workshop on Data Management for Knowledge Graphs},
+  year      = {2026},
+  abstract  = {
+LargeRDFBench is one of the most comprehensive benchmarks for evaluating federated SPARQL query engines,
+combining a large collection of real, interlinked datasets with a rich query suite that has made it a reference
+point for the community. As the benchmark continues to be widely adopted and the range of conformant
+engines grows, the interoperability of its artifacts, and thus the reproducibility of comparisons across engines,
+becomes ever more important. Yet several of its data dumps violate the RDF specifications, and its expected query
+results are distributed in an ad hoc format and contain discrepancies with respect to the source datasets. We
+systematically identify and categorize these data-quality issues and repair them, producing standards-conformant
+serializations of every affected dataset; we re-encode the benchmark’s expected results in the W3C SPARQL
+1.1 Query Results JSON Format and correct their discrepancies. We contribute a standards-compliant edition
+of LargeRDFBench, produced by a reproducible cleaning pipeline, together with its expected query results in a
+standard, machine-verifiable format. Every dataset now parses under strict, specification-compliant RDF parsers,
+and the expected results are machine-verifiable through a standard format, extending the benchmark’s reach
+to the full range of conformant engines while staying faithful to the original data. Running the modernized
+benchmark end-to-end, we validate and correct its expected results, and find that the hosting engine can change
+the answers the benchmark returns, so that results obtained on it are not always reproducible across engines. We
+further perform a preliminary comparison, not previously explored, of ASK- and COUNT-based source selection in
+the FedX algorithm. This work strengthens an already valuable community resource by aligning its artifacts with
+the RDF standards. In doing so, we broaden the set of engines that can be fairly and reproducibly compared, and
+open the question of how the server-side SPARQL engines that host the data influence algorithmic choices and,
+through them, federated query performance.
+},
+  _type     = {Workshop},
+  url       = {https://arxiv.org/pdf/2608.30465}
+}
+
+@inproceedings{jakubowski_dmkg_largerdfbench_2026,
+  author    = {Jakubowski, Maxime and Tomaszuk, Dominik and Fernandez Alvarez, Daniel and Labra Gayo, Jose Emilio and Taelman, Ruben and Dedecker, Ruben and Hose, Katja},
+  title     = {Translating RDF 1.2 Graphs to Property Graphs},
+  month     = {october},
+  booktitle = {Proceedings of the 2nd International Workshop on Data Management for Knowledge Graphs},
+  year      = {2026},
+  abstract  = {
+RDF 1.2 introduces statement-level constructs, such as triple terms, reifiers, and descriptions, that pose new
+challenges for transforming RDF data into labeled property graphs (LPGs). This work presents and compares three
+algorithms for translating RDF 1.2 data into LPGs, each interpreting a different amount of the RDF 1.2 reification
+vocabulary. Algorithm Structural interprets no vocabulary and losslessly supports arbitrary RDF 1.2 graphs
+by representing triple terms explicitly as nodes; Direct interprets rdf:reifies to recover annotated edges
+while preserving reifiers as graph objects; and Fold additionally folds reifier descriptions into edge properties,
+resulting in a more concise, albeit lossy, LPG representation. We define the three translations, analyze which
+class of RDF 1.2 graphs each preserves, and experimentally evaluate their implementations. The experiments
+confirm the predicted trade-offs: all variants scale linearly on the tested workloads, the generality of Structural
+has no runtime penalty, and folding descriptions into edge records can significantly reduce the number of edges
+on description-heavy data.
+},
+  _type     = {Workshop}
+}
+
+@article{tam_swj_travelingmap_2026,
+  author    = {Tam, Bryan-Elliott and Van Herwegen, Joachim and Colpaert, Pieter and Verborgh, Ruben and Taelman, Ruben},
+  title     = {Traveling with a Map: Reducing the Search Space of Link Traversal Queries Using RDF Shapes},
+  month     = {sep},
+  journal   = {Semantic Web Journal},
+  year      = {2026},
+  url       = {https://www.semantic-web-journal.net/system/files/swj4106.pdf},
+  abstract  = {
+The centralization of web information raises legal and ethical concerns, particularly in social, healthcare, and education
+applications. Decentralized architectures offer a promising alternative by keeping data closer to its source, yet efficient
+query processing remains a significant challenge. Link Traversal Query Processing (LTQP) enables querying across
+decentralized networks, however, it often suffers from long execution times and high data transfer costs due to the large
+number of Hypertext Transfer Protocol (HTTP) requests involved. In many scenarios, queries are highly selective with
+respect to the data model objects distributed across the network. For example, in a social media application where
+users store heterogeneous data, a query may focus solely on the posts and comments created by users, without
+requiring any of their additional user information. We refer to such queries as data-model selective. We propose a
+shape-based pruning approach that relies on shape indexes and a query-shape subsumption algorithm to reduce
+the search space and, consequently, the number of HTTP requests for such queries. We formalize this approach
+as a link pruning mechanism for LTQP and evaluate its effectiveness on social media queries using the SolidBench
+benchmark across multiple evaluation metrics. Our results show that shape-based pruning substantially improves query
+execution time, first-result arrival time, diefficiency, and network usage for data-model selective queries, while having
+unsignificative impact on non-selective data-model queries. These gains come at the cost of only a minor increase in
+the number of triples per shape-index instance. Moreover, our approach is resilient, retaining performance benefits even
+in networks where some data providers do not supply shape-index information. This work demonstrates that shapebased metadata can significantly optimize LTQP in decentralized knowledge graphs for an important class of queries.
+By exposing such metadata, data providers not only enhance data quality and interoperability but also improve the
+efficiency of traversal-based query processing.
+},
+  _type     = {Journal},
+  url       = {https://www.rubensworks.net/raw/publications/2026/tam_swj_travelingwithamap.pdf}
+}
+
 @inproceedings{taelman_semanticsbluesky_clientcentricqueryengines_2026,
   author    = {Taelman, Ruben},
   title     = {From Server-centric to Client-centric Data Integration over Decentralized Knowledge Graphs with Personal Query Engines},
@@ -66,6 +164,33 @@ is an inherent property, such as healthcare, social media, and personal genomics
 },
   _type     = {Blue Sky},
   _poster   = {https://rubensworks.github.io/poster-semantics2026-bluesky-clientcentricqueryengines/}
+}
+
+@inproceedings{maes_sage_srl_2026,
+  author    = {Maes, Lander and Tam, Bryan-Elliott and De Smet, Jitse and De Roo, Jos and Colpaert, Pieter and Taelman, Ruben},
+  title     = {Does SRL Pave the Road to Explainable Reasoning? Lessons Learned from an Implementer’s Perspective},
+  month     = {sep},
+  booktitle = {Proceedings of the 1st International Workshop on Semantic Architectures for Governance and Explainability},
+  year      = {2026},
+  abstract  = {
+The Shape Rules Language (SRL) Working Draft defines how to derive new RDF triples from an RDF graph
+using inference rules. Each rule matches graph patterns and instantiates triple templates whose output feeds
+into validation pipelines, SPARQL queries, or further inference. RDF reasoning has traditionally relied on fixed
+entailment regimes (RDFS, OWL), rule-based ad-hoc languages such as N3, or other implementation-specific
+solutions without a shared standard. SRL introduces user-defined production rules with a defined grammar,
+dependency analysis, execution ordering, and termination guarantees. However, no authoritative implementation
+exists, leaving practitioners with little guidance on how to build a conformant engine or on what problems the
+language can solve. We implemented two SRL engines and evaluated both on classical RDF reasoning tasks for
+soundness, completeness, and speed. The first reuses an existing SPARQL query engine and its query parser; the
+second is a dedicated engine. The SPARQL-based engine reused an existing modular parser for query construction
+and SPARQL CONSTRUCT for triple production, reducing engine-specific work. The dedicated engine was two
+to six times faster, the gap widening as rule sets grow. Both engines were validated against the SRL conformance
+test suite, supplemented by additional use-case-driven tests. A usable SRL engine can be built inexpensively on
+top of a SPARQL engine, with a moderate speed trade-off that a dedicated implementation recovers. Despite the
+specification’s immaturity, the language already supports practically useful reasoning tasks.
+},
+  _type     = {Workshop},
+  url       = {https://arxiv.org/pdf/2609.03441}
 }
 
 @inproceedings{desmet_offlinefirst_icwe_2026,
