@@ -6,7 +6,7 @@ comments:    true
 title:       "Did AI Crawlers Kill SPARQL Federation?"
 subtitle:    "Public Knowledge Graph infrastructure is degrading due to AI crawlers."
 date:        2026-04-13 11:10:00 +0200
-feature_img: /img/blog/sparql-federation-stone.png
+feature_img: /img/blog/sparql-federation-stone.jpg
 ---
 <p class="post-abstract" markdown="1">
 RDF provides the basis for distributing Knowledge Graphs (KGs) across different locations,
@@ -43,7 +43,7 @@ and I mention possible mitigations strategies.
 Through this, I aim to trigger discussions about the sustainability of public KG infrastructure,
 and challenge future research towards new querying or publishing techniques that can cope with this new reality.
 
-<img src="/img/blog/sparql-federation-stone.png" alt="A graveyard of past technologies" class="feature-img" />
+<img src="/img/blog/sparql-federation-stone.jpg" alt="A graveyard of past technologies" class="feature-img" />
 
 <p>
 <center><em>Will SPARQL federation end up in the line of past technologies?</em></center>
