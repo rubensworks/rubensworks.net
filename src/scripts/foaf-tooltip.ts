@@ -279,6 +279,20 @@ function pointerOnAnchor(): boolean {
   return false
 }
 
+/**
+ * Whether the pointer is inside the card's own box.
+ *
+ * The card is click-through, so `event.target` under it is whatever it covers, and on a
+ * bibliography that is usually other author names — especially when the card is placed
+ * above a name low in the viewport, where it lands squarely on the line above. Pointing at
+ * a name the card is drawn over is not pointing at that name, and treating it as a hover
+ * opened a fresh card the moment the reader moved off the one they were leaving.
+ */
+function pointerOverCard(): boolean {
+  if (!pointer || !card || card.hidden) return false
+  return near(card.getBoundingClientRect(), pointer.x, pointer.y)
+}
+
 function scheduleHide(): void {
   window.clearTimeout(hideTimer)
   hideTimer = window.setTimeout(() => {
@@ -369,7 +383,10 @@ function show(anchor: HTMLAnchorElement, byPointer: boolean): void {
  */
 function onPointerMove(event: MouseEvent): void {
   pointer = { x: event.clientX, y: event.clientY }
-  const anchor = authorLink(event.target)
+  // The name under the pointer wins over the card, so a card the clamp has pushed over its
+  // own anchor cannot dismiss and reopen itself in a loop.
+  const shadowed = !pointerOnAnchor() && pointerOverCard()
+  const anchor = shadowed ? undefined : authorLink(event.target)
   if (!anchor) {
     // Off the name before the dwell was met, so there is nothing to look up.
     clearDwell()
