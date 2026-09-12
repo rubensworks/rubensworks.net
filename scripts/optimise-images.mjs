@@ -48,11 +48,29 @@ const MAX_WIDTH = [
 
 /**
  * Photographs stored as PNG. PNG is lossless, which is the wrong trade for a photograph:
- * these three cost 4.3 MB between them and look identical as JPEG at a fifteenth of that.
- * The `.png` files are deleted and every reference to them is rewritten — `npm run
- * check:links` fails the build if one is missed.
+ * these cost 4.3 MB between them and look identical as JPEG at a fifteenth of that. The
+ * pages are rewritten to the `.jpg` — `npm run check:links` fails the build if a reference
+ * is missed — and the `.png` stays where it is, under KEPT_AS_PUBLISHED below.
+ *
+ * Empty because the three conversions it was written for are done. A new photographic PNG
+ * belongs here, along with its old name in KEPT_AS_PUBLISHED.
  */
-const PNG_TO_JPEG = new Set([
+const PNG_TO_JPEG = new Set([])
+
+/**
+ * Files this script must not touch, because something outside this repository asks for them
+ * by name. Nothing here links to them any more; they exist so that a URL already published
+ * keeps resolving.
+ *
+ * These three are the PNG originals of photographs now served as JPEG. Their `.png` URLs are
+ * in the og:image of posts that have been shared, and in any page elsewhere that embedded
+ * one, so deleting them would turn someone else's image into a 404 rather than a smaller
+ * download. They are never fetched by a visitor to this site.
+ *
+ * Only removed URLs need an entry. An image re-encoded in place keeps its URL, so a page
+ * that hotlinks it simply gets the smaller version.
+ */
+const KEPT_AS_PUBLISHED = new Set([
   'img/blog/red-car-sunset.png',
   'img/blog/scale-modularity-decentralization-perf.png',
   'img/blog/sparql-federation-stone.png',
@@ -137,7 +155,9 @@ async function optimise(rel, srcBuf, keepOriginal = false) {
   }
 }
 
-const all = listFiles(IMG_DIR).filter((f) => RASTER.test(f) && !GENERATED.test(f))
+const all = listFiles(IMG_DIR).filter(
+  (f) => RASTER.test(f) && !GENERATED.test(f) && !KEPT_AS_PUBLISHED.has(f),
+)
 const derived = new Set(VARIANTS.map((v) => v.to))
 
 if (check) {
@@ -154,6 +174,11 @@ if (check) {
   }
   for (const { to } of VARIANTS) {
     if (!existsSync(join(ROOT, to))) problems.push(`${to}: missing — it is what the small renderings load`)
+  }
+  for (const rel of KEPT_AS_PUBLISHED) {
+    if (!existsSync(join(ROOT, rel))) {
+      problems.push(`${rel}: deleted — other sites link to this URL, so it has to keep resolving`)
+    }
   }
   if (problems.length) {
     console.error(`FAIL: ${problems.length} image(s) are not optimised:`)

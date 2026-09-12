@@ -96,7 +96,15 @@ reading list, or a template, it is the same rule (`src/lib/images.ts`). An image
 yourself, with a `width` attribute, keeps what you gave it.
 
 The display widths are listed in `scripts/optimise-images.mjs`; a new place that shows images
-at a different size belongs in that table. `npm run icons` regenerates the favicon and the app
+at a different size belongs in that table.
+
+Renaming or deleting an image is the one thing to be careful with: other sites hotlink these
+URLs, and a post's feature image is its `og:image`, so it lives on in every social card that
+was ever shared. Re-encoding a file in place is safe, since the URL does not change. Removing
+one is not, so the old file stays where it is and is listed in `KEPT_AS_PUBLISHED` in that
+script, which leaves it alone and fails `npm run check:images` if it ever goes missing. The
+three PNG photographs now served as JPEG are there for that reason; nothing on this site
+fetches them. `npm run icons` regenerates the favicon and the app
 icons from `public/img/ruben.jpg`, and is only needed if that photograph changes.
 
 ## Fonts
