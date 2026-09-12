@@ -62,7 +62,7 @@ of the excerpt shown on `/blog/` and in the feed.
 
 Github icon provided by Jekyll
 
-Twitter icon provided by Jekyll
+X icon based on the X brand mark
 
 Google Plus icon made by Freepik from www.flaticon.com
 
