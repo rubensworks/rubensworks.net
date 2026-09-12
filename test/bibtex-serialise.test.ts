@@ -21,8 +21,9 @@ const skip = site.scholar.bibtexSkipFields
 describe('raw BibTeX parsing', () => {
   const raw = parseRawEntries(readFileSync('_bibliography/references.bib', 'utf8'))
 
-  it('finds all 92 entries', () => {
-    expect(raw).toHaveLength(92)
+  it('finds every entry in the file', () => {
+    const atSigns = readFileSync('_bibliography/references.bib', 'utf8').match(/^@\w+\{/gm)!
+    expect(raw).toHaveLength(atSigns.length)
   })
 
   it('keeps values undecoded, braces and LaTeX escapes intact', () => {
@@ -156,10 +157,15 @@ describe('serialiseEntry', () => {
 describe('the <pre class="bibtex"> block on every publication page', () => {
   const blocks = loadBibtexBlocks(skip)
 
-  it('covers every entry', () => {
-    expect(Object.keys(expected)).toHaveLength(92)
-    expect(blocks.size).toBe(92)
-    expect(new Set(blocks.keys())).toEqual(new Set(Object.keys(expected)))
+  it('renders a block for every entry, including ones added since', () => {
+    expect(blocks.size).toBe(parseRawEntries(readFileSync('_bibliography/references.bib', 'utf8')).length)
+  })
+
+  it('still covers every recorded entry', () => {
+    // The fixture is a frozen regression corpus, not a completeness check: an entry added
+    // later is rendered and checked by the test above, just not pinned byte-for-byte here.
+    const missing = Object.keys(expected).filter((k) => !blocks.has(k))
+    expect(missing, 'recorded entries no longer in references.bib').toEqual([])
   })
 
   it.each(Object.keys(expected))('matches byte-for-byte: %s', (key) => {

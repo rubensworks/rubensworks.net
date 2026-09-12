@@ -12,9 +12,24 @@ import { matchOp, queryEntries, compileQuery } from '../src/lib/bibquery'
 
 const entries = loadBibliography()
 
+// knows.yml names that match no author. `Jacob Beetz` is spelled `Jakob Beetz` in
+// references.bib, so that person's profile link has never been applied — a content typo,
+// listed here rather than silently corrected because fixing it changes what pages render.
+const KNOWN_TYPOS = new Set(['Jacob Beetz'])
+
+// Keys frozen when the fixtures below were recorded. Entries added since are not in it, so
+// nothing here fails just because the bibliography grew.
+const frozenKeys: string[] = JSON.parse(readFileSync('test/fixtures/entry-order.json', 'utf8'))
+const frozen = new Set(frozenKeys)
+
 describe('parsing', () => {
-  it('parses all 92 entries with no errors', () => {
-    expect(entries).toHaveLength(92)
+  it('parses every entry in the file, with no errors', () => {
+    // Against the raw scanner rather than a hard-coded number: the two read the file in
+    // completely different ways, so agreeing on the count is a real check and adding an
+    // entry does not break it.
+    const atSigns = readFileSync('_bibliography/references.bib', 'utf8').match(/^@\w+\{/gm)!
+    expect(entries).toHaveLength(atSigns.length)
+    expect(entries.length).toBeGreaterThanOrEqual(frozen.size)
   })
 
   it('preserves the custom _-prefixed fields', () => {
@@ -22,7 +37,8 @@ describe('parsing', () => {
     const e = entries.find((x) => x.key === 'taelman_iswc_resources_comunica_2018')!
     expect(e._type).toBe('Conference')
     expect(e._highlighted).toBe('true')
-    expect(entries.filter((x) => x._highlighted === 'true')).toHaveLength(3)
+    // The homepage lists whichever entries carry it; the count is content, not a contract.
+    expect(entries.filter((x) => x._highlighted === 'true').length).toBeGreaterThan(0)
   })
 
   it('covers every _type value used by cv.md', () => {
@@ -63,17 +79,22 @@ describe('author display names', () => {
     for (const n of all) expect(n, `raw LaTeX leaked: ${n}`).not.toMatch(/[\\{}]/)
   })
 
-  it('yields 88 distinct authors', () => {
-    expect(new Set(entries.flatMap((e) => e.authors.map((a) => a.display))).size).toBe(88)
+  it('gives every entry at least one non-empty author', () => {
+    for (const e of entries) {
+      expect(e.authors.length, `${e.key} has no authors`).toBeGreaterThan(0)
+      for (const a of e.authors) expect(a.display.trim(), e.key).not.toBe('')
+    }
   })
 
-  it('every author resolves in knows.yml or the known-unlinked allowlist', () => {
-    const knows = loadKnows()
-    const allowlist = new Set(JSON.parse(process.env.UNLINKED_AUTHORS ?? '[]'))
-    const unresolved = [...new Set(entries.flatMap((e) => e.authors.map((a) => a.display)))]
-      .filter((n) => !(n in knows) && !allowlist.has(n))
-    // Snapshot so a name-parsing regression changes the list and fails the build.
-    expect(unresolved.sort()).toMatchSnapshot()
+  // Checked in this direction on purpose. Asserting that every *author* is in knows.yml
+  // would fail the moment a paper gains an external co-author with no profile, which is
+  // ordinary. Asserting that every knows.yml *name* still matches an author catches the
+  // thing that actually matters: a name-parsing change that silently stops the lookup
+  // working and drops the foaf:maker links.
+  it('every name in knows.yml still matches an author', () => {
+    const authors = new Set(entries.flatMap((e) => e.authors.map((a) => a.display)))
+    const unmatched = Object.keys(loadKnows()).filter((n) => !authors.has(n) && !KNOWN_TYPOS.has(n))
+    expect(unmatched, 'knows.yml entries that link nothing').toEqual([])
   })
 })
 
@@ -96,27 +117,33 @@ describe('sorting and grouping', () => {
     expect(monthToNumber(undefined)).toBeNull()
   })
 
-  it('sorts the one month-less entry last within its year', () => {
-    const e = entries.find((x) => x.key === 'dimou_ekaw_workshop_2016')!
-    expect(e.monthNumeric).toBeNull()
-    const sameYear = entries.filter((x) => x.year === e.year)
-    expect(sameYear[sameYear.length - 1].key).toBe(e.key)
+  it('sorts month-less entries last within their year', () => {
+    for (const year of new Set(entries.map((e) => e.year))) {
+      const inYear = entries.filter((e) => e.year === year)
+      const firstMonthless = inYear.findIndex((e) => e.monthNumeric === null)
+      if (firstMonthless < 0) continue
+      for (const e of inYear.slice(firstMonthless)) {
+        expect(e.monthNumeric, `${e.key} has a month but sorts after one that does not`).toBeNull()
+      }
+    }
   })
 
   it('groups by year in descending order', () => {
     const groups = groupByYear(entries)
     const years = groups.map(([y]) => y)
     expect(years).toEqual([...years].sort((a, b) => b - a))
-    expect(groups.reduce((n, [, es]) => n + es.length, 0)).toBe(92)
+    expect(groups.reduce((n, [, es]) => n + es.length, 0)).toBe(entries.length)
   })
 
   // Recorded reference values, NOT a snapshot of this code's own output — do not regenerate
-  // them from the sort below, or the test becomes vacuous. An earlier self-referential
+  // them from the sort above, or the test becomes vacuous. An earlier self-referential
   // snapshot hid a real bug: monthToNumber returned null for 91 of 92 entries, so the
   // secondary sort key did nothing and nothing complained.
-  it('sorts the entries into the published order', () => {
-    const expected: string[] = JSON.parse(readFileSync('test/fixtures/entry-order.json', 'utf8'))
-    expect(entries.map((e) => e.key)).toEqual(expected)
+  //
+  // Compared as a *relative* order, so adding or removing an entry does not fail it.
+  it('keeps the recorded entries in their recorded order', () => {
+    const stillPresent = frozenKeys.filter((k) => entries.some((e) => e.key === k))
+    expect(entries.map((e) => e.key).filter((k) => frozen.has(k))).toEqual(stillPresent)
   })
 })
 
@@ -146,6 +173,9 @@ describe('query operators (bibtex-ruby elements.rb:195-232)', () => {
   })
 
   it('reproduces every --query used in the site', () => {
+    const recorded = entries.filter((e) => frozen.has(e.key))
+    expect(recorded, 'a recorded entry was removed; re-record the fixtures')
+      .toHaveLength(frozen.size)
     const counts = Object.fromEntries([
       '@*[_highlighted=true]',
       '@*[_type=Journal]', '@*[_type=Conference]', '@*[_type=Workshop]',
@@ -156,9 +186,10 @@ describe('query operators (bibtex-ruby elements.rb:195-232)', () => {
       '@*[author ~= Ruben$ && author !~ Verborgh]',
       '@*[author !~ Verborgh]',
       '@*',
-    ].map((q) => [q, queryEntries(entries, q).length]))
-    // The counts /cv/ prints for each of its {% bibliography_count %} tags. Recorded
-    // reference values, not a snapshot of what queryEntries currently returns.
+    ].map((q) => [q, queryEntries(recorded, q).length]))
+    // Recorded reference values, not a snapshot of what queryEntries currently returns.
+    // Evaluated over the frozen entry set so that adding a publication — which legitimately
+    // changes what /cv/ prints — does not fail this.
     const expected = JSON.parse(readFileSync('test/fixtures/query-counts.json', 'utf8'))
     expect(counts).toEqual(expected)
   })
