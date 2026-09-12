@@ -2,7 +2,7 @@
 // Built-site integrity: internal links, in-page anchors, and leaked internal markers
 // (plan §7.4).
 //
-//   node verify/links.mjs <dir>
+//   node scripts/check-links.mjs <dir>
 //
 // Replaces `script/cibuild`'s `htmlproofer ... || true`. This one exits non-zero, which is
 // the point: the kramdown-vs-github-slugger heading-slug risk (§6.4.3) is only guarded if a

@@ -10,8 +10,9 @@ import {
 import { site } from '../src/site.config'
 
 // The 92 golden <pre class="bibtex content"> blocks, extracted from the Jekyll baseline by
-// verify/extract-bibtex-fixtures.mjs. This is the fixture set plan §9 calls for: it pins the
-// one piece of jekyll-scholar that was never reproduced before.
+// verify/extract-bibtex-fixtures.mjs, on the `claude/jekyll-astro-migration-verify-tooling`
+// branch. This is the fixture set plan §9 calls for: it pins the one piece of
+// jekyll-scholar that was never reproduced before.
 const golden: Record<string, string> = JSON.parse(
   readFileSync('test/fixtures/bibtex-blocks.json', 'utf8'),
 )

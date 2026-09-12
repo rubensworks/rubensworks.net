@@ -18,34 +18,17 @@ fails if one does not. It runs in CI after the build.
 
 ## Verifying against the old Jekyll site
 
-`verify/` holds the tooling used for the Jekyll → Astro migration. It compares a build
-against a reference tree — by DOM, by extracted RDF graph, and by screenshot — and is worth
-keeping around for any change that should not alter the rendered output.
+The migration was checked against a golden build of the last Jekyll commit: a structural DOM
+diff of all 121 pages, a per-page RDF graph comparison, a stylesheet comparison, a
+character-by-character comparison of syntax-highlighting colours, and a Playwright pixel
+comparison at 1280/800/560 px.
 
-To rebuild the baseline, check out the last Jekyll commit (`6e1823c`, the parent of the
-migration) into a scratch directory and build it there. It needs Ruby 2.7 — `bibtex-ruby`
-4.4.7 calls `Proc.new` without a block, which was removed in Ruby 3.0 — hence the container:
-
-```bash
-git worktree add /tmp/jekyll 6e1823c
-docker run --rm -v /tmp/jekyll:/src -w /src ruby:2.7 \
-  bash -c 'bundle install && bundle exec jekyll build -d /src/_site'
-cp -r /tmp/jekyll/_site _site_golden
-```
-
-Then:
-
-```bash
-npm run verify        # tests, DOM diff, RDF graph diff, CSS diff, code colours, link check
-npm run verify:shots  # Playwright, 1280/800/560 px, Google Fonts blocked on both sides
-```
-
-The screenshot pass is separate because it is slow — 23 pages at three viewports, each
-rendered twice and compared pixel by pixel. Run it before anything that touches templates,
-CSS or the Markdown pipeline.
-
-Each script prints the differences it accepts and why; anything else fails. The individual
-steps are `verify:html`, `verify:rdf`, `verify:css`, `verify:colors` and `check:links`.
+That tooling is **not** in this branch — it only makes sense next to a Jekyll build, and
+this repository no longer has one. It lives on
+[`claude/jekyll-astro-migration-verify-tooling`](https://github.com/rubensworks/rubensworks.net/tree/claude/jekyll-astro-migration-verify-tooling),
+which is the migration branch with `verify/` still present, and is kept around unmerged for
+any future change that should not alter the rendered output. Check it out, rebuild the
+baseline as its README describes, and run `npm run verify`.
 
 ## Images
 

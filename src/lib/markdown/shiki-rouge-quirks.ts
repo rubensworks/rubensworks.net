@@ -7,7 +7,8 @@ import type { ShikiTransformer, ThemedToken } from 'shiki'
  * everything a grammar can express. These two cases depend on the *token text*, not on the
  * scope, so no theme can reach them — and both are visible on the blog today.
  *
- * Verified character by character against the Jekyll output by `verify/code-colors.mjs`.
+ * Verified character by character against the Jekyll output by `verify/code-colors.mjs`, on
+ * the `claude/jekyll-astro-migration-verify-tooling` branch.
  */
 
 // Rouge's Javascript lexer keyword lists (lib/rouge/lexers/javascript.rb). Its identifier

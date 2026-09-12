@@ -13,10 +13,11 @@
  *
  * The scope-to-colour mapping is tuned to the three languages the site's code blocks use —
  * javascript, json and sparql — and was derived by comparing the golden Jekyll output
- * character by character. `verify/code-colors.mjs` re-runs that comparison and currently
- * requires it to be exact, so a wrong mapping fails the check rather than shipping. A post
- * in a fourth language would need the same treatment: run the check, read the shapes it
- * reports, and add the scopes it names.
+ * character by character. `verify/code-colors.mjs`, on the
+ * `claude/jekyll-astro-migration-verify-tooling` branch, re-runs that comparison and
+ * requires it to be exact — 0 of 8511 characters differ. A post in a fourth language would
+ * need the same treatment: run that check against a Jekyll baseline, read the recolouring
+ * shapes it reports, and add the scopes it names.
  */
 export const rougeGithub = {
   name: 'rouge-github',
@@ -123,7 +124,7 @@ export const rougeGithub = {
     // TextMate grammars name the same construct differently per language, so where a broad
     // scope above lands on the wrong Rouge class the specific scope is restated here (the
     // longest matching scope wins). Everything below was derived by diffing the golden
-    // build character by character — see verify/code-colors.mjs.
+    // build character by character — see code-colors.mjs on the verify-tooling branch.
 
     // JavaScript: an object-literal key and a destructuring key are both Rouge `.na`,
     // not the plain identifiers the broad `variable` rule above would make them.
