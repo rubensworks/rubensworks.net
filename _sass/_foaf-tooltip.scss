@@ -1,0 +1,113 @@
+/**
+ * The hover card on author names. Its contents come from each person's own Linked Data, so
+ * every field can be missing; the layout has to read correctly with nothing but a name in it.
+ */
+.foaf-card {
+    position: absolute;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-sizing: border-box;
+    width: 320px;
+    max-width: calc(100vw - 16px);
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid $grey-color-light;
+    border-top: 3px solid $blue-color;
+    border-radius: 3px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+    font-size: 13px;
+    line-height: 1.45;
+    // The card is drawn next to the cursor, so it must never become a hit target itself
+    // until the pointer is actually on it.
+    cursor: default;
+
+    &.is-loading .foaf-card-name {
+        // Not a spinner: the name is known before the query starts, so the only thing that
+        // changes is the confidence of the rest.
+        opacity: 0.5;
+    }
+}
+
+.foaf-card-photo {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 3px;
+    background-color: $grey-color-light;
+}
+
+.foaf-card-text {
+    flex: 1 1 180px;
+    min-width: 0;
+
+    p {
+        margin: 0 0 2px;
+        // Long affiliations and ORCID-length strings would otherwise widen the card.
+        overflow-wrap: break-word;
+    }
+}
+
+.foaf-card-name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.foaf-card-title {
+    color: $grey-color-dark;
+}
+
+.foaf-card-affiliation,
+.foaf-card-description {
+    color: $grey-color;
+}
+
+.foaf-card-empty {
+    color: $grey-color;
+    font-style: italic;
+}
+
+.foaf-card-source {
+    flex: 1 1 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid $grey-color-light;
+    color: $grey-color;
+    font-size: 11px;
+}
+
+.foaf-card-toggle {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: $blue-color-dark;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.foaf-card-query {
+    flex: 1 1 100%;
+    max-height: 180px;
+    margin: 0;
+    overflow: auto;
+    padding: 8px;
+    background-color: #f6f8fa;
+    border: 1px solid $grey-color-light;
+    border-radius: 3px;
+    font-size: 10px;
+    line-height: 1.4;
+    white-space: pre;
+}
+
+// The card is a live lookup with no meaning on paper.
+@media print {
+    .foaf-card {
+        display: none;
+    }
+}

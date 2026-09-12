@@ -5,6 +5,7 @@ import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import GoogleAnalytics from '../components/GoogleAnalytics.astro'
 import Comments from '../components/Comments.astro'
+import FoafTooltip from '../components/FoafTooltip.astro'
 import '../../css/main.scss'
 
 interface Props {
@@ -37,6 +38,8 @@ const url = (Astro.props as Props).url ?? Astro.url.pathname
     </div>
 
     <Footer />
+
+    <FoafTooltip />
 
   </body>
 

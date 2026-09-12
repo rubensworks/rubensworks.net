@@ -29,6 +29,12 @@ export default defineConfig({
     shikiConfig: markdownOptions.shikiConfig,
   },
   vite: {
+    // Comunica's dependency tree still carries UMD footers that fall back to Node's bare
+    // `global` when `window` is absent — `typeof window < 'u' ? window.X = e : global.X = e`.
+    // A Web Worker has neither, so without this the worker dies on load with
+    // `ReferenceError: global is not defined`. This is a textual substitution, so it would
+    // also rewrite a variable of that name; nothing in this repo has one.
+    define: { global: 'globalThis' },
     build: {
       // esbuild rewrites `(max-width: 600px)` to the Media Queries Level 4 range syntax
       // `(width<=600px)` unless it knows it has to support older engines. Safari below 16.4
