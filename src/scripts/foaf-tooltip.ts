@@ -519,3 +519,34 @@ function start(): void {
 }
 
 start()
+
+/**
+ * Diagnostics, only with `?foafdebug` in the URL.
+ *
+ * The card's dismissal has been reported as failing in ways no headless run reproduces.
+ * This draws what the code believes, ten times a second, so a report can carry the state
+ * the card was in rather than a description of the motion. It costs nothing without the
+ * flag: the check below is the only line that runs.
+ */
+if (/[?&]foafdebug\b/.test(location.search)) {
+  const box = document.createElement('pre')
+  box.setAttribute('style', 'position:fixed;left:8px;bottom:8px;z-index:99999;margin:0;padding:8px 10px;font:11px/1.4 monospace;background:#111;color:#0f0;opacity:.92;pointer-events:none;white-space:pre;border-radius:4px')
+  document.body.append(box)
+  const events: string[] = []
+  const note = (name: string) => events.push(`${name}@${(performance.now() / 1000).toFixed(1)}s`) && events.length > 6 && events.shift()
+  for (const n of ['mousemove', 'mouseout', 'scroll', 'focusin', 'keydown'] as const) document.addEventListener(n, () => note(n), { passive: true, capture: true })
+  document.documentElement.addEventListener('mouseleave', () => note('html.mouseleave'))
+  window.addEventListener('blur', () => note('blur'))
+  window.setInterval(() => {
+    const rects = active ? Array.from(active.anchor.getClientRects()).map((r) => `${r.left | 0}..${r.right | 0}x${r.top | 0}..${r.bottom | 0}`).join(' ') : '-'
+    const cb = card && !card.hidden ? card.getBoundingClientRect() : undefined
+    box.textContent = [
+      `card ${card && !card.hidden ? 'SHOWN' : 'hidden'}  active=${active ? active.displayName : '-'}  byPointer=${openedByPointer}`,
+      `pointer=${pointer ? `${pointer.x | 0},${pointer.y | 0}` : '-'}  onAnchor=${pointerOnAnchor()}  onCard=${onCard}  held=${held()}`,
+      `hideTimer=${hideTimer !== undefined ? 'pending' : '-'}  dwell=${dwellAnchor ? dwellAnchor.textContent : '-'}  watch=${watchTimer !== undefined ? 'on' : 'off'}`,
+      `anchor=${rects}`,
+      `cardBox=${cb ? `${cb.left | 0}..${cb.right | 0}x${cb.top | 0}..${cb.bottom | 0}` : '-'}  hover:${card && !card.hidden && card.matches(':hover')}  ua=${navigator.userAgent.replace(/^.*\) /, '').slice(0, 40)}`,
+      `events: ${events.join(' ')}`,
+    ].join('\n')
+  }, 100)
+}
