@@ -25,10 +25,27 @@ import type { Request, Response } from './foaf-worker'
 
 /** How long the pointer has to rest before this is a lookup and not a passing cursor. */
 const DWELL_MS = 180
-/** Debounce against jitter at the edge of a name, nothing more. */
+/**
+ * Grace before the card goes, once the pointer is on neither the name nor the card. Wide
+ * enough that a pointer travelling through the 8 px gap between them is not caught out.
+ */
 const HIDE_MS = 120
-/** Rounding tolerance only. Anything wider swallows a small scroll away from the name. */
-const HIT_SLACK = 4
+/**
+ * How often a pointer-opened card re-checks that it is still wanted, with no event needed.
+ *
+ * Every earlier version of this file hung dismissal on receiving some event after the
+ * pointer left — mouseout, then mousemove — and each time there was a way for that event
+ * not to come. This is the backstop: while a card is up for the pointer, the same check
+ * runs on a timer, so the card cannot outlive the reason it opened by more than a tick.
+ */
+const WATCH_MS = 150
+/**
+ * One pixel, for one reason: Chrome reports `MouseEvent.clientX` as an integer while the
+ * name's rect is fractional, so a pointer on the last pixel of a glyph can read as one
+ * pixel outside it. Anything wider is a halo round the name where the card stays although
+ * the pointer has visibly left it — at 4 px the randomised sweep found exactly that.
+ */
+const HIT_SLACK = 1
 const CACHE_PREFIX = 'foaf-card:v1:'
 
 interface Pending {
@@ -50,6 +67,16 @@ let hideTimer: number | undefined
 let pointer: { x: number; y: number } | undefined
 /** A card opened by keyboard is dismissed by blur, never by where the mouse happens to be. */
 let openedByPointer = false
+/**
+ * Whether the last real pointer move landed inside the card.
+ *
+ * Remembered, not measured live, and the asymmetry is the point. The card is drawn 8 px
+ * below the name and grows as each query stage lands, so a live test would let it rescue
+ * itself by expanding under a pointer that had already left. Only a move that ends inside
+ * the card grants this; a re-render that moves the card away from the pointer revokes it.
+ */
+let onCard = false
+let watchTimer: number | undefined
 /** Whether the query panel is open, kept across the stages that re-render the card. */
 let queryOpen = false
 
@@ -122,7 +149,7 @@ function ensureCard(): HTMLElement {
     </div>
     <footer class="foaf-card-source">
       <span class="foaf-card-engine"></span>
-      <span class="foaf-card-hint"></span>
+      <button type="button" class="foaf-card-toggle" aria-expanded="false">show query</button>
     </footer>
     <pre class="foaf-card-query" hidden></pre>`
   const pick = (selector: string) => root.querySelector(selector) as HTMLElement
@@ -134,12 +161,23 @@ function ensureCard(): HTMLElement {
     description: pick('.foaf-card-description'),
     empty: pick('.foaf-card-empty'),
     engine: pick('.foaf-card-engine'),
-    hint: pick('.foaf-card-hint'),
+    toggle: pick('.foaf-card-toggle'),
     query: pick('.foaf-card-query'),
   }
+  parts.toggle.addEventListener('click', () => {
+    setQueryOpen(!queryOpen)
+    if (active) place(active.anchor)
+  })
   document.body.append(root)
   card = root
   return root
+}
+
+function setQueryOpen(open: boolean): void {
+  queryOpen = open
+  parts.query.hidden = !open
+  parts.toggle.setAttribute('aria-expanded', String(open))
+  parts.toggle.textContent = open ? 'hide query' : 'show query'
 }
 
 function setText(node: HTMLElement, value: string | undefined): void {
@@ -175,13 +213,14 @@ function render(pending: Pending, facts: Facts | undefined, state: 'loading' | '
         ? `Comunica found nothing at ${hostOf(pending.person)}`
         : `queried live with Comunica from ${hostOf(pending.person)}`
   parts.query.textContent = describeQuery(pending)
-  parts.query.hidden = !queryOpen
-  parts.hint.textContent = queryOpen ? 'press Q to hide' : 'press Q for the query'
+  setQueryOpen(queryOpen)
   root.hidden = false
   place(pending.anchor)
-  // Each stage lands separately and changes the card's size, which moves its edges
-  // relative to a pointer that has not gone anywhere.
-  reviewPointer()
+  // Each stage lands separately and can change the card's size or flip it to the other
+  // side of the name. A pointer that was on the card may no longer be; the reverse is
+  // never granted here, only by a real move.
+  if (onCard && !pointerOverCard()) onCard = false
+  review()
 }
 
 function hostOf(uri: string): string {
@@ -232,13 +271,14 @@ function place(anchor: HTMLAnchorElement): void {
 
 function hide(): void {
   clearDwell()
-  window.clearTimeout(hideTimer)
+  cancelHide()
+  stopWatch()
+  onCard = false
   if (active) active.anchor.removeAttribute('aria-describedby')
   active = undefined
   if (!card) return
   card.hidden = true
-  queryOpen = false
-  parts.query.hidden = true
+  setQueryOpen(false)
 }
 
 function armDwell(anchor: HTMLAnchorElement): void {
@@ -279,11 +319,37 @@ function pointerOnAnchor(): boolean {
   return false
 }
 
-function scheduleHide(): void {
+/** Live geometry, used only to revoke a remembered `onCard`, never to grant it. */
+function pointerOverCard(): boolean {
+  if (!pointer || !card || card.hidden) return false
+  return near(card.getBoundingClientRect(), pointer.x, pointer.y)
+}
+
+/**
+ * The one condition under which a pointer-opened card stays: the name is under the
+ * pointer, or the pointer's last move landed on the card. Nothing else — not an event
+ * that happened to fire, not the card's box measured after it moved.
+ */
+function held(): boolean {
+  return pointerOnAnchor() || onCard
+}
+
+function cancelHide(): void {
+  if (hideTimer === undefined) return
   window.clearTimeout(hideTimer)
+  hideTimer = undefined
+}
+
+/**
+ * Idempotent: a pending hide is left to run. Movement does not defer it, because the check
+ * that matters happens when it fires — if the pointer has reached the card by then, the
+ * card stays; if it has not, it goes.
+ */
+function scheduleHide(): void {
+  if (hideTimer !== undefined) return
   hideTimer = window.setTimeout(() => {
-    // Checked again here rather than trusted from whatever scheduled it.
-    if (openedByPointer && pointerOnAnchor()) return
+    hideTimer = undefined
+    if (openedByPointer && held()) return
     // A dwell already counting down is about to replace this card with the next one, and
     // `hide()` would cancel it — leaving no card at all. Moving straight from one name to
     // the one beside it does exactly that, since the grace period is shorter than a dwell.
@@ -293,22 +359,29 @@ function scheduleHide(): void {
 }
 
 /**
- * Re-decides whether the card belongs on screen, from where the pointer actually is.
- *
- * Only the name counts. The card itself is `pointer-events: none`, so it can neither hold
- * itself open nor swallow a click meant for the page underneath — see `_foaf-tooltip.scss`.
- * That is the whole reason this is one condition and not two: the card is drawn 8 px below
- * the name and is 320 px wide, so it sits exactly where a reader's cursor comes to rest
- * after moving off the name, and any rule that let it keep itself alive left it up.
+ * Re-decides whether the card belongs on screen. Called on every pointer move, on every
+ * re-render, and by the watchdog on a timer, so the decision never depends on any one of
+ * those having happened.
  *
  * `mouseover`/`mouseout` are not used at all. They report what crossed the pointer, and
  * Chromium does not reliably dispatch them when the page moves under a still cursor:
  * scrolling 20 px away from a name fires no `mouseout`.
  */
-function reviewPointer(): void {
+function review(): void {
   if (!active || !openedByPointer) return
-  if (pointerOnAnchor()) window.clearTimeout(hideTimer)
+  if (held()) cancelHide()
   else scheduleHide()
+}
+
+function startWatch(): void {
+  stopWatch()
+  watchTimer = window.setInterval(review, WATCH_MS)
+}
+
+function stopWatch(): void {
+  if (watchTimer === undefined) return
+  window.clearInterval(watchTimer)
+  watchTimer = undefined
 }
 
 // -- what the reader did --------------------------------------------------------------
@@ -340,10 +413,13 @@ function show(anchor: HTMLAnchorElement, byPointer: boolean): void {
   // link the mouse happens to rest over replaces the card a keyboard user just opened
   // somewhere else — focus moves, the timer fires 180 ms later, and the card changes person.
   clearDwell()
-  window.clearTimeout(hideTimer)
+  cancelHide()
   openedByPointer = byPointer
+  onCard = false
   const pending: Pending = { person, displayName: (anchor.textContent ?? '').trim(), anchor }
   active = pending
+  if (byPointer) startWatch()
+  else stopWatch()
   anchor.setAttribute('aria-describedby', 'foaf-card')
 
   lastWikidataEntity = undefined
@@ -369,7 +445,10 @@ function show(anchor: HTMLAnchorElement, byPointer: boolean): void {
  */
 function onPointerMove(event: MouseEvent): void {
   pointer = { x: event.clientX, y: event.clientY }
-  const anchor = authorLink(event.target)
+  // The card takes pointer events, so this is exact: a move over the card targets the card,
+  // never a name it happens to cover, and no lookup can start from there.
+  onCard = Boolean(card && !card.hidden && card.contains(event.target as Node))
+  const anchor = onCard ? undefined : authorLink(event.target)
   if (!anchor) {
     // Off the name before the dwell was met, so there is nothing to look up.
     clearDwell()
@@ -379,7 +458,7 @@ function onPointerMove(event: MouseEvent): void {
     ensureWorker()
     armDwell(anchor)
   }
-  reviewPointer()
+  review()
 }
 
 function authorLink(target: EventTarget | null): HTMLAnchorElement | undefined {
@@ -394,11 +473,23 @@ function start(): void {
 
   document.addEventListener('mousemove', onPointerMove, { passive: true })
 
-  // The pointer left the window altogether, so there is no position left to check.
-  document.documentElement.addEventListener('mouseleave', () => {
+  // The pointer is gone — out of the window, or the window is no longer the one in front.
+  // There is no position left to check, so a pointer-opened card goes at once. Both the
+  // `mouseleave` on the root and the `mouseout` to nowhere are wired because neither is
+  // guaranteed on its own across browsers.
+  const pointerGone = () => {
     pointer = undefined
+    onCard = false
     clearDwell()
     if (openedByPointer) hide()
+  }
+  document.documentElement.addEventListener('mouseleave', pointerGone)
+  document.addEventListener('mouseout', (event) => {
+    if (event.relatedTarget === null) pointerGone()
+  })
+  window.addEventListener('blur', pointerGone)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') pointerGone()
   })
 
   // Keyboard readers get the same card; the author links are already focusable.
@@ -409,21 +500,7 @@ function start(): void {
   })
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      hide()
-      return
-    }
-    // The card is inert, so the panel cannot be opened by clicking it. A key works from
-    // both routes in: the pointer never leaves the name to press it, and a keyboard reader
-    // already has the name focused.
-    if (!active || event.key !== 'q' || event.metaKey || event.ctrlKey || event.altKey) return
-    const target = event.target as HTMLElement | null
-    if (target?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName ?? '')) return
-    event.preventDefault()
-    queryOpen = !queryOpen
-    parts.query.hidden = !queryOpen
-    parts.hint.textContent = queryOpen ? 'press Q to hide' : 'press Q for the query'
-    place(active.anchor)
+    if (event.key === 'Escape') hide()
   })
 
   const reposition = () => {
@@ -431,7 +508,10 @@ function start(): void {
     clearDwell()
     if (!active) return
     place(active.anchor)
-    // Scrolling is the reader moving on, so this goes at once and without the grace period.
+    // The card has just moved under a pointer that did not, so being on it counts for
+    // nothing now. Scrolling is the reader moving on: only the name still being under the
+    // pointer keeps the card, and it goes at once, without the grace period.
+    onCard = false
     if (openedByPointer && !pointerOnAnchor()) hide()
   }
   window.addEventListener('scroll', reposition, { passive: true })

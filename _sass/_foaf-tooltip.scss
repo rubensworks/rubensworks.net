@@ -6,6 +6,13 @@
     position: absolute;
     z-index: 20;
     display: flex;
+
+    /**
+     * Without this the card can never disappear.
+     */
+    &[hidden] {
+        display: none;
+    }
     flex-wrap: wrap;
     gap: 12px;
     box-sizing: border-box;
@@ -19,18 +26,11 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
     font-size: 13px;
     line-height: 1.45;
-    /**
-     * Load-bearing, not cosmetic.
-     *
-     * The card is drawn 8px below the name and is 320px wide, which is exactly where the
-     * cursor comes to rest after moving off the name. While it was a hover target it held
-     * itself open there, so moving away from a link left the card up — and any rule that
-     * kept it alive while the pointer was on it had that same effect. Inert, it cannot:
-     * the pointer passes through to the page, the card follows the name alone, and a click
-     * meant for the text underneath still lands. The query panel is reached with Q
-     * instead of a click, since nothing here can be clicked.
-     */
-    pointer-events: none;
+    // The card takes pointer events: it has a button in it, and a move over it must target
+    // the card rather than whatever name it happens to cover. What keeps it open while the
+    // pointer is on it, and lets it go the moment the pointer is not, is decided in
+    // `foaf-tooltip.ts`, not here.
+    cursor: default;
 
     &.is-loading .foaf-card-name {
         // Not a spinner: the name is known before the query starts, so the only thing that
@@ -90,9 +90,14 @@
     font-size: 11px;
 }
 
-.foaf-card-hint {
-    color: $grey-color;
-    white-space: nowrap;
+.foaf-card-toggle {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: $blue-color-dark;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .foaf-card-query {
