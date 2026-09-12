@@ -13,6 +13,11 @@ import { parse } from 'parse5'
 const dir = process.argv[2] ?? 'dist'
 const SITE_HOSTS = new Set(['www.rubensworks.net', 'rubensworks.net'])
 
+// A link to a dev server is never valid in a built site — it points at a machine that is
+// not the reader's. Checked explicitly because the host is not this site's, so every other
+// rule here treats it as an ordinary external URL and lets it through.
+const DEV_ORIGIN = /^(https?:)?\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])([:/]|$)/i
+
 // `/raw/**` holds PDFs and slide decks uploaded out-of-band, so it is treated as external.
 const NOT_BUILT_HERE = [/^\/raw\//]
 
@@ -84,6 +89,10 @@ for (const [file, { links }] of pages) {
   const selfDir = posix.dirname('/' + file)
   for (const { href, tag } of links) {
     if (!href || href.startsWith('data:') || href.startsWith('mailto:') || href.startsWith('javascript:')) continue
+    if (DEV_ORIGIN.test(href)) {
+      errors.push({ file, tag, href, reason: 'points at a local dev server' })
+      continue
+    }
 
     let pathname
     let hash
