@@ -25,12 +25,8 @@ import type { Request, Response } from './foaf-worker'
 
 /** How long the pointer has to rest before this is a lookup and not a passing cursor. */
 const DWELL_MS = 180
-/**
- * Grace period before the card goes. This, not geometry, is what makes the gap between the
- * name and the card crossable: a pointer travelling through it is outside both for one
- * event, and the next one lands on the card long before this elapses.
- */
-const HIDE_MS = 160
+/** Debounce against jitter at the edge of a name, nothing more. */
+const HIDE_MS = 120
 /** Rounding tolerance only. Anything wider swallows a small scroll away from the name. */
 const HIT_SLACK = 4
 const CACHE_PREFIX = 'foaf-card:v1:'
@@ -47,20 +43,15 @@ let worker: Worker | undefined
 let nextId = 0
 let active: Pending | undefined
 let dwellTimer: number | undefined
+/** The name a dwell is counting down for, or nothing when none is pending. */
+let dwellAnchor: HTMLAnchorElement | undefined
 let hideTimer: number | undefined
 /** The last position the pointer actually reported, which is the only reliable one. */
 let pointer: { x: number; y: number } | undefined
 /** A card opened by keyboard is dismissed by blur, never by where the mouse happens to be. */
 let openedByPointer = false
-/**
- * Whether the pointer was on the card as of the last time it actually moved.
- *
- * Deliberately a remembered answer rather than a live one. The card is drawn just below the
- * name and grows as each query stage lands, so a live test would let it rescue itself by
- * expanding under a pointer that had already left, or by sliding under one during a scroll.
- * Only a real move onto the card counts as wanting to be on the card.
- */
-let pointerWasOnCard = false
+/** Whether the query panel is open, kept across the stages that re-render the card. */
+let queryOpen = false
 
 /**
  * Created once and kept for the life of the page.
@@ -131,7 +122,7 @@ function ensureCard(): HTMLElement {
     </div>
     <footer class="foaf-card-source">
       <span class="foaf-card-engine"></span>
-      <button type="button" class="foaf-card-toggle" aria-expanded="false">show query</button>
+      <span class="foaf-card-hint"></span>
     </footer>
     <pre class="foaf-card-query" hidden></pre>`
   const pick = (selector: string) => root.querySelector(selector) as HTMLElement
@@ -143,16 +134,9 @@ function ensureCard(): HTMLElement {
     description: pick('.foaf-card-description'),
     empty: pick('.foaf-card-empty'),
     engine: pick('.foaf-card-engine'),
-    toggle: pick('.foaf-card-toggle'),
+    hint: pick('.foaf-card-hint'),
     query: pick('.foaf-card-query'),
   }
-  parts.toggle.addEventListener('click', () => {
-    const shown = parts.query.hidden
-    parts.query.hidden = !shown
-    parts.toggle.setAttribute('aria-expanded', String(shown))
-    parts.toggle.textContent = shown ? 'hide query' : 'show query'
-    if (active) place(active.anchor)
-  })
   document.body.append(root)
   card = root
   return root
@@ -191,6 +175,8 @@ function render(pending: Pending, facts: Facts | undefined, state: 'loading' | '
         ? `Comunica found nothing at ${hostOf(pending.person)}`
         : `queried live with Comunica from ${hostOf(pending.person)}`
   parts.query.textContent = describeQuery(pending)
+  parts.query.hidden = !queryOpen
+  parts.hint.textContent = queryOpen ? 'press Q to hide' : 'press Q for the query'
   root.hidden = false
   place(pending.anchor)
   // Each stage lands separately and changes the card's size, which moves its edges
@@ -245,16 +231,28 @@ function place(anchor: HTMLAnchorElement): void {
 }
 
 function hide(): void {
-  window.clearTimeout(dwellTimer)
+  clearDwell()
   window.clearTimeout(hideTimer)
   if (active) active.anchor.removeAttribute('aria-describedby')
   active = undefined
-  pointerWasOnCard = false
   if (!card) return
   card.hidden = true
+  queryOpen = false
   parts.query.hidden = true
-  parts.toggle.setAttribute('aria-expanded', 'false')
-  parts.toggle.textContent = 'show query'
+}
+
+function armDwell(anchor: HTMLAnchorElement): void {
+  clearDwell()
+  dwellAnchor = anchor
+  dwellTimer = window.setTimeout(() => {
+    dwellAnchor = undefined
+    show(anchor, true)
+  }, DWELL_MS)
+}
+
+function clearDwell(): void {
+  window.clearTimeout(dwellTimer)
+  dwellAnchor = undefined
 }
 
 function near(rect: DOMRect, x: number, y: number): boolean {
@@ -281,22 +279,15 @@ function pointerOnAnchor(): boolean {
   return false
 }
 
-function pointerOnCardNow(): boolean {
-  if (!pointer || !card || card.hidden) return false
-  return near(card.getBoundingClientRect(), pointer.x, pointer.y)
-}
-
-function pointerStillOnTarget(): boolean {
-  return pointerOnAnchor() || pointerWasOnCard
-}
-
 function scheduleHide(): void {
   window.clearTimeout(hideTimer)
   hideTimer = window.setTimeout(() => {
-    // Checked again here rather than trusted from whatever scheduled it. Between the two
-    // the card may have grown under the pointer, or the reader may have moved onto it to
-    // reach the query.
-    if (openedByPointer && pointerStillOnTarget()) return
+    // Checked again here rather than trusted from whatever scheduled it.
+    if (openedByPointer && pointerOnAnchor()) return
+    // A dwell already counting down is about to replace this card with the next one, and
+    // `hide()` would cancel it — leaving no card at all. Moving straight from one name to
+    // the one beside it does exactly that, since the grace period is shorter than a dwell.
+    if (dwellAnchor) return
     hide()
   }, HIDE_MS)
 }
@@ -304,14 +295,19 @@ function scheduleHide(): void {
 /**
  * Re-decides whether the card belongs on screen, from where the pointer actually is.
  *
- * This exists because `mouseover`/`mouseout` cannot answer the question. They report what
- * crossed the pointer, and Chromium does not reliably dispatch them when the page moves
- * under a still cursor: scrolling 20 px away from a name fires no `mouseout` at all, so a
- * card whose dismissal hung on that event stayed up with the pointer nowhere near it.
+ * Only the name counts. The card itself is `pointer-events: none`, so it can neither hold
+ * itself open nor swallow a click meant for the page underneath — see `_foaf-tooltip.scss`.
+ * That is the whole reason this is one condition and not two: the card is drawn 8 px below
+ * the name and is 320 px wide, so it sits exactly where a reader's cursor comes to rest
+ * after moving off the name, and any rule that let it keep itself alive left it up.
+ *
+ * `mouseover`/`mouseout` are not used at all. They report what crossed the pointer, and
+ * Chromium does not reliably dispatch them when the page moves under a still cursor:
+ * scrolling 20 px away from a name fires no `mouseout`.
  */
 function reviewPointer(): void {
   if (!active || !openedByPointer) return
-  if (pointerStillOnTarget()) window.clearTimeout(hideTimer)
+  if (pointerOnAnchor()) window.clearTimeout(hideTimer)
   else scheduleHide()
 }
 
@@ -343,7 +339,7 @@ function show(anchor: HTMLAnchorElement, byPointer: boolean): void {
   // Whatever asked for this card wins. Without this, a dwell already counting down on a
   // link the mouse happens to rest over replaces the card a keyboard user just opened
   // somewhere else — focus moves, the timer fires 180 ms later, and the card changes person.
-  window.clearTimeout(dwellTimer)
+  clearDwell()
   window.clearTimeout(hideTimer)
   openedByPointer = byPointer
   const pending: Pending = { person, displayName: (anchor.textContent ?? '').trim(), anchor }
@@ -373,17 +369,15 @@ function show(anchor: HTMLAnchorElement, byPointer: boolean): void {
  */
 function onPointerMove(event: MouseEvent): void {
   pointer = { x: event.clientX, y: event.clientY }
-  pointerWasOnCard = pointerOnCardNow()
   const anchor = authorLink(event.target)
   if (!anchor) {
     // Off the name before the dwell was met, so there is nothing to look up.
-    window.clearTimeout(dwellTimer)
+    clearDwell()
   } else if (active?.anchor !== anchor) {
     // The worker starts here rather than when the dwell completes, so its chunk downloads
     // during the pause instead of after it.
     ensureWorker()
-    window.clearTimeout(dwellTimer)
-    dwellTimer = window.setTimeout(() => show(anchor, true), DWELL_MS)
+    armDwell(anchor)
   }
   reviewPointer()
 }
@@ -403,7 +397,7 @@ function start(): void {
   // The pointer left the window altogether, so there is no position left to check.
   document.documentElement.addEventListener('mouseleave', () => {
     pointer = undefined
-    window.clearTimeout(dwellTimer)
+    clearDwell()
     if (openedByPointer) hide()
   })
 
@@ -415,17 +409,29 @@ function start(): void {
   })
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') hide()
+    if (event.key === 'Escape') {
+      hide()
+      return
+    }
+    // The card is inert, so the panel cannot be opened by clicking it. A key works from
+    // both routes in: the pointer never leaves the name to press it, and a keyboard reader
+    // already has the name focused.
+    if (!active || event.key !== 'q' || event.metaKey || event.ctrlKey || event.altKey) return
+    const target = event.target as HTMLElement | null
+    if (target?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName ?? '')) return
+    event.preventDefault()
+    queryOpen = !queryOpen
+    parts.query.hidden = !queryOpen
+    parts.hint.textContent = queryOpen ? 'press Q to hide' : 'press Q for the query'
+    place(active.anchor)
   })
 
   const reposition = () => {
     // A dwell counting down belongs to where the name was, not where it has scrolled to.
-    window.clearTimeout(dwellTimer)
+    clearDwell()
     if (!active) return
     place(active.anchor)
     // Scrolling is the reader moving on, so this goes at once and without the grace period.
-    // Only the name still being under the pointer keeps the card: its own area cannot,
-    // since it was just re-placed under a pointer that has not moved at all.
     if (openedByPointer && !pointerOnAnchor()) hide()
   }
   window.addEventListener('scroll', reposition, { passive: true })
