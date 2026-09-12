@@ -532,6 +532,19 @@ figure {
                 color: $grey-color-dark;
                 display: inline-block;
                 padding: 4px 0;
+
+                // The padding above is what gives the link its 24px height. Drawing the
+                // hover underline as a border would put it at the bottom of that padding,
+                // 4px adrift of the name; text-decoration follows the text instead. The
+                // author cards make this underline the hover affordance, so where it sits
+                // matters more than it used to.
+                &:hover {
+                    border-bottom: none;
+                    text-decoration: underline;
+                    text-decoration-thickness: 2px;
+                    text-decoration-color: lighten($brand-color, 2%);
+                    text-underline-offset: 2px;
+                }
             }
             li {
               display: inline;
@@ -592,6 +605,19 @@ figure {
                 color: $grey-color-dark;
                 display: inline-block;
                 padding: 4px 0;
+
+                // The padding above is what gives the link its 24px height. Drawing the
+                // hover underline as a border would put it at the bottom of that padding,
+                // 4px adrift of the name; text-decoration follows the text instead. The
+                // author cards make this underline the hover affordance, so where it sits
+                // matters more than it used to.
+                &:hover {
+                    border-bottom: none;
+                    text-decoration: underline;
+                    text-decoration-thickness: 2px;
+                    text-decoration-color: lighten($brand-color, 2%);
+                    text-underline-offset: 2px;
+                }
             }
             li {
               display: inline;
