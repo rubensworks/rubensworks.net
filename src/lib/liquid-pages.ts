@@ -4,6 +4,7 @@ import { loadBibliography, loadKnows, type Entry, type Knows } from './bibliogra
 import { queryEntries } from './bibquery'
 import { loadPresentations, presentationYear, type Presentation } from './presentations'
 import { site } from '../site.config'
+import { imageInfo } from './images'
 
 /**
  * A minimal Liquid renderer for `cv.md` and `reading_list.md`, so a CV edit stays a one-line
@@ -103,11 +104,23 @@ async function cvListing(p: Record<string, string>, render: Render): Promise<str
   )
 }
 
-/** Port of `_includes/book.html`. */
+/**
+ * Port of `_includes/book.html`. The cover goes through the same treatment as an image in a
+ * post — dimensions, lazy loading, and the AVIF/WebP siblings — via src/lib/images.ts, so
+ * the 34 covers on /reading_list/ arrive as a few kilobytes each.
+ */
 function book(p: Record<string, string>): string {
+  const info = imageInfo(p.img ?? '')
+  const size = info ? ` width="${info.width}" height="${info.height}"` : ''
+  const img =
+    `<img src="${p.img}" alt="${escapeHtml(`${p.title} by ${p.authors}`)}"${size} loading="lazy" decoding="async" />`
+  const sources = (info?.sources ?? [])
+    .map((s) => `<source srcset="${s.src}" type="${s.type}" />`)
+    .join('')
+  const cover = sources ? `<picture>${sources}${img}</picture>` : img
   return `<div class="book">
   <div class="book-left">
-    <a href="${p.link}" target="_blank"><img src="${p.img}" alt="${escapeHtml(`${p.title} by ${p.authors}`)}" /></a>
+    <a href="${p.link}" target="_blank">${cover}</a>
   </div>
   <div class="book-right">
     <h3><a href="${p.link}" target="_blank">${p.title}</a></h3>

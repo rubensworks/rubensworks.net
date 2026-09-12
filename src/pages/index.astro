@@ -4,6 +4,7 @@ import Default from '../layouts/Default.astro'
 import PostListing from '../components/PostListing.astro'
 import BibList from '../components/BibList.astro'
 import { loadPosts } from '../lib/posts'
+import { site } from '../site.config'
 import { loadBibliography, loadKnows } from '../lib/bibliography'
 import { queryEntries } from '../lib/bibquery'
 
@@ -19,6 +20,45 @@ const latest = entries.slice(0, 5) // `{% bibliography --max 5 %}`
 const knowsJson = Object.entries(knows)
   .map(([name, k]) => `\t  {\n\t\t"@id": "${k.foaf}",\n\t\t"@type": "Person",\n\t\t"name": "${name}"\n\t  },`)
   .join('\n')
+const personJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      url: `${site.url}/`,
+      name: site.title,
+      description: site.description.trim(),
+      inLanguage: 'en',
+      publisher: { '@id': `${site.url}/#me` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${site.url}/#me`,
+      name: site.title,
+      givenName: 'Ruben',
+      familyName: 'Taelman',
+      url: `${site.url}/`,
+      image: `${site.url}/img/ruben.jpg`,
+      jobTitle: 'Professor Data Retrieval in Decentralized Environments',
+      email: 'mailto:ruben.taelman@ugent.be',
+      worksFor: [
+        { '@type': 'Organization', name: 'IDLab', url: 'https://idlab.technology/' },
+        { '@type': 'CollegeOrUniversity', name: 'Ghent University', url: 'https://www.ugent.be/' },
+        { '@type': 'Organization', name: 'imec', url: 'https://www.imec-int.com/' },
+      ],
+      knowsAbout: ['Linked Data', 'Semantic Web', 'SPARQL', 'Decentralization', 'Knowledge graphs'],
+      sameAs: [
+        'https://orcid.org/0000-0001-5118-256X',
+        `https://github.com/${site.githubUsername}`,
+        `https://x.com/${site.xUsername}`,
+        `https://www.linkedin.com/in/${site.linkedinUsername}`,
+        `https://scholar.google.be/citations?user=${site.googlescholarUsername}`,
+      ],
+    },
+  ],
+})
+
 const jsonLd = `
   {
 \t"@context": { "@vocab": "http://xmlns.com/foaf/0.1/" },
@@ -30,7 +70,10 @@ ${knowsJson}
   }
 `
 ---
-<Default url="/">
+<Default
+  url="/"
+  description="Ruben Taelman is a professor at IDLab, imec, Ghent University, working on Web technologies, decentralization, and Linked Data publishing and querying."
+>
 <div class="home">
 
   <p class="intro">
@@ -76,4 +119,9 @@ ${knowsJson}
 </div>
 
 <script type="application/ld+json" is:inline set:html={jsonLd}></script>
+
+{/* The same person the RDFa above describes, in the vocabulary and the syntax search
+    engines read. The RDFa is foaf: and stays as it is; this is schema.org, which is what
+    Google, Bing and the social networks parse for an author's identity. */}
+<script type="application/ld+json" is:inline set:html={personJsonLd}></script>
 </Default>

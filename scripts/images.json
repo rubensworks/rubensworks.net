@@ -1,0 +1,494 @@
+{
+  "img/blog/apartments.jpg": {
+    "bytes": 197256,
+    "sha256": "9dd4888591fc3462"
+  },
+  "img/blog/apartments.webp": {
+    "bytes": 113814,
+    "sha256": "24ed8695da00b3f0"
+  },
+  "img/blog/apartments.avif": {
+    "bytes": 61163,
+    "sha256": "1ee49b3b4ff11bfc"
+  },
+  "img/blog/cleaning-car.jpg": {
+    "bytes": 152729,
+    "sha256": "efd728cd07b0f90e"
+  },
+  "img/blog/cleaning-car.webp": {
+    "bytes": 115244,
+    "sha256": "8120ef5793146984"
+  },
+  "img/blog/cleaning-car.avif": {
+    "bytes": 61658,
+    "sha256": "c160ed6793e0d95b"
+  },
+  "img/blog/jest-cli.png": {
+    "bytes": 43165,
+    "sha256": "4a875860b3c7c97f"
+  },
+  "img/blog/jest-cli.webp": {
+    "bytes": 68056,
+    "sha256": "10323fd3d0639d62"
+  },
+  "img/blog/jest-cli.avif": {
+    "bytes": 42570,
+    "sha256": "ab55c0d7b74d6f5e"
+  },
+  "img/blog/rdfjs.png": {
+    "bytes": 25977,
+    "sha256": "518297c4e73c3a72"
+  },
+  "img/blog/rdfjs.webp": {
+    "bytes": 8888,
+    "sha256": "1547ff5637becf0a"
+  },
+  "img/blog/rdfjs.avif": {
+    "bytes": 5457,
+    "sha256": "33e5203ebb5c877f"
+  },
+  "img/blog/red-car-sunset.jpg": {
+    "bytes": 52773,
+    "sha256": "762a6abf321c9dd2"
+  },
+  "img/blog/red-car-sunset.webp": {
+    "bytes": 34072,
+    "sha256": "844c1c13c3d948db"
+  },
+  "img/blog/red-car-sunset.avif": {
+    "bytes": 19849,
+    "sha256": "c9b28d0eda9cee42"
+  },
+  "img/blog/scale-modularity-decentralization-perf.jpg": {
+    "bytes": 91165,
+    "sha256": "d73ff06f6e7c2735"
+  },
+  "img/blog/scale-modularity-decentralization-perf.webp": {
+    "bytes": 48778,
+    "sha256": "4327c5be706031fb"
+  },
+  "img/blog/scale-modularity-decentralization-perf.avif": {
+    "bytes": 26228,
+    "sha256": "abc47a07a1d3439d"
+  },
+  "img/blog/sparql-federation-stone.jpg": {
+    "bytes": 237241,
+    "sha256": "52b69ede930bc1be"
+  },
+  "img/blog/sparql-federation-stone.webp": {
+    "bytes": 193420,
+    "sha256": "ed173302ab0e0807"
+  },
+  "img/blog/sparql-federation-stone.avif": {
+    "bytes": 105257,
+    "sha256": "4c0355a2daefed0f"
+  },
+  "img/favicon.jpg": {
+    "bytes": 1561,
+    "sha256": "c6d4a2f98d9b5160"
+  },
+  "img/favicon.webp": {
+    "bytes": 1190,
+    "sha256": "1997f8d170dcaf9b"
+  },
+  "img/favicon.avif": {
+    "bytes": 854,
+    "sha256": "8fa8bd5e9ff75274"
+  },
+  "img/logo_ostrich.png": {
+    "bytes": 23258,
+    "sha256": "777eff699e3762ea"
+  },
+  "img/logo_ostrich.webp": {
+    "bytes": 38240,
+    "sha256": "58372ad38aaecfca"
+  },
+  "img/logo_ostrich.avif": {
+    "bytes": 27080,
+    "sha256": "ee509804c383b439"
+  },
+  "img/reading_list/12_rules_for_life.jpg": {
+    "bytes": 9755,
+    "sha256": "007c70cc7d1dda33"
+  },
+  "img/reading_list/12_rules_for_life.webp": {
+    "bytes": 6042,
+    "sha256": "0a2a12f0ca31d31c"
+  },
+  "img/reading_list/12_rules_for_life.avif": {
+    "bytes": 4147,
+    "sha256": "abeaebdca4d2e4f8"
+  },
+  "img/reading_list/animal_farm.jpg": {
+    "bytes": 13242,
+    "sha256": "47a9c14a4004d29a"
+  },
+  "img/reading_list/animal_farm.webp": {
+    "bytes": 10626,
+    "sha256": "a902b76eada4302d"
+  },
+  "img/reading_list/animal_farm.avif": {
+    "bytes": 6521,
+    "sha256": "71f2a9c0b6b74947"
+  },
+  "img/reading_list/bad_therapy.jpg": {
+    "bytes": 10129,
+    "sha256": "99760f6a97702723"
+  },
+  "img/reading_list/bad_therapy.webp": {
+    "bytes": 7796,
+    "sha256": "b844aeba7eba11af"
+  },
+  "img/reading_list/bad_therapy.avif": {
+    "bytes": 5304,
+    "sha256": "0e3f1a03e4223200"
+  },
+  "img/reading_list/blueprint.jpg": {
+    "bytes": 17427,
+    "sha256": "dbc59ad2d4c1d158"
+  },
+  "img/reading_list/blueprint.webp": {
+    "bytes": 15022,
+    "sha256": "ed785f5286447d15"
+  },
+  "img/reading_list/blueprint.avif": {
+    "bytes": 8257,
+    "sha256": "d4cf7205b4c16639"
+  },
+  "img/reading_list/cynical_theories.jpg": {
+    "bytes": 14265,
+    "sha256": "d692d5431dbacda9"
+  },
+  "img/reading_list/cynical_theories.webp": {
+    "bytes": 10394,
+    "sha256": "29d575e08b908a56"
+  },
+  "img/reading_list/cynical_theories.avif": {
+    "bytes": 6372,
+    "sha256": "fff2cff8ac8e3124"
+  },
+  "img/reading_list/enlightenment_now.jpg": {
+    "bytes": 17807,
+    "sha256": "414443e07100e7c0"
+  },
+  "img/reading_list/enlightenment_now.webp": {
+    "bytes": 14676,
+    "sha256": "7cf0cf6e2d5f0a3d"
+  },
+  "img/reading_list/enlightenment_now.avif": {
+    "bytes": 7315,
+    "sha256": "94f17f24551542c4"
+  },
+  "img/reading_list/extreme_ownership.jpg": {
+    "bytes": 13575,
+    "sha256": "68d03f04b66bc75d"
+  },
+  "img/reading_list/extreme_ownership.webp": {
+    "bytes": 9154,
+    "sha256": "643b51a0dcd17178"
+  },
+  "img/reading_list/extreme_ownership.avif": {
+    "bytes": 5508,
+    "sha256": "853c336df2c2eff7"
+  },
+  "img/reading_list/how_to_build_a_time_machine.jpg": {
+    "bytes": 10605,
+    "sha256": "1213e350b83f93f9"
+  },
+  "img/reading_list/how_to_build_a_time_machine.webp": {
+    "bytes": 7754,
+    "sha256": "6d2cead175034ea5"
+  },
+  "img/reading_list/how_to_build_a_time_machine.avif": {
+    "bytes": 4997,
+    "sha256": "10956e908d59629f"
+  },
+  "img/reading_list/magicians_of_the_gods.jpg": {
+    "bytes": 19938,
+    "sha256": "73aa6bc8a0e6e35f"
+  },
+  "img/reading_list/magicians_of_the_gods.webp": {
+    "bytes": 16874,
+    "sha256": "66afb41cd2654bae"
+  },
+  "img/reading_list/magicians_of_the_gods.avif": {
+    "bytes": 9289,
+    "sha256": "d47f2f3dd93d392c"
+  },
+  "img/reading_list/meditations.jpg": {
+    "bytes": 11494,
+    "sha256": "ae00347173ae3d70"
+  },
+  "img/reading_list/meditations.webp": {
+    "bytes": 9998,
+    "sha256": "318e47860f29e705"
+  },
+  "img/reading_list/meditations.avif": {
+    "bytes": 5724,
+    "sha256": "172df6689377c39c"
+  },
+  "img/reading_list/nuclear_war.jpg": {
+    "bytes": 13148,
+    "sha256": "2b8b6c1511d67690"
+  },
+  "img/reading_list/nuclear_war.webp": {
+    "bytes": 9354,
+    "sha256": "a918e129913cdd45"
+  },
+  "img/reading_list/nuclear_war.avif": {
+    "bytes": 5535,
+    "sha256": "5b308eca4f79ac1b"
+  },
+  "img/reading_list/on_writing.jpg": {
+    "bytes": 11741,
+    "sha256": "83c448b67720b70b"
+  },
+  "img/reading_list/on_writing.webp": {
+    "bytes": 9948,
+    "sha256": "2f363b4891023bd5"
+  },
+  "img/reading_list/on_writing.avif": {
+    "bytes": 5885,
+    "sha256": "852ccd1546f07bd8"
+  },
+  "img/reading_list/paper_belt_on_fire.jpg": {
+    "bytes": 17101,
+    "sha256": "62983e2b3b004a15"
+  },
+  "img/reading_list/paper_belt_on_fire.webp": {
+    "bytes": 14550,
+    "sha256": "46379efc7e3f5e1a"
+  },
+  "img/reading_list/paper_belt_on_fire.avif": {
+    "bytes": 7831,
+    "sha256": "a38ae1321f2e4b87"
+  },
+  "img/reading_list/surrounded_by_idiots.jpg": {
+    "bytes": 11458,
+    "sha256": "1cbf16a42ac033f7"
+  },
+  "img/reading_list/surrounded_by_idiots.webp": {
+    "bytes": 8198,
+    "sha256": "1c0526f4a4409467"
+  },
+  "img/reading_list/surrounded_by_idiots.avif": {
+    "bytes": 5397,
+    "sha256": "0e142cb671611447"
+  },
+  "img/reading_list/talent_is_overrated.jpg": {
+    "bytes": 10794,
+    "sha256": "527e455c6aa64866"
+  },
+  "img/reading_list/talent_is_overrated.webp": {
+    "bytes": 8688,
+    "sha256": "bfbe87cfefc20472"
+  },
+  "img/reading_list/talent_is_overrated.avif": {
+    "bytes": 5018,
+    "sha256": "d3829fd9839c5b5f"
+  },
+  "img/reading_list/the_art_of_war.jpg": {
+    "bytes": 8272,
+    "sha256": "059ee6ef39ef9e69"
+  },
+  "img/reading_list/the_art_of_war.webp": {
+    "bytes": 5510,
+    "sha256": "b39516ede927a5d2"
+  },
+  "img/reading_list/the_art_of_war.avif": {
+    "bytes": 3850,
+    "sha256": "78b2a816e518b713"
+  },
+  "img/reading_list/the_coddling_of_the_american_mind.jpg": {
+    "bytes": 11470,
+    "sha256": "3bd96d30f4e28504"
+  },
+  "img/reading_list/the_coddling_of_the_american_mind.webp": {
+    "bytes": 7816,
+    "sha256": "209a22c3bd641c8f"
+  },
+  "img/reading_list/the_coddling_of_the_american_mind.avif": {
+    "bytes": 4941,
+    "sha256": "b4f5267f82b9c802"
+  },
+  "img/reading_list/the_compound_effect.jpg": {
+    "bytes": 13035,
+    "sha256": "b31f264bbeea6b91"
+  },
+  "img/reading_list/the_compound_effect.webp": {
+    "bytes": 9018,
+    "sha256": "59ad81ef81de4c43"
+  },
+  "img/reading_list/the_compound_effect.avif": {
+    "bytes": 5254,
+    "sha256": "145461ed3d88bbc5"
+  },
+  "img/reading_list/the_immortality_key.jpg": {
+    "bytes": 15486,
+    "sha256": "99b8ae06707bbd5b"
+  },
+  "img/reading_list/the_immortality_key.webp": {
+    "bytes": 13052,
+    "sha256": "a754535bd722504c"
+  },
+  "img/reading_list/the_immortality_key.avif": {
+    "bytes": 7501,
+    "sha256": "87b79bb6b9f2d02b"
+  },
+  "img/reading_list/the_intelligent_investor.jpg": {
+    "bytes": 12587,
+    "sha256": "de2949e2eca62738"
+  },
+  "img/reading_list/the_intelligent_investor.webp": {
+    "bytes": 9386,
+    "sha256": "a0702a07e8ed05eb"
+  },
+  "img/reading_list/the_intelligent_investor.avif": {
+    "bytes": 4657,
+    "sha256": "fed2951760f02ef2"
+  },
+  "img/reading_list/the_parasitic_mind.jpg": {
+    "bytes": 11946,
+    "sha256": "d7f6a5c64c9348b4"
+  },
+  "img/reading_list/the_parasitic_mind.webp": {
+    "bytes": 9912,
+    "sha256": "b6dba717cad515b3"
+  },
+  "img/reading_list/the_parasitic_mind.avif": {
+    "bytes": 6238,
+    "sha256": "0f82cceec9a76d17"
+  },
+  "img/reading_list/the_practicing_stoic.jpg": {
+    "bytes": 19266,
+    "sha256": "722c30c28fe4f718"
+  },
+  "img/reading_list/the_practicing_stoic.webp": {
+    "bytes": 19412,
+    "sha256": "d07237275f4ca398"
+  },
+  "img/reading_list/the_practicing_stoic.avif": {
+    "bytes": 10160,
+    "sha256": "9b07eaee24891960"
+  },
+  "img/reading_list/the_simple_path_to_wealth.jpg": {
+    "bytes": 8303,
+    "sha256": "86be57ca0624c8cc"
+  },
+  "img/reading_list/the_simple_path_to_wealth.webp": {
+    "bytes": 6438,
+    "sha256": "21ce513f34e24e42"
+  },
+  "img/reading_list/the_simple_path_to_wealth.avif": {
+    "bytes": 4908,
+    "sha256": "c286ec91770a48e2"
+  },
+  "img/reading_list/the_subtle_art_of_not_giving_a_fuck.jpg": {
+    "bytes": 14142,
+    "sha256": "87cd6f85467f0b20"
+  },
+  "img/reading_list/the_subtle_art_of_not_giving_a_fuck.webp": {
+    "bytes": 10552,
+    "sha256": "26bf644b3e1bfc2b"
+  },
+  "img/reading_list/the_subtle_art_of_not_giving_a_fuck.avif": {
+    "bytes": 5334,
+    "sha256": "5167f392ec3f9f24"
+  },
+  "img/reading_list/the_war_of_art.jpg": {
+    "bytes": 8973,
+    "sha256": "924fd8dd111c2e6c"
+  },
+  "img/reading_list/the_war_of_art.webp": {
+    "bytes": 6576,
+    "sha256": "992f5f1132843432"
+  },
+  "img/reading_list/the_war_of_art.avif": {
+    "bytes": 3828,
+    "sha256": "7b155514290600bd"
+  },
+  "img/reading_list/the_wisdom_of_crowds.jpg": {
+    "bytes": 16031,
+    "sha256": "c83eeda18f1bf58f"
+  },
+  "img/reading_list/the_wisdom_of_crowds.webp": {
+    "bytes": 13234,
+    "sha256": "c8eb891b87be5c9e"
+  },
+  "img/reading_list/the_wisdom_of_crowds.avif": {
+    "bytes": 6911,
+    "sha256": "29739f81aa6b0a85"
+  },
+  "img/reading_list/thinking_fast_and_slow.jpg": {
+    "bytes": 6488,
+    "sha256": "aa7bb3bda6f2da08"
+  },
+  "img/reading_list/thinking_fast_and_slow.webp": {
+    "bytes": 4652,
+    "sha256": "3f238736ebcfdf84"
+  },
+  "img/reading_list/thinking_fast_and_slow.avif": {
+    "bytes": 3404,
+    "sha256": "b9c03791d28414b7"
+  },
+  "img/reading_list/zero_to_one.jpg": {
+    "bytes": 8097,
+    "sha256": "7ed1eeac7ae9a715"
+  },
+  "img/reading_list/zero_to_one.webp": {
+    "bytes": 4956,
+    "sha256": "ba5be054157882d9"
+  },
+  "img/reading_list/zero_to_one.avif": {
+    "bytes": 3257,
+    "sha256": "67405f17c8ee2298"
+  },
+  "img/ruben.jpg": {
+    "bytes": 34998,
+    "sha256": "95361db85f2e3fa3"
+  },
+  "img/ruben.webp": {
+    "bytes": 27838,
+    "sha256": "bf0d908c5b62300a"
+  },
+  "img/ruben.avif": {
+    "bytes": 16056,
+    "sha256": "e459466651ed51d9"
+  },
+  "img/rw_logo.png": {
+    "bytes": 16880,
+    "sha256": "bca2c9e0bd7b9ebf"
+  },
+  "img/rw_logo.webp": {
+    "bytes": 5386,
+    "sha256": "84b004ec9976a3fc"
+  },
+  "img/rw_logo.avif": {
+    "bytes": 2839,
+    "sha256": "0886dccf21fceb6d"
+  },
+  "img/ruben-400.jpg": {
+    "bytes": 22570,
+    "sha256": "6c4f5dfdf9de23e2"
+  },
+  "img/ruben-400.webp": {
+    "bytes": 17250,
+    "sha256": "73802bfa892d504f"
+  },
+  "img/ruben-400.avif": {
+    "bytes": 10601,
+    "sha256": "94610cbc1378a479"
+  },
+  "img/ruben-64.jpg": {
+    "bytes": 1423,
+    "sha256": "164821629b81c7ea"
+  },
+  "img/ruben-64.webp": {
+    "bytes": 1002,
+    "sha256": "d45e3643a8173955"
+  },
+  "img/ruben-64.avif": {
+    "bytes": 758,
+    "sha256": "e74ae6343c7ce460"
+  }
+}

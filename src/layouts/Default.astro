@@ -11,31 +11,44 @@ import '../../css/main.scss'
 interface Props {
   title?: string
   excerpt?: string
+  /** A description written for this page; see Head.astro. */
+  description?: string
   featureImg?: string
   comments?: boolean
+  /** Set on posts, for the og:type and article: metadata. */
+  article?: { published: Date; modified?: Date }
   /** Site-absolute URL of the page, e.g. `/blog/2019/03/13/streaming-rdf-parsers/`. */
   url?: string
 }
-const { title, excerpt, featureImg, comments = false } = Astro.props as Props
+const { title, excerpt, description, featureImg, comments = false, article } = Astro.props as Props
 const url = (Astro.props as Props).url ?? Astro.url.pathname
 ---
 <!DOCTYPE html>
 <html lang="en">
 
-  <Head title={title} excerpt={excerpt} url={url} featureImg={featureImg} />
+  <Head
+    title={title}
+    excerpt={excerpt}
+    description={description}
+    url={url}
+    featureImg={featureImg}
+    article={article}
+  />
 
   <body prefix="rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns# foaf: http://xmlns.com/foaf/0.1/ owl: http://www.w3.org/2002/07/owl# xsd: http://www.w3.org/2001/XMLSchema# org: http://www.w3.org/ns/org# cert: http://www.w3.org/ns/auth/cert# bibframe: http://id.loc.gov/ontologies/bibframe/ vivo: http://vivoweb.org/ontology/core#">
 
     <GoogleAnalytics />
     <Header url={url} />
 
-    <div class="page-content">
+    {/* <main>, not <div>: the page needs one landmark a screen reader can jump to, past
+        the header and the navigation that repeat on all 126 pages. */}
+    <main class="page-content">
       <div class="wrapper">
         <slot />
 
         {comments && <Comments url={url} />}
       </div>
-    </div>
+    </main>
 
     <Footer />
 

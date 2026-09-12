@@ -10,7 +10,11 @@ import { loadPresentations, presentationsByYear } from '../lib/presentations'
 
 const groups = presentationsByYear(loadPresentations())
 ---
-<Page title="Presentations" url="/presentations/">
+<Page
+  title="Presentations"
+  url="/presentations/"
+  description="Slides and videos of talks Ruben Taelman has given on Linked Data, SPARQL query execution, decentralization and the Comunica engine."
+>
 <p>This page lists all my (public) presentations chronologically.<br />
 Unless otherwise noted, all publications are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a>.</p>
 

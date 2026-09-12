@@ -14,6 +14,7 @@ const { project } = Astro.props
     then strips the HTML and truncates it to 30 words for the description meta tags. */}
 <Project
   excerpt={project.body ?? ''}
+  description={project.data.description}
   title={project.data.title}
   url={`/projects/${project.id}/`}
   start={project.data.start}

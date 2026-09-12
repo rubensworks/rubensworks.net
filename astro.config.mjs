@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config'
+import sitemap from '@astrojs/sitemap'
 import { unified } from '@astrojs/markdown-remark'
 import { site } from './src/site.config.ts'
 import { markdownExtension } from './src/integrations/markdown-extension.ts'
@@ -14,7 +15,19 @@ export default defineConfig({
   compressHTML: false,
   build: { format: 'directory' },
   // Registers `.markdown` with the content layer so _posts/ can stay as it is.
-  integrations: [markdownExtension()],
+  //
+  // The sitemap lists every built page at /sitemap-index.xml, which robots.txt points at.
+  // The site had none, so a search engine only ever found the pages it could reach by
+  // following links — and the CV, the presentations and the 92 publication pages are linked
+  // from one place each.
+  integrations: [
+    markdownExtension(),
+    sitemap({
+      // The 404 page is not content; nothing else is excluded.
+      filter: (page) => !page.endsWith('/404/') && !page.endsWith('/404.html'),
+      serialize: (item) => ({ ...item, lastmod: undefined, changefreq: undefined, priority: undefined }),
+    }),
+  ],
   markdown: {
     // The remark/rehype processor rather than Astro 7's default Sätteri: the posts are
     // written in kramdown, and the five plugins that cover the places kramdown and CommonMark

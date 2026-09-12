@@ -173,7 +173,7 @@ by **iteratively following links between documents**.
     <img src="/img/blog/querying-a-decentralized-web/follow-links.svg" alt="Query engine follows links between documents" />
 </p>
 
-#### The problems of Link Traversal 
+### The problems of Link Traversal 
 
 The research field of link traversal is still relatively new,
 so there are many open problems that remain to be solved before it can be used for effective query execution in practise.
@@ -221,7 +221,7 @@ into directions such as termination by:
 * **Survival of the fittest**: kill off link paths where none of the documents produced any results.
 * **Popcorn**: stop following links if no more results are obtained after a certain timeout.
 
-#### Coping with these problems
+### Coping with these problems
 
 Ideally, the problems of speed and termination should be fully resolved.
 Given the live nature of link traversal, it is more reasonable to assume that these issues may be *optimized*,
@@ -276,7 +276,7 @@ so that link traversal algorithms can use them to optimize query execution.
 This technique is sometimes also referred to as _hybrid link traversal_,
 for which several concrete opportunities are already available.
 
-#### Open research opportunities
+### Open research opportunities
 
 A first opportunity involves **query APIs** such as [SPARQL endpoints](https://www.w3.org/TR/sparql11-protocol/)
 and [Triple Pattern Fragments](https://linkeddatafragments.org/specification/triple-pattern-fragments/) interfaces,
@@ -328,7 +328,7 @@ such as [Bloom filters](https://www.geeksforgeeks.org/bloom-filters-introduction
     <img src="/img/blog/querying-a-decentralized-web/pod-summary.svg" alt="Aggregators summarize data in one or more vaults" />
 </p>
 
-#### Considering these opportunities
+### Considering these opportunities
 
 Efficiently using these query APIs, indexes, materialized views, and summaries during query execution is of course just one side of the story.
 Further research is also needed to determine techniques to efficiently *construct* and *manage* them.

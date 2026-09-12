@@ -1,0 +1,14 @@
+{
+  "name": "Ruben Taelman",
+  "short_name": "Ruben Taelman",
+  "description": "Computer scientist, researcher, programmer",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#f6fdf5",
+  "theme_color": "#2ba7ff",
+  "icons": [
+    { "src": "/img/icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/img/icons/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}

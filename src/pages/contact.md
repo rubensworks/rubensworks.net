@@ -2,6 +2,7 @@
 layout: ../layouts/Page.astro
 title: 'Contact'
 permalink: '/contact/'
+description: 'How to reach Ruben Taelman at IDLab, imec, Ghent University, for research and academic matters, and everywhere else he can be found online.'
 ---
 
 You are more than welcome to contact me for anything <a href="#contact-work">work-related</a> or <a href="#contact-other">other matters</a>.

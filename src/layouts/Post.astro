@@ -12,8 +12,11 @@ interface Props {
   featureImg?: string
   excerpt?: string
   comments?: boolean
+  /** Whether the body has a `.demo-nodejs` block for RunKit to turn into a notebook. */
+  runkit?: boolean
 }
-const { url, title, subtitle, date, author, featureImg, excerpt, comments } = Astro.props as Props
+const { url, title, subtitle, date, author, featureImg, excerpt, comments, runkit = false } =
+  Astro.props as Props
 
 // Inlined verbatim from post.html. RunKit turns the `.demo-nodejs` blocks in the streaming
 // RDF parsers post into live notebooks; the two commented-out lines are upstream's.
@@ -35,7 +38,14 @@ const runkitScript = `
   }, false);
 `
 ---
-<Default title={title} url={url} excerpt={excerpt} featureImg={featureImg} comments={comments}>
+<Default
+  title={title}
+  url={url}
+  excerpt={excerpt}
+  featureImg={featureImg}
+  comments={comments}
+  article={{ published: date }}
+>
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting" typeof="schema:BlogPosting schema:CreativeWork" about={url}>
 
   <header class="post-header">
@@ -51,6 +61,12 @@ const runkitScript = `
   </div>
 
 </article>
-<script is:inline src="https://embed.runkit.com"></script>
+{/* One post has RunKit notebooks in it. The other five used to load 300 KiB of embed
+    script to find no `.demo-nodejs` block and do nothing. */}
+{runkit && (
+  <Fragment>
+<script is:inline defer src="https://embed.runkit.com"></script>
 <script is:inline set:html={runkitScript}></script>
+  </Fragment>
+)}
 </Default>

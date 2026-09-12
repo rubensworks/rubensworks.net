@@ -31,12 +31,16 @@ jobs:
       # artifact the deploy uploads is produced *after* it and cannot be affected by it.
       - name: Check content can be added 📄
         run: npm run check:content
+      - name: Check images are optimised 🖼️
+        run: npm run check:images
       - name: Build 🔧
         run: npm run build
       # Blocking, unlike the html-proofer step it replaces: script/cibuild ended in
       # `|| true`, so broken links never failed a build. This one exits non-zero.
       - name: Check links and anchors 🔗
         run: npm run check:links
+      - name: Check metadata and sitemap 🔍
+        run: npm run check:seo
       - name: Install SSH key 🔧
         uses: shimataro/ssh-key-action@v2
         with:

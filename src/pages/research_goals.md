@@ -2,6 +2,7 @@
 layout: ../layouts/Page.astro
 title: 'Research Goals'
 permalink: '/research_goals/'
+description: 'The research and development goals Ruben Taelman is pursuing: link-traversal query execution, decentralized data publication, and querying over Solid pods.'
 ---
 
 In general, my research concerns <strong>decentralization</strong>, <strong>publication</strong> and <strong>querying</strong> on the <strong>Web</strong>.

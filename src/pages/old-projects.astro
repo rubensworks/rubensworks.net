@@ -12,7 +12,11 @@ const projects = (await getCollection('projects'))
   .sort((a, b) => String(a.data.start ?? '').localeCompare(String(b.data.start ?? ''), 'en'))
   .reverse()
 ---
-<Page title="Old Projects" url="/old-projects/">
+<Page
+  title="Old Projects"
+  url="/old-projects/"
+  description="Projects Ruben Taelman used to work on, from Android apps and game modifications to Flash gaming sites, kept here as a record of what they taught him."
+>
 <p>
 This page lists some of the projects I used to work on in the past.
 Their main purpose was learning experience.

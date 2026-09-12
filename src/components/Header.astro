@@ -80,8 +80,10 @@ const isHome = url === '/'
   <div class="wrapper">
     <nav class="site-nav">
       <div class="trigger">
+        {/* The badge itself is the CSS background of .rt-icon; this <img> is here for its
+            alt text, which is why it is the 64px copy and not the full portrait. */}
         <a href={`${site.baseurl}/`} class="rt-icon">
-          <img src={`${site.baseurl}/img/ruben.jpg`} alt="Ruben Taelman" />
+          <img src={`${site.baseurl}/img/ruben-64.jpg`} alt="Ruben Taelman" width="64" height="64" />
         </a>
         {/* The trailing newline is load-bearing: .page-link is inline-block, so the
             whitespace Liquid left between links renders as a real gap between them.
