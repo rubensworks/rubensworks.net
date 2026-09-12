@@ -1,10 +1,18 @@
 ---
 // Author hover cards, queried from each co-author's own Linked Data with Comunica.
 //
-// The script below is the only client-side JavaScript the site ships, and Astro inlines it
-// because it is small. It goes on every page rather than only the ones with a bibliography:
-// it looks for `a.author[resource]` and returns immediately when there is none, which is
-// cheaper than deciding per layout which pages carry authors.
+// The script below is the only JavaScript this repository itself ships to the browser. The
+// other two are third-party and inline: the analytics tag on every page, and RunKit on the
+// three posts that embed a notebook.
+//
+// Astro does not inline it. It only inlines a `<script>` with no imports, and this one
+// imports, so the built pages carry `<script type="module" src="/_astro/FoafTooltip…js">`
+// — around 7 KB, 2.9 KB gzipped. With no `Cache-Control` header on the server today that
+// is revalidated on every navigation.
+//
+// It goes on every page rather than only the ones with a bibliography: it looks for
+// `a.author[resource]` and returns immediately when there is none, which is cheaper than
+// deciding per layout which pages carry authors.
 //
 // Comunica itself is not here. `foaf-tooltip.ts` reaches it through `new Worker(...)`, so
 // Vite emits it as a separate chunk that is only fetched once a reader hovers a name.
