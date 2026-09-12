@@ -7,6 +7,7 @@ deploy_rsa.pub
 _site_golden
 _site_new
 dist
+dist-content-check
 node_modules
 
 node_modules/.astro

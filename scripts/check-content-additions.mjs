@@ -7,6 +7,10 @@
 // _data/*.yml — then runs the tests, the build and the link check, and asserts the new
 // content actually reached the pages it belongs on. Everything is restored afterwards.
 //
+// The build goes to its own directory, never `dist`. The pages built here contain content
+// that must never be published, so this must not leave them where a deploy would find them
+// — and equally must not delete a real `dist` that a later step is about to upload.
+//
 // The point is the *combination*. Tests passing is not enough on its own: an entry can be
 // silently dropped from a page and nothing fails. And rendering is not enough either: a
 // hard-coded `toHaveLength(92)` or a fixture compared by equality turns an ordinary edit to
@@ -14,6 +18,9 @@
 
 import { readFileSync, writeFileSync, existsSync, rmSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
+
+/** Kept away from `dist`: these pages carry test content and must never be deployed. */
+const OUT = 'dist-content-check'
 
 // Each entry exercises something the pipeline has to get right, not just the happy path:
 // a name list wrapped across lines, a LaTeX accent, a `%` in a URL and in a title, an entry
@@ -183,23 +190,23 @@ try {
   console.log(`added content to ${ADDITIONS.length} input files\n`)
 
   run('npx', ['vitest', 'run'])
-  run('npx', ['astro', 'build'])
-  run('node', ['scripts/check-links.mjs', 'dist'])
+  run('npx', ['astro', 'build', '--outDir', OUT])
+  run('node', ['scripts/check-links.mjs', OUT])
 
   console.log('\nchecking the new content actually rendered:')
   for (const [file, needle, why] of MUST_RENDER) {
-    const html = existsSync(`dist/${file}`) ? readFileSync(`dist/${file}`, 'utf8') : ''
+    const html = existsSync(`${OUT}/${file}`) ? readFileSync(`${OUT}/${file}`, 'utf8') : ''
     const ok = html.includes(needle)
     if (!ok) failures++
     console.log(`  ${ok ? 'OK  ' : 'FAIL'} ${why}`)
-    if (!ok) console.error(`       expected ${JSON.stringify(needle)} in dist/${file}`)
+    if (!ok) console.error(`       expected ${JSON.stringify(needle)} in ${OUT}/${file}`)
   }
 } finally {
   for (const [path, original] of originals) {
     if (original === null) rmSync(path, { force: true })
     else writeFileSync(path, original)
   }
-  rmSync('dist', { recursive: true, force: true })
+  rmSync(OUT, { recursive: true, force: true })
   console.log('\ninputs restored')
 }
 

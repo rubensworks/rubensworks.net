@@ -23,16 +23,20 @@ jobs:
         run: npm ci
       - name: Test 🧪
         run: npm test
+      # Adds an entry to every input file, then checks the suite still passes and the new
+      # content actually reaches its pages. Builds into its own directory and restores
+      # everything afterwards, so it leaves nothing behind for the deploy to pick up.
+      #
+      # Runs before the build on purpose: it is the one step that edits the inputs, so the
+      # artifact the deploy uploads is produced *after* it and cannot be affected by it.
+      - name: Check content can be added 📄
+        run: npm run check:content
       - name: Build 🔧
         run: npm run build
       # Blocking, unlike the html-proofer step it replaces: script/cibuild ended in
       # `|| true`, so broken links never failed a build. This one exits non-zero.
       - name: Check links and anchors 🔗
         run: npm run check:links
-      # Adds an entry to every input file, then checks the suite still passes and the new
-      # content actually reaches its pages. Restores everything afterwards.
-      - name: Check content can be added 📄
-        run: npm run check:content
       - name: Install SSH key 🔧
         uses: shimataro/ssh-key-action@v2
         with:
