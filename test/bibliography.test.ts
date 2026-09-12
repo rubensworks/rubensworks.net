@@ -12,10 +12,6 @@ import { matchOp, queryEntries, compileQuery } from '../src/lib/bibquery'
 
 const entries = loadBibliography()
 
-// knows.yml names that match no author. `Jacob Beetz` is spelled `Jakob Beetz` in
-// references.bib, so that person's profile link has never been applied — a content typo,
-// listed here rather than silently corrected because fixing it changes what pages render.
-const KNOWN_TYPOS = new Set(['Jacob Beetz'])
 
 // Keys frozen when the fixtures below were recorded. Entries added since are not in it, so
 // nothing here fails just because the bibliography grew.
@@ -93,7 +89,7 @@ describe('author display names', () => {
   // working and drops the foaf:maker links.
   it('every name in knows.yml still matches an author', () => {
     const authors = new Set(entries.flatMap((e) => e.authors.map((a) => a.display)))
-    const unmatched = Object.keys(loadKnows()).filter((n) => !authors.has(n) && !KNOWN_TYPOS.has(n))
+    const unmatched = Object.keys(loadKnows()).filter((n) => !authors.has(n))
     expect(unmatched, 'knows.yml entries that link nothing').toEqual([])
   })
 })
