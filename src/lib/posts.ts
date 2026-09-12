@@ -14,10 +14,10 @@ export interface Post {
   excerpt: string
 }
 
-/** The date and slug Jekyll derived from the filename, e.g. 2019-03-13-streaming-rdf-parsers. */
+/** The date and slug taken from the filename, e.g. 2019-03-13-streaming-rdf-parsers. */
 function parseFilename(id: string): { slug: string; datePart: string } {
   const m = /^(\d{4}-\d{2}-\d{2})-(.+)$/.exec(id)
-  if (!m) throw new Error(`Post filename "${id}" is not in Jekyll's YYYY-MM-DD-slug form`)
+  if (!m) throw new Error(`Post filename "${id}" is not in YYYY-MM-DD-slug form`)
   return { datePart: m[1]!, slug: m[2]! }
 }
 
@@ -26,14 +26,12 @@ const stripFrontmatter = (src: string) => src.replace(/^---\r?\n[\s\S]*?\r?\n---
 let processor: Awaited<ReturnType<typeof createMarkdownProcessor>> | null = null
 
 /**
- * Renders a post's excerpt the way Jekyll does: cut the *source* at
- * `excerpt_separator: <!--more-->`, then run the first half through the same Markdown
- * pipeline as the body.
+ * Renders a post's excerpt: cut the *source* at `<!--more-->`, then run the first half
+ * through the same Markdown pipeline as the body.
  *
  * Reading `entry.rendered.html` and slicing that would be the obvious shortcut, but the
  * content layer does not reliably populate it for entries loaded through a custom entry
- * type — it came back empty for one post while the other five were fine. Rendering the
- * source directly is both closer to Jekyll's semantics and not dependent on that.
+ * type — it came back empty for one post while the others were fine.
  */
 async function renderExcerpt(filePath: string, id: string): Promise<string> {
   const body = stripFrontmatter(readFileSync(filePath, 'utf8'))
@@ -43,7 +41,7 @@ async function renderExcerpt(filePath: string, id: string): Promise<string> {
   return (await processor.render(body.slice(0, i))).code
 }
 
-/** All posts, newest first — Jekyll's `site.posts` order. */
+/** All posts, newest first. */
 export async function loadPosts(): Promise<Post[]> {
   const entries = await getCollection('posts')
   const posts = await Promise.all(

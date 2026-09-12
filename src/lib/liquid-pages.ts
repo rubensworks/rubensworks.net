@@ -9,12 +9,10 @@ import { site } from '../site.config'
  * A minimal Liquid renderer for `cv.md` and `reading_list.md`, so both files can stay
  * exactly as they are on disk.
  *
- * Rewriting them as `.astro` would mean hand-porting 55 `cv-listing` includes, 28 `book`
- * includes, 22 bibliography tags, two `{% for %}` loops over `_data/students*.yml` and four
- * attribute lists — a large mechanical diff with plenty of room for a silent transcription
- * slip. Expanding the Liquid instead and handing the result to the same Markdown pipeline
- * reproduces Jekyll's own order of operations (Liquid first, Markdown second), and leaves
- * the source files as the reviewable artefact.
+ * Between them they hold 55 `cv-listing` entries, 28 `book` entries, 22 bibliography tags,
+ * two `{% for %}` loops over `_data/students*.yml` and four attribute lists. Keeping them as
+ * content — expanded here and handed to the same Markdown pipeline the posts use, Liquid
+ * first and Markdown second — means a CV edit stays a one-line edit to `cv.md`.
  *
  * Only the constructs these two files actually use are implemented. Anything else — an
  * unknown include, an unsupported filter, a stray `{%` — throws, so an unhandled construct
@@ -91,8 +89,8 @@ function parseParams(raw: string, scope: Scope, filePath: string): Record<string
 /**
  * Port of `_includes/cv-listing.html`.
  *
- * `markdownify` runs each value through kramdown as a *block*, so even a bare phrase comes
- * back wrapped in a paragraph — visible in the golden output as
+ * `markdownify` runs each value through Markdown as a *block*, so even a bare phrase comes
+ * back wrapped in a paragraph:
  * `<span class="cv-listing-subject"><p>Assistant Professor</p>\n</span>`. The whitespace
  * from the template's untaken `{% if %}` branches is reproduced too, since it ends up in
  * the page.
@@ -455,7 +453,7 @@ export async function renderLiquid(
   return out
 }
 
-/** Reads a Jekyll page, splits its front matter, and renders the Liquid in its body. */
+/** Reads a page, splits its front matter, and renders the Liquid in its body. */
 export function loadLiquidPage(path: string, render: Render): Promise<string> {
   const contents = readFileSync(path, 'utf8')
   const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(contents)

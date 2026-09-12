@@ -9,11 +9,10 @@ import {
 } from '../src/lib/bibtex-serialise'
 import { site } from '../src/site.config'
 
-// The 92 golden <pre class="bibtex content"> blocks, extracted from the Jekyll baseline by
-// verify/extract-bibtex-fixtures.mjs, on the `claude/jekyll-astro-migration-verify-tooling`
-// branch. This is the fixture set plan §9 calls for: it pins the one piece of
-// jekyll-scholar that was never reproduced before.
-const golden: Record<string, string> = JSON.parse(
+// The expected <pre class="bibtex content"> block for every entry in references.bib.
+// Recorded reference values, NOT a snapshot of serialiseEntry's own output — regenerating
+// them from the code under test would make every assertion below vacuous.
+const expected: Record<string, string> = JSON.parse(
   readFileSync('test/fixtures/bibtex-blocks.json', 'utf8'),
 )
 
@@ -154,16 +153,16 @@ describe('serialiseEntry', () => {
   })
 })
 
-describe('the 92 golden <pre class="bibtex"> blocks', () => {
+describe('the <pre class="bibtex"> block on every publication page', () => {
   const blocks = loadBibtexBlocks(skip)
 
-  it('covers every entry on the golden site', () => {
-    expect(Object.keys(golden)).toHaveLength(92)
+  it('covers every entry', () => {
+    expect(Object.keys(expected)).toHaveLength(92)
     expect(blocks.size).toBe(92)
-    expect(new Set(blocks.keys())).toEqual(new Set(Object.keys(golden)))
+    expect(new Set(blocks.keys())).toEqual(new Set(Object.keys(expected)))
   })
 
-  it.each(Object.keys(golden))('matches jekyll-scholar byte-for-byte: %s', (key) => {
-    expect(blocks.get(key)).toBe(golden[key])
+  it.each(Object.keys(expected))('matches byte-for-byte: %s', (key) => {
+    expect(blocks.get(key)).toBe(expected[key])
   })
 })

@@ -11,8 +11,8 @@ import type { Root, RootContent, Parent, Paragraph } from 'mdast'
  *     <!-- Object       -->
  *     I discuss where and how these restrictions …
  *
- * On the live site that is one `<p>`; under CommonMark it becomes three, which changes the
- * spacing readers see because `_base.scss` gives every paragraph a bottom margin.
+ * That has to stay one `<p>`; under CommonMark it becomes three, which changes the spacing
+ * readers see because `_base.scss` gives every paragraph a bottom margin.
  *
  * Runs of paragraphs and comment-only HTML nodes with no blank line between them are merged
  * back into a single paragraph, with the comment kept as inline HTML.

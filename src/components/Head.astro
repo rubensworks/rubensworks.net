@@ -21,8 +21,7 @@ const title = escape(pageTitle ?? site.title)
 /**
  * `page.excerpt | newline_to_br | strip_newlines | replace: '<br />', ' ' | strip_html
  *   | strip | truncatewords: 30`
- * Liquid's `truncatewords` keeps 30 words and appends three full stops, not an ellipsis
- * character — confirmed against the golden <meta name="description">.
+ * 30 words, followed by three full stops rather than an ellipsis character.
  */
 function describe(html: string): string {
   const withBr = html.replace(/\n/g, '<br />\n')          // newline_to_br

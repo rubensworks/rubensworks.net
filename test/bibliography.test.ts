@@ -17,8 +17,8 @@ describe('parsing', () => {
     expect(entries).toHaveLength(92)
   })
 
-  it('preserves the custom _-prefixed fields jekyll-scholar exposes', () => {
-    // citation-js drops these (CSL-JSON normalisation) -- they drive cv.md and the homepage.
+  it('preserves the custom _-prefixed fields', () => {
+    // A CSL-JSON based parser would drop these; they drive cv.md and the homepage.
     const e = entries.find((x) => x.key === 'taelman_iswc_resources_comunica_2018')!
     expect(e._type).toBe('Conference')
     expect(e._highlighted).toBe('true')
@@ -42,7 +42,7 @@ describe('parsing', () => {
 })
 
 describe('author display names', () => {
-  // Ground truth extracted from bibtex-ruby 4.4.7 + namae, the exact stack jekyll-scholar uses.
+  // Names whose particles make the given/family split ambiguous.
   const cases: [string, string][] = [
     ['Van de Vyvere, Brecht',       'Brecht Van de Vyvere'],
     ['Mendes de Farias, Tarcisio',  'Tarcisio Mendes de Farias'],
@@ -110,13 +110,13 @@ describe('sorting and grouping', () => {
     expect(groups.reduce((n, [, es]) => n + es.length, 0)).toBe(92)
   })
 
-  // Ground truth, not a self-snapshot: the order the Jekyll site actually published,
-  // scraped from the 92 "More" links on _site_golden/publications/index.html. An earlier
-  // self-referential snapshot hid a real bug — monthToNumber was returning null for 91 of
-  // 92 entries, so the secondary sort key did nothing.
-  it('matches the entry order published by the Jekyll site', () => {
-    const golden: string[] = JSON.parse(readFileSync('test/fixtures/entry-order.json', 'utf8'))
-    expect(entries.map((e) => e.key)).toEqual(golden)
+  // Recorded reference values, NOT a snapshot of this code's own output — do not regenerate
+  // them from the sort below, or the test becomes vacuous. An earlier self-referential
+  // snapshot hid a real bug: monthToNumber returned null for 91 of 92 entries, so the
+  // secondary sort key did nothing and nothing complained.
+  it('sorts the entries into the published order', () => {
+    const expected: string[] = JSON.parse(readFileSync('test/fixtures/entry-order.json', 'utf8'))
+    expect(entries.map((e) => e.key)).toEqual(expected)
   })
 })
 
@@ -157,10 +157,10 @@ describe('query operators (bibtex-ruby elements.rb:195-232)', () => {
       '@*[author !~ Verborgh]',
       '@*',
     ].map((q) => [q, queryEntries(entries, q).length]))
-    // Expected values are the {% bibliography_count %} numbers rendered on the golden
-    // /cv/ page, so this asserts against the live site rather than against ourselves.
-    const golden = JSON.parse(readFileSync('test/fixtures/query-counts.json', 'utf8'))
-    expect(counts).toEqual(golden)
+    // The counts /cv/ prints for each of its {% bibliography_count %} tags. Recorded
+    // reference values, not a snapshot of what queryEntries currently returns.
+    const expected = JSON.parse(readFileSync('test/fixtures/query-counts.json', 'utf8'))
+    expect(counts).toEqual(expected)
   })
 
   it('^= on author means first author', () => {
@@ -205,8 +205,8 @@ describe('title casing (regression: @retorquere sentenceCase defaults to ON)', (
 })
 
 describe('whitespace protection', () => {
-  // The parser collapses whitespace inside a value; jekyll-scholar keeps it, and microdata
-  // literals are exact text content, so the raw runs have to survive the round trip.
+  // The parser collapses whitespace inside a value, and a microdata literal is the
+  // element's exact text content, so the raw runs have to survive the round trip.
   it('encodes runs the parser would rewrite, and decodes them back', () => {
     const protectedSrc = protectWhitespace('@article{x,\n  title = {A\n  wrapped  title},\n}')
     expect(protectedSrc).not.toContain('A\n  wrapped')

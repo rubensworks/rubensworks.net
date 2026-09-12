@@ -1,6 +1,6 @@
-// The former _config.yml. Values are reproduced verbatim, including the trailing newline on
-// `description`, which comes from the YAML folded scalar (`description: >`) and is visible in
-// the rendered <meta name="description">, the footer and feed.xml.
+// Site-wide settings. The trailing newline on `description` is deliberate: it shows up in
+// the rendered <meta name="description">, the footer and feed.xml, and removing it would
+// change all three.
 
 export const site = {
   title: 'Ruben Taelman',
@@ -15,7 +15,7 @@ export const site = {
   googlescholarUsername: '2avKLOkAAAAJ',
   googleAnalyticsTrackingId: 'G-8CPYVR6R0T',
 
-  // _config.yml `scholar:` — see src/lib/bibliography.ts and src/lib/bibtex-serialise.ts
+  // Bibliography settings — see src/lib/bibliography.ts and src/lib/bibtex-serialise.ts.
   scholar: {
     sortBy: ['year', 'month'] as const,
     order: 'descending' as const,
@@ -36,11 +36,9 @@ export const site = {
     ],
   },
 
-  // feed.xml prints `Jekyll v{{ jekyll.version }}`. Kept as a literal so the generated feed
-  // stays byte-identical to the one currently served; changing it would be a visible,
-  // pointless difference in every subscriber's reader.
-  generator: 'Jekyll v3.8.7',
+  // <generator> in feed.xml.
+  generator: 'Astro v7.2.2',
 } as const
 
-/** `site.url + site.baseurl + path` — Jekyll's `prepend: site.baseurl | prepend: site.url`. */
+/** `site.url + site.baseurl + path`. */
 export const absoluteUrl = (path: string): string => `${site.url}${site.baseurl}${path}`

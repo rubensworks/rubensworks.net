@@ -1,27 +1,22 @@
 import { readFileSync } from 'node:fs'
 
 /**
- * Reproduces `BibTeX::Entry#to_s(quotes: ['{','}'])` as jekyll-scholar calls it, which is
- * what fills the `<pre class="bibtex content">` block on all 92 detail pages.
+ * Renders an entry in canonical BibTeX form — the `<pre class="bibtex content">` block a
+ * visitor copies off a publication page. The rules are bibtex-ruby's, since that is the
+ * shape people expect to paste back into a .bib file:
  *
- * The semantics were read out of `jekyll-scholar-5.16.0/lib/jekyll/scholar/utilities.rb`
- * and then confirmed by running the real bibtex-ruby 4.4.7 under Ruby 2.7:
- *
- *  - `liquidify` (utilities.rb:520-537) builds `e['bibtex']` from the entry **before**
- *    `bibtex_filters` runs, so LaTeX escapes and inner braces survive verbatim:
- *    `Rojas Mel{\'e}ndez` stays exactly that, and `{Solid}` keeps its braces. Values must
- *    therefore come from the raw file, not from the decoded parse.
- *  - `bibtex_options` is `{ strip: false, parse_months: true }` (defaults.rb:38). `strip:
- *    false` is why multi-line values keep their newlines; each newline inside a value comes
- *    back indented by two extra spaces. Verified against the gem:
+ *  - Values are echoed from the raw file, not from the decoded parse, so LaTeX escapes and
+ *    inner braces survive: `Rojas Mel{\'e}ndez` stays exactly that, and `{Solid}` keeps its
+ *    braces. What is copied out has to parse back to the same entry.
+ *  - Multi-line values keep their newlines, and each newline inside a value comes back
+ *    indented by two extra spaces:
  *        "{Line one\n    four}"  ->  "{Line one\n      four}"
  *        "{Line one\n\ttab}"     ->  "{Line one\n  \ttab}"
  *        "{Line one\nnone}"      ->  "{Line one\n  none}"
- *  - `parse_months: true` turns the month into a bare BibTeX symbol, emitted without
- *    braces: `month = {october}` becomes `month = oct`. Matching is on the lowercased
- *    first three letters, which is why the file's `{februari}` typo still yields `feb`.
- *    It also adds a `month_numeric` field, which `bibtex_skip_fields` then removes.
- *  - Field order is the order they appear in the file; bibtex-ruby preserves it.
+ *  - The month becomes a bare BibTeX symbol, emitted without braces: `month = {october}`
+ *    becomes `month = oct`. Matching is on the lowercased first three letters, which is why
+ *    the file's `{februari}` typo still yields `feb`.
+ *  - Fields keep the order they appear in the file.
  *
  * The file uses no @string definitions, no `"`-quoted values, no concatenation and no bare
  * values, so the parser below only has to handle `name = {value}`. `parseRawEntries` throws
@@ -36,21 +31,21 @@ export interface RawEntry {
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
-/** Fields bibtex-ruby holds as `BibTeX::Names`, and therefore re-renders rather than echoes. */
+/** Name lists: re-rendered into a normalised form rather than echoed from the file. */
 const NAME_FIELDS = new Set(['author', 'editor', 'translator'])
 
 /**
- * `BibTeX::Names#to_s` — the normalised `Last, First and Last, First` form.
+ * The normalised `Last, First and Last, First` form.
  *
  * This is not cosmetic: it is also the string the `--query` operators match against, which
  * is what makes `author ^= Taelman` mean "first author" and `author ~= Ruben$` mean "last
- * author" (plan §6.1).
+ * author".
  *
- * Three shapes appear in references.bib and all three are covered by the 92-block fixture:
+ * Three shapes appear in references.bib and all three are covered by the fixtures:
  *  - `Last, First` — already normalised, only whitespace is tidied.
  *  - `First Last` — reordered. `taelman_towards_privacy_aggregation_2020` is the only entry
  *    written this way.
- *  - `Emonet, Vincent,` — a stray trailing comma, which bibtex-ruby's parser discards
+ *  - `Emonet, Vincent,` — a stray trailing comma, discarded
  *    (`kuhn_peerj_decentralizednanopubs_2021`).
  */
 export function normaliseNames(value: string): string {
@@ -142,7 +137,7 @@ function indexOfTopLevel(s: string, char: string): number {
   return -1
 }
 
-/** bibtex-ruby's month symbol, or null when the value is not a recognisable month. */
+/** The bare month symbol (`oct`), or null when the value is not a recognisable month. */
 export function monthSymbol(raw: string): string | null {
   const k = raw.trim().toLowerCase().slice(0, 3)
   return MONTHS.includes(k) ? k : null
@@ -223,7 +218,7 @@ export function serialiseEntry(entry: RawEntry, skipFields: readonly string[]): 
   const lines = entry.fields
     .filter(([name]) => !skip.has(name.toLowerCase()))
     .map(([rawName, value]) => {
-      // bibtex-ruby stores field names as downcased symbols, so `bookTitle` in the file
+      // Field names are case-insensitive, so `bookTitle` in the file
       // comes back out as `booktitle` (dimou_ekaw_workshop_2016).
       const name = rawName.toLowerCase()
       if (name === 'month') {

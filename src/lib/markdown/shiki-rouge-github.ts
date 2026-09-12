@@ -3,21 +3,19 @@
  *
  * `_sass/_syntax-highlighting.scss` styles ~50 Rouge/Pygments token classes — the classic
  * Rouge *github* theme. No JS highlighter emits those class names (Shiki uses inline styles,
- * Prism and starry-night have their own vocabularies), so the choice was between matching
- * the colours and rebuilding class-name parity; the colours won (plan §6.7, option 1).
+ * Prism and starry-night have their own vocabularies), so this theme carries the same
+ * colours as inline styles instead.
  *
  * Every colour below is copied from the SCSS, with the Pygments token it came from named so
  * the two stay traceable. The stylesheet itself is left in place and untouched: it still
  * provides the `.highlight` background and vertical rhythm that
  * `rehype-rouge-wrapper.ts` keeps hooking into.
  *
- * The scope-to-colour mapping is tuned to the three languages the site's code blocks use —
- * javascript, json and sparql — and was derived by comparing the golden Jekyll output
- * character by character. `verify/code-colors.mjs`, on the
- * `claude/jekyll-astro-migration-verify-tooling` branch, re-runs that comparison and
- * requires it to be exact — 0 of 8511 characters differ. A post in a fourth language would
- * need the same treatment: run that check against a Jekyll baseline, read the recolouring
- * shapes it reports, and add the scopes it names.
+ * The scope-to-colour mapping is tuned to the three languages the code blocks use —
+ * javascript, json and sparql. TextMate grammars are far more granular than the Pygments
+ * token set the stylesheet names, so a post in a fourth language will need the same
+ * treatment: check which tokens come out coloured that the stylesheet leaves black, and add
+ * the scopes for the ones that do not match.
  */
 export const rougeGithub = {
   name: 'rouge-github',
@@ -122,9 +120,8 @@ export const rougeGithub = {
 
     // --- Per-grammar corrections -------------------------------------------------------
     // TextMate grammars name the same construct differently per language, so where a broad
-    // scope above lands on the wrong Rouge class the specific scope is restated here (the
-    // longest matching scope wins). Everything below was derived by diffing the golden
-    // build character by character — see code-colors.mjs on the verify-tooling branch.
+    // scope above lands on the wrong Pygments class the specific scope is restated here —
+    // the longest matching scope wins.
 
     // JavaScript: an object-literal key and a destructuring key are both Rouge `.na`,
     // not the plain identifiers the broad `variable` rule above would make them.

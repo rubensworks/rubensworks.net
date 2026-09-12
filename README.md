@@ -1,8 +1,28 @@
 Source code for my personal website: https://www.rubensworks.net
 
-Built with [Astro](https://astro.build/). Content lives in the same places it always has:
-`_bibliography/references.bib`, `_data/*.yml`, `_posts/*.markdown`, `_projects/*.html`,
-`_sass/*.scss`, `cv.md` and `reading_list.md`.
+Built with [Astro](https://astro.build/), TypeScript and Sass. The output is fully static and
+ships no client-side JavaScript.
+
+The pages publish structured data about their content — RDFa, microdata and JSON-LD, using
+`foaf:`, `schema.org`, `bibframe:`, `vivo:`, `org:` and `cert:`. That is why the templates
+carry so many `property`, `typeof`, `resource` and `itemprop` attributes; they are part of
+the output, not decoration.
+
+## Content
+
+| Path | What it holds |
+|---|---|
+| `_bibliography/references.bib` | every publication — the publication pages, the CV and the homepage all read from it |
+| `_data/*.yml` | presentations, PhD and master's students, and the people linked from `foaf:knows` |
+| `_posts/*.markdown` | blog posts, written in kramdown |
+| `_projects/*.html` | one file per project page |
+| `_sass/*.scss` | the stylesheet, imported by `css/main.scss` |
+| `cv.md`, `reading_list.md` | pages that build themselves from the bibliography and `_data`, using a small Liquid subset |
+| `public/`, `css/main.scss` | images, `ads.txt`, and the stylesheet entry point — copied or compiled through as they are |
+
+Everything under `src/` is templates and code: `src/pages` for routes, `src/layouts` and
+`src/components` for the shell, and `src/lib` for the bibliography engine and the Markdown
+pipeline.
 
 ## Development
 
@@ -14,21 +34,22 @@ npm test         # vitest
 ```
 
 `npm run check:links` verifies that every internal link and in-page anchor resolves, and
-fails if one does not. It runs in CI after the build.
+fails if one does not. It runs in CI after the build, and the deploy only happens on
+`master`.
 
-## Verifying against the old Jekyll site
+## Adding a publication
 
-The migration was checked against a golden build of the last Jekyll commit: a structural DOM
-diff of all 121 pages, a per-page RDF graph comparison, a stylesheet comparison, a
-character-by-character comparison of syntax-highlighting colours, and a Playwright pixel
-comparison at 1280/800/560 px.
+Add the entry to `_bibliography/references.bib`. A page at `/publications/<citation-key>/`
+appears on the next build, and the entry shows up on `/publications/`, on the CV, and — if
+it carries `_highlighted = {true}` — on the homepage. The non-standard `_type`, `_slides`,
+`_poster`, `_video` and `_highlighted` fields are what drive that; `test/bibliography.test.ts`
+covers the values currently in use.
 
-That tooling is **not** in this branch — it only makes sense next to a Jekyll build, and
-this repository no longer has one. It lives on
-[`claude/jekyll-astro-migration-verify-tooling`](https://github.com/rubensworks/rubensworks.net/tree/claude/jekyll-astro-migration-verify-tooling),
-which is the migration branch with `verify/` still present, and is kept around unmerged for
-any future change that should not alter the rendered output. Check it out, rebuild the
-baseline as its README describes, and run `npm run verify`.
+## Writing a post
+
+Add a file to `_posts/`, named `YYYY-MM-DD-slug.markdown`. The front matter takes `layout`,
+`title`, `subtitle`, `date`, `categories`, `tags` and `comments`. `<!--more-->` marks the end
+of the excerpt shown on `/blog/` and in the feed.
 
 ## Images
 

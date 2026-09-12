@@ -1,12 +1,10 @@
 #!/usr/bin/env node
-// Built-site integrity: internal links, in-page anchors, and leaked internal markers
-// (plan §7.4).
+// Built-site integrity: internal links, in-page anchors, and leaked internal markers.
 //
 //   node scripts/check-links.mjs <dir>
 //
-// Replaces `script/cibuild`'s `htmlproofer ... || true`. This one exits non-zero, which is
-// the point: the kramdown-vs-github-slugger heading-slug risk (§6.4.3) is only guarded if a
-// broken #anchor actually fails the build.
+// Exits non-zero, which is the point: heading slugs are generated, so a link to one is
+// only guarded if a broken #anchor actually fails the build.
 //
 // External URLs are not fetched — that makes CI depend on 200-odd third-party hosts.
 
@@ -18,21 +16,20 @@ const dir = process.argv[2] ?? 'dist'
 const SITE_HOSTS = new Set(['www.rubensworks.net', 'rubensworks.net'])
 
 // Same-host paths that this repository does not build. `/raw/**` holds the PDFs and slide
-// decks, uploaded to the server out-of-band; they were never in _site either. Treated as
-// external so the checker verifies what the build controls.
+// decks, uploaded to the server out-of-band. Treated as external so the checker verifies
+// what the build controls.
 const NOT_BUILT_HERE = [/^\/raw\//]
 
-// Pre-existing breakage carried over from the Jekyll site verbatim. Listed rather than
-// fixed, because fixing it would change the rendered output and the migration's contract is
-// byte-for-byte fidelity. Reported at the end of every run so it cannot be forgotten.
+// Known breakage, listed rather than fixed so the rest of the check can stay blocking.
+// Reported at the end of every run so it cannot be forgotten.
 const KNOWN_BROKEN = [
   {
     file: 'projects/minecraft/index.html',
     href: '#commision',
     why:
       '_projects/minecraft.html links to #commision but no element carries that id — a ' +
-      'typo that predates this migration. Fixing it means editing an input file and ' +
-      'changing the output, so it is deliberately preserved.',
+      'typo. Fixing it changes the rendered page, so it is left for a content change ' +
+      'rather than silently corrected here.',
   },
 ]
 
@@ -78,7 +75,7 @@ function resolveTarget(pathname) {
   if (fileSet.has(p)) return p
   if (fileSet.has(posix.join(p, 'index.html'))) return posix.join(p, 'index.html')
   if (p.endsWith('/') && fileSet.has(p + 'index.html')) return p + 'index.html'
-  // Jekyll's `permalink: pretty` URLs are usually written without the trailing slash.
+  // Directory-style URLs are usually written without the trailing slash.
   if (fileSet.has(p.replace(/\/$/, '') + '/index.html')) return p.replace(/\/$/, '') + '/index.html'
   return null
 }
@@ -143,8 +140,7 @@ for (const e of errors) {
 // whitespace runs inside .bib values (U+E000-E002), and html-blocks.ts keeps raw HTML blocks
 // open past a whitespace-only line (U+E010). Both are decoded again before rendering. If one
 // ever is not, the marker ships as an invisible character inside the published text — and
-// inside the RDF literals built from it. This is the check that says it did not, and unlike
-// the golden comparisons it needs nothing but the build, so it keeps running in CI forever.
+// inside the RDF literals built from it. This is the check that says it did not.
 const PRIVATE_USE = /[\uE000-\uF8FF]/
 const leaked = []
 for (const f of files) {

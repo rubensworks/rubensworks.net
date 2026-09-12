@@ -1,7 +1,7 @@
 import type { Root, Element, Parent, ElementContent } from 'hast'
 
 /**
- * Rebuilds the markup Rouge produced around every code block:
+ * Builds the markup around every code block:
  *
  *   <div class="language-json highlighter-rouge">
  *     <div class="highlight">
@@ -9,15 +9,13 @@ import type { Root, Element, Parent, ElementContent } from 'hast'
  *     </div>
  *   </div>
  *
- * Keeping that structure means `_sass/_syntax-highlighting.scss` and `_sass/_base.scss` go
- * on styling code blocks exactly as they do now — the `#eef` background, the border, the
- * padding and `%vertical-rhythm`'s bottom margin. The only thing that changes inside a code
- * block is how individual tokens are coloured, which is the narrowest possible reading of
- * the plan's §6.7 option 1.
+ * That structure is what `_sass/_syntax-highlighting.scss` and `_sass/_base.scss` hang
+ * their selectors off: the `#eef` background, the border, the padding and
+ * `%vertical-rhythm`'s bottom margin all come from the class names above.
  *
- * Three details taken from the golden output rather than assumed:
+ * Three details:
  *  - A block with no info string gets `<div class="highlighter-rouge">`, no language class,
- *    and is left unhighlighted. Rouge had no lexer to apply.
+ *    and is left unhighlighted.
  *  - A block-level inline attribute list lands on the *outer* div, with its classes ahead of
  *    `highlighter-rouge`: `{:#demo-nodejs-preamble .hide}` becomes
  *    `<div id="demo-nodejs-preamble" class="hide highlighter-rouge">`.

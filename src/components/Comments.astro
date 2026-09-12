@@ -1,10 +1,8 @@
 ---
-// Port of _includes/comments.html
-//
-// The Disqus loader inside the IIFE is commented out upstream, so comments have been inert
-// on all 6 posts for some time despite `comments: true` in their front matter. Ported
-// as-is — including the unclosed <h1> and the dead code — because the contract for this
-// migration is identical output, and removing it would change all 6 post pages.
+// The Disqus loader inside the IIFE is commented out, so comments are inert on all 6 posts
+// despite `comments: true` in their front matter. Left as it is — including the unclosed
+// <h1> — because removing it changes what those pages render; that is a content decision,
+// not a build one.
 import { site, absoluteUrl } from '../site.config'
 
 interface Props { url: string }

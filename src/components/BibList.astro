@@ -1,14 +1,10 @@
 ---
-// Replaces jekyll-scholar's `{% bibliography %}` tag.
+// The bibliography, grouped by year: an <h2> per year over an <ol class="bibliography"> of
+// <li>, each with a "More" link to the publication's own page. The tags and labels come from
+// `site.scholar`.
 //
-// Config comes from _config.yml's `scholar:` block and the gem defaults:
-//   bibliography_list_tag: ol, bibliography_item_tag: li  -> <ol class="bibliography"><li>
-//   bibliography_group_tag: 'h2,h3,h4,h5', first level    -> <h2 class="bibliography">YEAR</h2>
-//   details_link: More, details_link_class: details       -> <a class="details" href=…>More</a>
-//
-// Note the two hrefs differ by a trailing slash — `bib.html` links the title to
-// `/publications/KEY` while the details link points at `/publications/KEY/`. Both are
-// reproduced as-is.
+// Note the two hrefs differ by a trailing slash — the title links to `/publications/KEY`
+// while the details link points at `/publications/KEY/`.
 import BibEntry from './BibEntry.astro'
 import type { Entry, Knows } from '../lib/bibliography'
 import { groupByYear } from '../lib/bibliography'

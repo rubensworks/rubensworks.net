@@ -1,11 +1,10 @@
 import { defineCollection, z } from 'astro:content'
 import { glob } from 'astro/loaders'
-import { parseJekyllDate } from './lib/dates'
+import { parseFrontMatterDate } from './lib/dates'
 import { htmlCollection } from './loaders/html-collection'
 
 /**
- * Both collections read the original Jekyll directories in place — `_posts/*.markdown` and
- * `_projects/*.html` stay byte-identical.
+ * Posts live in `_posts/*.markdown` and project pages in `_projects/*.html`.
  *
  * `.markdown` is registered with the content layer by src/integrations/markdown-extension.ts,
  * and `_projects/*.html` is read by a small loader that passes the body through as HTML.
@@ -19,8 +18,8 @@ const posts = defineCollection({
     comments: z.boolean().optional(),
     title: z.string(),
     subtitle: z.string().optional(),
-    // A string under YAML 1.2; see parseJekyllDate.
-    date: z.union([z.string(), z.date()]).transform(parseJekyllDate),
+    // A string under YAML 1.2; see parseFrontMatterDate.
+    date: z.union([z.string(), z.date()]).transform(parseFrontMatterDate),
     feature_img: z.string().optional(),
     author: z.string().optional(),
   }),

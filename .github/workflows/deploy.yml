@@ -34,13 +34,9 @@ jobs:
         with:
           key: ${{ secrets.SCP_DEPLOY_RSA }}
           known_hosts: ${{ secrets.SCP_DEPLOY_HOST }}
-      # Unchanged apart from the directory: Jekyll wrote _site, Astro writes dist.
-      #
       # NOTE: `dist/*` is a shell glob, so it skips dot-directories — which means
-      # `.well-known/nostr.json` is built but never uploaded. Jekyll never produced that file
-      # at all, so this is not a regression, but publishing the NIP-05 identity needs
-      # `dist/` (with the trailing slash, no glob) here. Left as-is because the deploy step
-      # was explicitly out of scope for this migration.
+      # `.well-known/nostr.json` is built but never uploaded. Publishing the NIP-05 identity
+      # needs `dist/` here, with the trailing slash and no glob.
       - name: Deploy 🚀
         if: startsWith(github.ref, 'refs/heads/master')
         run: rsync -r --quiet -e "ssh -p $SCP_PORT -o 'StrictHostKeyChecking=no'" dist/* $SCP_USER@rubensworks.net:$SCP_LOCATION

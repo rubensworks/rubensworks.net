@@ -17,11 +17,10 @@ export interface Entry {
   _type?: string; _slides?: string; _poster?: string; _video?: string
   _highlighted?: string
   /**
-   * RAW field values, straight from the file. jekyll-scholar evaluates `--query` against
-   * `bibliography[query]` (utilities.rb:174), i.e. the parsed bibliography *before*
-   * `bibtex_filters` runs, so queries see undecoded text. cv.md depends on it:
-   * `@*[_type=Master's Thesis]` is written with a straight apostrophe, while the rendered
-   * value is `Master’s Thesis` with a typographic one.
+   * RAW field values, straight from the file. The `--query` filters in cv.md match against
+   * these rather than the rendered ones, which matters wherever decoding changes a
+   * character: `@*[_type=Master's Thesis]` is written with a straight apostrophe, while the
+   * rendered value carries the typographic `Master’s Thesis`.
    */
   queryFields: Record<string, string>
 }
@@ -51,9 +50,11 @@ export function monthToNumber(raw: string | undefined): number | null {
 }
 
 /**
- * jekyll-scholar renders `{{first}} {{prefix}} {{last}}` then collapses "  " -> " ".
- * Verified against bibtex-ruby+namae for all 88 authors in references.bib: the result is
- * always `given + " " + verbatim family field`, so no von-particle heuristics are needed.
+ * A display name is `{first} {prefix} {last}` with repeated spaces collapsed.
+ *
+ * Checked against all 88 authors in references.bib: the family name is always taken
+ * verbatim, particles included, so no von-particle heuristics are needed — `Van de Vyvere,
+ * Brecht` becomes `Brecht Van de Vyvere` and `de Valk, Sjors` becomes `Sjors de Valk`.
  */
 function toAuthor(c: { firstName?: string; lastName?: string; prefix?: string }): Author {
   const display = nfc([c.firstName, c.prefix, c.lastName]
@@ -92,16 +93,15 @@ const SP = '\uE002'
 
 /**
  * `@retorquere/bibtex-parser` collapses runs of whitespace inside a value to a single space
- * and trims the ends. jekyll-scholar parses with `strip: false` (defaults.rb:38) and keeps
- * them, so on the live site `<p class="abstract">` starts with a newline and ends with the
- * two spaces that preceded the closing brace, and `taelman_iswc_ostrich_2019`'s title stays
- * split across two lines.
+ * and trims the ends. The .bib file is the source of truth for the exact text, so those runs
+ * have to survive: `<p class="abstract">` keeps the newline the value opens with and the two
+ * spaces before its closing brace, and `taelman_iswc_ostrich_2019`'s title stays split
+ * across two lines.
  *
- * That is not cosmetic: the title carries `itemprop="name"` and the abstract
- * `property="schema:abstract"`, and microdata literals are the element's exact text content,
- * so collapsing the whitespace changes the published RDF graph. (RDFa normalises whitespace
- * in plain literals, which is why only the microdata half of the comparison caught the
- * title, and why the abstracts only showed up once the titles were fixed.)
+ * That is not cosmetic. The title carries `itemprop="name"` and the abstract
+ * `property="schema:abstract"`, and a microdata literal is the element's exact text content,
+ * so collapsing the whitespace changes the RDF graph the page publishes. (RDFa normalises
+ * whitespace in plain literals, so only the microdata half of the graph moves.)
  *
  * Every whitespace run that the parser would rewrite — one containing a newline or tab, or
  * two or more spaces — is encoded into private-use code points before parsing and decoded
@@ -187,12 +187,10 @@ export const restoreWhitespace = (s: string): string =>
 export const unescapePercent = (s: string): string => s.replace(/\\%/g, '%')
 
 /**
- * jekyll-scholar runs `bibtex_filters` — `[:smallcaps, :superscript, :italics, :latex]` —
- * over *every* field (utilities.rb:543), so the values that reach `bib.html` are
- * latex-decoded. `@retorquere/bibtex-parser` agrees with Ruby's latex-decode on `--`, `---`,
- * `~`, ``` `` ``` / `''`, `\%`, accents and `$…$`, but not on the plain apostrophe: LaTeX
- * treats `'` as a right single quote, so `Master's Thesis` renders as `Master’s Thesis` on
- * the live site.
+ * LaTeX reads a plain `'` as a right single quote, and `@retorquere/bibtex-parser` is the
+ * one decoder that leaves it alone — it handles `--`, `---`, `~`, ``` `` ``` / `''`, `\%`,
+ * accents and `$…$`, but not this. So `Master's Thesis` in the .bib renders as
+ * `Master’s Thesis` on the page.
  */
 export const latexApostrophes = (s: string): string => s.replace(/'/g, '’')
 
@@ -207,10 +205,10 @@ export function loadBibliography(path = '_bibliography/references.bib'): Entry[]
   if (cache) return cache
   // sentenceCase MUST be off: it is Better-BibTeX behaviour that rewrites
   // "Proceedings of the 25th International Semantic Web Conference" to
-  // "...international semantic web conference", changing every entry's booktitle/title.
-  // Jekyll/jekyll-scholar never touches title casing.
-  // verbatimFields: [] because jekyll-scholar applies bibtex_filters to every field,
-  // including `url`, which the parser would otherwise pass through undecoded.
+  // "...international semantic web conference", mangling every entry's booktitle and title.
+  // The casing in the .bib file is the casing that gets published.
+  // verbatimFields: [] so that `url` is decoded like every other field, rather than passed
+  // through with its LaTeX escapes intact.
   const parsed = bibtex.parse(protectWhitespace(escapePercent(readFileSync(path, 'utf8'))), {
     sentenceCase: false,
     verbatimFields: [],
@@ -247,9 +245,7 @@ export function loadBibliography(path = '_bibliography/references.bib'): Entry[]
     }
   })
 
-  // _config.yml: sort_by: year,month  order: descending
-  // sort_keys maps `month` -> `month_numeric` (jekyll-scholar utilities.rb:218).
-  // Missing month sorts as an empty value => last within its year.
+  // Newest first, by year then month. An entry with no month sorts last within its year.
   entries.sort((a, b) =>
     (b.year - a.year) || ((b.monthNumeric ?? 0) - (a.monthNumeric ?? 0)))
 

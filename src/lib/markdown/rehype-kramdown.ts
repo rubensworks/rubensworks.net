@@ -8,15 +8,14 @@ import { BLANK_LINE_MARKER, stripBlankLineMarkers } from './html-blocks'
  *    is not inside a highlighted block; the site's `_base.scss` styles `code` regardless,
  *    but the class is part of the published markup on every page that mentions a symbol.
  *
- * 2. Heading IDs. Reproduced from kramdown 1.x's `generate_id`
- *    (`kramdown/converter/base.rb`), which Jekyll 3.8.7 pins:
+ * 2. Heading IDs, generated the way kramdown 1.x does:
  *
  *      gen_id = str.gsub(/[^a-zA-Z0-9 -]/, '')  # drop everything else, keep hyphens
  *      gen_id.tr!(' ', '-')
  *      gen_id.downcase!
  *      gen_id = 'section' if gen_id.empty?
  *
- *    Two consequences worth naming, both confirmed against the golden site: digits are
+ *    Two consequences worth naming: digits are
  *    *kept*, so `## 1. Have a clear goal…` yields `1-have-a-clear-goal…` (github-slugger
  *    would drop the leading number), and existing hyphens survive, so `JSON-LD` yields
  *    `json-ld`. Duplicate slugs get `-1`, `-2`, … appended, counting from the second use.

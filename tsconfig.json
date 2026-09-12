@@ -1,7 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "src/**/*", "test/**/*", "astro.config.mjs"],
-  "exclude": ["dist", "node_modules", "_site_golden"],
+  "exclude": ["dist", "node_modules"],
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "types": ["astro/client", "vitest/globals"]

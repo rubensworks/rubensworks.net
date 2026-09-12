@@ -1,7 +1,8 @@
-// Jekyll's date filters. Jekyll rendered these with the build machine's timezone set to
-// UTC (the CI container), so the golden output has `+00:00` offsets and UTC-based day names
-// even though the front matter carries `+0200`/`+0100`. Fixing the formatting to UTC keeps
-// the output stable regardless of where the build runs.
+// Date formatting for post bylines, publication dates and the feed.
+//
+// Everything is formatted in UTC, so a date renders the same wherever the build runs — the
+// front matter carries `+0200`/`+0100` offsets, and formatting in local time would make the
+// output depend on the build machine.
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -38,19 +39,18 @@ export function postUrl(date: Date, slug: string): string {
 }
 
 /**
- * Parses Jekyll's front-matter date, e.g. `2019-03-13 14:00:00 +0200`.
+ * Parses a front-matter date, e.g. `2019-03-13 14:00:00 +0200`.
  *
  * The `yaml` package implements YAML 1.2, whose core schema has no timestamp type, so this
- * arrives as a plain string where Jekyll's YAML 1.1 parser produced a Time. Parsed
- * explicitly rather than handed to `new Date(...)`, whose handling of this format is
- * implementation-defined.
+ * arrives as a plain string. Parsed explicitly rather than handed to `new Date(...)`, whose
+ * handling of this format is implementation-defined.
  */
-export function parseJekyllDate(value: string | Date): Date {
+export function parseFrontMatterDate(value: string | Date): Date {
   if (value instanceof Date) return value
   const m = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:\s*([+-])(\d{2}):?(\d{2}))?$/.exec(
     value.trim(),
   )
-  if (!m) throw new Error(`Unrecognised Jekyll date: ${value}`)
+  if (!m) throw new Error(`Unrecognised front-matter date: ${value}`)
   const [, y, mo, d, h, mi, sec, sign, oh, om] = m
   const offset = sign ? (sign === '-' ? -1 : 1) * (Number(oh) * 60 + Number(om)) : 0
   return new Date(

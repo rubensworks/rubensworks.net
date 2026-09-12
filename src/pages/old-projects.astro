@@ -3,11 +3,10 @@
 import Page from '../layouts/Page.astro'
 import { getCollection } from 'astro:content'
 
-// `{% assign projects = site.projects | sort:"start" | reverse %}` then `{% if project.end %}`.
-// Jekyll's sort compares the `start` strings lexicographically, not as dates — so "August
-// 2011" sorts before "October 2008". Reproduced literally, including the reverse, because
-// that is the order the page has always shown. Ties (two projects starting "2009") keep
-// their alphabetical file order under a stable sort, which reversing then flips.
+// Finished projects, in the order this page has always shown them: `start` compared as a
+// *string* rather than a date, so "August 2011" sorts before "October 2008", then reversed.
+// Ties (two projects starting "2009") keep their alphabetical file order under a stable
+// sort, which reversing then flips.
 const projects = (await getCollection('projects'))
   .filter((p) => p.data.end !== undefined)
   .sort((a, b) => String(a.data.start ?? '').localeCompare(String(b.data.start ?? ''), 'en'))

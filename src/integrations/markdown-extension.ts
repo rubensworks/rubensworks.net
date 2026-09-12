@@ -3,7 +3,7 @@ import { pathToFileURL } from 'node:url'
 import { parse as parseYaml } from 'yaml'
 
 /**
- * Splits Jekyll/Astro front matter from the body.
+ * Splits the front matter from the body.
  *
  * Astro's own `safeParseFrontmatter` lives at `astro/dist/content/utils.js`, which the
  * package's `exports` map does not expose, so it cannot be imported — attempting it makes
