@@ -1,18 +1,18 @@
 ---
-// Port of _includes/icon-{github,twitter,linkedin,googlescholar}.html — four near-identical
+// Port of _includes/icon-{github,twitter,linkedin,googlescholar}.html (the Twitter one now renders X) — four near-identical
 // includes collapsed into one component. The per-network differences are only the profile
 // URL, the title, the icon class and the accountServiceHomepage; GitHub additionally carries
 // a second `typeof` token, which is a real RDFa difference and is preserved.
 import github from '../icons/github.svg?raw'
-import twitter from '../icons/twitter.svg?raw'
+import x from '../icons/x.svg?raw'
 import linkedin from '../icons/linkedin.svg?raw'
 import googlescholar from '../icons/googlescholar.svg?raw'
 
-type Network = 'github' | 'twitter' | 'linkedin' | 'googlescholar'
+type Network = 'github' | 'x' | 'linkedin' | 'googlescholar'
 interface Props { network: Network; username: string }
 const { network, username } = Astro.props as Props
 
-const SVG: Record<Network, string> = { github, twitter, linkedin, googlescholar }
+const SVG: Record<Network, string> = { github, x, linkedin, googlescholar }
 
 const CONFIG: Record<Network, { typeof: string; href: (u: string) => string; title: string; service: string }> = {
   github: {
@@ -21,11 +21,11 @@ const CONFIG: Record<Network, { typeof: string; href: (u: string) => string; tit
     title: 'Github',
     service: 'https://github.com/',
   },
-  twitter: {
+  x: {
     typeof: 'foaf:OnlineAccount',
-    href: (u) => `https://twitter.com/${u}`,
-    title: 'Twitter',
-    service: 'https://twitter.com/',
+    href: (u) => `https://x.com/${u}`,
+    title: 'X',
+    service: 'https://x.com/',
   },
   linkedin: {
     typeof: 'foaf:OnlineAccount',

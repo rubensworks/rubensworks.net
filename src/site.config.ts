@@ -9,7 +9,7 @@ export const site = {
   baseurl: '',
   excerptSeparator: '<!--more-->',
   url: 'https://www.rubensworks.net',
-  twitterUsername: 'rubensworks',
+  xUsername: 'rubensworks',
   githubUsername: 'rubensworks',
   linkedinUsername: 'taelmanruben',
   googlescholarUsername: '2avKLOkAAAAJ',
