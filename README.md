@@ -34,8 +34,15 @@ npm test         # vitest
 ```
 
 `npm run check:links` verifies that every internal link and in-page anchor resolves, and
-fails if one does not. It runs in CI after the build, and the deploy only happens on
-`master`.
+fails if one does not.
+
+`npm run check:content` adds an entry to every input file — a publication, a post, a
+project, and each `_data/*.yml` — then runs the tests and the build and checks the new
+content actually reached the pages it belongs on, restoring everything afterwards. It exists
+so that **adding content never requires touching the tests**: it fails both if an ordinary
+edit breaks the suite, and if an entry is silently dropped from a page.
+
+Both run in CI after the build, and the deploy only happens on `master`.
 
 ## Adding a publication
 

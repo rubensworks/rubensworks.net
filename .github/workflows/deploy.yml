@@ -29,6 +29,10 @@ jobs:
       # `|| true`, so broken links never failed a build. This one exits non-zero.
       - name: Check links and anchors 🔗
         run: npm run check:links
+      # Adds an entry to every input file, then checks the suite still passes and the new
+      # content actually reaches its pages. Restores everything afterwards.
+      - name: Check content can be added 📄
+        run: npm run check:content
       - name: Install SSH key 🔧
         uses: shimataro/ssh-key-action@v2
         with:
