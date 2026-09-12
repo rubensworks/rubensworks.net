@@ -39,8 +39,6 @@ jobs:
       # `|| true`, so broken links never failed a build. This one exits non-zero.
       - name: Check links and anchors 🔗
         run: npm run check:links
-      # Unique titles and descriptions, canonical URLs, one <main>, sized images with alt
-      # text, and a sitemap that lists every page. Blocking, like the link check.
       - name: Check metadata and sitemap 🔍
         run: npm run check:seo
       - name: Install SSH key 🔧
