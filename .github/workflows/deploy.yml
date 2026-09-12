@@ -31,9 +31,6 @@ jobs:
       # artifact the deploy uploads is produced *after* it and cannot be affected by it.
       - name: Check content can be added 📄
         run: npm run check:content
-      # Fast: it reads image headers and looks for the AVIF/WebP siblings, rather than
-      # re-encoding anything. Catches an image committed straight from a camera or a
-      # screenshot tool, which is what used to put 2 MB PNGs on a blog post.
       - name: Check images are optimised 🖼️
         run: npm run check:images
       - name: Build 🔧
