@@ -9,13 +9,6 @@
 
     /**
      * Without this the card can never disappear.
-     *
-     * The controller hides it by setting the `hidden` attribute, which the browser's own
-     * stylesheet turns into `display: none`. But an author `display` rule, like the
-     * `display: flex` above, overrides the browser's rule regardless of specificity. So the
-     * attribute was being set on every dismissal and doing nothing: every version of this
-     * card set `hidden` correctly and stayed painted anyway. The tests passed because they
-     * checked the attribute, not the pixels.
      */
     &[hidden] {
         display: none;
