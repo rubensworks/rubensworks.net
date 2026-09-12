@@ -1,0 +1,27 @@
+---
+// Port of _layouts/page.html
+//
+// Used both as a Markdown layout (props arrive under `frontmatter`) and as a component
+// wrapper from .astro pages (props arrive directly), so both shapes are accepted.
+import Default from './Default.astro'
+
+interface Props { title?: string; url?: string; frontmatter?: { title?: string; permalink?: string } }
+const props = Astro.props as Props
+const title = props.frontmatter?.title ?? props.title ?? ''
+// `permalink`, not `url`: Astro passes the page's own URL to Markdown layouts as a
+// top-level `url` prop, which would shadow a front-matter `url` key.
+const url = props.frontmatter?.permalink ?? props.url
+---
+<Default title={title} url={url}>
+<article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">{title}</h1>
+  </header>
+
+  <div class="post-content">
+    <slot />
+  </div>
+
+</article>
+</Default>

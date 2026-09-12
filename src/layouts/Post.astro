@@ -1,0 +1,56 @@
+---
+// Port of _layouts/post.html
+import Default from './Default.astro'
+import { dateToXmlSchema, dateLong } from '../lib/dates'
+
+interface Props {
+  url: string
+  title: string
+  subtitle?: string
+  date: Date
+  author?: string
+  featureImg?: string
+  excerpt?: string
+  comments?: boolean
+}
+const { url, title, subtitle, date, author, featureImg, excerpt, comments } = Astro.props as Props
+
+// Inlined verbatim from post.html. RunKit turns the `.demo-nodejs` blocks in the streaming
+// RDF parsers post into live notebooks; the two commented-out lines are upstream's.
+const runkitScript = `
+  document.addEventListener('DOMContentLoaded', () => {
+    let preamble = document.getElementById('demo-nodejs-preamble');
+    for (let snippet of document.getElementsByClassName('demo-nodejs')) {
+      //snippet.style.display = 'none';
+      let newNode = document.createElement('div');
+      let notebook = RunKit.createNotebook({
+        element: newNode,
+        source: snippet.textContent,
+        preamble: preamble && preamble.textContent,
+      });
+      snippet.innerHTML = '';
+      snippet.appendChild(newNode);
+      //snippet.parentNode.replaceChild(newNode, snippet);
+    }
+  }, false);
+`
+---
+<Default title={title} url={url} excerpt={excerpt} featureImg={featureImg} comments={comments}>
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting" typeof="schema:BlogPosting schema:CreativeWork" about={url}>
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline" property="schema:name schema:headline">{title}</h1>
+    {subtitle && (
+    <h2 class="post-subtitle" itemprop="alternativeHeadline" property="schema:alternativeHeadline">{subtitle}</h2>
+    )}
+    <p class="post-meta"><time about={url} datetime={dateToXmlSchema(date)} itemprop="datePublished" property="schema:datePublished">{dateLong(date)}</time>{author && <Fragment> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{author}</span></span></Fragment>}</p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <slot />
+  </div>
+
+</article>
+<script is:inline src="https://embed.runkit.com"></script>
+<script is:inline set:html={runkitScript}></script>
+</Default>

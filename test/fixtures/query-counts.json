@@ -1,0 +1,18 @@
+{
+ "@*": 92,
+ "@*[_highlighted=true]": 3,
+ "@*[_type=Journal]": 11,
+ "@*[_type=Conference]": 22,
+ "@*[_type=Workshop]": 23,
+ "@*[_type=Demo]": 18,
+ "@*[_type=Poster]": 10,
+ "@*[_type=Challenge]": 1,
+ "@*[_type=Tutorial]": 1,
+ "@*[_type=PhD Symposium]": 1,
+ "@*[_type=Blue Sky]": 1,
+ "@*[_type=Position Statement]": 1,
+ "@*[_type=Master's Thesis]": 1,
+ "@*[author ^= Taelman]": 37,
+ "@*[author ~= Ruben$ && author !~ Verborgh]": 19,
+ "@*[author !~ Verborgh]": 37
+}

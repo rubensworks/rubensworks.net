@@ -67,7 +67,7 @@ Besides research, he teaches the fundamentals of Web technologies and Web queryi
     enddate="2018"
     location="[National Institute of Informatics](https://www.nii.ac.jp/en/)"
     description="I visited [Hideaki Takeda](http://www-kasm.nii.ac.jp/~takeda/) in Japan
-    to study [the fundamentals of semantic versioned querying](http://localhost:4000/publications/taelman_iswc_workshop_semanticversionedquerying_2018/)."
+    to study [the fundamentals of semantic versioned querying](/publications/taelman_iswc_workshop_semanticversionedquerying_2018/)."
 %}
 {% include cv-listing.html
     subject="Doctoral Researcher"

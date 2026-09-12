@@ -1,0 +1,79 @@
+---
+// Port of index.html
+import Default from '../layouts/Default.astro'
+import PostListing from '../components/PostListing.astro'
+import BibList from '../components/BibList.astro'
+import { loadPosts } from '../lib/posts'
+import { loadBibliography, loadKnows } from '../lib/bibliography'
+import { queryEntries } from '../lib/bibquery'
+
+const posts = (await loadPosts()).slice(0, 2)
+const entries = loadBibliography()
+const knows = loadKnows()
+
+const highlighted = queryEntries(entries, '@*[_highlighted=true]')
+const latest = entries.slice(0, 5) // `{% bibliography --max 5 %}`
+
+// The JSON-LD block is emitted verbatim rather than via JSON.stringify: it is written by
+// hand in index.html, tabs and all, and the trailing `{}` after the loop is part of it.
+const knowsJson = Object.entries(knows)
+  .map(([name, k]) => `\t  {\n\t\t"@id": "${k.foaf}",\n\t\t"@type": "Person",\n\t\t"name": "${name}"\n\t  },`)
+  .join('\n')
+const jsonLd = `
+  {
+\t"@context": { "@vocab": "http://xmlns.com/foaf/0.1/" },
+\t"@id": "#me",
+\t"knows": [
+${knowsJson}
+\t  {}
+\t]
+  }
+`
+---
+<Default url="/">
+<div class="home">
+
+  <p class="intro">
+    Hi!<br />
+    I'm <a href="/about/">Ruben Taelman</a>, a <a href="/publications/">Professor</a> at <span itstrongprop="affiliation"><a href="http://www.ugent.be/ea/idlab/en" target="_blank">IDLab</a>, imec, Ghent University</span>,<br />
+	with a focus on <strong>Web technologies</strong>, <strong>decentralization</strong>, <strong>Linked Data</strong> <strong>publishing</strong>, and <strong>querying</strong>.<br />
+	<br />
+	<a href="/research_goals/">My goal</a> is to make data accessible for <em>everyone</em> by providing<br />
+    intelligent infrastructure and algorithms for data <strong>publication</strong> and <strong>retrieval</strong>.<br />
+	<br />
+    To support my research, I co-edit specifications such as <a href="https://www.w3.org/TR/sparql12-query/">SPARQL</a>,
+    and develop various <strong>open source</strong> JavaScript libraries such as <a href="/blog/2019/03/13/streaming-rdf-parsers/">streaming RDF parsers</a> and the <a href="/projects/comunica/">Comunica engine</a> to query <strong>Linked Data</strong> on the Web.<br />
+    As this website itself contains Linked Data, you can <a href="http://query.linkeddatafragments.org/#datasources=https%3A%2F%2Ffragments.dbpedia.org%2F2016-04%2Fen&transientDatasources=https%3A%2F%2Fwww.rubensworks.net%2F&query=SELECT%20*%0AWHERE%20%7B%0A%20%20rubent%3Ame%20foaf%3Atopic_interest%20%3Finterest.%0A%20%20%3Finterest%20rdfs%3Alabel%20%3FinterestName.%0A%20%20FILTER%20LANGMATCHES(LANG(%3FinterestName)%2C%20%20%22EN%22)%0A%7D">query it <em>live</em> with Comunica</a>.<br />
+    <br />
+    Have a look at my <a href="/publications/">publications</a> or <a href="/projects/">projects</a><br />
+    and <a href="/contact/">contact me</a> if any of those topics interest you.
+  </p>
+
+  <h2>Latest blog posts</h2>
+  <ul class="posts">
+    {posts.map((post) => (
+      <li>
+        <PostListing
+          url={post.url}
+          title={post.entry.data.title}
+          subtitle={post.entry.data.subtitle}
+          date={post.date}
+          excerpt={post.excerpt}
+        />
+      </li>
+    ))}
+  </ul>
+  <span class="more"><a href="/blog/">More blog posts</a></span>
+
+  <h2>Highlighted publications</h2>
+  <BibList entries={highlighted} knows={knows} />
+  <span class="more"><a href="/publications/">More publications</a></span>
+
+  <h2>Latest publications</h2>
+  <BibList entries={latest} knows={knows} />
+  <span class="more"><a href="/publications/">More publications</a></span>
+
+</div>
+
+<script type="application/ld+json" is:inline set:html={jsonLd}></script>
+</Default>

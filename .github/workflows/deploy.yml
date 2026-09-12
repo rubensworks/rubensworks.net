@@ -9,30 +9,41 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      NOKOGIRI_USE_SYSTEM_LIBRARIES: true
     steps:
-      - name: Install build dependencies 🔧
-        run: sudo apt update && sudo apt-get install -y libxml2-dev libxslt-dev
       - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Set up Node 🔧
+        uses: actions/setup-node@v4
         with:
-          ruby-version: 2.7
-          bundler-cache: true
-      - name: Install and Build 🔧
-        run: bundle install && ./script/cibuild
+          node-version: 22
+          cache: npm
+      - name: Install 🔧
+        run: npm ci
+      - name: Test 🧪
+        run: npm test
+      - name: Build 🔧
+        run: npm run build
+      # Blocking, unlike the html-proofer step it replaces: script/cibuild ended in
+      # `|| true`, so broken links never failed a build. This one exits non-zero.
+      - name: Check links and anchors 🔗
+        run: npm run check:links
+      # Adds an entry to every input file, then checks the suite still passes and the new
+      # content actually reaches its pages. Restores everything afterwards.
+      - name: Check content can be added 📄
+        run: npm run check:content
       - name: Install SSH key 🔧
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SCP_DEPLOY_RSA }}
           known_hosts: ${{ secrets.SCP_DEPLOY_HOST }}
+      # NOTE: `dist/*` is a shell glob, so it skips dot-directories — which means
+      # `.well-known/nostr.json` is built but never uploaded. Publishing the NIP-05 identity
+      # needs `dist/` here, with the trailing slash and no glob.
       - name: Deploy 🚀
         if: startsWith(github.ref, 'refs/heads/master')
-        run: rsync -r --quiet -e "ssh -p $SCP_PORT -o 'StrictHostKeyChecking=no'" _site/* $SCP_USER@rubensworks.net:$SCP_LOCATION
+        run: rsync -r --quiet -e "ssh -p $SCP_PORT -o 'StrictHostKeyChecking=no'" dist/* $SCP_USER@rubensworks.net:$SCP_LOCATION
         env:
           SCP_PORT: ${{ secrets.SCP_PORT }}
           SCP_USER: ${{ secrets.SCP_USER }}

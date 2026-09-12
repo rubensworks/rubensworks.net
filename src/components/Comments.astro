@@ -1,0 +1,26 @@
+---
+// The Disqus loader is commented out, so comments are inert despite `comments: true`. Left
+// as it is, including the unclosed <h1>: enabling or removing it changes what posts render.
+import { site, absoluteUrl } from '../site.config'
+
+interface Props { url: string }
+const { url } = Astro.props as Props
+
+// The unclosed `<h1>` does not survive the Astro compiler, so this goes out via set:html.
+const heading = '<hr />\n<h1>Comments<h1>\n<div id="disqus_thread"></div>'
+
+const disqusScript = `
+var disqus_config = function () {
+    this.page.url = "${absoluteUrl(url.replace(/index\.html$/, ''))}";
+    this.page.identifier = "${url}";
+};
+(function() {
+//var d = document, s = d.createElement('script');
+//s.src = 'https://rubensworks-net.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+`
+---
+<Fragment set:html={heading} />
+<script is:inline set:html={disqusScript}></script>
