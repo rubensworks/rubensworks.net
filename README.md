@@ -1,7 +1,10 @@
 Source code for my personal website: https://www.rubensworks.net
 
-Built with [Astro](https://astro.build/), TypeScript and Sass. The output is fully static and
-ships no client-side JavaScript.
+Built with [Astro](https://astro.build/), TypeScript and Sass. The output is fully static.
+
+The one piece of client-side JavaScript is the author hover card: hovering a co-author's name
+in a bibliography queries that person's own FOAF profile with
+[Comunica](https://comunica.dev/), in the browser, and shows what it finds.
 
 The pages publish structured data about their content — RDFa, microdata and JSON-LD, using
 `foaf:`, `schema.org`, `bibframe:`, `vivo:`, `org:` and `cert:`. That is why the templates
@@ -21,8 +24,8 @@ the output, not decoration.
 | `public/`, `css/main.scss` | images, `ads.txt`, and the stylesheet entry point — copied or compiled through as they are |
 
 Everything under `src/` is templates and code: `src/pages` for routes, `src/layouts` and
-`src/components` for the shell, and `src/lib` for the bibliography engine and the Markdown
-pipeline.
+`src/components` for the shell, `src/lib` for the bibliography engine and the Markdown
+pipeline, and `src/scripts` for the only code that runs in the reader's browser.
 
 ## Development
 
@@ -34,7 +37,8 @@ npm test         # vitest
 ```
 
 `npm run check:links` verifies that every internal link and in-page anchor resolves, and
-fails if one does not.
+fails if one does not. It does not check external links, so a dead `url` in `_data/knows.yml`
+will not fail a build.
 
 `npm run check:content` adds an entry to every input file — a publication, a post, a
 project, and each `_data/*.yml` — then runs the tests and the build and checks the new

@@ -1,0 +1,14 @@
+---
+// Author hover cards, queried from each co-author's own Linked Data with Comunica.
+//
+// The script below is the only client-side JavaScript the site ships, and Astro inlines it
+// because it is small. It goes on every page rather than only the ones with a bibliography:
+// it looks for `a.author[resource]` and returns immediately when there is none, which is
+// cheaper than deciding per layout which pages carry authors.
+//
+// Comunica itself is not here. `foaf-tooltip.ts` reaches it through `new Worker(...)`, so
+// Vite emits it as a separate chunk that is only fetched once a reader hovers a name.
+---
+<script>
+  import '../scripts/foaf-tooltip.ts'
+</script>
