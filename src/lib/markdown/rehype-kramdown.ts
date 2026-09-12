@@ -4,21 +4,13 @@ import { BLANK_LINE_MARKER, stripBlankLineMarkers } from './html-blocks'
 /**
  * The small kramdown output conventions that remark does not share.
  *
- * 1. Inline code gets `class="highlighter-rouge"`. kramdown adds it to every `<code>` that
- *    is not inside a highlighted block; the site's `_base.scss` styles `code` regardless,
- *    but the class is part of the published markup on every page that mentions a symbol.
+ * 1. Inline code outside a highlighted block gets `class="highlighter-rouge"`.
  *
- * 2. Heading IDs, generated the way kramdown 1.x does:
- *
- *      gen_id = str.gsub(/[^a-zA-Z0-9 -]/, '')  # drop everything else, keep hyphens
- *      gen_id.tr!(' ', '-')
- *      gen_id.downcase!
- *      gen_id = 'section' if gen_id.empty?
- *
- *    Two consequences worth naming: digits are
- *    *kept*, so `## 1. Have a clear goal…` yields `1-have-a-clear-goal…` (github-slugger
- *    would drop the leading number), and existing hyphens survive, so `JSON-LD` yields
- *    `json-ld`. Duplicate slugs get `-1`, `-2`, … appended, counting from the second use.
+ * 2. Heading IDs: strip everything but letters, digits, spaces and hyphens; spaces to
+ *    hyphens; downcase; `section` if empty. So digits are *kept* (`## 1. Have a clear goal`
+ *    -> `1-have-a-clear-goal`, where github-slugger would drop the number) and existing
+ *    hyphens survive (`JSON-LD` -> `json-ld`). Duplicates get `-1`, `-2`, … from the second
+ *    use onwards.
  */
 
 /** kramdown 1.x's `generate_id`. */
@@ -49,10 +41,9 @@ export function rehypeKramdown() {
     unmark(tree)
 
     /**
-     * hast reads an attribute named `datatype` as the `data-*` property `dataType` and
-     * serialises it back as `data-type`. That silently rewrites the RDFa `datatype` on every
-     * `schema:datePublished` in the bibliography blocks on /cv/, which reach rehype as raw
-     * HTML and so make the round trip. Renamed back on the way out.
+     * hast reads `datatype` as the `data-*` property `dataType` and writes it back as
+     * `data-type`, rewriting the RDFa on every `schema:datePublished` in /cv/'s bibliography
+     * blocks. Renamed back on the way out.
      */
     const fixDatatype = (node: any) => {
       if (node.properties && 'dataType' in node.properties) {
@@ -70,7 +61,7 @@ export function rehypeKramdown() {
         const el = child as Element
 
         if (el.tagName === 'code') {
-          // Inside <pre> the block is highlighted, and kramdown leaves those alone.
+          // Inside <pre> the block is highlighted, and those are left alone.
           const inPre = (node as Element).tagName === 'pre'
           if (!inPre) {
             const existing = el.properties?.className
@@ -81,10 +72,9 @@ export function rehypeKramdown() {
         }
 
         if (/^h[1-6]$/.test(el.tagName)) {
-          // Overwritten unconditionally: remark-rehype has already assigned a
-          // github-slugger id by this point, and that is exactly the value that has to go.
-          // No heading in the content carries an explicit IAL id — remarkAttributeLists
-          // throws if one ever does, so this cannot silently discard an author's id.
+          // Unconditional: remark-rehype has already assigned a github-slugger id, and that
+          // is the value being replaced. No heading carries an explicit IAL id —
+          // remarkAttributeLists throws if one ever does — so nothing hand-written is lost.
           const base = kramdownSlug(textOf(el))
           const n = seen.get(base) ?? 0
           seen.set(base, n + 1)

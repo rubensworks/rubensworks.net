@@ -5,15 +5,10 @@ import { parse as parseYaml } from 'yaml'
 import { expandIncludes } from '../lib/project-includes'
 
 /**
- * Loads `_projects/*.html` — front matter plus a body that is already HTML.
- *
- * A dedicated loader rather than a Markdown one, for two reasons. The content layer has no
- * entry type for `.html`, so the glob loader just warns "No entry type found" and yields an
- * empty collection. And the bodies must not go through Markdown at all: they are hand-written
- * HTML, and running them through a Markdown processor would reflow the raw blocks. The body
- * is handed through verbatim — apart from the two `{% include %}` tags that
- * `_projects/minecraft.html` and `_projects/rdfjs.html` use, which are expanded by
- * `lib/project-includes.ts`. `_projects/*.html` stays byte-identical on disk.
+ * Loads `_projects/*.html` — front matter plus a body that is already HTML. A dedicated
+ * loader because the content layer has no `.html` entry type, and because running
+ * hand-written HTML through a Markdown processor reflows the raw blocks. Bodies pass through
+ * verbatim apart from the `{% include %}` tags, expanded by lib/project-includes.ts.
  */
 export function htmlCollection(options: { base: string }): Loader {
   return {

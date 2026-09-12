@@ -1,21 +1,12 @@
 /**
- * A Shiki theme that reproduces the colours the site already ships.
+ * A Shiki theme carrying the colours of `_sass/_syntax-highlighting.scss`, which styles ~50
+ * Pygments token classes no JS highlighter emits. Each colour below names the Pygments token
+ * it came from, so the two stay traceable; the stylesheet still supplies the background and
+ * vertical rhythm.
  *
- * `_sass/_syntax-highlighting.scss` styles ~50 Rouge/Pygments token classes — the classic
- * Rouge *github* theme. No JS highlighter emits those class names (Shiki uses inline styles,
- * Prism and starry-night have their own vocabularies), so this theme carries the same
- * colours as inline styles instead.
- *
- * Every colour below is copied from the SCSS, with the Pygments token it came from named so
- * the two stay traceable. The stylesheet itself is left in place and untouched: it still
- * provides the `.highlight` background and vertical rhythm that
- * `rehype-rouge-wrapper.ts` keeps hooking into.
- *
- * The scope-to-colour mapping is tuned to the three languages the code blocks use —
- * javascript, json and sparql. TextMate grammars are far more granular than the Pygments
- * token set the stylesheet names, so a post in a fourth language will need the same
- * treatment: check which tokens come out coloured that the stylesheet leaves black, and add
- * the scopes for the ones that do not match.
+ * Tuned to the three languages the code blocks use — javascript, json and sparql. TextMate
+ * grammars are far more granular than Pygments tokens, so a fourth language needs the same
+ * pass: find the tokens that come out coloured where the stylesheet leaves them black.
  */
 export const rougeGithub = {
   name: 'rouge-github',
@@ -28,11 +19,10 @@ export const rougeGithub = {
   settings: [
     { settings: { background: '#eef', foreground: '#000000' } },
 
-    // Rouge leaves most tokens unstyled, so they inherit the body colour. TextMate grammars
-    // are far more granular than Rouge's lexers, so the broad scopes are pinned to black
-    // first and the specific ones are coloured after. Without this, ordinary identifiers
-    // (Rouge `.nx`), punctuation (`.p`), string delimiters (`.dl`) and object keys (`.nl`)
-    // all pick up a colour Rouge never gave them — 2716 of 8511 code characters on the blog.
+    // Most Pygments tokens are unstyled and inherit the body colour, so the broad scopes are
+    // pinned to black first and the specific ones coloured after. Without this, identifiers
+    // (`.nx`), punctuation (`.p`), string delimiters (`.dl`) and object keys (`.nl`) all pick
+    // up a colour the stylesheet never gives them.
     {
       scope: [
         'variable',
@@ -75,9 +65,8 @@ export const rougeGithub = {
       settings: { foreground: '#000000', fontStyle: 'bold' },
     },
 
-    // .s and the .s* family — strings. In JavaScript, Rouge emits the surrounding quotes as
-    // a separate, unstyled `.dl`; in JSON and SPARQL it folds them into the string itself,
-    // so only the JavaScript delimiters are pulled back to black.
+    // .s and the .s* family — strings. In JavaScript the quotes are a separate, unstyled
+    // `.dl`; in JSON and SPARQL they are part of the string.
     { scope: ['string', 'string.quoted'], settings: { foreground: '#dd1144', fontStyle: '' } },
     {
       scope: [

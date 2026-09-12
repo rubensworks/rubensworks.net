@@ -2,25 +2,17 @@ import { readFileSync } from 'node:fs'
 
 /**
  * Renders an entry in canonical BibTeX form — the `<pre class="bibtex content">` block a
- * visitor copies off a publication page. The rules are bibtex-ruby's, since that is the
- * shape people expect to paste back into a .bib file:
+ * visitor copies off a publication page, so it has to parse back to the same entry:
  *
- *  - Values are echoed from the raw file, not from the decoded parse, so LaTeX escapes and
- *    inner braces survive: `Rojas Mel{\'e}ndez` stays exactly that, and `{Solid}` keeps its
- *    braces. What is copied out has to parse back to the same entry.
- *  - Multi-line values keep their newlines, and each newline inside a value comes back
- *    indented by two extra spaces:
- *        "{Line one\n    four}"  ->  "{Line one\n      four}"
- *        "{Line one\n\ttab}"     ->  "{Line one\n  \ttab}"
- *        "{Line one\nnone}"      ->  "{Line one\n  none}"
- *  - The month becomes a bare BibTeX symbol, emitted without braces: `month = {october}`
- *    becomes `month = oct`. Matching is on the lowercased first three letters, which is why
- *    the file's `{februari}` typo still yields `feb`.
- *  - Fields keep the order they appear in the file.
+ *  - Values are echoed from the raw file, not the decoded parse, so LaTeX escapes and inner
+ *    braces survive (`Rojas Mel{\'e}ndez`, `{Solid}`).
+ *  - Newlines inside a value survive, each gaining a two-space continuation indent.
+ *  - The month becomes a bare symbol without braces: `month = {october}` -> `month = oct`.
+ *    Matched on the lowercased first three letters, so the file's `{februari}` still works.
+ *  - Fields keep their order in the file.
  *
- * The file uses no @string definitions, no `"`-quoted values, no concatenation and no bare
- * values, so the parser below only has to handle `name = {value}`. `parseRawEntries` throws
- * on anything else rather than guessing.
+ * The file uses no @string, quoted, concatenated or bare values, so the parser below only
+ * handles `name = {value}` and throws on anything else rather than guessing.
  */
 
 export interface RawEntry {
@@ -35,18 +27,11 @@ const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', '
 const NAME_FIELDS = new Set(['author', 'editor', 'translator'])
 
 /**
- * The normalised `Last, First and Last, First` form.
+ * The normalised `Last, First and Last, First` form. Also the string `--query` matches, which
+ * is what makes `author ^= Taelman` mean "first author" and `~= Ruben$` mean "last author".
  *
- * This is not cosmetic: it is also the string the `--query` operators match against, which
- * is what makes `author ^= Taelman` mean "first author" and `author ~= Ruben$` mean "last
- * author".
- *
- * Three shapes appear in references.bib and all three are covered by the fixtures:
- *  - `Last, First` — already normalised, only whitespace is tidied.
- *  - `First Last` — reordered. `taelman_towards_privacy_aggregation_2020` is the only entry
- *    written this way.
- *  - `Emonet, Vincent,` — a stray trailing comma, discarded
- *    (`kuhn_peerj_decentralizednanopubs_2021`).
+ * Handles all three shapes in the file: `Last, First`, `First Last` (reordered), and a stray
+ * trailing comma (discarded).
  */
 export function normaliseNames(value: string): string {
   return splitOnAnd(value)
@@ -82,8 +67,7 @@ function splitOnAnd(value: string): string[] {
 
 function normaliseName(name: string): string {
   const collapsed = name.replace(/\s+/g, ' ').trim().replace(/,\s*$/, '')
-  // A name wrapped entirely in braces is a literal — a corporate author such as
-  // `{Ghent University and imec}` — and is passed through untouched.
+  // A fully braced name is a literal (`{Ghent University and imec}`): pass it through.
   if (collapsed.startsWith('{') && matchingBrace(collapsed, 0) === collapsed.length - 1) {
     return collapsed
   }
@@ -93,8 +77,8 @@ function normaliseName(name: string): string {
     const given = collapsed.slice(comma + 1).trim().replace(/,\s*$/, '')
     return given ? `${family}, ${given}` : family
   }
-  // `First von Last`: BibTeX takes the von part to start at the first lowercase-initial
-  // word, and everything from there on is the family name.
+  // `First von Last`: the von part starts at the first lowercase-initial word, and
+  // everything from there is the family name.
   const words = collapsed.split(' ')
   if (words.length < 2) return collapsed
   let vonStart = words.findIndex((w, i) => i > 0 && i < words.length - 1 && /^[a-z]/.test(w))
@@ -143,10 +127,7 @@ export function monthSymbol(raw: string): string | null {
   return MONTHS.includes(k) ? k : null
 }
 
-/**
- * Splits the .bib source into entries with values kept byte-for-byte, brace nesting and
- * all. Deliberately independent of @retorquere/bibtex-parser, whose job is the decoded view.
- */
+/** Splits the source into entries, values byte-for-byte. The parser gives the decoded view. */
 export function parseRawEntries(source: string): RawEntry[] {
   const entries: RawEntry[] = []
   let i = 0
@@ -218,8 +199,7 @@ export function serialiseEntry(entry: RawEntry, skipFields: readonly string[]): 
   const lines = entry.fields
     .filter(([name]) => !skip.has(name.toLowerCase()))
     .map(([rawName, value]) => {
-      // Field names are case-insensitive, so `bookTitle` in the file
-      // comes back out as `booktitle` (dimou_ekaw_workshop_2016).
+      // Field names are case-insensitive: `bookTitle` comes back out as `booktitle`.
       const name = rawName.toLowerCase()
       if (name === 'month') {
         const sym = monthSymbol(value)

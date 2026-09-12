@@ -5,11 +5,8 @@
 export const EXCERPT_SEPARATOR = '<!--more-->'
 
 /**
- * Extracts the excerpt from a rendered post body.
- *
- * Rendering the whole post and then cutting at the separator gives the same result as
- * cutting the source first, because the separator sits on its own line between block
- * elements in every post — asserted by the caller rather than assumed.
+ * Extracts the excerpt from a rendered post body. Equivalent to cutting the source first
+ * because the separator sits between block elements — asserted by the caller, not assumed.
  */
 export function excerptFromHtml(html: string): string {
   const i = html.indexOf(EXCERPT_SEPARATOR)

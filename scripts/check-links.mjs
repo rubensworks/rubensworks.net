@@ -3,10 +3,8 @@
 //
 //   node scripts/check-links.mjs <dir>
 //
-// Exits non-zero, which is the point: heading slugs are generated, so a link to one is
-// only guarded if a broken #anchor actually fails the build.
-//
-// External URLs are not fetched — that makes CI depend on 200-odd third-party hosts.
+// Exits non-zero: heading slugs are generated, so a link to one is only guarded if a broken
+// #anchor fails the build. External URLs are not fetched, to keep CI off 200-odd hosts.
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
 import { join, relative, sep, posix } from 'node:path'
@@ -15,9 +13,7 @@ import { parse } from 'parse5'
 const dir = process.argv[2] ?? 'dist'
 const SITE_HOSTS = new Set(['www.rubensworks.net', 'rubensworks.net'])
 
-// Same-host paths that this repository does not build. `/raw/**` holds the PDFs and slide
-// decks, uploaded to the server out-of-band. Treated as external so the checker verifies
-// what the build controls.
+// `/raw/**` holds PDFs and slide decks uploaded out-of-band, so it is treated as external.
 const NOT_BUILT_HERE = [/^\/raw\//]
 
 // Known breakage, listed rather than fixed so the rest of the check can stay blocking.

@@ -1,15 +1,12 @@
 ---
-// The Disqus loader inside the IIFE is commented out, so comments are inert on all 6 posts
-// despite `comments: true` in their front matter. Left as it is — including the unclosed
-// <h1> — because removing it changes what those pages render; that is a content decision,
-// not a build one.
+// The Disqus loader is commented out, so comments are inert despite `comments: true`. Left
+// as it is, including the unclosed <h1>: enabling or removing it changes what posts render.
 import { site, absoluteUrl } from '../site.config'
 
 interface Props { url: string }
 const { url } = Astro.props as Props
 
-// `<h1>Comments<h1>` (unclosed, upstream typo) is not parseable by the Astro compiler, so
-// the block is emitted through set:html to keep the shipped markup identical.
+// The unclosed `<h1>` does not survive the Astro compiler, so this goes out via set:html.
 const heading = '<hr />\n<h1>Comments<h1>\n<div id="disqus_thread"></div>'
 
 const disqusScript = `

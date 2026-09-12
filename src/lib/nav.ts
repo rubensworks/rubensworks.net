@@ -1,11 +1,8 @@
-// The navigation bar was `{% assign sorted_pages = site.pages | sort:"order" %}` filtered by
-// `{% if my_page.title and my_page.show_in_nav != false %}`. Rather than re-deriving that
-// from front matter across a mix of .astro and .md pages, the six navigable pages are listed
-// here in their rendered order, which is what the template actually produced.
+// The navigation bar, listed here rather than derived from front matter across a mix of
+// .astro and .md pages.
 //
-// Note what is deliberately NOT here: the original emitted `class="a-white page-link{% if
-// p.url == page.url %} active{% endif %}"`, and `p` is never assigned — the loop variable is
-// `my_page`. So `active` was never applied to any link on any page. Reproduced as-is.
+// Note what is deliberately NOT here: an `active` class on the current page. The markup has
+// never carried one, and adding it would need a matching style.
 
 export interface NavPage {
   title: string

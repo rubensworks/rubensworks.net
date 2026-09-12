@@ -3,12 +3,10 @@ import type { Element } from 'hast'
 /**
  * Carries a code block's inline attribute list across the Shiki pass.
  *
- * Astro highlights *before* running the configured rehypePlugins, and Shiki rebuilds the
- * `<pre>` from scratch — so `{:#demo-nodejs-preamble .hide}`, which remark-attribute-lists
- * recorded on the mdast `code` node, would be gone by the time `rehype-rouge-blocks.ts`
- * needs it to build the outer div. The attribute list is smuggled through the code fence's
- * `meta` string, which Shiki does hand to transformers, and re-attached to the `<pre>` as a
- * data attribute for that plugin to consume.
+ * Astro highlights *before* the configured rehypePlugins, and Shiki rebuilds the `<pre>`
+ * from scratch, so an attribute list recorded on the mdast `code` node is gone by the time
+ * rehype-rouge-blocks.ts needs it. It travels in the fence's `meta` string, which Shiki does
+ * pass to transformers, and is re-attached to the `<pre>` as a data attribute.
  */
 export const IAL_META_PREFIX = 'rouge-ial='
 

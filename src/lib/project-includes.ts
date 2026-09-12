@@ -1,14 +1,8 @@
 /**
- * Expands the two `{% include %}` tags that survive inside `_projects/*.html`.
- *
- * `_projects/minecraft.html` uses `minecraft-mod.html` 16 times and
- * `_projects/rdfjs.html` uses `rdfjs-software.html`. Everything else in those files is
- * plain HTML, which is why the collection loader otherwise passes bodies straight through.
- *
- * The two templates are inlined here rather than made into .astro components, because the
- * bodies are handled as raw HTML strings and never go through Astro's renderer. The
- * expansion is deliberately strict: an unknown include name, or a `{%` that is left over
- * afterwards, throws rather than shipping a Liquid tag to a visitor.
+ * Expands the two `{% include %}` tags used inside `_projects/*.html`. Everything else in
+ * those files is plain HTML, which the loader passes straight through, so the templates are
+ * inlined here rather than made into .astro components — the bodies never reach Astro's
+ * renderer. Strict: an unknown include, or a leftover `{%`, throws.
  */
 
 type Params = Record<string, string>

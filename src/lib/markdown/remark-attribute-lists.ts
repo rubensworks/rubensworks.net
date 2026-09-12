@@ -2,17 +2,14 @@ import type { Root, RootContent, Parent, Paragraph, Text } from 'mdast'
 import { IAL_META_PREFIX } from './shiki-rouge-wrapper'
 
 /**
- * kramdown block-level inline attribute lists — 7 occurrences.
+ * kramdown block-level inline attribute lists: `{:.cv-listing}` or
+ * `{:#demo-nodejs-preamble .hide}` applies those attributes to the neighbouring block.
+ * remark has no such syntax, so without this the braces render as literal text.
  *
- * A line of the form `{:.cv-listing}` or `{:#demo-nodejs-preamble .hide}` applies those
- * attributes to the neighbouring block. remark has no such syntax, so without this the
- * braces render as literal text.
- *
- * All three placements the content uses are handled, and they reach the parser looking
- * quite different:
- *   after a fenced code block -> its own paragraph      (2019-03-13-streaming-rdf-parsers x3)
- *   after a list, no blank line -> folded into the last item as a lazy continuation (cv.md x3)
- *   on the line above a paragraph -> the first line of that paragraph  (cv.md, cv-biography)
+ * Three placements, which reach the parser looking quite different:
+ *   after a fenced code block   -> its own paragraph
+ *   after a list, no blank line -> folded into the last item as a lazy continuation
+ *   on the line above a paragraph -> the first line of that paragraph
  *
  * Anything else throws rather than being silently dropped.
  */
@@ -44,9 +41,7 @@ export function remarkAttributeLists() {
       for (let i = parent.children.length - 1; i >= 0; i--) {
         const node = parent.children[i]!
 
-        // A trailing IAL under a list has no blank line before it, so CommonMark folds it
-        // into the last item as a lazy continuation instead of leaving it as its own
-        // paragraph. cv.md's three `{:.cv-listing}` markers all look like this.
+        // No blank line before it, so CommonMark folds it into the last list item.
         if (node.type === 'list') {
           const text = lastText(node as Parent)
           const m = text && /\n\{:([^}]*)\}\s*$/.exec(text.value)
@@ -63,10 +58,8 @@ export function remarkAttributeLists() {
         if (p.children[0]?.type !== 'text') continue
         const first = p.children[0] as Text
 
-        // kramdown accepts a block IAL either after its block or on the line directly
-        // before it. cv.md uses both: `{:.cv-listing}` follows its list, while
-        // `{:.cv-biography}` sits above the paragraph it applies to — and being on the line
-        // above means it is part of that same paragraph.
+        // An IAL may also sit on the line directly *above* its block, which makes it the
+        // first line of that same paragraph.
         const leading = /^\{:([^}]*)\}\r?\n/.exec(first.value)
         if (leading) {
           applyIal(node, parseIal(leading[1]!))
@@ -89,9 +82,8 @@ export function remarkAttributeLists() {
               `overwrite with the auto-generated slug`,
           )
         }
-        // A code fence is rebuilt from scratch by Shiki, which drops hProperties. Its IAL
-        // rides along in the fence's `meta` string instead; shiki-rouge-wrapper.ts picks it
-        // back up. See rehype-rouge-blocks.ts for where it finally lands.
+        // Shiki rebuilds the fence and drops hProperties, so the IAL rides along in the
+        // fence's `meta` string instead. See shiki-rouge-wrapper.ts.
         if (target.type === 'code') {
           const payload = JSON.stringify({ id: parsed.id, classes: parsed.classes })
           const code = target as RootContent & { meta?: string | null }

@@ -1,8 +1,5 @@
-// Date formatting for post bylines, publication dates and the feed.
-//
-// Everything is formatted in UTC, so a date renders the same wherever the build runs — the
-// front matter carries `+0200`/`+0100` offsets, and formatting in local time would make the
-// output depend on the build machine.
+// Date formatting for post bylines, publication dates and the feed. All UTC, so a date
+// renders the same wherever the build runs.
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -39,11 +36,8 @@ export function postUrl(date: Date, slug: string): string {
 }
 
 /**
- * Parses a front-matter date, e.g. `2019-03-13 14:00:00 +0200`.
- *
- * The `yaml` package implements YAML 1.2, whose core schema has no timestamp type, so this
- * arrives as a plain string. Parsed explicitly rather than handed to `new Date(...)`, whose
- * handling of this format is implementation-defined.
+ * Parses a front-matter date, e.g. `2019-03-13 14:00:00 +0200`. YAML 1.2 has no timestamp
+ * type so it arrives as a string, and `new Date(...)` handles this format unpredictably.
  */
 export function parseFrontMatterDate(value: string | Date): Date {
   if (value instanceof Date) return value

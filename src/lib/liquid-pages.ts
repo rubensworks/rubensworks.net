@@ -6,17 +6,12 @@ import { loadPresentations, presentationYear, type Presentation } from './presen
 import { site } from '../site.config'
 
 /**
- * A minimal Liquid renderer for `cv.md` and `reading_list.md`, so both files can stay
- * exactly as they are on disk.
+ * A minimal Liquid renderer for `cv.md` and `reading_list.md`, so a CV edit stays a one-line
+ * edit to `cv.md`. Expanded here, then handed to the same Markdown pipeline the posts use.
  *
- * Between them they hold 55 `cv-listing` entries, 28 `book` entries, 22 bibliography tags,
- * two `{% for %}` loops over `_data/students*.yml` and four attribute lists. Keeping them as
- * content — expanded here and handed to the same Markdown pipeline the posts use, Liquid
- * first and Markdown second — means a CV edit stays a one-line edit to `cv.md`.
- *
- * Only the constructs these two files actually use are implemented. Anything else — an
- * unknown include, an unsupported filter, a stray `{%` — throws, so an unhandled construct
- * fails the build instead of reaching a visitor.
+ * Only the constructs those two files use are implemented. Anything else — an unknown
+ * include, an unsupported filter, a stray `{%` — throws, so it fails the build rather than
+ * reaching a visitor.
  */
 
 /** Renders a Markdown fragment to HTML — the same pipeline the page body uses. */
@@ -67,19 +62,14 @@ function resolve(expr: string, scope: Scope, filePath: string): string {
   return value === undefined || value === null ? '' : String(value)
 }
 
-/**
- * Liquid include parameters. Values are either quoted literals — possibly spanning lines —
- * or bare identifiers naming a variable in scope (`subject=subject`, inside the student
- * loops).
- */
+/** Include parameters: quoted literals (possibly multi-line) or variables in scope. */
 function parseParams(raw: string, scope: Scope, filePath: string): Record<string, string> {
   const params: Record<string, string> = {}
   // Values may contain backslash-escaped quotes: reading_list.md quotes book excerpts.
   const re = /([a-zA-Z_][\w-]*)\s*=\s*(?:"((?:[^"\\]|\\.)*)"|([\w.[\]]+))/g
   let m: RegExpExecArray | null
   while ((m = re.exec(raw)) !== null) {
-    // `presentations=site.data.presentations` just names the table the include iterates;
-    // the port takes it from the context instead, so the reference itself is dropped.
+    // The table the include iterates comes from the context, so this reference is dropped.
     if (m[3]?.startsWith('site.data.')) continue
     params[m[1]!] = m[2] !== undefined ? m[2].replace(/\\(.)/g, '$1') : resolve(m[3]!, scope, filePath)
   }
@@ -87,13 +77,8 @@ function parseParams(raw: string, scope: Scope, filePath: string): Record<string
 }
 
 /**
- * Port of `_includes/cv-listing.html`.
- *
- * `markdownify` runs each value through Markdown as a *block*, so even a bare phrase comes
- * back wrapped in a paragraph:
- * `<span class="cv-listing-subject"><p>Assistant Professor</p>\n</span>`. The whitespace
- * from the template's untaken `{% if %}` branches is reproduced too, since it ends up in
- * the page.
+ * One CV entry. `markdownify` renders each value as a *block*, so even a bare phrase comes
+ * back wrapped in a paragraph: `<span class="cv-listing-subject"><p>Professor</p>\n</span>`.
  */
 async function cvListing(p: Record<string, string>, render: Render): Promise<string> {
   const md = (v: string) => render(v)
@@ -134,13 +119,7 @@ function book(p: Record<string, string>): string {
 </div>`
 }
 
-/**
- * Port of `_includes/presentations.html`.
- *
- * The condition is `presentation_year == include.year or include.types contains type`.
- * `cv.md` passes `types` and no `year`, so only the second half applies; Liquid's `contains`
- * on a string is a substring test.
- */
+/** The presentations list. `cv.md` passes `types` and no `year`; `contains` is a substring test. */
 function presentations(p: Record<string, string>, entries: [string, Presentation][]): string {
   const year = p.year !== undefined ? Number(p.year) : undefined
   const types = p.types
@@ -164,7 +143,7 @@ function presentations(p: Record<string, string>, entries: [string, Presentation
   return `<ol class="presentations">\n${items}\n</ol>`
 }
 
-/** One bibliography entry, as `_layouts/bib.html` renders it. */
+/** One bibliography entry. */
 function bibEntry(entry: Entry, knows: Knows): string {
   const authors = entry.authors
     .map((author, i) => {
@@ -214,9 +193,8 @@ const ASSIGN = /\{%\s*assign\s+(\w+)\s*=\s*([\s\S]*?)\s*%\}/
 const IF_OPEN = /\{%\s*if\s+([\s\S]*?)\s*%\}/
 
 /**
- * Offset of the `{% end… %}` that closes an already-consumed opening tag, relative to
- * `from`. Blocks of the same kind nested inside are counted, so a nested loop no longer
- * steals the outer one's `{% endfor %}`.
+ * Offset of the `{% end… %}` closing an already-consumed opening tag, relative to `from`.
+ * Counts nesting, so an inner loop cannot steal the outer one's `{% endfor %}`.
  */
 function matchingClose(
   source: string,
@@ -235,13 +213,10 @@ function matchingClose(
 }
 
 /**
- * `{% if %}` conditions, as cv.md writes them: `a == "x" or a == "y"`. Only `==` and `!=`
- * joined by `or`/`and` are supported; anything else throws.
+ * `{% if %}` conditions. Only `==`/`!=` joined by `or`/`and`; anything else throws.
  *
- * The operators fold right to left with no precedence between them, which is Liquid's rule
- * and not C's: `a and b or c` is `a and (b or c)`. cv.md uses only `or`, so the two readings
- * agree today — but silently disagreeing the first time an `and` is added is worse than
- * being right now.
+ * The operators fold right to left with no precedence, which is Liquid's rule and not C's:
+ * `a and b or c` is `a and (b or c)`.
  */
 function evalCondition(cond: string, scope: Scope, filePath: string): boolean {
   const parts = cond.trim().split(/\s+(and|or)\s+/)
@@ -261,11 +236,8 @@ function evalComparison(cond: string, scope: Scope, filePath: string): boolean {
 }
 
 /**
- * Expands the Liquid subset these two files use, in document order.
- *
- * `scope` is mutated rather than copied, because `{% assign %}` is used as an accumulator
- * inside a `{% for %}` loop (cv.md counts its invited presentations that way) and a copied
- * scope would throw the running total away on every iteration.
+ * Expands the Liquid, in document order. `scope` is mutated rather than copied: cv.md uses
+ * `{% assign %}` as an accumulator inside a loop, and copying would drop the running total.
  */
 async function expand(
   source: string,
@@ -274,8 +246,7 @@ async function expand(
   filePath: string,
   render: Render,
 ): Promise<string> {
-  // Blocks are handled in source order: taking `{% if %}` before an earlier `{% for %}`
-  // would split the loop away from its `{% endfor %}`.
+  // Source order: taking `{% if %}` before an earlier `{% for %}` splits the loop.
   const first = [
     ['for', FOR_OPEN.exec(source)],
     ['if', IF_OPEN.exec(source)],

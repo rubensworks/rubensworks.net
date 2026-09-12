@@ -1,22 +1,12 @@
 /**
  * kramdown ends a raw HTML block at its matching close tag; CommonMark ends it at the first
- * blank line.
+ * blank line. `reading_list.md` depends on the difference: each book's description starts
+ * with a newline, leaving a line of nothing but spaces, so CommonMark closes the surrounding
+ * `<div>` there and renders the tab-indented prose that follows as a *code block*.
  *
- * `reading_list.md` depends on the difference. Each of its 28 books expands to
- *
- *     <p class="description">
- *       ⏎
- *     ␉   These personal notes of Roman emperor Marcus Aurelius …
- *
- * because the description value starts with a newline, leaving a line of nothing but
- * spaces. CommonMark reads that as blank, closes the `<div class="books">` block there, and
- * then reads the tab-indented prose that follows as an indented *code block* — so every
- * book's description falls out of its `<p>` and renders as source code.
- *
- * The fix keeps the content byte-identical: whitespace-only lines inside such an element
- * are given a private-use marker so CommonMark does not see them as blank, and the marker is
- * removed again after rendering. Elements carrying `markdown="…"` are skipped — those are
- * meant to be reparsed, and `remark-markdown-attribute.ts` handles them.
+ * Whitespace-only lines inside such an element get a private-use marker so CommonMark does
+ * not see them as blank; the marker is removed after rendering. Elements carrying
+ * `markdown="…"` are skipped — remark-markdown-attribute.ts reparses those.
  */
 
 export const BLANK_LINE_MARKER = ''

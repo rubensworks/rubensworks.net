@@ -1,24 +1,12 @@
 import type { Root, RootContent, Paragraph, Html } from 'mdast'
 
 /**
- * kramdown and CommonMark disagree about raw HTML blocks that open with an *inline-level*
- * tag.
+ * CommonMark's "HTML block type 7" accepts any tag name, so a raw block opening with a
+ * span-level tag is passed through with no wrapper. kramdown starts an ordinary paragraph
+ * instead, emitting `<p><span …>…</span></p>`. The `<p>` is not cosmetic: `_base.scss` gives
+ * it a bottom margin, without which the address block on /contact/ loses its spacing.
  *
- * CommonMark's "HTML block type 7" accepts any tag name, so
- *
- *     <span style="font-style:italic">
- *     AA Tower (Ghent University – imec)<br />
- *     </span>
- *
- * is passed through raw, with no wrapper. kramdown only treats *block-level* tags as HTML
- * blocks; a span-level tag starts an ordinary paragraph, so it emits
- * `<p><span …>…</span></p>`.
- *
- * The `<p>` is not cosmetic — `_base.scss` gives `p` its bottom margin, so without it the
- * address block on /contact/ loses its spacing.
- *
- * This plugin restores kramdown's behaviour: a block-level `html` node whose first tag is
- * span-level is wrapped in a paragraph.
+ * So: a block-level `html` node whose first tag is span-level gets wrapped in a paragraph.
  */
 
 // kramdown's HTML_SPAN_ELEMENTS (kramdown/parser/html.rb).
@@ -33,9 +21,8 @@ const firstTag = (value: string): string | null => {
   return m ? m[1]!.toLowerCase() : null
 }
 
-// Containers whose children are *blocks*. Inline raw HTML inside a paragraph is also an
-// mdast `html` node, so descending into phrasing content would wrap every inline <a> or
-// <span> in its own paragraph and shred the document.
+// Containers whose children are *blocks*. Inline raw HTML is also an mdast `html` node, so
+// descending into phrasing content would wrap every inline <a> in a paragraph.
 const BLOCK_PARENTS = new Set(['root', 'blockquote', 'listItem', 'footnoteDefinition'])
 
 export function remarkInlineHtmlParagraph() {

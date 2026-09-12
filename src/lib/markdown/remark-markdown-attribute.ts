@@ -2,33 +2,19 @@ import type { Root, RootContent, Paragraph, Html, Parent } from 'mdast'
 import { protectBlankLines } from './html-blocks'
 
 /**
- * kramdown's `markdown="…"` attribute on raw HTML — 28 occurrences across 6 posts.
+ * kramdown's `markdown="…"` attribute on raw HTML. CommonMark passes raw HTML through
+ * untouched, so without this the Markdown inside ships literally — and only partly, since an
+ * HTML block ends at the first blank line, leaving output that looks mostly right with stray
+ * `**` in it. The attribute itself is removed either way.
  *
- * CommonMark passes raw HTML blocks through untouched, so without this the Markdown inside
- * them ships literally: `_qualitative_` instead of `<em>qualitative</em>`, and the 22
- * `<figure markdown="block">` listings lose their fenced code blocks. Worse than a clean
- * failure, because an HTML block ends at the first blank line: everything after that blank
- * line *is* parsed, so the output looks mostly right with stray `**` markers in it.
- *
- * Two modes are used by the content, matching kramdown's content-model rule:
  *   markdown="1"     on <p>                    -> span-level: inline Markdown, no wrapper
  *   markdown="block" on <figure>, <figcaption> -> block-level: full Markdown, incl. fences
  *
- * In both cases the `markdown` attribute itself is removed from the output.
- *
- * The two modes are handled at different stages, for a reason worth recording.
- *
- * Block mode rewrites the *source* before parsing, putting a blank line after the opening
- * tag and before the closing one so CommonMark treats the tags as HTML blocks and the
- * content in between as ordinary Markdown. Repairing the parsed tree instead does not work:
- * a raw HTML block ends at the first blank line, and the streaming-RDF-parsers post has
- * blank lines *inside* its fenced listings, so CommonMark pairs the ``` of one figure with
- * the ``` of the next. By the time a plugin sees that tree, the second figure's opening tag
- * is buried inside a code node and the document is already scrambled.
- *
- * Span mode is handled on the tree, because it has to end up as one element with inline
- * content — which the blank-line trick cannot express — and the elements involved (`<p>`)
- * never contain fences, so the parse is reliable.
+ * Block mode rewrites the *source* before parsing, inserting blank lines inside the tags.
+ * Repairing the parsed tree instead cannot work: fenced listings contain blank lines, so
+ * CommonMark pairs the ``` of one figure with the ``` of the next and the tree a plugin sees
+ * is already scrambled. Span mode has to produce one element with inline content, which the
+ * blank-line trick cannot express, so it runs on the tree — and `<p>` never holds fences.
  */
 
 const OPEN_TAG_SOURCE =
@@ -80,14 +66,9 @@ function findCloseTag(source: string, tag: string, searchFrom: number): number {
 }
 
 /**
- * The character ranges covered by fenced code blocks.
- *
- * This rewrite works on the raw source, before anything has parsed it, so it would happily
- * rewrite a ```` ```html ```` sample that *shows* `<div markdown="1">` — mangling the
- * example and, worse, having its content parsed as Markdown. Fenced blocks are excluded.
- * (Indented code blocks are not: kramdown's `markdown` attribute only ever appears at the
- * start of a line in this content, and a four-space indent would keep it out of the tag
- * regex anyway.)
+ * The ranges covered by fenced code blocks. The rewrite runs on raw source, so without this
+ * a fenced sample *showing* `<div markdown="1">` would be rewritten and its content parsed.
+ * Indented code blocks need no such guard: a four-space indent misses the tag regex anyway.
  */
 export function fencedRanges(source: string): [number, number][] {
   const ranges: [number, number][] = []

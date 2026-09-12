@@ -17,10 +17,9 @@ export interface Entry {
   _type?: string; _slides?: string; _poster?: string; _video?: string
   _highlighted?: string
   /**
-   * RAW field values, straight from the file. The `--query` filters in cv.md match against
-   * these rather than the rendered ones, which matters wherever decoding changes a
-   * character: `@*[_type=Master's Thesis]` is written with a straight apostrophe, while the
-   * rendered value carries the typographic `Master’s Thesis`.
+   * Values byte-for-byte as written. cv.md's `--query` filters match these, not the
+   * rendered ones: `@*[_type=Master's Thesis]` has a straight apostrophe where the rendered
+   * value has `Master’s Thesis`.
    */
   queryFields: Record<string, string>
 }
@@ -30,13 +29,9 @@ const MONTHS: Record<string, number> = {
   jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12,
 }
 /**
- * bibtex-ruby's `:parse_months` accepts full names and 3-letter abbreviations, and yields
- * the `month_numeric` field the sort actually keys on.
- *
- * `@retorquere/bibtex-parser` has already done that conversion by the time we see the
- * field: `month = {october}` comes back as the string `"10"`, not `"october"`. Handling
- * only names here silently produced `null` for 91 of the 92 entries, which collapsed the
- * secondary sort key and left the publications page in file order within each year.
+ * The month as a number, for the secondary sort key. Accepts both forms, because the parser
+ * has usually already converted it: `month = {october}` arrives as `"10"`. Handling only
+ * names returned null for 91 of 92 entries and silently collapsed the sort.
  */
 export function monthToNumber(raw: string | undefined): number | null {
   if (!raw) return null
@@ -50,11 +45,8 @@ export function monthToNumber(raw: string | undefined): number | null {
 }
 
 /**
- * A display name is `{first} {prefix} {last}` with repeated spaces collapsed.
- *
- * Checked against all 88 authors in references.bib: the family name is always taken
- * verbatim, particles included, so no von-particle heuristics are needed — `Van de Vyvere,
- * Brecht` becomes `Brecht Van de Vyvere` and `de Valk, Sjors` becomes `Sjors de Valk`.
+ * `{first} {prefix} {last}`, spaces collapsed. The family name is taken verbatim, particles
+ * included, so no von-particle heuristics: `Van de Vyvere, Brecht` -> `Brecht Van de Vyvere`.
  */
 function toAuthor(c: { firstName?: string; lastName?: string; prefix?: string }): Author {
   const display = nfc([c.firstName, c.prefix, c.lastName]
@@ -67,53 +59,34 @@ function toAuthor(c: { firstName?: string; lastName?: string; prefix?: string })
 }
 
 /**
- * @retorquere/bibtex-parser decodes LaTeX accents to DECOMPOSED (NFD) Unicode --
- * `Gal{\'a}rraga` becomes "Gala\u0301rraga", not "Gal\u00e1rraga".
- * Ruby's latex-decode (and _data/knows.yml) use composed NFC. Without this the strings
- * render identically but compare unequal, silently breaking the knows.yml author lookup
- * and dropping the foaf:maker / schema:author RDFa triples. Normalise everything.
+ * The parser decodes LaTeX accents to DECOMPOSED (NFD) Unicode: `Gal{\'a}rraga` becomes
+ * "Gala\u0301rraga". knows.yml is composed (NFC), so without this the two render identically
+ * but compare unequal — the author lookup misses and the foaf:maker triples vanish.
  */
 export const nfc = (s: string): string => s.normalize('NFC')
 
 /**
- * `@retorquere/bibtex-parser` honours LaTeX's `%` line-comment rule; bibtex-ruby does not.
- * Two fields in references.bib are affected and both truncate silently:
- *   - hanski_icwe_restart_2025's abstract loses everything after "reductions of up to 36"
- *   - taelman_eswc_poster_2016's url loses everything after ".../Accepted%"
- * Escaping unescaped `%` before parsing restores bibtex-ruby's reading; `\%` decodes back
- * to a literal `%`, and LaTeX accent handling is unaffected.
+ * The parser honours LaTeX's `%` line-comment rule, which silently truncates any value
+ * containing a bare `%` — an abstract and a URL with `%20` in this file. Escaping first
+ * keeps them whole; `\%` decodes back to a literal `%`.
  */
 export const escapePercent = (s: string): string => s.replace(/(?<!\\)%/g, '\\%')
 
-// Private-use code points, chosen because they cannot occur in the bibliography and pass
-// through the parser untouched.
+// Private-use code points: impossible in the bibliography, and passed through untouched.
 const NL = '\uE000'
 const TAB = '\uE001'
 const SP = '\uE002'
 
 /**
- * `@retorquere/bibtex-parser` collapses runs of whitespace inside a value to a single space
- * and trims the ends. The .bib file is the source of truth for the exact text, so those runs
- * have to survive: `<p class="abstract">` keeps the newline the value opens with and the two
- * spaces before its closing brace, and `taelman_iswc_ostrich_2019`'s title stays split
- * across two lines.
+ * The parser collapses whitespace inside a value; titles and abstracts need it kept, because
+ * a microdata literal is the element's exact text content and collapsing it changes the RDF
+ * graph the page publishes. Runs the parser would rewrite (newline, tab, or 2+ spaces) are
+ * encoded into private-use code points and decoded after. Single spaces are left alone so
+ * LaTeX macro parsing still sees its separators.
  *
- * That is not cosmetic. The title carries `itemprop="name"` and the abstract
- * `property="schema:abstract"`, and a microdata literal is the element's exact text content,
- * so collapsing the whitespace changes the RDF graph the page publishes. (RDFa normalises
- * whitespace in plain literals, so only the microdata half of the graph moves.)
- *
- * Every whitespace run that the parser would rewrite — one containing a newline or tab, or
- * two or more spaces — is encoded into private-use code points before parsing and decoded
- * afterwards. Single spaces are left alone so LaTeX macro parsing still sees the separators
- * it expects.
- *
- * Name lists are excluded. The parser splits `author` and friends on ` and `, and a name
- * list wrapped across lines puts that newline right next to the separator — encoding it
- * would leave `Taelman and<NL>Dimou`, which no longer matches, silently merging two people
- * into one and taking their foaf:maker triples with them. Nothing is lost by skipping them:
- * a name list is reassembled from its parsed parts, so its original spacing never reaches
- * the page.
+ * Name lists are skipped: the parser splits them on ` and `, so encoding the newline in a
+ * wrapped `author` would leave `Taelman and<NL>Dimou`, merging two people into one and
+ * losing a foaf:maker triple. They are reassembled from parsed parts anyway.
  */
 const NAME_FIELDS = new Set([
   'author',
@@ -163,8 +136,7 @@ export function protectWhitespace(source: string): string {
       let j = i
       while (j < source.length && /[ \t\n]/.test(source[j]!)) j++
       const run = source.slice(i, j)
-      // Anything the parser would rewrite: a run containing a newline or tab, or two or
-      // more spaces ("The  Web  is  evolving" in verbrugge_fitce_2021's abstract).
+      // A run containing a newline or tab, or two or more spaces.
       if (/[\n\t]/.test(run) || run.length > 1) {
         out += run.replace(/\n/g, NL).replace(/\t/g, TAB).replace(/ /g, SP)
         i = j - 1
@@ -179,18 +151,12 @@ export function protectWhitespace(source: string): string {
 export const restoreWhitespace = (s: string): string =>
   s.split(NL).join('\n').split(TAB).join('\t').split(SP).join(' ')
 
-/**
- * Undoes `escapePercent` on the decoded side. LaTeX decoding turns `\%` back into `%` in
- * most fields, but not in every one the parser routes differently, so this runs
- * unconditionally: a decoded value has no legitimate reason to contain `\%`.
- */
+/** Undoes escapePercent. Unconditional: a decoded value never legitimately holds `\%`. */
 export const unescapePercent = (s: string): string => s.replace(/\\%/g, '%')
 
 /**
- * LaTeX reads a plain `'` as a right single quote, and `@retorquere/bibtex-parser` is the
- * one decoder that leaves it alone — it handles `--`, `---`, `~`, ``` `` ``` / `''`, `\%`,
- * accents and `$…$`, but not this. So `Master's Thesis` in the .bib renders as
- * `Master’s Thesis` on the page.
+ * LaTeX reads a plain `'` as a right single quote; the parser handles every other escape but
+ * not this one. `Master's Thesis` in the .bib renders as `Master’s Thesis`.
  */
 export const latexApostrophes = (s: string): string => s.replace(/'/g, '’')
 
@@ -203,20 +169,16 @@ let cache: Entry[] | null = null
 /** Parses references.bib exactly ONCE per build. */
 export function loadBibliography(path = '_bibliography/references.bib'): Entry[] {
   if (cache) return cache
-  // sentenceCase MUST be off: it is Better-BibTeX behaviour that rewrites
-  // "Proceedings of the 25th International Semantic Web Conference" to
-  // "...international semantic web conference", mangling every entry's booktitle and title.
-  // The casing in the .bib file is the casing that gets published.
-  // verbatimFields: [] so that `url` is decoded like every other field, rather than passed
-  // through with its LaTeX escapes intact.
+  // sentenceCase MUST be off: it lowercases every booktitle and title ("...international
+  // semantic web conference"). The casing in the .bib is the casing published.
+  // verbatimFields: [] so `url` is decoded like every other field.
   const parsed = bibtex.parse(protectWhitespace(escapePercent(readFileSync(path, 'utf8'))), {
     sentenceCase: false,
     verbatimFields: [],
   })
   if (parsed.errors.length) throw new Error(`BibTeX parse errors: ${JSON.stringify(parsed.errors)}`)
 
-  // The same file read a second way: values byte-for-byte as written, which is what the
-  // query operators must match against.
+  // The same file read a second way, for Entry.queryFields.
   const rawByKey = new Map(
     parseRawEntries(readFileSync(path, 'utf8')).map((e) => [
       e.key,

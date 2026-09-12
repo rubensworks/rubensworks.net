@@ -9,18 +9,11 @@ import type { Root, Element, Parent, ElementContent } from 'hast'
  *     </div>
  *   </div>
  *
- * That structure is what `_sass/_syntax-highlighting.scss` and `_sass/_base.scss` hang
- * their selectors off: the `#eef` background, the border, the padding and
- * `%vertical-rhythm`'s bottom margin all come from the class names above.
- *
- * Three details:
- *  - A block with no info string gets `<div class="highlighter-rouge">`, no language class,
- *    and is left unhighlighted.
- *  - A block-level inline attribute list lands on the *outer* div, with its classes ahead of
- *    `highlighter-rouge`: `{:#demo-nodejs-preamble .hide}` becomes
- *    `<div id="demo-nodejs-preamble" class="hide highlighter-rouge">`.
- *  - Shiki's own `class="astro-code …"`, inline background/foreground and `tabindex` are
- *    dropped; the stylesheet already supplies all of it.
+ * `_sass/_syntax-highlighting.scss` and `_base.scss` hang their selectors off those class
+ * names. A block with no info string gets no language class and is left unhighlighted; a
+ * block-level attribute list lands on the *outer* div, ahead of `highlighter-rouge`; and
+ * Shiki's own `astro-code` class, inline colours and `tabindex` are dropped, since the
+ * stylesheet supplies all of it.
  *
  * Runs after highlighting, because Astro applies Shiki before the configured rehypePlugins.
  */
@@ -47,7 +40,7 @@ export function rehypeRougeBlocks() {
         const rawLang = String(el.properties?.['dataLanguage'] ?? '')
         const language = rawLang && rawLang !== 'plaintext' ? rawLang : undefined
 
-        // The inline attribute list, smuggled through Shiki by shiki-rouge-wrapper.ts.
+        // The attribute list, smuggled through Shiki by shiki-rouge-wrapper.ts.
         const ial = parseIal(el.properties?.['dataRougeIal'])
 
         const outerProps: Record<string, unknown> = {}
@@ -58,7 +51,7 @@ export function rehypeRougeBlocks() {
           'highlighter-rouge',
         ]
 
-        // Rouge left unlexed blocks as plain text, with no token spans at all.
+        // An unlexed block is plain text, with no token spans at all.
         const codeChildren = withTrailingNewline(
           language ? unwrapLines(code.children) : [flatten(code.children)],
         )
@@ -107,10 +100,7 @@ function parseIal(raw: unknown): { id?: string; classes: string[] } {
   }
 }
 
-/**
- * Rouge kept the fence's closing newline inside `<code>`; Shiki strips it. Visible in a
- * `<pre>`, where whitespace is rendered as written.
- */
+/** Shiki strips the fence's closing newline; inside a `<pre>` that is visible. */
 function withTrailingNewline(children: ElementContent[]): ElementContent[] {
   const last = children[children.length - 1]
   if (last?.type === 'text') {
@@ -121,9 +111,8 @@ function withTrailingNewline(children: ElementContent[]): ElementContent[] {
 }
 
 /**
- * Removes Shiki's per-line `<span class="line">` wrappers, leaving the token spans directly
- * inside `<code>` with the newlines between them — the shape Rouge emitted. Shiki's
- * `structure: 'inline'` option would do this, but Astro does not forward it.
+ * Removes Shiki's per-line `<span class="line">` wrappers, leaving token spans directly
+ * inside `<code>`. Shiki's `structure: 'inline'` would do this, but Astro does not forward it.
  */
 function unwrapLines(children: ElementContent[]): ElementContent[] {
   const out: ElementContent[] = []
