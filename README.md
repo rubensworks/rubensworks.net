@@ -47,6 +47,13 @@ RDFa the pages publish, and that is exactly what a query needs.
 | `src/components/FoafTooltip.astro` | loads the controller; included from `Default.astro` |
 | `_sass/_foaf-tooltip.scss` | the card |
 
+Whether the card belongs on screen is decided from where the pointer actually is, not from
+`mouseover`/`mouseout`. Those events report what crossed the pointer, and Chromium does not
+reliably dispatch them when the page moves under a still cursor — scrolling 20 px away from a
+name fires no `mouseout` at all. A scroll dismisses the card unless the name is still under
+the pointer; the card's own area only counts when the pointer actually moved onto it, since
+it is drawn just below the name and grows as each stage lands.
+
 Three things about this are load-bearing rather than incidental:
 
 **Comunica runs in a Web Worker.** It is around 560 KB gzipped and parsing a profile is real

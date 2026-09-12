@@ -25,6 +25,14 @@ import type { Request, Response } from './foaf-worker'
 
 /** How long the pointer has to rest before this is a lookup and not a passing cursor. */
 const DWELL_MS = 180
+/**
+ * Grace period before the card goes. This, not geometry, is what makes the gap between the
+ * name and the card crossable: a pointer travelling through it is outside both for one
+ * event, and the next one lands on the card long before this elapses.
+ */
+const HIDE_MS = 160
+/** Rounding tolerance only. Anything wider swallows a small scroll away from the name. */
+const HIT_SLACK = 4
 const CACHE_PREFIX = 'foaf-card:v1:'
 
 interface Pending {
@@ -40,6 +48,19 @@ let nextId = 0
 let active: Pending | undefined
 let dwellTimer: number | undefined
 let hideTimer: number | undefined
+/** The last position the pointer actually reported, which is the only reliable one. */
+let pointer: { x: number; y: number } | undefined
+/** A card opened by keyboard is dismissed by blur, never by where the mouse happens to be. */
+let openedByPointer = false
+/**
+ * Whether the pointer was on the card as of the last time it actually moved.
+ *
+ * Deliberately a remembered answer rather than a live one. The card is drawn just below the
+ * name and grows as each query stage lands, so a live test would let it rescue itself by
+ * expanding under a pointer that had already left, or by sliding under one during a scroll.
+ * Only a real move onto the card counts as wanting to be on the card.
+ */
+let pointerWasOnCard = false
 
 /**
  * Created once and kept for the life of the page.
@@ -125,9 +146,6 @@ function ensureCard(): HTMLElement {
     toggle: pick('.foaf-card-toggle'),
     query: pick('.foaf-card-query'),
   }
-  // The card stays put while the pointer is on it, so the query can actually be read.
-  root.addEventListener('mouseenter', () => window.clearTimeout(hideTimer))
-  root.addEventListener('mouseleave', () => scheduleHide())
   parts.toggle.addEventListener('click', () => {
     const shown = parts.query.hidden
     parts.query.hidden = !shown
@@ -175,6 +193,9 @@ function render(pending: Pending, facts: Facts | undefined, state: 'loading' | '
   parts.query.textContent = describeQuery(pending)
   root.hidden = false
   place(pending.anchor)
+  // Each stage lands separately and changes the card's size, which moves its edges
+  // relative to a pointer that has not gone anywhere.
+  reviewPointer()
 }
 
 function hostOf(uri: string): string {
@@ -192,8 +213,7 @@ function hostOf(uri: string): string {
 function describeQuery(pending: Pending): string {
   const dereferenced = !isDblpPerson(pending.person)
   const sections: string[] = [
-    '# Everything above was queried in your browser by Comunica, just now,',
-    '# from the data these sources publish. Nothing is stored on this site.',
+    '# Everything above was queried live in your browser by Comunica',
   ]
   if (dereferenced) {
     sections.push('', `# Source: ${pending.person}`, profileQuery(pending.person))
@@ -229,6 +249,7 @@ function hide(): void {
   window.clearTimeout(hideTimer)
   if (active) active.anchor.removeAttribute('aria-describedby')
   active = undefined
+  pointerWasOnCard = false
   if (!card) return
   card.hidden = true
   parts.query.hidden = true
@@ -236,9 +257,62 @@ function hide(): void {
   parts.toggle.textContent = 'show query'
 }
 
+function near(rect: DOMRect, x: number, y: number): boolean {
+  return (
+    x >= rect.left - HIT_SLACK &&
+    x <= rect.right + HIT_SLACK &&
+    y >= rect.top - HIT_SLACK &&
+    y <= rect.bottom + HIT_SLACK
+  )
+}
+
+/**
+ * Whether the name is under the pointer — measured, not inferred.
+ *
+ * `getClientRects()` rather than `getBoundingClientRect()`: an author name that wraps across
+ * two lines has two rects, and the box enclosing both covers most of the line in between.
+ */
+function pointerOnAnchor(): boolean {
+  if (!pointer || !active) return false
+  const rects = active.anchor.getClientRects()
+  for (let i = 0; i < rects.length; i++) {
+    if (near(rects[i]!, pointer.x, pointer.y)) return true
+  }
+  return false
+}
+
+function pointerOnCardNow(): boolean {
+  if (!pointer || !card || card.hidden) return false
+  return near(card.getBoundingClientRect(), pointer.x, pointer.y)
+}
+
+function pointerStillOnTarget(): boolean {
+  return pointerOnAnchor() || pointerWasOnCard
+}
+
 function scheduleHide(): void {
   window.clearTimeout(hideTimer)
-  hideTimer = window.setTimeout(hide, 160)
+  hideTimer = window.setTimeout(() => {
+    // Checked again here rather than trusted from whatever scheduled it. Between the two
+    // the card may have grown under the pointer, or the reader may have moved onto it to
+    // reach the query.
+    if (openedByPointer && pointerStillOnTarget()) return
+    hide()
+  }, HIDE_MS)
+}
+
+/**
+ * Re-decides whether the card belongs on screen, from where the pointer actually is.
+ *
+ * This exists because `mouseover`/`mouseout` cannot answer the question. They report what
+ * crossed the pointer, and Chromium does not reliably dispatch them when the page moves
+ * under a still cursor: scrolling 20 px away from a name fires no `mouseout` at all, so a
+ * card whose dismissal hung on that event stayed up with the pointer nowhere near it.
+ */
+function reviewPointer(): void {
+  if (!active || !openedByPointer) return
+  if (pointerStillOnTarget()) window.clearTimeout(hideTimer)
+  else scheduleHide()
 }
 
 // -- what the reader did --------------------------------------------------------------
@@ -263,7 +337,7 @@ function onMessage(response: Response): void {
   render(pending, response.facts, 'ready')
 }
 
-function show(anchor: HTMLAnchorElement): void {
+function show(anchor: HTMLAnchorElement, byPointer: boolean): void {
   const person = anchor.getAttribute('resource')
   if (!person) return
   // Whatever asked for this card wins. Without this, a dwell already counting down on a
@@ -271,6 +345,7 @@ function show(anchor: HTMLAnchorElement): void {
   // somewhere else — focus moves, the timer fires 180 ms later, and the card changes person.
   window.clearTimeout(dwellTimer)
   window.clearTimeout(hideTimer)
+  openedByPointer = byPointer
   const pending: Pending = { person, displayName: (anchor.textContent ?? '').trim(), anchor }
   active = pending
   anchor.setAttribute('aria-describedby', 'foaf-card')
@@ -289,12 +364,28 @@ function show(anchor: HTMLAnchorElement): void {
   ensureWorker().postMessage(request)
 }
 
-/** Each move restarts the countdown, so a pointer sweeping across names loads nothing. */
-function onMove(event: MouseEvent): void {
-  const anchor = event.currentTarget as HTMLAnchorElement
-  if (active?.anchor === anchor) return
-  window.clearTimeout(dwellTimer)
-  dwellTimer = window.setTimeout(() => show(anchor), DWELL_MS)
+/**
+ * The single source of truth for what the pointer is doing.
+ *
+ * Movement, not arrival, is what arms a lookup: the page scrolling under a still cursor
+ * counts as arrival and should open nothing. Each move also restarts the countdown, so a
+ * pointer sweeping across a list of names loads none of them.
+ */
+function onPointerMove(event: MouseEvent): void {
+  pointer = { x: event.clientX, y: event.clientY }
+  pointerWasOnCard = pointerOnCardNow()
+  const anchor = authorLink(event.target)
+  if (!anchor) {
+    // Off the name before the dwell was met, so there is nothing to look up.
+    window.clearTimeout(dwellTimer)
+  } else if (active?.anchor !== anchor) {
+    // The worker starts here rather than when the dwell completes, so its chunk downloads
+    // during the pause instead of after it.
+    ensureWorker()
+    window.clearTimeout(dwellTimer)
+    dwellTimer = window.setTimeout(() => show(anchor, true), DWELL_MS)
+  }
+  reviewPointer()
 }
 
 function authorLink(target: EventTarget | null): HTMLAnchorElement | undefined {
@@ -307,34 +398,19 @@ function start(): void {
   // No hover on a touchscreen, and tapping an author link should follow it, not open a card.
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
 
-  document.addEventListener('mouseover', (event) => {
-    const anchor = authorLink(event.target)
-    if (!anchor) return
-    window.clearTimeout(hideTimer)
-    // Start the worker on arrival but do not query yet: the chunk downloads during the
-    // pause that follows instead of after it, which takes the wait off the first hover.
-    ensureWorker()
-    if (active?.anchor === anchor) return
-    // The dwell is armed by movement, not by arrival. Scrolling moves the page under a
-    // stationary cursor and Chromium reports that as a mouseover, so arrival alone would
-    // open cards nobody pointed at — including over the top of one a keyboard user had
-    // just opened elsewhere. Waiting for the pointer to move and then settle is also
-    // closer to what hover intent means.
-    anchor.addEventListener('mousemove', onMove)
-  })
+  document.addEventListener('mousemove', onPointerMove, { passive: true })
 
-  document.addEventListener('mouseout', (event) => {
-    const anchor = authorLink(event.target)
-    if (!anchor) return
-    anchor.removeEventListener('mousemove', onMove)
+  // The pointer left the window altogether, so there is no position left to check.
+  document.documentElement.addEventListener('mouseleave', () => {
+    pointer = undefined
     window.clearTimeout(dwellTimer)
-    scheduleHide()
+    if (openedByPointer) hide()
   })
 
   // Keyboard readers get the same card; the author links are already focusable.
   document.addEventListener('focusin', (event) => {
     const anchor = authorLink(event.target)
-    if (anchor) show(anchor)
+    if (anchor) show(anchor, false)
     else if (!card?.contains(event.target as Node)) hide()
   })
 
@@ -342,8 +418,18 @@ function start(): void {
     if (event.key === 'Escape') hide()
   })
 
-  window.addEventListener('scroll', () => active && place(active.anchor), { passive: true })
-  window.addEventListener('resize', () => active && place(active.anchor))
+  const reposition = () => {
+    // A dwell counting down belongs to where the name was, not where it has scrolled to.
+    window.clearTimeout(dwellTimer)
+    if (!active) return
+    place(active.anchor)
+    // Scrolling is the reader moving on, so this goes at once and without the grace period.
+    // Only the name still being under the pointer keeps the card: its own area cannot,
+    // since it was just re-placed under a pointer that has not moved at all.
+    if (openedByPointer && !pointerOnAnchor()) hide()
+  }
+  window.addEventListener('scroll', reposition, { passive: true })
+  window.addEventListener('resize', reposition)
 }
 
 start()
