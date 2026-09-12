@@ -1,6 +1,9 @@
 ---
 // The bibliography, grouped by year: an <h2> per year over an <ol class="bibliography"> of
-// <li>, each with a "More" link to the publication's own page. The tags and labels come from
+// <li>, each with a "More" link to the publication's own page. The word on screen stays
+// "More" — it is what the page has always read — followed by the publication's title in a
+// span that is visible only to a screen reader, so a list of links is not 97 identical
+// entries reading "More". The tags and labels come from
 // `site.scholar`.
 //
 // Note the two hrefs differ by a trailing slash — the title links to `/publications/KEY`
@@ -26,7 +29,7 @@ const groups: [number | null, Entry[]][] = grouped
   <Fragment>
     {year !== null && <h2 class="bibliography">{year}</h2>}
     <ol class="bibliography">{groupEntries.map((entry) => (
-      <li><BibEntry entry={entry} knows={knows} /><a class={site.scholar.detailsLinkClass} href={`/${site.scholar.detailsDir}/${entry.key}/`}>{site.scholar.detailsLink}</a></li>
+      <li><BibEntry entry={entry} knows={knows} /><a class={site.scholar.detailsLinkClass} href={`/${site.scholar.detailsDir}/${entry.key}/`}>{site.scholar.detailsLink}<span class="visually-hidden"> about {entry.title}</span></a></li>
     ))}</ol>
   </Fragment>
 ))}

@@ -1,0 +1,5 @@
+# Everything here is meant to be read and indexed.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.rubensworks.net/sitemap-index.xml

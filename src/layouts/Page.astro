@@ -5,14 +5,21 @@
 // wrapper from .astro pages (props arrive directly), so both shapes are accepted.
 import Default from './Default.astro'
 
-interface Props { title?: string; url?: string; frontmatter?: { title?: string; permalink?: string } }
+interface Props {
+  title?: string
+  url?: string
+  /** What this page is about, for the search result and the link preview. */
+  description?: string
+  frontmatter?: { title?: string; permalink?: string; description?: string }
+}
 const props = Astro.props as Props
 const title = props.frontmatter?.title ?? props.title ?? ''
+const description = props.frontmatter?.description ?? props.description
 // `permalink`, not `url`: Astro passes the page's own URL to Markdown layouts as a
 // top-level `url` prop, which would shadow a front-matter `url` key.
 const url = props.frontmatter?.permalink ?? props.url
 ---
-<Default title={title} url={url}>
+<Default title={title} url={url} description={description}>
 <article class="post">
 
   <header class="post-header">

@@ -1,22 +1,33 @@
 ---
 // Port of _includes/head.html
 import { site, absoluteUrl } from '../site.config'
+import { imageInfo } from '../lib/images'
 
 interface Props {
   title?: string
   /** Rendered excerpt HTML. Only posts have one; every other page falls back to
    *  site.description, exactly as `{% if page.excerpt %}` did. */
   excerpt?: string
+  /** A description written for this page. Wins over `excerpt`, which is a fallback cut from
+   *  the body — 109 of the site's pages used to share one sentence of site description. */
+  description?: string
   url: string
   featureImg?: string
+  /** Set on posts: publication date, and the last change to the text if there was one. */
+  article?: { published: Date; modified?: Date }
 }
-const { title: pageTitle, excerpt, url, featureImg } = Astro.props as Props
+const {
+  title: pageTitle,
+  excerpt,
+  description: pageDescription,
+  url,
+  featureImg,
+  article,
+} = Astro.props as Props
 
 /** Liquid's `escape` filter — HTML-escapes the five entities. */
 const escape = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
-
-const title = escape(pageTitle ?? site.title)
 
 /**
  * `page.excerpt | newline_to_br | strip_newlines | replace: '<br />', ' ' | strip_html
@@ -34,14 +45,26 @@ function describe(html: string): string {
   return words.slice(0, 30).join(' ') + '...'
 }
 
-const description = excerpt ? describe(excerpt) : site.description
+/**
+ * The page name and the site name, which is what a search result and a browser tab need:
+ * a tab reading "About Me" says nothing about whose site it is. The homepage is the one
+ * page whose own title is already the site name.
+ */
+const isHome = pageTitle === undefined || pageTitle === site.title
+const title = escape(isHome ? site.title : `${pageTitle} | ${site.title}`)
+
+const description = pageDescription ? describe(pageDescription) : excerpt ? describe(excerpt) : site.description
 const canonical = absoluteUrl(url.replace(/index\.html$/, ''))
-const imageSmall = absoluteUrl('/img/favicon.jpg')
-const imageLarge = absoluteUrl(featureImg ?? '/img/ruben.jpg')
+
+const imagePath = featureImg ?? '/img/ruben.jpg'
+const imageLarge = absoluteUrl(imagePath)
+const imageSize = imageInfo(imagePath)
+
+/** A feature image is wide; the portrait that stands in for it is square. */
+const twitterCard = featureImg ? 'summary_large_image' : 'summary'
 ---
 <head prefix="foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns#">
   <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title set:html={title} />
@@ -49,22 +72,37 @@ const imageLarge = absoluteUrl(featureImg ?? '/img/ruben.jpg')
 
   <link rel="canonical" href={canonical} />
   <link rel="alternate" type="application/rss+xml" title={site.title} href={absoluteUrl('/feed.xml')} />
-  <link rel="shortcut icon" type="image/png" href={imageSmall} />
+
+  {/* The stylesheet needs both faces immediately, and neither is discoverable until it has
+      been parsed. `crossorigin` is required even same-origin: fonts are fetched in CORS
+      mode, and a preload without it is fetched a second time. */}
+  <link rel="preload" href="/fonts/open-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/droid-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/img/icons/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#2ba7ff" />
+
   <link rel="foaf:primaryTopic" href={absoluteUrl('/#me')} />
   <link rel="foaf:primaryTopic foaf:maker" href={absoluteUrl('/#me')} />
   <meta property="og:image" content={imageLarge} />
+  {imageSize && <meta property="og:image:width" content={String(imageSize.width)} />}
+  {imageSize && <meta property="og:image:height" content={String(imageSize.height)} />}
   <meta property="og:title" content={pageTitle ?? site.title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content={site.title} />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={article ? 'article' : 'website'} />
+  {article && <meta property="article:published_time" content={article.published.toISOString()} />}
+  {article?.modified && <meta property="article:modified_time" content={article.modified.toISOString()} />}
+  {article && <meta property="article:author" content={site.title} />}
   <meta name="twitter:site" content="@rubensworks" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content={twitterCard} />
   <meta name="twitter:title" content={pageTitle ?? site.title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={imageLarge} />
-
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-  <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css' />
 </head>

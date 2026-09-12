@@ -11,10 +11,12 @@ interface Props {
   body: string
   /** Feeds head.html's description meta tags; for a project that is the whole body. */
   excerpt?: string
+  /** The project's own one-line summary, where its front matter carries one. */
+  description?: string
 }
-const { title, url, start, end, body, excerpt } = Astro.props as Props
+const { title, url, start, end, body, excerpt, description } = Astro.props as Props
 ---
-<Default title={title} url={url} excerpt={excerpt}>
+<Default title={title} url={url} excerpt={excerpt} description={description}>
 <article class="post">
 
   <header class="post-header">

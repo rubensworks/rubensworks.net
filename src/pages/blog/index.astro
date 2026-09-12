@@ -6,7 +6,11 @@ import { loadPosts } from '../../lib/posts'
 
 const posts = await loadPosts()
 ---
-<Page title="Blog" url="/blog/">
+<Page
+  title="Blog"
+  url="/blog/"
+  description="Posts by Ruben Taelman on Linked Data, decentralization, query execution over the Web, JavaScript, and open source development."
+>
 <ul class="posts">
   {posts.map((post) => (
     <li>

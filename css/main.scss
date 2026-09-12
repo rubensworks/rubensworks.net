@@ -13,9 +13,16 @@ $spacing-unit:     30px;
 
 $text-color:       #111;
 $background-color: #f6fdf5;
-$brand-color:      #2a7ae2;
+// 4.97:1 against the page background. The previous #2a7ae2 was 4.07:1, so every link on the
+// site fell short of WCAG AA; this is the same hue, four steps darker.
+$brand-color:      #1d6ad6;
 
 $grey-color:       #828282;
+// Secondary text — dates, venues, blockquotes. $grey-color itself is 3.7:1 against the page
+// background, under the 4.5:1 WCAG AA needs for body text, and it cannot simply be darkened:
+// $grey-color-light and $grey-color-dark are derived from it, and those paint the navigation
+// bar. So the text shade is its own variable.
+$grey-color-text:  #6f6f6f;
 $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
 
@@ -51,6 +58,7 @@ $rw-icon-size:     30px;
 
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
+        "fonts",
         "base",
         "layout",
         "foaf-tooltip",

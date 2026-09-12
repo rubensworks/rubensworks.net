@@ -44,6 +44,10 @@ ul, ol, dl, figure,
  */
 img {
     max-width: 100%;
+    // Every <img> carries width and height attributes so the browser can reserve its space
+    // before it loads. Without `height: auto` those attributes would fix the height too, and
+    // an image wider than its column would be squashed by `max-width` above.
+    height: auto;
     vertical-align: middle;
 }
 
@@ -106,9 +110,10 @@ a {
         color: darken($brand-color, 15%);
     }
 
+    // 2%, not the 5% this used to lighten by: 5% lands on 4.49:1, just under WCAG AA.
     &:hover {
-	    color: lighten($brand-color, 5%);
-		border-bottom: 2px solid lighten($brand-color, 5%);
+	    color: lighten($brand-color, 2%);
+		border-bottom: 2px solid lighten($brand-color, 2%);
     }
 }
 
@@ -126,7 +131,7 @@ a {
  * Blockquotes
  */
 blockquote {
-    color: $grey-color;
+    color: $grey-color-text;
     border-left: 4px solid $grey-color-light;
     padding-left: $spacing-unit / 2;
     font-size: 18px;
@@ -232,6 +237,22 @@ pre {
     }
 }
 
+
+/**
+ * Text for a screen reader, and for anything else that reads the page rather than looking at
+ * it, with no effect on the layout. `display: none` would hide it from both.
+ */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
 
 .rdfonly {
     display: none !important;

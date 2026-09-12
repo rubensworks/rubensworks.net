@@ -5,8 +5,20 @@ import type { Entry, Knows } from '../lib/bibliography'
 
 interface Props { entry: Entry; knows: Knows; bibtex: string; url: string }
 const { entry, knows, bibtex, url } = Astro.props as Props
+
+/**
+ * The abstract is what this page is about, so it is what a search result should show. The
+ * 92 publication pages all carried the same site-wide sentence before this. Six entries in
+ * references.bib have no abstract; those fall back to the citation itself.
+ */
+const venue = entry.booktitle ?? entry.journal
+const description =
+  entry.abstract ??
+  [entry.title, entry.authors.map((a) => a.display).join(', '), venue && `${venue} (${entry.year})`]
+    .filter(Boolean)
+    .join('. ')
 ---
-<Default title={entry.title} url={url}>
+<Default title={entry.title} url={url} description={description}>
 <div class="publication" itemscope itemtype="http://schema.org/ScholarlyArticle" typeof="schema:ScholarlyArticle schema:CreativeWork" about={`${url}#publication`}>
   <span class="type">{entry._type}</span>
   <h1 itemprop="name" property="schema:name">{entry.title}</h1>

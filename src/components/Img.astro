@@ -1,0 +1,38 @@
+---
+// An <img> from public/, with everything the build can work out about it filled in: its
+// dimensions, so the page does not reflow once it loads, and the AVIF and WebP written next
+// to it by scripts/optimise-images.mjs, so the browser downloads the smallest one it
+// understands. Posts get this from the Markdown pipeline (src/lib/markdown/rehype-images.ts);
+// this is the same thing for the templates.
+import { imageInfo } from '../lib/images'
+
+interface Props {
+  src: string
+  alt: string
+  class?: string
+  style?: string
+  /** Set on an image above the fold, which should not wait for layout to start loading. */
+  eager?: boolean
+}
+const { src, alt, class: className, style, eager = false } = Astro.props as Props
+
+const info = imageInfo(src)
+const attrs = {
+  src,
+  alt,
+  class: className,
+  style,
+  width: info?.width,
+  height: info?.height,
+  ...(eager ? { fetchpriority: 'high' as const } : { loading: 'lazy' as const }),
+  decoding: 'async' as const,
+}
+---
+{info && info.sources.length > 0 ? (
+  <picture>
+    {info.sources.map((s) => <source srcset={s.src} type={s.type} />)}
+    <img {...attrs} />
+  </picture>
+) : (
+  <img {...attrs} />
+)}

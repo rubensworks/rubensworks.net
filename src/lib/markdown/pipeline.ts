@@ -5,6 +5,7 @@ import { remarkInlineHtmlParagraph } from './remark-inline-html-paragraph'
 import { remarkInlineComments } from './remark-inline-comments'
 import { rehypeKramdown } from './rehype-kramdown'
 import { rehypeRougeBlocks } from './rehype-rouge-blocks'
+import { rehypeImages } from './rehype-images'
 import { rougeIalTransformer } from './shiki-rouge-wrapper'
 import { rougeLexerQuirks } from './shiki-rouge-quirks'
 import { rougeGithub } from './shiki-rouge-github'
@@ -29,7 +30,9 @@ export const markdownOptions = {
     // Last, per `smartypants` above.
     remarkSmartypants,
   ],
-  rehypePlugins: [rehypeKramdown, rehypeRougeBlocks],
+  // rehypeImages runs last: it reads the finished <img> tags, including the ones that were
+  // still raw HTML when the plugins before it ran.
+  rehypePlugins: [rehypeKramdown, rehypeRougeBlocks, rehypeImages],
   shikiConfig: {
     theme: rougeGithub as any,
     wrap: false,

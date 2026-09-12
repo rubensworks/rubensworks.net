@@ -9,7 +9,11 @@ const projects = (await getCollection('projects'))
   .filter((p) => p.data.end === undefined)
   .sort((a, b) => (a.data.weight ?? 0) - (b.data.weight ?? 0))
 ---
-<Page title="Projects" url="/projects/">
+<Page
+  title="Projects"
+  url="/projects/"
+  description="The open source projects Ruben Taelman works on, among them the Comunica query engine, Linked Data Fragments, and the OSTRICH RDF archive store."
+>
 <p>
 This page contains a list of the most notable things I am currently working on.
 </p>

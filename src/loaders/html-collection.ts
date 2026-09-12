@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { parse as parseYaml } from 'yaml'
 import { expandIncludes } from '../lib/project-includes'
+import { enhanceImgTags } from '../lib/images'
 
 /**
  * Loads `_projects/*.html` — front matter plus a body that is already HTML. A dedicated
@@ -31,7 +32,9 @@ export function htmlCollection(options: { base: string }): Loader {
           data: (parseYaml(m[1]!) as Record<string, unknown>) ?? {},
           filePath: path,
         })
-        const body = expandIncludes(contents.slice(m[0].length), path)
+        // Hand-written HTML, so it never passes through the Markdown pipeline; the <img>
+        // rules that posts get from rehype-images are applied here instead.
+        const body = enhanceImgTags(expandIncludes(contents.slice(m[0].length), path))
 
         store.set({
           id,

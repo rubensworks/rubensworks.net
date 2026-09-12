@@ -15,6 +15,10 @@ const renderFragment = async (md: string) => (await processor.render(md)).code
 const expanded = await loadLiquidPage('cv.md', renderFragment)
 const html = restoreRdfaDatatype((await processor.render(expanded)).code)
 ---
-<Page title="Curriculum Vitae" url="/cv/">
+<Page
+  title="Curriculum Vitae"
+  url="/cv/"
+  description="Curriculum vitae of Ruben Taelman: positions, education, publications, student supervision, teaching, awards, and service to the Semantic Web community."
+>
 <Fragment set:html={html} />
 </Page>

@@ -12,6 +12,10 @@ const renderFragment = async (md: string) => (await processor.render(md)).code
 const expanded = await loadLiquidPage('reading_list.md', renderFragment)
 const html = restoreRdfaDatatype((await processor.render(expanded)).code)
 ---
-<Page title="Reading List" url="/reading_list/">
+<Page
+  title="Reading List"
+  url="/reading_list/"
+  description="Books that significantly impacted Ruben Taelman, across philosophy, science, psychology and business, each with a short personal summary."
+>
 <Fragment set:html={html} />
 </Page>

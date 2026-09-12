@@ -16,6 +16,10 @@ export async function getStaticPaths() {
 const { post } = Astro.props
 const { Content } = await render(post.entry)
 const d = post.entry.data
+
+// The class the RunKit loader looks for. Reading it from the body keeps the decision with
+// the post: adding a notebook to another one needs no change here.
+const runkit = (post.entry.body ?? '').includes('demo-nodejs')
 ---
 <Post
   url={post.url}
@@ -26,6 +30,7 @@ const d = post.entry.data
   featureImg={d.feature_img}
   excerpt={post.excerpt}
   comments={d.comments ?? false}
+  runkit={runkit}
 >
   <Content />
 </Post>
