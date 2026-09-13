@@ -65,6 +65,8 @@ function start(): void {
   let minPapers = MIN_PAPERS
   let selected: string | undefined
   let drawn = new Map<string, SVGAElement>()
+  /** The name of each node, drawn in a layer above every circle so no circle can cover it. */
+  let labels = new Map<string, SVGAElement>()
   let edgesOf = new Map<string, Array<{ line: SVGLineElement; other: string }>>()
 
   section.hidden = false
@@ -140,9 +142,11 @@ function start(): void {
 
     svg.replaceChildren()
     drawn = new Map()
+    labels = new Map()
     edgesOf = new Map()
     const gEdges = el('g', { class: 'edges' })
     const gNodes = el('g', { class: 'nodes' })
+    const gLabels = el('g', { class: 'labels' })
     for (const e of layoutEdges) {
       const a = at.get(e.a)!
       const b = at.get(e.b)!
@@ -162,10 +166,13 @@ function start(): void {
     // Largest first, so their labels sit under the small circles rather than over them.
     const byPapers = new Map(nodes.map((n) => [n.iri, n.papers]))
     for (const p of [...placed].sort((x, y) => (byPapers.get(y.id) ?? 0) - (byPapers.get(x.id) ?? 0))) {
-      gNodes.append(drawNode(p, byPapers.get(p.id) ?? 0))
+      const [node, label] = drawNode(p, byPapers.get(p.id) ?? 0)
+      gNodes.append(node)
+      gLabels.append(label)
     }
-    svg.append(gEdges, gNodes)
-    if (selected) drawn.get(selected)?.classList.add('selected')
+    // Names last: SVG paints in document order, and a name behind a circle is unreadable.
+    svg.append(gEdges, gNodes, gLabels)
+    if (selected) mark(selected, 'selected', true)
 
     scope.replaceChildren()
     const other = document.createElement('button')
@@ -187,49 +194,69 @@ function start(): void {
     loadPortraits(nodes)
   }
 
-  function drawNode(p: Placed, papers: number): SVGAElement {
+  /**
+   * A node is two links with the same `resource`: the circle in the nodes layer and the name
+   * in the labels layer above it. Both open the author card and both filter on click; the
+   * name is hidden from assistive technology so the person is announced once.
+   */
+  function drawNode(p: Placed, papers: number): [SVGAElement, SVGAElement] {
     const me = p.id === ME
     const person = people.get(p.id)
-    const a = el('a', {
-      class: ['node', 'author', me && 'me', !me && papers < LABEL_MIN && 'minor'].filter(Boolean).join(' '),
-      resource: p.id,
-      'aria-label': me ? nameOf(p.id) : `${nameOf(p.id)}, ${papers} ${papers === 1 ? 'paper' : 'papers'} together`,
-    }) as SVGAElement
-    // Same href as the name in the list; graph nodes never link anywhere the list does not.
-    if (person) {
-      a.setAttribute('href', person.href)
-      a.setAttribute('target', '_blank')
-    } else {
-      a.setAttribute('href', ME)
+    const classes = ['author', me && 'me', !me && papers < LABEL_MIN && 'minor'].filter(Boolean).join(' ')
+    const link = (kind: 'node' | 'label') => {
+      const a = el('a', { class: `${kind} ${classes}`, resource: p.id }) as SVGAElement
+      // Same href as the name in the list; graph nodes never link anywhere the list does not.
+      if (person) {
+        a.setAttribute('href', person.href)
+        a.setAttribute('target', '_blank')
+      } else {
+        a.setAttribute('href', ME)
+      }
+      a.addEventListener('mouseenter', () => light(p.id, true))
+      a.addEventListener('mouseleave', () => light(p.id, false))
+      a.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || me) return
+        event.preventDefault()
+        select(selected === p.id ? undefined : p.id)
+      })
+      return a
     }
-    a.append(el('circle', { cx: fixed(p.x), cy: fixed(p.y), r: fixed(p.r) }))
+
+    const node = link('node')
+    node.setAttribute('aria-label', me ? nameOf(p.id) : `${nameOf(p.id)}, ${papers} ${papers === 1 ? 'paper' : 'papers'} together`)
+    node.append(el('circle', { cx: fixed(p.x), cy: fixed(p.y), r: fixed(p.r) }))
+    const portrait = portraits.get(p.id)
+    if (portrait) addPortrait(node, p, portrait)
+
+    const label = link('label')
+    label.setAttribute('aria-hidden', 'true')
+    label.setAttribute('tabindex', '-1')
     const text = me
       ? el('text', { x: fixed(p.x), y: fixed(p.y + p.r + 4), dy: '0.9em', 'text-anchor': 'middle' })
       : p.left
         ? el('text', { x: fixed(p.x - p.r - 3), y: fixed(p.y), dy: '0.35em', 'text-anchor': 'end' })
         : el('text', { x: fixed(p.x + p.r + 3), y: fixed(p.y), dy: '0.35em' })
     text.textContent = nameOf(p.id)
-    a.append(text)
-    const portrait = portraits.get(p.id)
-    if (portrait) addPortrait(a, p, portrait)
+    label.append(text)
 
-    a.addEventListener('mouseenter', () => light(p.id, true))
-    a.addEventListener('mouseleave', () => light(p.id, false))
-    a.addEventListener('click', (event) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || me) return
-      event.preventDefault()
-      select(selected === p.id ? undefined : p.id)
-    })
-    drawn.set(p.id, a)
-    return a
+    drawn.set(p.id, node)
+    labels.set(p.id, label)
+    return [node, label]
+  }
+
+  /** Sets a state class on both halves of a node. */
+  function mark(iri: string, state: 'lit' | 'focus' | 'selected', on: boolean): void {
+    drawn.get(iri)?.classList.toggle(state, on)
+    labels.get(iri)?.classList.toggle(state, on)
   }
 
   function light(iri: string, on: boolean): void {
     svg.classList.toggle('is-dim', on)
-    drawn.get(iri)?.classList.toggle('lit', on)
+    mark(iri, 'focus', on)
+    mark(iri, 'lit', on)
     for (const { line, other } of edgesOf.get(iri) ?? []) {
       line.classList.toggle('lit', on)
-      drawn.get(other)?.classList.toggle('lit', on)
+      mark(other, 'lit', on)
     }
   }
 
@@ -314,9 +341,9 @@ function start(): void {
   // -- filtering the list -----------------------------------------------------------------
 
   function select(iri: string | undefined): void {
-    if (selected) drawn.get(selected)?.classList.remove('selected')
+    if (selected) mark(selected, 'selected', false)
     selected = iri && iri !== ME && people.has(iri) ? iri : undefined
-    if (selected) drawn.get(selected)?.classList.add('selected')
+    if (selected) mark(selected, 'selected', true)
 
     const selector = selected ? `a.author[resource="${CSS.escape(selected)}"]` : undefined
     let shown = 0

@@ -115,9 +115,16 @@
         stroke-opacity: 0.07;
     }
 
-    .node {
+    .node,
+    .label {
         cursor: pointer;
 
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    .node {
         circle {
             fill: $blue-color;
             stroke: #fff;
@@ -125,42 +132,15 @@
             transition: fill 0.15s;
         }
 
-        text {
-            font-family: $base-font-family;
-            font-size: 11px;
-            fill: $text-color;
-            paint-order: stroke;
-            stroke: #fff;
-            stroke-width: 3px;
-            stroke-linejoin: round;
-        }
-
         &.me circle {
             fill: $brand-color;
         }
 
-        &.me text {
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        &.minor text {
-            display: none;
-        }
-
-        &:hover text,
-        &:focus-visible text,
-        &.selected text {
-            display: block;
-        }
-
+        // `focus` is the hovered person, whichever half of the node the pointer is on.
         &:hover circle,
+        &.focus circle,
         &:focus-visible circle {
             fill: $brand-color;
-        }
-
-        &:focus-visible {
-            outline: none;
         }
 
         &.selected circle {
@@ -183,13 +163,41 @@
         animation: portrait-in 0.4s ease-out both;
     }
 
+    // Names live in their own layer above every circle, so none can be painted over.
+    .label {
+        text {
+            font-family: $base-font-family;
+            font-size: 11px;
+            fill: $text-color;
+            paint-order: stroke;
+            stroke: #fff;
+            stroke-width: 3px;
+            stroke-linejoin: round;
+        }
+
+        &.me text {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        &.minor text {
+            display: none;
+        }
+
+        &.focus text,
+        &.selected text,
+        &:focus-visible text {
+            display: block;
+        }
+    }
+
     // Hovering a person: their neighbourhood in colour, everyone else stepped back.
     &.is-dim {
         .node:not(.lit):not(:hover) circle {
             fill: lighten($grey-color, 30%);
         }
 
-        .node:not(.lit):not(:hover) text {
+        .label:not(.lit):not(.focus) text {
             display: none;
         }
 
