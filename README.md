@@ -4,23 +4,7 @@ Built with [Astro](https://astro.build/), TypeScript and Sass. The output is ful
 Fonts are self-hosted, images are served as AVIF or WebP with the original as the fallback,
 and every page carries its own title, description and canonical URL.
 
-The client-side JavaScript is three Linked Data features, all run in the browser by
-[Comunica](https://comunica.dev/) in one shared web worker:
-
-- the author card: hovering a co-author's name in a bibliography queries that person's own
-  FOAF profile, then dblp and Wikidata, and shows what it finds;
-- the co-author graph on `/publications/`: opening the panel queries the RDFa of the page
-  itself for every pair of co-authors and draws the result, with the author card working on
-  the nodes and a click filtering the list (`#author=<iri>`);
-- the publication card: hovering a title on `/publications/` shows the paper's dblp record,
-  its citation count in the OpenCitations index (via `dblp:omid`) and the most cited papers
-  citing it. One query fetches every record on the first hover and is cached for a week;
-  the entry's `doi` picks the record, or its title where it has none.
-
-Everything those features show comes from other people's documents, so it is only ever
-written to the page as text, and only `http(s)` IRIs become links or images. Portraits on
-the graph are looked up after the drawing is interactive, only for the visible nodes, and
-each is fetched by the browser on its own, so a slow one delays nothing but its own circle.
+The client-side JavaScript is [Comunica](https://comunica.dev/) running in a web worker.
 
 The pages publish structured data about their content — RDFa, microdata and JSON-LD, using
 `foaf:`, `schema.org`, `bibframe:`, `vivo:`, `org:` and `cert:`. That is why the templates
