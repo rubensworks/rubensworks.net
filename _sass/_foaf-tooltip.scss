@@ -194,9 +194,10 @@
     }
 }
 
+// A fixed column, so the citing list sits beside the count rather than under it.
 .pub-card-cites {
-    flex: 0 0 auto;
-    min-width: 88px;
+    flex: 0 0 118px;
+    box-sizing: border-box;
     padding-right: 12px;
     border-right: 1px solid $grey-color-light;
 }
