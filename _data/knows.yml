@@ -120,7 +120,7 @@
   foaf: "https://data.verborgh.org/people/jerven_bolleman"
 "Jitse De Smet":
   url: "https://jitsedesmet.be/"
-  foaf: "https://jitsedesmet.be/profile/#me"
+  foaf: "https://jitsedesmet.be/profile#me"
 "Joachim Van Herwegen":
   url: "https://be.linkedin.com/in/johan-van-herwegen-11a67443"
   foaf: "https://data.verborgh.org/people/joachim_van_herwegen"
