@@ -240,9 +240,11 @@ function start(): void {
   const portraitQueue: string[] = []
   let portraitsRunning = 0
 
+  /** Every visible node, mine first: the centre should not be the last circle to get a face. */
   function loadPortraits(nodes: GraphNode[]): void {
-    for (const n of nodes) {
-      if (n.iri === ME || portraits.has(n.iri) || portraitQueue.includes(n.iri)) continue
+    const wanted = [...nodes].sort((a, b) => Number(b.iri === ME) - Number(a.iri === ME))
+    for (const n of wanted) {
+      if (portraits.has(n.iri) || portraitQueue.includes(n.iri)) continue
       portraitQueue.push(n.iri)
     }
     pumpPortraits()
