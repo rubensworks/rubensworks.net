@@ -5,7 +5,8 @@
  *
  * Nothing is fetched until the first title is hovered. That first hover costs one round
  * trip for every record of mine, which is then kept in localStorage for a week; each card
- * after that is a lookup by title, plus one small query for the papers citing it.
+ * after that is a lookup by DOI, or by title where the entry has none, plus one small query
+ * for the papers citing it.
  *
  * Everything shown comes from a third party, so it is only ever written with `textContent`,
  * and the only IRIs that become links are `http(s)` ones.
@@ -29,8 +30,8 @@ const CITING_PREFIX = 'citing:v1:'
 
 export interface PublicationCard {
   root: HTMLElement
-  /** Shows the card for a title. `onChange` runs after every re-render, so it can be re-placed. */
-  open(title: string, onChange: () => void): void
+  /** Shows the card for an entry. `onChange` runs after every re-render, so it can be re-placed. */
+  open(title: string, doi: string | undefined, onChange: () => void): void
   close(): void
 }
 
@@ -298,14 +299,14 @@ export function publicationCard(): PublicationCard {
     onChange()
   }
 
-  const open = (title: string, changed: () => void) => {
+  const open = (title: string, doi: string | undefined, changed: () => void) => {
     current = title
     onChange = changed
     render(title, 'loading', undefined, undefined)
     withRecords(() => {
       if (current !== title) return
       if (!records) return render(title, 'unavailable', undefined, undefined)
-      const record = findRecord(records, title)
+      const record = findRecord(records, title, doi)
       render(title, 'ready', record, undefined)
       if (!record?.omid || !record.cites) return
       withCiting(record.record, (citing) => {

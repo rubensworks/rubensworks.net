@@ -56,6 +56,8 @@ interface Pending {
   /** The person's IRI, or the publication's printed title. */
   subject: string
   displayName: string
+  /** The publication's DOI, from the `schema:sameAs` link its entry publishes, when it has one. */
+  doi?: string
   anchor: Anchor
 }
 
@@ -393,7 +395,9 @@ function pendingFor(anchor: Anchor): Pending | undefined {
     const person = anchor.getAttribute('resource')
     return person ? { kind: 'person', subject: person, displayName, anchor } : undefined
   }
-  return displayName ? { kind: 'publication', subject: displayName, displayName, anchor } : undefined
+  if (!displayName) return undefined
+  const doiLink = anchor.closest('.publication')?.querySelector<HTMLAnchorElement>('a[rel~="schema:sameAs"][href^="https://doi.org/"]')
+  return { kind: 'publication', subject: displayName, displayName, doi: doiLink?.href, anchor }
 }
 
 function show(anchor: Anchor, byPointer: boolean): void {
@@ -414,7 +418,7 @@ function show(anchor: Anchor, byPointer: boolean): void {
     const shown = ensurePubCard()
     card = shown.root
     anchor.setAttribute('aria-describedby', shown.root.id)
-    shown.open(pending.subject, () => afterRender(pending))
+    shown.open(pending.subject, pending.doi, () => afterRender(pending))
     return
   }
 

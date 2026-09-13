@@ -14,7 +14,8 @@ The client-side JavaScript is three Linked Data features, all run in the browser
   the nodes and a click filtering the list (`#author=<iri>`);
 - the publication card: hovering a title on `/publications/` shows the paper's dblp record,
   its citation count in the OpenCitations index (via `dblp:omid`) and the most cited papers
-  citing it. One query fetches every record on the first hover and is cached for a week.
+  citing it. One query fetches every record on the first hover and is cached for a week;
+  the entry's `doi` picks the record, or its title where it has none.
 
 Everything those features show comes from other people's documents, so it is only ever
 written to the page as text, and only `http(s)` IRIs become links or images. Portraits on
@@ -80,6 +81,11 @@ appears on the next build, and the entry shows up on `/publications/`, on the CV
 it carries `_highlighted = {true}` — on the homepage. The non-standard `_type`, `_slides`,
 `_poster`, `_video` and `_highlighted` fields are what drive that; `test/bibliography.test.ts`
 covers the values currently in use.
+
+Give the entry a `doi` where one exists, bare (`10.1007/978-3-030-00668-6_15`) or as a
+doi.org URL. It becomes a DOI link on the publication page, a `schema:sameAs` triple in the
+RDFa, and the key the publication card uses to find the paper in dblp; without one the card
+falls back to matching the title, which dblp rewrites.
 
 ## Writing a post
 

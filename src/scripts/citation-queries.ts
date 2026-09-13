@@ -165,8 +165,31 @@ export function normaliseTitle(title: string): string {
     .replace(/[^a-z0-9]+/g, '')
 }
 
-/** The record for a title printed on the page, or nothing when dblp has no such title. */
-export function findRecord(records: readonly CitationRecord[], title: string): CitationRecord | undefined {
+/**
+ * A DOI as a bare, lower-case identifier: `10.1007/978-3-030-00668-6_15`. DOIs are
+ * case-insensitive, dblp upper-cases them, publishers do not, and the page carries them
+ * either bare or as a doi.org URL.
+ */
+export function normaliseDoi(doi: string | undefined): string | undefined {
+  const bare = (doi ?? '')
+    .trim()
+    .replace(/^https?:\/\/(dx\.)?doi\.org\//i, '')
+    .replace(/^doi:/i, '')
+    .toLowerCase()
+  return /^10\.\d{4,9}\/\S+$/.test(bare) ? bare : undefined
+}
+
+/**
+ * The record for an entry on the page: by DOI when the entry has one, which is exact, and
+ * by title otherwise. A title match can confuse a workshop paper with its journal version;
+ * a DOI cannot.
+ */
+export function findRecord(records: readonly CitationRecord[], title: string, doi?: string): CitationRecord | undefined {
+  const wantedDoi = normaliseDoi(doi)
+  if (wantedDoi) {
+    const byDoi = records.find((r) => normaliseDoi(r.doi) === wantedDoi)
+    if (byDoi) return byDoi
+  }
   const wanted = normaliseTitle(title)
   return wanted ? records.find((r) => normaliseTitle(r.title) === wanted) : undefined
 }

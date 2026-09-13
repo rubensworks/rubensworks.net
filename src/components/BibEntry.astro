@@ -18,6 +18,7 @@ const { entry, knows } = Astro.props as Props
   {entry.booktitle && <span class="in">In {entry.booktitle} ({entry.year})</span>}
   {entry.journal && <span class="in">In {entry.journal} ({entry.year})</span>}
   <span property="schema:abstract" style="display:none">{entry.abstract}</span>
+  {entry.doi && <a rel="schema:sameAs" style="display:none" href={`https://doi.org/${entry.doi}`}></a>}
   <span property="schema:datePublished" style="display:none" datatype="xsd:gYear">{entry.year}</span>
   <a rel="schema:contributor" style="display:none" href="https://data.knows.idlab.ugent.be/person/office/#"></a>
   <a rel="schema:about" style="display:none" href="http://dbpedia.org/resource/Semantic_Web"></a>

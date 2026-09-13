@@ -28,6 +28,17 @@ describe('parsing', () => {
     expect(entries.length).toBeGreaterThanOrEqual(frozen.size)
   })
 
+  it('normalises the doi field to a bare lower-case identifier', () => {
+    // Written as a doi.org URL in the file; matched against dblp, which upper-cases DOIs.
+    expect(entries.find((x) => x.key === 'crum_genomesharing_computersbiomed_2025')!.doi).toBe(
+      '10.1016/j.compbiomed.2025.111335',
+    )
+    expect(entries.find((x) => x.key === 'taelman_iswc_resources_comunica_2018')!.doi).toBe(
+      '10.1007/978-3-030-00668-6_15',
+    )
+    expect(entries.find((x) => x.key === 'taelman_mastersthesis')!.doi).toBeUndefined()
+  })
+
   it('preserves the custom _-prefixed fields', () => {
     // A CSL-JSON based parser would drop these; they drive cv.md and the homepage.
     const e = entries.find((x) => x.key === 'taelman_iswc_resources_comunica_2018')!

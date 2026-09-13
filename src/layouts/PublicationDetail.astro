@@ -38,6 +38,7 @@ const description =
 
 
   <div class="links">
+    {entry.doi && <a rel="schema:sameAs" href={`https://doi.org/${entry.doi}`} target="_blank">DOI</a>}
     {entry.url && <a rel="schema:associatedMedia" href={entry.url} target="_blank">Article</a>}
     {entry._poster && <a rel="schema:associatedMedia" href={entry._poster} target="_blank">Poster</a>}
     {entry._slides && <a rel="schema:associatedMedia" href={entry._slides} target="_blank">Slides</a>}

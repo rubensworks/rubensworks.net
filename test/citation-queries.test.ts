@@ -9,6 +9,7 @@ import {
   foldCitations,
   foldCiting,
   isDblpRecord,
+  normaliseDoi,
   normaliseTitle,
   shortDoi,
   type Row,
@@ -139,6 +140,34 @@ describe('title matching', () => {
     expect(findRecord(records, 'Comunica: a Modular SPARQL Query Engine for the Web')?.cites).toBe(55)
     expect(findRecord(records, 'Something else entirely')).toBeUndefined()
     expect(findRecord(records, '')).toBeUndefined()
+  })
+
+  // The journal version of a paper often carries the workshop paper's title; the DOI does not.
+  it('prefers the DOI over the title when the entry has one', () => {
+    const journal: Row = { ...comunica, publ: iri('https://dblp.org/rec/journals/x/Y24'), doi: iri('https://doi.org/10.1000/journal'), cites: lit('3') }
+    const records = foldCitations([comunica, journal])
+    expect(findRecord(records, 'Comunica: a Modular SPARQL Query Engine for the Web', '10.1000/JOURNAL')?.cites).toBe(3)
+    expect(findRecord(records, 'Comunica: a Modular SPARQL Query Engine for the Web', 'https://doi.org/10.1000/journal')?.cites).toBe(3)
+  })
+
+  it('falls back to the title when the DOI matches nothing', () => {
+    const records = foldCitations([comunica])
+    expect(findRecord(records, 'Comunica: a Modular SPARQL Query Engine for the Web', '10.1000/elsewhere')?.cites).toBe(55)
+  })
+})
+
+describe('normaliseDoi', () => {
+  it('reduces every written form to one bare lower-case identifier', () => {
+    expect(normaliseDoi('10.7717/PEERJ-CS.387')).toBe('10.7717/peerj-cs.387')
+    expect(normaliseDoi('https://doi.org/10.7717/peerj-cs.387')).toBe('10.7717/peerj-cs.387')
+    expect(normaliseDoi('http://dx.doi.org/10.7717/peerj-cs.387')).toBe('10.7717/peerj-cs.387')
+    expect(normaliseDoi('doi:10.7717/peerj-cs.387')).toBe('10.7717/peerj-cs.387')
+  })
+
+  it('rejects anything that is not a DOI', () => {
+    expect(normaliseDoi('https://example.org/paper')).toBeUndefined()
+    expect(normaliseDoi('')).toBeUndefined()
+    expect(normaliseDoi(undefined)).toBeUndefined()
   })
 })
 
