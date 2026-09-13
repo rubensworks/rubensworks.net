@@ -38,6 +38,28 @@ export function isDblpPerson(uri: string): boolean {
   return /^https?:\/\/dblp\.org\/pid\/[^\s]+$/.test(uri) && !uri.endsWith('.html')
 }
 
+/**
+ * The only IRIs ever rendered as a link or an image. A profile is somebody else's document
+ * and can publish any string as an IRI, `javascript:` included.
+ */
+export function httpUrl(value: string | undefined): string | undefined {
+  if (!value) return undefined
+  try {
+    const url = new URL(value)
+    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : undefined
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * The one shape of Wikidata entity the third stage interpolates into its query. Anything
+ * else, whatever dblp or a profile says, stays out of the query text.
+ */
+export function isWikidataEntity(iri: string): boolean {
+  return /^http:\/\/www\.wikidata\.org\/entity\/Q\d+$/.test(iri)
+}
+
 /** Escapes a string for use as a SPARQL literal. */
 export function sparqlString(value: string): string {
   return `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`
@@ -84,6 +106,7 @@ SELECT DISTINCT ?k ?v WHERE {
 
 /** Stage 3: a one-line description, and a portrait for the few people who have one. */
 export function wikidataQuery(entity: string): string {
+  if (!isWikidataEntity(entity)) throw new Error(`Not a Wikidata entity: ${entity}`)
   return `PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX schema: <http://schema.org/>
 SELECT DISTINCT ?k ?v WHERE {
@@ -120,6 +143,8 @@ export function foldFacts(rows: readonly RawFact[]): Facts {
     const wantsIri = IRI_KEYS.has(row.k)
     if (wantsIri !== (row.termType === 'NamedNode')) continue
     if (!row.v.trim()) continue
+    // An IRI field only ever holds something a browser may safely fetch or link to.
+    if (wantsIri && !httpUrl(row.v)) continue
     const held = best.get(row.k)
     if (!held || preferable(row, held)) best.set(row.k, row)
   }

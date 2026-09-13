@@ -1,0 +1,51 @@
+---
+// The co-author graph on /publications/, built in the browser by Comunica from the RDFa the
+// page already publishes. Hidden until `coauthor-graph.ts` confirms the browser can run the
+// worker, and hidden again if the worker fails: the page is complete without it.
+//
+// Minimised by default. Opening it is what starts the query, so a reader who never opens it
+// never downloads Comunica for it.
+import type { Entry, Knows } from '../lib/bibliography'
+import { coauthorQuery, ME } from '../scripts/graph-queries'
+
+interface Props {
+  entries: Entry[]
+  knows: Knows
+}
+const { entries, knows } = Astro.props as Props
+
+// The header's summary, counted at build time from the same data the RDFa is rendered from.
+const coauthors = new Set<string>()
+for (const entry of entries) {
+  for (const author of entry.authors) {
+    const k = knows[author.display]
+    if (k && k.foaf !== ME) coauthors.add(k.foaf)
+  }
+}
+---
+<section class="coauthors" id="coauthors" hidden data-open="false" aria-labelledby="coauthors-title">
+  <header class="coauthors-header">
+    <h3 class="coauthors-title" id="coauthors-title">Co-author graph</h3>
+    <span class="coauthors-summary">{coauthors.size} co-authors across {entries.length} publications</span>
+    <button type="button" class="coauthors-min" id="coauthors-toggle" aria-expanded="false" aria-controls="coauthors-body" aria-label="Open the co-author graph" title="Open">
+      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 8l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </button>
+  </header>
+  <div class="coauthors-body" id="coauthors-body" hidden>
+    <p class="coauthors-filter" id="coauthors-filter" hidden></p>
+    <p class="coauthors-status" id="coauthors-status">Building the graph with Comunica…</p>
+    <svg class="coauthors-graph" id="coauthors-graph" viewBox="0 0 740 340" role="img" aria-label="Co-authors, linked by the papers they share" hidden></svg>
+    <p class="coauthors-scope" id="coauthors-scope" hidden></p>
+    <footer class="coauthors-source">
+      <span class="coauthors-engine">queried live with Comunica from this page's RDFa</span>
+      <button type="button" class="foaf-card-toggle" id="coauthors-query-toggle" aria-expanded="false">show query</button>
+    </footer>
+    <pre class="foaf-card-query" id="coauthors-query" hidden># Queried live in your browser by Comunica, from the RDFa this page already publishes
+# Source: this page
+{coauthorQuery()}</pre>
+  </div>
+</section>
+
+<script>
+  import '../scripts/coauthor-graph.ts'
+</script>

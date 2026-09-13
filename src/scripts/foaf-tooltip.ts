@@ -1,13 +1,17 @@
 /**
- * Author cards on hover, built from the person's own Linked Data.
+ * Hover cards, built from Linked Data: an author card on a co-author's name, and a
+ * publication card on a paper's title.
  *
- * This file is the whole main-thread cost of the feature: it finds the author links, decides
- * when the reader means it, and draws the card. Everything expensive happens in
- * `foaf-worker.ts`, which is why this stays a few kilobytes.
+ * This file is the whole main-thread cost of the feature: it finds the links, decides when
+ * the reader means it, and draws the card. Everything expensive happens in
+ * `foaf-worker.ts`, which is why this stays a few kilobytes. The author card is rendered
+ * here; the publication card's fetching and rendering live in `publication-card.ts`, and
+ * both share the pointer logic below.
  *
  * The links need no markup of their own. `_data/knows.yml` already puts each co-author's
  * FOAF identifier in the `resource` attribute of `a.author`, for the RDFa the pages publish,
- * and that attribute is exactly what a query needs.
+ * and that attribute is exactly what a query needs. A publication is found by the title
+ * printed in its link.
  */
 import {
   DBLP_ENDPOINT,
@@ -15,13 +19,17 @@ import {
   dblpQuery,
   displayNameFor,
   hasSubstance,
+  httpUrl,
   isDblpPerson,
+  isWikidataEntity,
   profileQuery,
   thumbnail,
   wikidataQuery,
   type Facts,
 } from './foaf-queries'
-import type { Request, Response } from './foaf-worker'
+import { cachedFacts, lookupPerson } from './person-facts'
+import { publicationCard, type PublicationCard } from './publication-card'
+import { ensureWorker, whenWorkerFails } from './worker-client'
 
 /** How long the pointer has to rest before this is a lookup and not a passing cursor. */
 const DWELL_MS = 180
@@ -37,22 +45,24 @@ const HIDE_MS = 120
  * the pointer has visibly left it — at 4 px the randomised sweep found exactly that.
  */
 const HIT_SLACK = 1
-const CACHE_PREFIX = 'foaf-card:v1:'
+/** How many recent papers together the author card lists when opened from the graph. */
+const RECENT_TOGETHER = 3
+
+/** Either an author link in the list or the graph, or a title link in the list. */
+type Anchor = Element
 
 interface Pending {
-  person: string
+  kind: 'person' | 'publication'
+  /** The person's IRI, or the publication's printed title. */
+  subject: string
   displayName: string
-  anchor: HTMLAnchorElement
+  anchor: Anchor
 }
 
-const memory = new Map<string, Facts>()
-const inFlight = new Map<number, Pending>()
-let worker: Worker | undefined
-let nextId = 0
 let active: Pending | undefined
 let dwellTimer: number | undefined
-/** The name a dwell is counting down for, or nothing when none is pending. */
-let dwellAnchor: HTMLAnchorElement | undefined
+/** The link a dwell is counting down for, or nothing when none is pending. */
+let dwellAnchor: Anchor | undefined
 let hideTimer: number | undefined
 /** The last position the pointer actually reported, which is the only reliable one. */
 let pointer: { x: number; y: number } | undefined
@@ -70,59 +80,16 @@ let onCard = false
 /** Whether the query panel is open, kept across the stages that re-render the card. */
 let queryOpen = false
 
-/**
- * Created once and kept for the life of the page.
- *
- * Re-spawning would repay the bundle's parse cost and the engine's 230 ms of wiring every
- * time, which is the wrong trade for an interaction measured in hundreds of milliseconds.
- * An idle timeout would guarantee that cost on the next hover to save memory nobody is
- * short of.
- */
-function ensureWorker(): Worker {
-  worker ??= (() => {
-    const created = new Worker(new URL('./foaf-worker.ts', import.meta.url), { type: 'module' })
-    created.addEventListener('message', (event: MessageEvent<Response>) => onMessage(event.data))
-    // A worker that cannot start must not take the page's author links with it.
-    created.addEventListener('error', () => {
-      hide()
-      inFlight.clear()
-    })
-    return created
-  })()
-  return worker
-}
+// -- the author card -----------------------------------------------------------------------
 
-function cached(person: string): Facts | undefined {
-  const held = memory.get(person)
-  if (held) return held
-  try {
-    const stored = sessionStorage.getItem(CACHE_PREFIX + person)
-    if (!stored) return undefined
-    const facts = JSON.parse(stored) as Facts
-    memory.set(person, facts)
-    return facts
-  } catch {
-    // Private windows and blocked site data both throw here. The in-memory map still works.
-    return undefined
-  }
-}
-
-function remember(person: string, facts: Facts): void {
-  memory.set(person, facts)
-  try {
-    sessionStorage.setItem(CACHE_PREFIX + person, JSON.stringify(facts))
-  } catch {
-    // Full or unavailable storage is not a reason to lose the card.
-  }
-}
-
-// -- the card -------------------------------------------------------------------------
-
+/** Whichever card is on screen, or was last. */
 let card: HTMLElement | undefined
+let personCard: HTMLElement | undefined
 let parts: Record<string, HTMLElement>
+let pubCard: PublicationCard | undefined
 
-function ensureCard(): HTMLElement {
-  if (card) return card
+function ensurePersonCard(): HTMLElement {
+  if (personCard) return personCard
   const root = document.createElement('div')
   root.className = 'foaf-card'
   root.id = 'foaf-card'
@@ -137,6 +104,10 @@ function ensureCard(): HTMLElement {
       <p class="foaf-card-description" hidden></p>
       <p class="foaf-card-empty" hidden>No Linked Data published.</p>
     </div>
+    <div class="foaf-card-recent" hidden>
+      <p class="foaf-card-recent-heading">Most recent together</p>
+      <ol></ol>
+    </div>
     <footer class="foaf-card-source">
       <span class="foaf-card-engine"></span>
       <button type="button" class="foaf-card-toggle" aria-expanded="false">show query</button>
@@ -150,6 +121,8 @@ function ensureCard(): HTMLElement {
     affiliation: pick('.foaf-card-affiliation'),
     description: pick('.foaf-card-description'),
     empty: pick('.foaf-card-empty'),
+    recent: pick('.foaf-card-recent'),
+    recentList: pick('.foaf-card-recent ol'),
     engine: pick('.foaf-card-engine'),
     toggle: pick('.foaf-card-toggle'),
     query: pick('.foaf-card-query'),
@@ -159,8 +132,13 @@ function ensureCard(): HTMLElement {
     if (active) place(active.anchor)
   })
   document.body.append(root)
-  card = root
+  personCard = root
   return root
+}
+
+function ensurePubCard(): PublicationCard {
+  pubCard ??= publicationCard()
+  return pubCard
 }
 
 function setQueryOpen(open: boolean): void {
@@ -176,7 +154,8 @@ function setText(node: HTMLElement, value: string | undefined): void {
 }
 
 function render(pending: Pending, facts: Facts | undefined, state: 'loading' | 'ready'): void {
-  const root = ensureCard()
+  const root = ensurePersonCard()
+  card = root
   const name = facts ? displayNameFor(facts, pending.displayName) : pending.displayName
   parts.name.textContent = name
   setText(parts.title, facts?.title)
@@ -184,14 +163,18 @@ function render(pending: Pending, facts: Facts | undefined, state: 'loading' | '
   setText(parts.description, facts?.description)
 
   const photo = parts.photo as HTMLImageElement
-  if (facts?.image) {
-    photo.src = thumbnail(facts.image)
+  // Only an http(s) IRI is ever loaded; the fold already dropped anything else.
+  const image = httpUrl(facts?.image)
+  if (image) {
+    photo.src = thumbnail(image)
     photo.alt = name
     photo.hidden = false
   } else {
     photo.hidden = true
     photo.removeAttribute('src')
   }
+
+  renderRecent(pending)
 
   const bare = state === 'ready' && (!facts || !hasSubstance(facts, pending.displayName))
   parts.empty.hidden = !bare
@@ -200,15 +183,52 @@ function render(pending: Pending, facts: Facts | undefined, state: 'loading' | '
     state === 'loading'
       ? 'querying with Comunica…'
       : bare
-        ? `Comunica found nothing at ${hostOf(pending.person)}`
-        : `queried live with Comunica from ${hostOf(pending.person)}`
+        ? `Comunica found nothing at ${hostOf(pending.subject)}`
+        : `queried live with Comunica from ${hostOf(pending.subject)}`
   parts.query.textContent = describeQuery(pending)
   setQueryOpen(queryOpen)
   root.hidden = false
+  afterRender(pending)
+}
+
+/**
+ * Opened from the co-author graph, the card also lists the newest papers with that person,
+ * read from the list on the page itself. The list is newest first, so the first matches
+ * are the ones wanted.
+ */
+function renderRecent(pending: Pending): void {
+  parts.recentList.replaceChildren()
+  const fromGraph = pending.anchor.closest('#coauthors')
+  if (!fromGraph) {
+    parts.recent.hidden = true
+    return
+  }
+  const selector = `a.author[resource="${CSS.escape(pending.subject)}"]`
+  let found = 0
+  for (const li of document.querySelectorAll('ol.bibliography > li')) {
+    if (found === RECENT_TOGETHER) break
+    if (!li.querySelector(selector)) continue
+    const title = li.querySelector<HTMLAnchorElement>('a.title')
+    if (!title) continue
+    found++
+    const item = document.createElement('li')
+    const link = document.createElement('a')
+    link.href = title.href
+    link.textContent = (title.textContent ?? '').trim()
+    item.append(link)
+    const year = li.closest('ol')?.previousElementSibling
+    if (year?.matches('h2.bibliography')) item.append(` (${(year.textContent ?? '').trim()})`)
+    parts.recentList.append(item)
+  }
+  parts.recent.hidden = found === 0
+}
+
+/** Each stage lands separately and can change the card's size or flip it to the other side. */
+function afterRender(pending: Pending): void {
+  if (active !== pending) return
   place(pending.anchor)
-  // Each stage lands separately and can change the card's size or flip it to the other
-  // side of the name. A pointer that was on the card may no longer be; the reverse is
-  // never granted here, only by a real move.
+  // A pointer that was on the card may no longer be; the reverse is never granted here,
+  // only by a real move.
   if (onCard && !pointerOverCard()) onCard = false
   review()
 }
@@ -226,15 +246,15 @@ function hostOf(uri: string): string {
  * functions the worker runs, not a readable paraphrase of it.
  */
 function describeQuery(pending: Pending): string {
-  const dereferenced = !isDblpPerson(pending.person)
+  const dereferenced = !isDblpPerson(pending.subject)
   const sections: string[] = [
     '# Everything above was queried live in your browser by Comunica',
   ]
   if (dereferenced) {
-    sections.push('', `# Source: ${pending.person}`, profileQuery(pending.person))
+    sections.push('', `# Source: ${pending.subject}`, profileQuery(pending.subject))
   }
-  sections.push('', `# Source: ${DBLP_ENDPOINT}`, dblpQuery(pending.person, pending.displayName))
-  if (lastWikidataEntity) {
+  sections.push('', `# Source: ${DBLP_ENDPOINT}`, dblpQuery(pending.subject, pending.displayName))
+  if (lastWikidataEntity && isWikidataEntity(lastWikidataEntity)) {
     sections.push('', `# Source: ${WIKIDATA_ENDPOINT}`, wikidataQuery(lastWikidataEntity))
   }
   return sections.join('\n')
@@ -243,8 +263,9 @@ function describeQuery(pending: Pending): string {
 /** Tracked so the third query is only shown when it actually ran. */
 let lastWikidataEntity: string | undefined
 
-function place(anchor: HTMLAnchorElement): void {
-  const root = ensureCard()
+function place(anchor: Anchor): void {
+  if (!card) return
+  const root = card
   const target = anchor.getBoundingClientRect()
   const self = root.getBoundingClientRect()
   const margin = 8
@@ -265,12 +286,14 @@ function hide(): void {
   onCard = false
   if (active) active.anchor.removeAttribute('aria-describedby')
   active = undefined
-  if (!card) return
-  card.hidden = true
-  setQueryOpen(false)
+  if (personCard) {
+    personCard.hidden = true
+    setQueryOpen(false)
+  }
+  pubCard?.close()
 }
 
-function armDwell(anchor: HTMLAnchorElement): void {
+function armDwell(anchor: Anchor): void {
   clearDwell()
   dwellAnchor = anchor
   dwellTimer = window.setTimeout(() => {
@@ -364,52 +387,54 @@ function review(): void {
 
 // -- what the reader did --------------------------------------------------------------
 
-function onMessage(response: Response): void {
-  const pending = inFlight.get(response.id)
-  if (!pending) return
-  const showing = active?.person === pending.person
-  if ('done' in response) {
-    inFlight.delete(response.id)
-    // Every stage can fail — an offline pod, a 404, an endpoint refusing the query — and
-    // then no facts message ever arrived. Without this the card sits on "querying with
-    // Comunica…" for as long as the reader keeps pointing at the name.
-    if (showing) render(pending, memory.get(pending.person), 'ready')
-    return
+function pendingFor(anchor: Anchor): Pending | undefined {
+  const displayName = (anchor.textContent ?? '').trim()
+  if (anchor.matches('a.author[resource]')) {
+    const person = anchor.getAttribute('resource')
+    return person ? { kind: 'person', subject: person, displayName, anchor } : undefined
   }
-  if ('failed' in response) return
-  remember(pending.person, response.facts)
-  // A result for a link the pointer has already left is worth caching, not showing.
-  if (!showing) return
-  lastWikidataEntity = response.facts.wikidata
-  render(pending, response.facts, 'ready')
+  return displayName ? { kind: 'publication', subject: displayName, displayName, anchor } : undefined
 }
 
-function show(anchor: HTMLAnchorElement, byPointer: boolean): void {
-  const person = anchor.getAttribute('resource')
-  if (!person) return
+function show(anchor: Anchor, byPointer: boolean): void {
+  const pending = pendingFor(anchor)
+  if (!pending) return
   // Whatever asked for this card wins. Without this, a dwell already counting down on a
   // link the mouse happens to rest over replaces the card a keyboard user just opened
   // somewhere else — focus moves, the timer fires 180 ms later, and the card changes person.
   clearDwell()
   cancelHide()
+  // One card at a time: opening the other kind puts the first one away.
+  if (active && active.kind !== pending.kind) hide()
   openedByPointer = byPointer
   onCard = false
-  const pending: Pending = { person, displayName: (anchor.textContent ?? '').trim(), anchor }
   active = pending
-  anchor.setAttribute('aria-describedby', 'foaf-card')
 
+  if (pending.kind === 'publication') {
+    const shown = ensurePubCard()
+    card = shown.root
+    anchor.setAttribute('aria-describedby', shown.root.id)
+    shown.open(pending.subject, () => afterRender(pending))
+    return
+  }
+
+  anchor.setAttribute('aria-describedby', 'foaf-card')
   lastWikidataEntity = undefined
-  const known = cached(person)
+  const known = cachedFacts(pending.subject)
   if (known) {
     lastWikidataEntity = known.wikidata
     render(pending, known, 'ready')
     return
   }
   render(pending, undefined, 'loading')
-  const id = ++nextId
-  inFlight.set(id, pending)
-  const request: Request = { id, person, displayName: pending.displayName }
-  ensureWorker().postMessage(request)
+  lookupPerson(pending.subject, pending.displayName, (facts, done) => {
+    // A result for a link the pointer has already left is worth caching, not showing.
+    if (active?.subject !== pending.subject) return
+    if (facts) lastWikidataEntity = facts.wikidata
+    // Every stage can fail, and then no facts ever arrive. Without the `done` render the
+    // card sits on "querying with Comunica…" for as long as the reader keeps pointing at it.
+    if (facts || done) render(pending, facts, 'ready')
+  })
 }
 
 /**
@@ -424,7 +449,7 @@ function onPointerMove(event: MouseEvent): void {
   // The card takes pointer events, so this is exact: a move over the card targets the card,
   // never a name it happens to cover, and no lookup can start from there.
   onCard = Boolean(card && !card.hidden && card.contains(event.target as Node))
-  const anchor = onCard ? undefined : authorLink(event.target)
+  const anchor = onCard ? undefined : hoverTarget(event.target)
   if (!anchor) {
     // Off the name before the dwell was met, so there is nothing to look up.
     clearDwell()
@@ -437,15 +462,19 @@ function onPointerMove(event: MouseEvent): void {
   review()
 }
 
-function authorLink(target: EventTarget | null): HTMLAnchorElement | undefined {
-  const element = target instanceof Element ? target.closest('a.author[resource]') : null
-  return (element as HTMLAnchorElement) ?? undefined
+/** A co-author's name, in the list or on the graph, or a publication's title in the list. */
+function hoverTarget(target: EventTarget | null): Anchor | undefined {
+  const element = target instanceof Element ? target.closest('a.author[resource], .bibliography a.title') : null
+  return element ?? undefined
 }
 
 function start(): void {
-  if (!document.querySelector('a.author[resource]')) return
+  if (!document.querySelector('a.author[resource], .bibliography a.title')) return
   // No hover on a touchscreen, and tapping an author link should follow it, not open a card.
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+
+  // A worker that cannot start must not take the page's links with it.
+  whenWorkerFails(hide)
 
   document.addEventListener('mousemove', onPointerMove, { passive: true })
 
@@ -461,9 +490,9 @@ function start(): void {
   document.documentElement.addEventListener('mouseleave', pointerGone)
   window.addEventListener('blur', pointerGone)
 
-  // Keyboard readers get the same card; the author links are already focusable.
+  // Keyboard readers get the same card; the author and title links are already focusable.
   document.addEventListener('focusin', (event) => {
-    const anchor = authorLink(event.target)
+    const anchor = hoverTarget(event.target)
     if (anchor) show(anchor, false)
     else if (!card?.contains(event.target as Node)) hide()
   })

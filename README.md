@@ -4,9 +4,22 @@ Built with [Astro](https://astro.build/), TypeScript and Sass. The output is ful
 Fonts are self-hosted, images are served as AVIF or WebP with the original as the fallback,
 and every page carries its own title, description and canonical URL.
 
-The one piece of client-side JavaScript is the author hover card: hovering a co-author's name
-in a bibliography queries that person's own FOAF profile with
-[Comunica](https://comunica.dev/), in the browser, and shows what it finds.
+The client-side JavaScript is three Linked Data features, all run in the browser by
+[Comunica](https://comunica.dev/) in one shared web worker:
+
+- the author card: hovering a co-author's name in a bibliography queries that person's own
+  FOAF profile, then dblp and Wikidata, and shows what it finds;
+- the co-author graph on `/publications/`: opening the panel queries the RDFa of the page
+  itself for every pair of co-authors and draws the result, with the author card working on
+  the nodes and a click filtering the list (`#author=<iri>`);
+- the publication card: hovering a title on `/publications/` shows the paper's dblp record,
+  its citation count in the OpenCitations index (via `dblp:omid`) and the most cited papers
+  citing it. One query fetches every record on the first hover and is cached for a week.
+
+Everything those features show comes from other people's documents, so it is only ever
+written to the page as text, and only `http(s)` IRIs become links or images. Portraits on
+the graph are fetched after the drawing is interactive, only for the visible nodes, and only
+when a CORS `HEAD` request reports an image under 512 KB.
 
 The pages publish structured data about their content — RDFa, microdata and JSON-LD, using
 `foaf:`, `schema.org`, `bibframe:`, `vivo:`, `org:` and `cert:`. That is why the templates
@@ -27,7 +40,9 @@ the output, not decoration.
 
 Everything under `src/` is templates and code: `src/pages` for routes, `src/layouts` and
 `src/components` for the shell, `src/lib` for the bibliography engine and the Markdown
-pipeline, and `src/scripts` for the only code that runs in the reader's browser.
+pipeline, and `src/scripts` for the only code that runs in the reader's browser. There, the
+`*-queries.ts` files and `graph-layout.ts` are DOM-free and unit-tested, `foaf-worker.ts` is
+the one place Comunica is imported, and the rest is the main-thread glue.
 
 ## Development
 

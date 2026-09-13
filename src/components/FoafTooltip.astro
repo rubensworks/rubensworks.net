@@ -1,9 +1,11 @@
 ---
-// Author hover cards, queried from each co-author's own Linked Data with Comunica.
+// Hover cards: the author card, queried from each co-author's own Linked Data with
+// Comunica, and the publication card, queried from dblp.
 //
-// The script below is the only JavaScript this repository itself ships to the browser. The
-// other two are third-party and inline: the analytics tag on every page, and RunKit on the
-// three posts that embed a notebook.
+// The script below and the co-author graph's (`CoauthorGraph.astro`, publications page
+// only) are the JavaScript this repository itself ships to the browser. The other two are
+// third-party and inline: the analytics tag on every page, and RunKit on the three posts
+// that embed a notebook.
 //
 // Astro does not inline it. It only inlines a `<script>` with no imports, and this one
 // imports, so the built pages carry `<script type="module" src="/_astro/FoafTooltip…js">`
@@ -11,10 +13,10 @@
 // is revalidated on every navigation.
 //
 // It goes on every page rather than only the ones with a bibliography: it looks for
-// `a.author[resource]` and returns immediately when there is none, which is cheaper than
-// deciding per layout which pages carry authors.
+// `a.author[resource]` or a title link and returns immediately when there is none, which is
+// cheaper than deciding per layout which pages carry authors.
 //
-// Comunica itself is not here. `foaf-tooltip.ts` reaches it through `new Worker(...)`, so
+// Comunica itself is not here. `worker-client.ts` reaches it through `new Worker(...)`, so
 // Vite emits it as a separate chunk that is only fetched once a reader hovers a name.
 ---
 <script>
