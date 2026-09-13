@@ -2,6 +2,10 @@
  * The co-author graph panel on the publications page. Same box as the author card, since it
  * is the same kind of thing: a live query result, drawn over the static page.
  */
+
+// Co-authors in a muted steel blue; the centre and whoever is hovered in the site's own blue.
+$node-color: mix($blue-color, $grey-color, 60%);
+
 .coauthors {
     box-sizing: border-box;
     margin: 0 0 18px;
@@ -126,50 +130,52 @@
 
     .node {
         circle {
-            fill: $blue-color;
+            fill: $node-color;
             stroke: #fff;
             stroke-width: 1.5;
-            transition: fill 0.15s;
-        }
-
-        &.has-portrait circle:not(.halo) {
-            stroke: $blue-color;
-            stroke-width: 2;
-        }
-
-        // The centre: a dark ring inside a thin halo, unlike anyone else's white edge.
-        &.me circle {
-            fill: $brand-color;
-            stroke: $grey-color-dark;
-            stroke-width: 2.5;
-        }
-
-        &.me .halo {
-            fill: none;
-            stroke: $brand-color;
-            stroke-width: 1.5;
-            stroke-opacity: 0.45;
-        }
-
-        &.me.has-portrait circle {
-            stroke: $grey-color-dark;
-            stroke-width: 2.5;
+            transition: fill 0.15s, stroke 0.15s;
         }
 
         // `focus` is the hovered person, whichever half of the node the pointer is on.
         &:hover circle,
         &.focus circle,
-        &:focus-visible circle {
-            fill: $brand-color;
+        &:focus-visible circle,
+        &.lit circle {
+            fill: $blue-color;
         }
 
         &.selected circle {
             fill: $text-color;
         }
 
-        &.has-portrait:hover circle,
-        &.has-portrait.selected circle {
+        &.has-portrait circle:not(.halo) {
+            stroke: $node-color;
+            stroke-width: 2;
+        }
+
+        &.has-portrait:hover circle:not(.halo),
+        &.has-portrait.focus circle:not(.halo),
+        &.has-portrait.lit circle:not(.halo) {
+            stroke: $blue-color;
+        }
+
+        &.has-portrait.selected circle:not(.halo) {
             stroke: $text-color;
+        }
+
+        // The centre: the site's blue, full strength, in a ring inside a thin halo.
+        &.me circle,
+        &.me.has-portrait circle:not(.halo) {
+            fill: $brand-color;
+            stroke: $blue-color;
+            stroke-width: 3;
+        }
+
+        &.me .halo {
+            fill: none;
+            stroke: $blue-color;
+            stroke-width: 1.5;
+            stroke-opacity: 0.5;
         }
     }
 
@@ -215,6 +221,11 @@
     &.is-dim {
         .node:not(.lit):not(:hover) circle {
             fill: lighten($grey-color, 30%);
+            stroke: #fff;
+        }
+
+        .node.me:not(.lit) .halo {
+            stroke: lighten($grey-color, 30%);
         }
 
         .label:not(.lit):not(.focus) text {
