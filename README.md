@@ -19,8 +19,8 @@ The client-side JavaScript is three Linked Data features, all run in the browser
 
 Everything those features show comes from other people's documents, so it is only ever
 written to the page as text, and only `http(s)` IRIs become links or images. Portraits on
-the graph are fetched after the drawing is interactive, only for the visible nodes, and only
-when a CORS `HEAD` request reports an image under 512 KB.
+the graph are looked up after the drawing is interactive, only for the visible nodes, and
+each is fetched by the browser on its own, so a slow one delays nothing but its own circle.
 
 The pages publish structured data about their content — RDFa, microdata and JSON-LD, using
 `foaf:`, `schema.org`, `bibframe:`, `vivo:`, `org:` and `cert:`. That is why the templates

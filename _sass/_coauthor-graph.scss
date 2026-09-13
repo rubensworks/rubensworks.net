@@ -158,9 +158,14 @@
         }
     }
 
+    // Each portrait fades in the moment its own file has loaded.
     .portrait {
         pointer-events: none;
-        animation: portrait-in 0.4s ease-out both;
+        opacity: 0;
+
+        &.is-loaded {
+            animation: portrait-in 0.4s ease-out both;
+        }
     }
 
     // Names live in their own layer above every circle, so none can be painted over.
@@ -226,8 +231,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .coauthors-graph .portrait {
+    .coauthors-graph .portrait.is-loaded {
         animation: none;
+        opacity: 1;
     }
 
     .coauthors-min svg {

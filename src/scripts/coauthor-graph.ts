@@ -11,7 +11,8 @@
  *
  * Names and links come from this page's own author links, keyed by the `resource` IRI the
  * query returns; the RDFa carries the IRIs but not the printed names. Portraits are the
- * ones the author card would find, fetched lazily after the graph is drawn.
+ * ones the author card would find, looked up after the graph is drawn and each fetched by
+ * the browser on its own, so a slow or large one delays nothing but its own circle.
  */
 import { httpUrl, thumbnail } from './foaf-queries'
 import { ME, type Graph, type GraphNode } from './graph-queries'
@@ -27,8 +28,6 @@ const H_MAX = 480
 const MIN_PAPERS = 2
 /** From how many papers together a name is drawn beside the circle. */
 const LABEL_MIN = 4
-/** Portraits larger than this are not fetched: some profiles link a multi-megabyte original. */
-const PORTRAIT_MAX_BYTES = 512 * 1024
 /** How many portrait lookups run at once, so opening the graph does not flood anyone's pod. */
 const PORTRAIT_CONCURRENCY = 4
 
@@ -288,40 +287,19 @@ function start(): void {
       portraitsRunning++
       lookupPerson(iri, nameOf(iri), (facts, done) => {
         if (!done) return
-        void acceptable(facts?.image).then((url) => {
-          portraits.set(iri, url)
-          portraitsRunning--
-          const node = drawn.get(iri)
-          if (url && node && !node.classList.contains('has-portrait')) {
-            const circle = node.querySelector('circle')!
-            const p = { x: Number(circle.getAttribute('cx')), y: Number(circle.getAttribute('cy')), r: Number(circle.getAttribute('r')) }
-            addPortrait(node, p, url)
-          }
-          pumpPortraits()
-        })
+        // Only an http(s) IRI; the browser fetches the image itself, off the critical path.
+        const image = httpUrl(facts?.image)
+        const url = image ? thumbnail(image) : null
+        portraits.set(iri, url)
+        portraitsRunning--
+        const node = drawn.get(iri)
+        if (url && node && !node.classList.contains('has-portrait')) {
+          const circle = node.querySelector('circle')!
+          const p = { x: Number(circle.getAttribute('cx')), y: Number(circle.getAttribute('cy')), r: Number(circle.getAttribute('r')) }
+          addPortrait(node, p, url)
+        }
+        pumpPortraits()
       })
-    }
-  }
-
-  /**
-   * Only an `http(s)` image whose size is known and modest. A HEAD request tells both, and
-   * `Content-Length` is readable across origins wherever the host allows CORS at all; a host
-   * that does not, or an oversized file, means no portrait rather than a gamble.
-   */
-  async function acceptable(image: string | undefined): Promise<string | null> {
-    const url = httpUrl(image)
-    if (!url) return null
-    const src = thumbnail(url)
-    try {
-      const response = await fetch(src, { method: 'HEAD', mode: 'cors', credentials: 'omit', redirect: 'follow' })
-      if (!response.ok) return null
-      const length = Number.parseInt(response.headers.get('content-length') ?? '', 10)
-      const type = response.headers.get('content-type') ?? ''
-      if (!Number.isFinite(length) || length <= 0 || length > PORTRAIT_MAX_BYTES) return null
-      if (type && !type.startsWith('image/')) return null
-      return src
-    } catch {
-      return null
     }
   }
 
@@ -339,8 +317,16 @@ function start(): void {
       preserveAspectRatio: 'xMidYMid slice',
     })
     image.setAttribute('href', src)
+    // Invisible until its own bytes have arrived, then faded in; a broken image is removed.
+    image.addEventListener('load', () => {
+      image.classList.add('is-loaded')
+      node.classList.add('has-portrait')
+    })
+    image.addEventListener('error', () => {
+      clip.remove()
+      image.remove()
+    })
     node.querySelector('circle')!.after(clip, image)
-    node.classList.add('has-portrait')
   }
 
   // -- filtering the list -----------------------------------------------------------------
