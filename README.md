@@ -4,9 +4,7 @@ Built with [Astro](https://astro.build/), TypeScript and Sass. The output is ful
 Fonts are self-hosted, images are served as AVIF or WebP with the original as the fallback,
 and every page carries its own title, description and canonical URL.
 
-The one piece of client-side JavaScript is the author hover card: hovering a co-author's name
-in a bibliography queries that person's own FOAF profile with
-[Comunica](https://comunica.dev/), in the browser, and shows what it finds.
+The client-side JavaScript is [Comunica](https://comunica.dev/) running in a web worker.
 
 The pages publish structured data about their content — RDFa, microdata and JSON-LD, using
 `foaf:`, `schema.org`, `bibframe:`, `vivo:`, `org:` and `cert:`. That is why the templates
@@ -27,7 +25,9 @@ the output, not decoration.
 
 Everything under `src/` is templates and code: `src/pages` for routes, `src/layouts` and
 `src/components` for the shell, `src/lib` for the bibliography engine and the Markdown
-pipeline, and `src/scripts` for the only code that runs in the reader's browser.
+pipeline, and `src/scripts` for the only code that runs in the reader's browser. There, the
+`*-queries.ts` files and `graph-layout.ts` are DOM-free and unit-tested, `foaf-worker.ts` is
+the one place Comunica is imported, and the rest is the main-thread glue.
 
 ## Development
 
@@ -65,6 +65,11 @@ appears on the next build, and the entry shows up on `/publications/`, on the CV
 it carries `_highlighted = {true}` — on the homepage. The non-standard `_type`, `_slides`,
 `_poster`, `_video` and `_highlighted` fields are what drive that; `test/bibliography.test.ts`
 covers the values currently in use.
+
+Give the entry a `doi` where one exists, bare (`10.1007/978-3-030-00668-6_15`) or as a
+doi.org URL. It becomes a DOI link on the publication page, a `schema:sameAs` triple in the
+RDFa, and the key the publication card uses to find the paper in dblp; without one the card
+falls back to matching the title, which dblp rewrites.
 
 ## Writing a post
 

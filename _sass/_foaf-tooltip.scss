@@ -120,3 +120,197 @@
         display: none;
     }
 }
+
+/**
+ * The publication card: the same box, on the title of a publication, with what dblp and the
+ * OpenCitations index say about it. Wider than the author card, since it carries a list.
+ */
+.pub-card {
+    position: absolute;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    box-sizing: border-box;
+    width: 400px;
+    max-width: calc(100vw - 16px);
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid $grey-color-light;
+    border-top: 3px solid $blue-color;
+    border-radius: 3px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+    font-size: 13px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.45;
+    cursor: default;
+
+    &[hidden] {
+        display: none;
+    }
+
+    p {
+        margin: 0 0 2px;
+        overflow-wrap: break-word;
+    }
+
+    [hidden] {
+        display: none;
+    }
+
+    &.is-loading .pub-card-title {
+        opacity: 0.5;
+    }
+
+    .foaf-card-source {
+        margin: 0;
+    }
+
+    .foaf-card-query {
+        max-height: 220px;
+    }
+}
+
+.pub-card-head {
+    flex: 1 1 100%;
+}
+
+.pub-card-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pub-card-meta {
+    color: $grey-color-dark;
+}
+
+.pub-card-ids {
+    color: $grey-color;
+    font-size: 12px;
+
+    a {
+        color: $blue-color-dark;
+    }
+}
+
+// A fixed column, so the citing list sits beside the count rather than under it.
+.pub-card-cites {
+    flex: 0 0 118px;
+    box-sizing: border-box;
+    padding-right: 12px;
+    border-right: 1px solid $grey-color-light;
+}
+
+.pub-card-count {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.1;
+    color: $text-color;
+    font-variant-numeric: tabular-nums;
+
+    small {
+        display: block;
+        font-size: 12px;
+        font-weight: normal;
+        color: $grey-color-dark;
+    }
+}
+
+.pub-card-count-source {
+    color: $grey-color;
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+.pub-card-citing {
+    flex: 1 1 200px;
+    min-width: 0;
+
+    ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    li {
+        margin: 0 0 5px;
+        font-size: 12px;
+        line-height: 1.35;
+
+        a {
+            color: $text-color;
+
+            &:hover {
+                color: $brand-color;
+            }
+        }
+    }
+}
+
+.pub-card-heading {
+    color: $grey-color;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.pub-card-year {
+    color: $grey-color;
+}
+
+.pub-card-n {
+    color: $grey-color-text;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.pub-card-empty {
+    flex: 1 1 100%;
+    color: $grey-color;
+    font-style: italic;
+}
+
+// The card is also drawn on graph nodes, where the recent papers together are listed.
+.foaf-card-recent {
+    flex: 1 1 100%;
+
+    &[hidden] {
+        display: none;
+    }
+
+    ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    li {
+        margin: 0 0 3px;
+        color: $grey-color;
+        font-size: 12px;
+        line-height: 1.35;
+
+        a {
+            color: $text-color;
+
+            &:hover {
+                color: $brand-color;
+            }
+        }
+    }
+}
+
+.foaf-card-recent-heading {
+    margin: 0 0 2px;
+    color: $grey-color;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+@media print {
+    .pub-card {
+        display: none;
+    }
+}

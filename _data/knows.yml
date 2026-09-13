@@ -12,7 +12,7 @@
   foaf: "https://www.sib.swiss/directory/person/anaclaudia-sima"
 "Anastasia Dimou":
   url: "https://be.linkedin.com/in/anastasia-dimou-a501511b"
-  foaf: "https://data.verborgh.org/people/anastasia_dimou"
+  foaf: "https://data.knows.idlab.ugent.be/person/adimou/#me"
 "Arne Gevaert":
   url: "https://be.linkedin.com/in/arne-gevaert-5a0a49176"
   foaf: "https://data.verborgh.org/people/arne_gevaert"
@@ -30,7 +30,7 @@
   foaf: "https://data.verborgh.org/people/bas_ketsman"
 "Ben De Meester":
   url: "http://ben.de-meester.org/"
-  foaf: "http://ben.de-meester.org/#me"
+  foaf: "https://ben.de-meester.org/#me"
 "Bram Steenwinckel":
   url: "https://bsteenwi.github.io/"
   foaf: "https://bsteenwi.github.io/"
@@ -42,7 +42,7 @@
   foaf: "https://data.verborgh.org/people/bruno_volckaert"
 "Bryan-Elliott Tam":
   url: "https://www.linkedin.com/in/bryanelliotttam/"
-  foaf: "https://data.verborgh.org/people/bryan_elliott_tam"
+  foaf: "https://data.knows.idlab.ugent.be/person/bryanelliotttam/#me"
 "Daniel Fernandez Alvarez":
   url: "https://portalinvestigacion.uniovi.es/investigadores/219680/detalle"
   foaf: "https://portalinvestigacion.uniovi.es/investigadores/219680/detalle"
@@ -54,7 +54,7 @@
   foaf: "https://dblp.org/pid/53/10105"
 "Elias Crum":
   url: "https://www.linkedin.com/in/elias-crum-413178142/"
-  foaf: "https://data.verborgh.org/people/elias_crum"
+  foaf: "https://ecrum.pod.knows.idlab.ugent.be/elias-crum/profile/card#me"
 "Emanuele Della Valle":
   url: "http://emanueledellavalle.org/"
   foaf: "https://data.verborgh.org/people/emanuele_della_valle"
@@ -63,7 +63,7 @@
   foaf: "https://www.kb.nl/over-ons/experts/enno-meijers"
 "Erik Mannens":
   url: "https://be.linkedin.com/in/erikmannens"
-  foaf: "https://data.verborgh.org/people/erik_mannens"
+  foaf: "https://data.knows.idlab.ugent.be/person/erikmannens/#me"
 "Femke Ongenae":
   url: "https://www.linkedin.com/in/fongenae/"
   foaf: "https://data.knows.idlab.ugent.be/person/femkeongenae/#me"
@@ -114,16 +114,16 @@
   foaf: "https://data.verborgh.org/people/jakob_beetz"
 "Jeroen Werbrouck":
   url: "https://be.linkedin.com/in/jeroen-werbrouck-616ba4173"
-  foaf: "https://data.verborgh.org/people/jeroen_werbrouck"
+  foaf: "https://data.knows.idlab.ugent.be/person/jeroenwerbrouck/#me"
 "Jerven Bolleman":
   url: "https://www.sib.swiss/directory/person/jerven-tjalling-bolleman"
   foaf: "https://data.verborgh.org/people/jerven_bolleman"
 "Jitse De Smet":
   url: "https://jitsedesmet.be/"
-  foaf: "https://jitsedesmet.be/profile/#me"
+  foaf: "https://jitsedesmet.be/profile#me"
 "Joachim Van Herwegen":
   url: "https://be.linkedin.com/in/johan-van-herwegen-11a67443"
-  foaf: "https://data.verborgh.org/people/joachim_van_herwegen"
+  foaf: "https://data.knows.idlab.ugent.be/person/jvherweg/#me"
 "Jonni Hanski":
   url: "https://id.eriador.io/jonni"
   foaf: "https://id.eriador.io/jonni#me"
@@ -192,7 +192,7 @@
   foaf: "https://patrickhochstenbach.net/profile/card#me"
 "Pieter Bonte":
   url: "http://pieterbonte.be/"
-  foaf: "http://pieterbonte.be/"
+  foaf: "https://data.knows.idlab.ugent.be/person/pbonte/#me"
 "Pieter Colpaert":
   url: "https://pietercolpaert.be/"
   foaf: "https://pietercolpaert.be/#me"
@@ -207,10 +207,10 @@
   foaf: "https://research.ugent.be/web/person/pieter-simoens-0/en"
 "Raf Buyle":
   url: "https://be.linkedin.com/in/rafbuyle"
-  foaf: "https://data.verborgh.org/people/raf_buyle"
+  foaf: "https://data.knows.idlab.ugent.be/person/rafbuyle/#me"
 "Riccardo Tommasini":
   url: "https://riccardotommasini.com/"
-  foaf: "https://riccardotommasini.com/"
+  foaf: "https://data.knows.idlab.ugent.be/person/riccardotommasini/#me"
 "Rik Van de Walle":
   url: "https://be.linkedin.com/in/rvdwalle"
   foaf: "https://data.verborgh.org/people/rik_van_de_walle"
@@ -240,7 +240,7 @@
   foaf: "https://data.verborgh.org/people/simon_steyskal"
 "Sitt Min Oo":
   url: "https://sminoo.be/"
-  foaf: "https://data.verborgh.org/people/sitt_min_oo"
+  foaf: "https://data.knows.idlab.ugent.be/person/minoo/#me"
 "Sjors de Valk":
   url: "https://www.linkedin.com/in/sdevalk/"
   foaf: "https://dblp.org/pid/234/3116"

@@ -1,4 +1,5 @@
 import * as bibtex from '@retorquere/bibtex-parser'
+import { normaliseDoi } from '../scripts/citation-queries'
 import { readFileSync } from 'node:fs'
 import { parse as parseYaml } from 'yaml'
 import { parseRawEntries, normaliseNames } from './bibtex-serialise'
@@ -14,6 +15,8 @@ export interface Entry {
    */
   authorString: string
   booktitle?: string; journal?: string; abstract?: string; url?: string
+  /** Bare and lower-case, `10.1007/978-3-030-00668-6_15`, whatever form the file wrote it in. */
+  doi?: string
   _type?: string; _slides?: string; _poster?: string; _video?: string
   _highlighted?: string
   /**
@@ -201,6 +204,7 @@ export function loadBibliography(path = '_bibliography/references.bib'): Entry[]
       authorString: raw?.author ? normaliseNames(raw.author) : '',
       booktitle: str(f.booktitle), journal: str(f.journal),
       abstract: str(f.abstract), url: str(f.url),
+      doi: normaliseDoi(str(f.doi)),
       _type: str(f._type), _slides: str(f._slides), _poster: str(f._poster),
       _video: str(f._video), _highlighted: str(f._highlighted),
       queryFields: raw ?? {},

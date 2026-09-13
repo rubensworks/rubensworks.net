@@ -4,6 +4,8 @@ import {
   displayNameFor,
   foldFacts,
   hasSubstance,
+  httpUrl,
+  isWikidataEntity,
   isDblpPerson,
   profileQuery,
   sparqlString,
@@ -141,5 +143,39 @@ describe('thumbnail', () => {
 
   it('leaves other images alone', () => {
     expect(thumbnail('https://pieterheyvaert.com/img/profile.jpg')).toBe('https://pieterheyvaert.com/img/profile.jpg')
+  })
+})
+
+describe('httpUrl', () => {
+  it('keeps http and https IRIs', () => {
+    expect(httpUrl('https://example.org/me.jpg')).toBe('https://example.org/me.jpg')
+    expect(httpUrl('http://example.org/me.jpg')).toBe('http://example.org/me.jpg')
+  })
+
+  // A profile can publish any string as an IRI; only these two schemes ever reach the page.
+  it('rejects every other scheme and anything unparsable', () => {
+    expect(httpUrl('javascript:alert(1)')).toBeUndefined()
+    expect(httpUrl('data:text/html,<script>alert(1)</script>')).toBeUndefined()
+    expect(httpUrl('file:///etc/passwd')).toBeUndefined()
+    expect(httpUrl('not a url')).toBeUndefined()
+    expect(httpUrl(undefined)).toBeUndefined()
+  })
+})
+
+describe('isWikidataEntity', () => {
+  it('accepts the entity IRIs dblp publishes', () => {
+    expect(isWikidataEntity('http://www.wikidata.org/entity/Q42')).toBe(true)
+  })
+
+  it('rejects anything that could smuggle text into the query', () => {
+    expect(isWikidataEntity('http://www.wikidata.org/entity/Q42> } UNION { ?x ?y ?z')).toBe(false)
+    expect(isWikidataEntity('https://www.wikidata.org/wiki/Q42')).toBe(false)
+    expect(() => wikidataQuery('http://evil.example/>')).toThrow()
+  })
+})
+
+describe('foldFacts and unsafe IRIs', () => {
+  it('drops an image whose IRI is not http(s)', () => {
+    expect(foldFacts([iri('image', 'javascript:alert(1)')]).image).toBeUndefined()
   })
 })
