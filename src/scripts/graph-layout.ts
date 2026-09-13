@@ -63,6 +63,9 @@ export function radiusFor(papers: number, pinned = false): number {
 export function layoutGraph(nodes: readonly LayoutNode[], edges: readonly LayoutEdge[], options: LayoutOptions): Placed[] {
   const { width: W, height: H } = options
   const ticks = options.ticks ?? 400
+  // Repulsion scales with the room each node has, so 95 nodes do not push each other into
+  // the walls of a box that was comfortable for 30.
+  const repulsion = 0.2 * ((W * H) / Math.max(nodes.length, 1))
   const bodies: Body[] = nodes.map((n, i) => {
     const angle = (i / Math.max(nodes.length, 1)) * Math.PI * 2
     const distance = 70 + 90 / Math.sqrt(Math.max(n.r, 1))
@@ -103,7 +106,7 @@ export function layoutGraph(nodes: readonly LayoutNode[], edges: readonly Layout
           d2 = 0.5
         }
         const d = Math.sqrt(d2)
-        let f = (1600 * (1 + (a.r + b.r) / 20)) / d2
+        let f = (repulsion * (1 + (a.r + b.r) / 20)) / d2
         const min = a.r + b.r + 6
         if (d < min) f += (min - d) * 0.5
         a.vx -= (dx / d) * f
@@ -131,6 +134,12 @@ export function layoutGraph(nodes: readonly LayoutNode[], edges: readonly Layout
       }
       b.vx += (W / 2 - b.x) * 0.0015
       b.vy += (H / 2 - b.y) * 0.008
+      // A soft wall inside the edge, so nodes settle short of it instead of piling up on it.
+      const margin = b.r + 24
+      if (b.x < margin) b.vx += (margin - b.x) * 0.05
+      if (b.x > W - margin) b.vx -= (b.x - (W - margin)) * 0.05
+      if (b.y < margin) b.vy += (margin - b.y) * 0.05
+      if (b.y > H - margin) b.vy -= (b.y - (H - margin)) * 0.05
       b.vx *= 0.6
       b.vy *= 0.6
       b.x = clamp(b.x + b.vx, b.r + 2, W - b.r - 2)

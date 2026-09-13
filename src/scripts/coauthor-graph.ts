@@ -20,7 +20,9 @@ import { lookupPerson } from './person-facts'
 import { send, supportsWorker, whenWorkerFails } from './worker-client'
 
 const W = 740
+/** Canvas height for the default view; the full graph grows with its node count. */
 const H = 340
+const H_MAX = 480
 /** Co-authors with fewer papers than this start hidden; the one-paper tail is most of the noise. */
 const MIN_PAPERS = 2
 /** From how many papers together a name is drawn beside the circle. */
@@ -137,7 +139,10 @@ function start(): void {
       label: nameOf(n.iri),
     }))
     const layoutEdges: LayoutEdge[] = graph.edges.filter((e) => shown.has(e.a) && shown.has(e.b))
-    const placed = layoutGraph(layoutNodes, layoutEdges, { width: W, height: H })
+    // Two pixels of height per node beyond thirty: 95 nodes need more room than 30.
+    const height = Math.min(H_MAX, H + Math.max(0, nodes.length - 30) * 2)
+    svg.setAttribute('viewBox', `0 0 ${W} ${height}`)
+    const placed = layoutGraph(layoutNodes, layoutEdges, { width: W, height })
     const at = new Map(placed.map((p) => [p.id, p]))
 
     svg.replaceChildren()
