@@ -228,6 +228,8 @@ function start(): void {
 
     const node = link('node')
     node.setAttribute('aria-label', me ? nameOf(p.id) : `${nameOf(p.id)}, ${papers} ${papers === 1 ? 'paper' : 'papers'} together`)
+    // The centre wears a halo ring, so it reads as the hub and not as one more co-author.
+    if (me) node.append(el('circle', { class: 'halo', cx: fixed(p.x), cy: fixed(p.y), r: fixed(p.r + 6) }))
     node.append(el('circle', { cx: fixed(p.x), cy: fixed(p.y), r: fixed(p.r) }))
     const portrait = portraits.get(p.id)
     if (portrait) addPortrait(node, p, portrait)
@@ -294,7 +296,7 @@ function start(): void {
         portraitsRunning--
         const node = drawn.get(iri)
         if (url && node && !node.classList.contains('has-portrait')) {
-          const circle = node.querySelector('circle')!
+          const circle = node.querySelector('circle:not(.halo)')!
           const p = { x: Number(circle.getAttribute('cx')), y: Number(circle.getAttribute('cy')), r: Number(circle.getAttribute('r')) }
           addPortrait(node, p, url)
         }
@@ -326,7 +328,7 @@ function start(): void {
       clip.remove()
       image.remove()
     })
-    node.querySelector('circle')!.after(clip, image)
+    node.querySelector('circle:not(.halo)')!.after(clip, image)
   }
 
   // -- filtering the list -----------------------------------------------------------------

@@ -132,8 +132,28 @@
             transition: fill 0.15s;
         }
 
+        &.has-portrait circle:not(.halo) {
+            stroke: $blue-color;
+            stroke-width: 2;
+        }
+
+        // The centre: a dark ring inside a thin halo, unlike anyone else's white edge.
         &.me circle {
             fill: $brand-color;
+            stroke: $grey-color-dark;
+            stroke-width: 2.5;
+        }
+
+        &.me .halo {
+            fill: none;
+            stroke: $brand-color;
+            stroke-width: 1.5;
+            stroke-opacity: 0.45;
+        }
+
+        &.me.has-portrait circle {
+            stroke: $grey-color-dark;
+            stroke-width: 2.5;
         }
 
         // `focus` is the hovered person, whichever half of the node the pointer is on.
@@ -145,11 +165,6 @@
 
         &.selected circle {
             fill: $text-color;
-        }
-
-        &.has-portrait circle {
-            stroke: $blue-color;
-            stroke-width: 2;
         }
 
         &.has-portrait:hover circle,

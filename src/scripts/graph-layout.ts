@@ -45,10 +45,14 @@ interface Body extends Placed {
   links: Array<{ other: Body; n: number; toPinned: boolean }>
 }
 
+/** The largest a co-author's circle gets; the pinned node is always larger than this. */
+export const MAX_RADIUS = 22
+export const PINNED_RADIUS = 27
+
 /** Radius from papers together: a square-root scale, so a 56-paper node does not swallow the drawing. */
 export function radiusFor(papers: number, pinned = false): number {
-  if (pinned) return 17
-  return Math.min(22, 5 + 2.6 * Math.sqrt(Math.max(papers, 1)))
+  if (pinned) return PINNED_RADIUS
+  return Math.min(MAX_RADIUS, 5 + 2.6 * Math.sqrt(Math.max(papers, 1)))
 }
 
 /**
@@ -56,8 +60,8 @@ export function radiusFor(papers: number, pinned = false): number {
  *
  * Forces: pairwise repulsion, springs on edges whose rest length shortens with shared
  * papers, and a pull to the centre that is weaker sideways than vertically so the graph
- * fills a wide, short canvas. The pinned node never moves. Afterwards the drawing is centred
- * on its own bounding box, since the pinned node is rarely its visual centre, and labelled
+ * fills a wide, short canvas. The pinned node never moves, so it is the exact centre of the
+ * canvas; a drawing without one is centred on its bounding box instead. Afterwards labelled
  * nodes are nudged apart until no label covers another label or a circle.
  */
 export function layoutGraph(nodes: readonly LayoutNode[], edges: readonly LayoutEdge[], options: LayoutOptions): Placed[] {
@@ -147,8 +151,8 @@ export function layoutGraph(nodes: readonly LayoutNode[], edges: readonly Layout
     }
   }
 
-  centre(bodies, W, H)
   const pinned = bodies.find((b) => b.pinned)
+  if (!pinned) centre(bodies, W, H)
   const middle = pinned ? pinned.x : W / 2
   for (const b of bodies) b.left = !b.pinned && b.x < middle
   settleLabels(bodies, H, options.charWidth ?? 6.1)

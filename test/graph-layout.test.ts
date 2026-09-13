@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { labelBox, layoutGraph, radiusFor, settleLabels, type LayoutNode, type Placed } from '../src/scripts/graph-layout'
+import { MAX_RADIUS, PINNED_RADIUS, labelBox, layoutGraph, radiusFor, settleLabels, type LayoutNode, type Placed } from '../src/scripts/graph-layout'
 
 const box = { width: 740, height: 340 }
 const distance = (a: Placed, b: Placed) => Math.hypot(a.x - b.x, a.y - b.y)
@@ -12,14 +12,16 @@ describe('radiusFor', () => {
     expect(radiusFor(0)).toBe(radiusFor(1))
   })
 
-  it('gives the pinned node one fixed size', () => {
-    expect(radiusFor(97, true)).toBe(17)
+  it('makes the pinned node larger than any other can be', () => {
+    expect(radiusFor(97, true)).toBe(PINNED_RADIUS)
+    expect(PINNED_RADIUS).toBeGreaterThan(MAX_RADIUS)
+    expect(radiusFor(10000)).toBeLessThan(radiusFor(1, true))
   })
 })
 
 describe('layoutGraph', () => {
   const nodes: LayoutNode[] = [
-    { id: 'me', r: 17, pinned: true, labelled: true, label: 'Ruben Taelman' },
+    { id: 'me', r: 27, pinned: true, labelled: true, label: 'Ruben Taelman' },
     { id: 'a', r: 12, labelled: true, label: 'Ruben Verborgh' },
     { id: 'b', r: 12, labelled: true, label: 'Pieter Colpaert' },
     { id: 'c', r: 8 },
@@ -47,6 +49,21 @@ describe('layoutGraph', () => {
     const me = placed.get('me')!
     expect(distance(me, placed.get('a')!)).toBeLessThan(distance(me, placed.get('c')!))
     expect(distance(me, placed.get('b')!)).toBeLessThan(distance(me, placed.get('d')!))
+  })
+
+  it('keeps the pinned node at the exact centre of the canvas', () => {
+    const me = layoutGraph(nodes, edges, box).find((n) => n.pinned)!
+    expect(me.x).toBe(box.width / 2)
+    expect(me.y).toBe(box.height / 2)
+  })
+
+  it('centres a drawing without a pinned node on its bounding box', () => {
+    const free = nodes.map(({ pinned: _pinned, ...n }) => n)
+    const placed = layoutGraph(free, edges, box)
+    // Extents include the radii; only x is checked, since label settling nudges y afterwards.
+    const left = Math.min(...placed.map((n) => n.x - n.r))
+    const right = Math.max(...placed.map((n) => n.x + n.r))
+    expect((left + right) / 2).toBeCloseTo(box.width / 2, 0)
   })
 
   it('is deterministic', () => {
