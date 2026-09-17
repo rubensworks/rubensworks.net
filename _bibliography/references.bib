@@ -193,6 +193,21 @@ specification’s immaturity, the language already supports practically useful r
   url       = {https://arxiv.org/pdf/2609.03441}
 }
 
+@article{noor_datasilosactionable_vetscience_2026,
+  title = {From data silos to actionable insights: A comparative evaluation of data access models and practical guidelines for animal health surveillance},
+  author = {Noor, Saba and Taelman, Ruben and Degroote, Jeroen and Pardon, Bart and van Schaik, Gerdien and Rafiq, Muhammad and Delavenne, Camille and Liu, Enhong and Zhang, Hanlu and Niu, Puchun and others},
+  journal = {Frontiers in Veterinary Science},
+  volume = {13},
+  pages = {1962800},
+  publisher = {Frontiers},
+  year      = {2026},
+  month     = {august},
+  abstract  = {
+Effective animal health surveillance depends on scalable, privacy-conscious access to distributed diagnostic data, yet fragmented datasets, inconsistent formats, and limited interoperability constrain current systems. This study compares three approaches for accessing distributed animal health data: direct data sharing (manual file exchange), centralized access (data pooled into one server through an automated API), and federated access using Solid Pods (secure, access-controlled data vaults each lab holds and queries directly, without central pooling), along architectural properties, query performance benchmarks, and the FAIR (Findable, Accessible, Interoperable, Reusable) maturity of the data artifacts. Using the European Cattle Barometer as a testbed, we characterized the approaches along seven operational criteria: data access mechanism, privacy and governance, integration workflow, consistency, workflow scalability, ease of use, and total cost of ownership. Two experiments measured query performance: centralized versus federated SPARQL on 76,295 cattle records across five Pods, and vertical versus horizontal federation across twelve Pods. Queries were executed using Comunica (v5.2.0), mapped to the Livestock Health Ontology (LHO), run five times, and compared using Welch's t-test. FAIR maturity was scored against 41 indicators of the Research Data Alliance (RDA) FAIR Data Maturity Model. Direct sharing scored high on ease of use but low on scalability, privacy, integration, and consistency. Centralized access scored highest on data consistency and ease of automation, while federated access scored highest on workflow scalability, privacy and governance, and integration. Centralized queries completed in 20.2 ± 4.1 s versus 30.0 ± 2.2 s for federated, 1.49 times slower (p = 0.003). Vertical and horizontal federation performed comparably (p = 0.060) and returned identical results (1,378 records), though the two configurations used a different number of Pods (12 vs. 6). FAIR maturity of the published data was 6%, 60%, and 83% for direct, centralized, and federated access, respectively, reflecting both the access architecture and the progressive data enrichment applied along each pipeline. No single approach suits all situations: direct sharing for short-term simplicity, centralized access supports fast dashboards, and federated access is preferable where data ownership and FAIR-aligned outputs matter. These findings inform practical, scalable, and privacy-conscious data-sharing guidelines for animal disease surveillance.
+},
+  _type     = {Journal}
+}
+
 @inproceedings{desmet_offlinefirst_icwe_2026,
   author    = {De Smet, Jitse and Taelman, Ruben},
   title     = {Client-Driven Offline-First RDF 1.2 using OR-Sets},
