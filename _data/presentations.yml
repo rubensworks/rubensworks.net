@@ -19,9 +19,15 @@
     date: "25 October 2026"
     url: "https://dmkg-workshop.github.io/2026/"
     type: "Workshop"
+"2026-tno-comunica":
+    title: "Query-driven Knowledge Integration with Comunica"
+    venue: "TNO"
+    date: "12 October 2026"
+    url: "https://www.rubensworks.net/raw/slides/2026/tno-comunica/"
+    type: "Invited Talk"
 "2026-uhasselt-querydecentralized":
     title: "Query-driven Knowledge Integration for a Decentralized Web"
-    venue: "UHasselt"
+    venue: "UHasselt (±15 participants)"
     date: "2 October 2026"
     url: "https://www.rubensworks.net/raw/slides/2026/uhasselt-querydecentralized/"
     type: "Invited Talk"
