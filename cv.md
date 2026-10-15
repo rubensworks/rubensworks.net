@@ -518,7 +518,7 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
     * 2020 (Poster & Demo Track)
     * 2021 - 2022 (In-Use Track)
 * [The Web Conference](https://www.iw3c2.org/)
-    * 2024 - 2025 (Semantics and Knowledge Track - Area Chair)
+    * 2024 - 2025, 2027 (Semantics and Knowledge Track - Area Chair)
     * 2022 - 2023 (Semantics and Knowledge Track)
     * 2018 ([Developers' Track](https://www2018.thewebconf.org/program/developers-track/))
 * [International Conference on Cooperative Information Systems](https://coopis.scitevents.org/Home.aspx)
