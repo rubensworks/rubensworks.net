@@ -7,10 +7,16 @@
 # - Workshop
 # - Other
 
+"2026-espresso-sovereign-integration":
+    title: "Sovereignty Beyond Storage: Client-centric Data Integration with Personal Query Engines"
+    venue: "ESPRESSO Workshop on Sovereign Intelligence, London"
+    date: "13 November 2026"
+    url: "https://www.rubensworks.net/raw/slides/2026/espresso-sovereign-integration/"
+    type: "Invited Talk"
 "2026-iswc-vision-symbiotickgs":
     title: "Symbiotic Knowledge Graphs: A Vision for Semantic Brain-Computer Interfaces"
     venue: "ISWC 2026"
-    date: "26 October 2026"
+    date: "29 October 2026"
     url: "https://www.rubensworks.net/raw/slides/2026/iswc-vision-symbiotickgs/"
     type: "Conference"
 "2026-iswc-dmkg":
