@@ -380,6 +380,11 @@ Total invited presentations: {{ presentationstotal }}
 
 <ul class="cv-listing">
 {% include cv-listing.html
+    subject="Round table about the vision of the 25 years of Semantic Web"
+    date="2026"
+    description="[ISWC 2026](https://iswc2026.semanticweb.org/#/program/schedule)"
+%}
+{% include cv-listing.html
     subject="Trust, Autonomy and Accountability in PKG-Based Agentic AI"
     date="2026"
     description="[TAAPAAI Workshop](https://taapaai.github.io/) at ESWC 2026"
