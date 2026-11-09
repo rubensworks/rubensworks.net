@@ -476,13 +476,15 @@ Total PhD symposium publications: {% bibliography_count --query @*[_type=PhD Sym
 
 ### Organization Committee Member
 
+* [International Conference on Semantic Systems](https://semantics.cc/)
+    * 2027 (Posters and Demos Chair) (±400 participants)
 * [Workshop on Data Management for Knowledge Graphs (ISWC)](https://dmkg-workshop.github.io/2026/)
-    * 2026 (Organizer)
+    * 2026 (Organizer) (±40 participants)
 * [Hackathon on Metadata and Provenance for Knowledge Graphs](https://dmki-tuwien.github.io/goblin-hackathon/)
-    * 2026 (Co-organizer)
+    * 2026 (Co-organizer) (±25 participants)
 * [Developers Workshop (Semantics)](https://semantics2025.semdev.org/)
-    * 2026 (Organizer)
-    * 2025 (Organizer) (±40 participants)
+    * 2026 (Organizer) (±75 participants) 
+    * 2025 (Organizer) (±40 participants) 
 * [Extended Semantic Web Conference (ESWC)](https://eswc-conferences.org/)
     * 2020 (Metadata Chair) (±400 participants)
 * [Trusting Decentralised Knowledge Graphs and Web Data Workshop (TrusDeKW) (ESWC)](https://events.kmi.open.ac.uk/trusting-decentralised-knowledge-graphs-and-web-data/)
