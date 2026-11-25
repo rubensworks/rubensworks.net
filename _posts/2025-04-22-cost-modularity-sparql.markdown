@@ -227,3 +227,5 @@ But if high performance is absolutely critical, then no JIT environment can beat
 In summary, this analysis shows that despite Comunica's focus on execution over decentralized environments, with high flexibility, and high developer productivity,
 overall performance is still very comparable to state-of-the-art engines that focus on a centralized setting.
 So while there is certainly a cost that comes with flexibility and modularity, the impact on performance appears to be smaller than one would initially expect.
+
+**UPDATE 25 November 2026**: [Comunica v5.5](https://comunica.dev/blog/2026-11-24-release_5_5/) significantly improved performance even further, and achieves native-like performance for in-memory querying. This shows that proper usage of modern JavaScript features and by exploiting what JavaScript engines such as V8 optimize for (e.g. SMIs, typed arrays, ...), we can achieve similar levels of performance for SPARQL query execution as native engines.
